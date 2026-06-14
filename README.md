@@ -7,6 +7,77 @@ sales opportunity, and generates ready-to-send outreach for every lead.
 Instead of finding contractors first and checking whether they use WordPress,
 WP Prospector starts from WordPress sites and classifies them into industries.
 
+## Discovery (find WordPress contractor sites)
+
+The **Discover** page targets **local contractors**: pick trades (Roofing, HVAC,
+Plumbing, … preselected) and paste target `City, ST` locations. WP Prospector
+then (`src/services/discovery/`):
+
+1. Builds local-intent search queries (`query-builder.ts`).
+2. Sources candidates via a pluggable provider, set with `DISCOVERY_PROVIDER`:
+   - `serper` / `google` — web search for "trade + City, ST" (`provider.ts`).
+   - `hunter` — **Hunter Discover** (`hunter-discover.ts`): queries the B2B
+     database for `technology=wordpress` in the target locations and returns
+     company domains. Needs a paid Hunter plan with advanced Discover filters.
+     Because Hunter's industry taxonomy has no trade-level granularity
+     (Roofing/HVAC/…), we filter by WordPress + location and let our own
+     classifier pin the trade; narrow server-side with
+     `HUNTER_DISCOVER_INDUSTRIES` if you want.
+3. Drops directories/aggregators (Yelp, Angi, HomeAdvisor, social, …) and
+   de-dupes against sites you already have (`DIRECTORY_DENYLIST`).
+4. Runs every surviving candidate through the scan pipeline below, tags it
+   `source = "discovery"`, and logs the run to `discovery_runs`.
+
+No search key? Set `DISCOVERY_PROVIDER="mock"` — the funnel still runs and you
+can paste domains under **Scan domains**.
+
+## Email enrichment (Hunter.io)
+
+Set `HUNTER_API_KEY` and scans will auto-find a contact email (and name) for any
+site that doesn't expose one on its homepage, via Hunter Domain Search
+(`email-finder.ts`). Hunter is only called when the homepage has no email, to
+conserve credits. The contact name flows into the AI outreach for
+personalization, and `contact_name` + `email` ship in the CSV export.
+
+**Bulk enrichment (at scale).** On the Leads page, **Find emails** runs Hunter
+across the *entire current filter set* that's missing an email — not one lead at
+a time. It works in batches of 100 with concurrency and keeps going until the
+set is exhausted (`email-enrichment.ts`, `POST /api/enrich-emails`). Domains
+Hunter can't resolve are marked so repeat runs never waste credits retrying
+them. Filter to **Qualified only** + **No Email**, click **Find emails**, then
+**Export CSV**.
+
+## Campaigns (autopilot)
+
+Save trades + cities once as a **campaign** (`/campaigns`). Active campaigns run
+the full funnel automatically on a schedule via **Vercel Cron**:
+
+- `vercel.json` hits `GET /api/cron/run-campaigns` daily (08:00 UTC).
+- The route (secured by `CRON_SECRET`) runs every campaign that's **due**
+  (`daily`/`weekly`) and records a per-run summary (`campaigns.ts`).
+- Each run discovers → confirms WordPress → keeps contractors → scores → finds
+  emails, bounded by the campaign's `perRunLimit` and `maxPerTick`.
+
+You can also hit **Run now** on any campaign at any time. No clicks needed for
+the scheduled flow once `CRON_SECRET` and a discovery/Hunter key are set.
+
+## Outreach (single emails + sequences)
+
+Email the contractors you find, via **Resend** (`resend.ts`, mock without a key):
+
+- **Single send** — from a lead, `POST /api/outreach/send` ships the AI cold
+  email (subject parsed from the copy).
+- **Sequences** — define multi-step drips (subject/body + delay days, with
+  `{{firstName}}`/`{{company}}`/`{{domain}}` placeholders) on `/outreach`.
+  Enroll one lead or **bulk-enroll a filtered set** from the Leads page.
+- **Auto-drip** — a second Vercel Cron hits `/api/cron/process-sequences`; due
+  steps send and each enrollment advances or completes (`outreach.ts`).
+- **Compliance** — every email carries an unsubscribe link; `/api/unsubscribe`
+  opts the lead out (`email_opt_out`) and stops active enrollments, which all
+  sends respect. Every attempt is logged in `email_messages`.
+
+Set `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `APP_URL` (for unsubscribe links).
+
 ## Pipeline
 
 Each domain runs through six steps (`src/services/scanner.ts`):
@@ -66,6 +137,7 @@ middleware.ts         route protection (JWT session cookie)
 
 | Method | Route                  | Purpose                                  |
 | ------ | ---------------------- | ---------------------------------------- |
+| POST   | `/api/discover`        | Find local contractor sites + scan them  |
 | POST   | `/api/scan`            | Run the pipeline for up to 50 domains    |
 | GET    | `/api/websites`        | Filtered + paginated leads               |
 | GET    | `/api/export`          | CSV export of the current filter set     |

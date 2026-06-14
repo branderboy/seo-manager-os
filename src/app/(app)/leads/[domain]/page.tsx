@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLeadByDomain } from "@/services/leads";
 import { AssistantPanel } from "@/components/AssistantPanel";
+import { LeadOutreach } from "@/components/LeadOutreach";
 import { scoreColor, formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -86,6 +87,7 @@ export default async function LeadDetailPage({
               <Field label="Industry" value={website.industry} />
               <Field label="Sub-Industry" value={website.subIndustry} />
               <Field label="Location" value={website.location} />
+              <Field label="Contact" value={website.contactName} />
               <Field label="Phone" value={website.phone} />
               <Field
                 label="Email"
@@ -114,6 +116,8 @@ export default async function LeadDetailPage({
           </div>
 
           <AssistantPanel domain={website.domain} />
+
+          <LeadOutreach domain={website.domain} hasEmail={Boolean(website.email)} />
         </div>
 
         <div className="space-y-6">

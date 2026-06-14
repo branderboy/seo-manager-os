@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, ilike, lte, or, sql, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import {
   websites,
@@ -6,7 +6,7 @@ import {
   opportunityDetection,
   type LeadListFilters,
 } from "@/db/schema";
-import { PAGE_SIZE } from "@/lib/constants";
+import { CONTRACTOR_INDUSTRIES, PAGE_SIZE } from "@/lib/constants";
 
 export type LeadRow = {
   id: number;
@@ -19,7 +19,9 @@ export type LeadRow = {
   state: string | null;
   phone: string | null;
   email: string | null;
+  contactName: string | null;
   wordpressDetected: boolean;
+  contractor: boolean;
   opportunityScore: number;
   suggestedProduct: string | null;
   elementor: boolean;
@@ -39,6 +41,11 @@ function buildWhere(filters: LeadListFilters): SQL | undefined {
 
   if (filters.wordpressOnly) {
     conditions.push(eq(websites.wordpressDetected, true));
+  }
+  // The two simple gates: WordPress site = yes AND local contractor = yes.
+  if (filters.qualifiedOnly) {
+    conditions.push(eq(websites.wordpressDetected, true));
+    conditions.push(inArray(websites.industry, [...CONTRACTOR_INDUSTRIES]));
   }
   if (filters.industry) {
     conditions.push(eq(websites.industry, filters.industry));
@@ -67,6 +74,12 @@ function buildWhere(filters: LeadListFilters): SQL | undefined {
         sql`${opportunityDetection.domain} is null`,
       )!,
     );
+  }
+  if (filters.missingEmail) {
+    conditions.push(isNull(websites.email));
+  }
+  if (filters.unattemptedEmail) {
+    conditions.push(isNull(websites.emailSource));
   }
   if (filters.missingBookingTool) {
     conditions.push(
@@ -117,7 +130,9 @@ export async function queryLeads(
       state: websites.state,
       phone: websites.phone,
       email: websites.email,
+      contactName: websites.contactName,
       wordpressDetected: websites.wordpressDetected,
+      contractor: sql<boolean>`(${websites.industry} = any(${CONTRACTOR_INDUSTRIES}))`,
       opportunityScore: websites.opportunityScore,
       suggestedProduct: websites.suggestedProduct,
       elementor: sql<boolean>`coalesce(${technologyDetection.elementor}, false)`,

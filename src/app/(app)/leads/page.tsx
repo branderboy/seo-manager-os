@@ -3,6 +3,8 @@ import { queryLeads } from "@/services/leads";
 import { parseFilters, parseSort } from "@/lib/filters";
 import { LeadFilters } from "@/components/LeadFilters";
 import { SaveListButton } from "@/components/SaveListButton";
+import { EnrichEmailsButton } from "@/components/EnrichEmailsButton";
+import { EnrollLeadsButton } from "@/components/EnrollLeadsButton";
 import { scoreColor } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -43,10 +45,13 @@ export default async function LeadsPage({
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
           <p className="text-sm text-slate-500">
-            {total.toLocaleString()} matching {total === 1 ? "site" : "sites"}
+            {total.toLocaleString()} {total === 1 ? "site" : "sites"}
+            {filters.qualifiedOnly ? " · WordPress + contractor only" : ""}
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <EnrichEmailsButton />
+          <EnrollLeadsButton />
           <SaveListButton />
           <a className="btn-secondary" href={`/api/export?${exportQuery}`}>
             Export CSV
@@ -61,6 +66,8 @@ export default async function LeadsPage({
           <thead className="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
             <tr>
               <th className="px-4 py-3 font-medium">Company</th>
+              <th className="px-4 py-3 font-medium">WordPress</th>
+              <th className="px-4 py-3 font-medium">Contractor</th>
               <th className="px-4 py-3 font-medium">Industry</th>
               <th className="px-4 py-3 font-medium">Location</th>
               <th className="px-4 py-3 font-medium">Stack</th>
@@ -71,7 +78,7 @@ export default async function LeadsPage({
           <tbody className="divide-y divide-slate-100">
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-12 text-center text-slate-500">
+                <td colSpan={8} className="px-4 py-12 text-center text-slate-500">
                   No leads match these filters.
                 </td>
               </tr>
@@ -86,6 +93,28 @@ export default async function LeadsPage({
                       {lead.companyName ?? lead.domain}
                     </Link>
                     <div className="text-xs text-slate-400">{lead.domain}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`badge ${
+                        lead.wordpressDetected
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-slate-100 text-slate-500"
+                      }`}
+                    >
+                      {lead.wordpressDetected ? "Yes" : "No"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`badge ${
+                        lead.contractor
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-slate-100 text-slate-500"
+                      }`}
+                    >
+                      {lead.contractor ? "Yes" : "No"}
+                    </span>
                   </td>
                   <td className="px-4 py-3 text-slate-600">
                     {lead.industry ?? <span className="text-slate-300">—</span>}
