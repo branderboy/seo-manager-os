@@ -1,4 +1,4 @@
-import { inArray } from "drizzle-orm";
+import { inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { websites, discoveryRuns } from "@/db/schema";
 import { CONTRACTOR_INDUSTRIES, isDirectoryDomain, type Industry } from "@/lib/constants";
@@ -24,6 +24,7 @@ export type DiscoverSummary = {
   scanned: number;
   wordpressSites: number;
   contractorSites: number;
+  emailsFound: number;
   results: ScanResult[];
   note?: string;
 };
@@ -108,6 +109,20 @@ export async function discoverContractors(input: DiscoverInput): Promise<Discove
   const wordpressSites = results.filter((r) => r.wordpressDetected).length;
   const contractorSites = results.filter((r) => isContractor(r.industry)).length;
 
+  // Emails are found inline by the scanner; count how many scanned domains
+  // ended up with a contact email.
+  const scannedDomains = results.filter((r) => r.ok).map((r) => r.domain);
+  let emailsFound = 0;
+  if (scannedDomains.length) {
+    const [row] = await db
+      .select({
+        count: sql<number>`count(*) filter (where ${websites.email} is not null)`,
+      })
+      .from(websites)
+      .where(inArray(websites.domain, scannedDomains));
+    emailsFound = Number(row?.count ?? 0);
+  }
+
   // 5. Log the run.
   await db.insert(discoveryRuns).values({
     provider: providerName,
@@ -128,6 +143,7 @@ export async function discoverContractors(input: DiscoverInput): Promise<Discove
     scanned: results.length,
     wordpressSites,
     contractorSites,
+    emailsFound,
     results,
   };
 

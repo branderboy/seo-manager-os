@@ -105,6 +105,9 @@ export async function scanDomain(
       email = found.email;
       contactName = found.contactName;
       emailSource = found.source;
+    } else {
+      // Attempted but nothing found — mark so bulk runs don't retry it.
+      emailSource = "hunter_none";
     }
   }
 

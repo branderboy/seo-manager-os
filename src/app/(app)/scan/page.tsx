@@ -6,9 +6,10 @@ export default function ScanPage() {
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Discover</h1>
         <p className="text-sm text-slate-500">
-          Find local contractor websites by industry + city, or paste domains
-          directly. Everything runs the WordPress → classify → score pipeline and
-          lands in your Leads table.
+          Pick trades + cities and hit <strong>Run campaign</strong> — it finds
+          contractor sites, confirms WordPress, scores the opportunity, and finds
+          emails, all in one click. Leads land in your Leads table. You never log
+          into Hunter; it&apos;s called via API behind the scenes.
         </p>
       </div>
       <DiscoverWorkspace />

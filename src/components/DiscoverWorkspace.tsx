@@ -5,7 +5,7 @@ import { DiscoverForm } from "./DiscoverForm";
 import { ScanForm } from "./ScanForm";
 
 const TABS = [
-  { key: "discover", label: "Find local contractors" },
+  { key: "discover", label: "Run campaign" },
   { key: "scan", label: "Scan domains" },
 ] as const;
 

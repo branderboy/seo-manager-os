@@ -20,6 +20,7 @@ type Summary = {
   scanned: number;
   wordpressSites: number;
   contractorSites: number;
+  emailsFound: number;
   results: ScanResult[];
   note?: string;
 };
@@ -137,11 +138,12 @@ export function DiscoverForm() {
 
         <div className="flex items-center gap-3">
           <button className="btn-primary" onClick={run} disabled={loading}>
-            {loading ? "Discovering…" : "Find local contractors"}
+            {loading ? "Running…" : "Run campaign"}
           </button>
           <p className="text-xs text-slate-400">
-            Searches for contractor sites, drops directories, then scans each for
-            WordPress + opportunity.
+            One click: finds contractor sites → confirms WordPress → scores
+            opportunity → finds emails. Everything runs here; Hunter is called
+            via API — nothing to do in Hunter.
           </p>
         </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
@@ -155,12 +157,12 @@ export function DiscoverForm() {
             </div>
           )}
           <div className="grid grid-cols-3 gap-2 md:grid-cols-6">
-            <Stat label="Queries" value={summary.queriesRun} />
             <Stat label="Candidates" value={summary.candidatesFound} />
-            <Stat label="New" value={summary.newSites} />
             <Stat label="Scanned" value={summary.scanned} />
             <Stat label="WordPress" value={summary.wordpressSites} />
             <Stat label="Contractors" value={summary.contractorSites} />
+            <Stat label="Emails" value={summary.emailsFound} />
+            <Stat label="New" value={summary.newSites} />
           </div>
 
           {summary.results.length > 0 && (

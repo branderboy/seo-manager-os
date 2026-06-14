@@ -54,10 +54,36 @@ export async function enrichEmails(
     pageSize: limit,
     sort: "score",
   });
-  const queue = rows.map((r) => r.domain);
+  const { attempted, found } = await enrichDomains(
+    rows.map((r) => r.domain),
+    concurrency,
+  );
 
+  return {
+    enabled: true,
+    targeted: total,
+    attempted,
+    found,
+    // Every attempted domain is now excluded from future runs (found => has
+    // email, miss => email_source set), so remaining shrinks each batch.
+    remaining: Math.max(0, total - attempted),
+  };
+}
+
+/**
+ * Run Hunter Domain Search across an explicit list of domains (no-op for any
+ * that already have an email or were already attempted). Writes results back.
+ * Shared by bulk enrichment and one-click campaigns.
+ */
+export async function enrichDomains(
+  domains: string[],
+  concurrency = 5,
+): Promise<{ attempted: number; found: number }> {
   let attempted = 0;
   let found = 0;
+  if (!domains.length || !isEmailFinderEnabled()) return { attempted, found };
+
+  const queue = [...domains];
 
   async function worker() {
     while (queue.length > 0) {
@@ -87,16 +113,8 @@ export async function enrichEmails(
   }
 
   await Promise.all(
-    Array.from({ length: Math.min(concurrency, rows.length || 1) }, worker),
+    Array.from({ length: Math.min(concurrency, domains.length) }, worker),
   );
 
-  return {
-    enabled: true,
-    targeted: total,
-    attempted,
-    found,
-    // Every attempted domain is now excluded from future runs (found => has
-    // email, miss => email_source set), so remaining shrinks each batch.
-    remaining: Math.max(0, total - attempted),
-  };
+  return { attempted, found };
 }
