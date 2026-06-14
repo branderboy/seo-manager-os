@@ -23,6 +23,7 @@ export async function GET(req: Request) {
     sub_industry: r.subIndustry ?? "",
     location: r.location ?? "",
     phone: r.phone ?? "",
+    contact_name: r.contactName ?? "",
     email: r.email ?? "",
     opportunity_score: r.opportunityScore,
     suggested_product: r.suggestedProduct ?? "",

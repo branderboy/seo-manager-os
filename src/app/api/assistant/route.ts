@@ -50,6 +50,7 @@ export async function POST(req: Request) {
     subIndustry: lead.website.subIndustry,
     location: lead.website.location,
     suggestedProduct: lead.website.suggestedProduct,
+    contactName: lead.website.contactName,
     missingFeatures: lead.missingFeatures,
   });
 

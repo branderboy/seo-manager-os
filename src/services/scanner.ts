@@ -12,6 +12,7 @@ import { detectTechnologies } from "./technology-detection";
 import { scoreOpportunity } from "./opportunity";
 import { classifyBusiness } from "./classification";
 import { suggestProduct } from "./suggested-product";
+import { findEmailForDomain, isEmailFinderEnabled } from "./email-finder";
 
 export type ScanResult = {
   domain: string;
@@ -94,6 +95,19 @@ export async function scanDomain(
   const companyName =
     snapshot.title?.split(/[|\-–—]/)[0]?.trim() || domain;
 
+  // Email enrichment: only hit Hunter when the homepage didn't expose an email.
+  let email = snapshot.email;
+  let contactName: string | null = null;
+  let emailSource: string | null = email ? "homepage" : null;
+  if (!email && isEmailFinderEnabled()) {
+    const found = await findEmailForDomain(domain);
+    if (found) {
+      email = found.email;
+      contactName = found.contactName;
+      emailSource = found.source;
+    }
+  }
+
   // 6. Persist — websites
   await db
     .insert(websites)
@@ -106,7 +120,9 @@ export async function scanDomain(
       city: snapshot.city,
       state: snapshot.state,
       phone: snapshot.phone,
-      email: snapshot.email,
+      email,
+      contactName,
+      emailSource,
       wordpressDetected: wp.detected,
       industry: classification.industry || null,
       subIndustry: classification.subIndustry || null,

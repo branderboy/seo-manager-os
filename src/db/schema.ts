@@ -27,6 +27,8 @@ export const websites = pgTable(
     state: text("state"),
     phone: text("phone"),
     email: text("email"),
+    contactName: text("contact_name"),
+    emailSource: text("email_source"),
     wordpressDetected: boolean("wordpress_detected").default(false).notNull(),
     industry: text("industry"),
     subIndustry: text("sub_industry"),

@@ -19,6 +19,7 @@ export type LeadRow = {
   state: string | null;
   phone: string | null;
   email: string | null;
+  contactName: string | null;
   wordpressDetected: boolean;
   contractor: boolean;
   opportunityScore: number;
@@ -123,6 +124,7 @@ export async function queryLeads(
       state: websites.state,
       phone: websites.phone,
       email: websites.email,
+      contactName: websites.contactName,
       wordpressDetected: websites.wordpressDetected,
       contractor: sql<boolean>`(${websites.industry} = any(${CONTRACTOR_INDUSTRIES}))`,
       opportunityScore: websites.opportunityScore,

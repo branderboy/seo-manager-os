@@ -86,6 +86,7 @@ export default async function LeadDetailPage({
               <Field label="Industry" value={website.industry} />
               <Field label="Sub-Industry" value={website.subIndustry} />
               <Field label="Location" value={website.location} />
+              <Field label="Contact" value={website.contactName} />
               <Field label="Phone" value={website.phone} />
               <Field
                 label="Email"

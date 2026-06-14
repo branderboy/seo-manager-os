@@ -10,7 +10,13 @@ export type SalesAssets = {
 
 type LeadContext = Pick<
   Website,
-  "domain" | "companyName" | "industry" | "subIndustry" | "location" | "suggestedProduct"
+  | "domain"
+  | "companyName"
+  | "industry"
+  | "subIndustry"
+  | "location"
+  | "suggestedProduct"
+  | "contactName"
 > & { missingFeatures: string[] };
 
 const SYSTEM_PROMPT = `You are an elite B2B sales copywriter for an agency that sells WordPress
@@ -29,6 +35,7 @@ Return ONLY valid JSON with these keys:
 function buildPrompt(lead: LeadContext): string {
   return `Prospect:
 - Company: ${lead.companyName ?? lead.domain}
+- Contact: ${lead.contactName ?? "Unknown"}
 - Website: ${lead.domain}
 - Industry: ${lead.industry ?? "Unknown"}${lead.subIndustry ? ` (${lead.subIndustry})` : ""}
 - Location: ${lead.location ?? "Unknown"}
@@ -40,10 +47,12 @@ Write the outreach assets.`;
 
 function templateFallback(lead: LeadContext): SalesAssets {
   const name = lead.companyName ?? lead.domain;
+  const firstName = lead.contactName?.split(" ")[0];
+  const greeting = firstName ? `Hi ${firstName}` : "Hi there";
   const product = lead.suggestedProduct ?? "a quick win";
   const gap = lead.missingFeatures[0] ?? "a missing conversion tool";
   return {
-    coldEmail: `Subject: Quick idea for ${name}\n\nHi there — I was looking at ${lead.domain} and noticed you're missing ${gap.toLowerCase()}. For ${lead.industry ?? "businesses like yours"}, that's usually the difference between a visitor and a booked job. We add ${product} to WordPress sites without rebuilding anything. Worth a 10-minute look? I can send a short audit video.`,
+    coldEmail: `Subject: Quick idea for ${name}\n\n${greeting} — I was looking at ${lead.domain} and noticed you're missing ${gap.toLowerCase()}. For ${lead.industry ?? "businesses like yours"}, that's usually the difference between a visitor and a booked job. We add ${product} to WordPress sites without rebuilding anything. Worth a 10-minute look? I can send a short audit video.`,
     sms: `Hi, this is from WP Prospector. Noticed ${lead.domain} is missing ${gap.toLowerCase()} — we can add it fast. Want a quick audit video?`,
     callScript: `Opener: "Hi, I run growth audits for ${lead.industry ?? "local"} WordPress sites and ${name} came up."\n\nDiscovery:\n1. How are most leads reaching you today?\n2. What happens after someone lands on your site?\n\nValue: "Sites like yours convert 20-40% more when they add ${product.toLowerCase()}."\n\nAsk: "Can I send you a 3-minute audit video this week?"`,
     loomOutline: `- Intro: who I am, why ${name} caught my eye\n- Show homepage and the missing ${gap.toLowerCase()}\n- Compare to a competitor doing it well\n- Quantify the lost leads\n- Demo ${product}\n- Easy install, no rebuild\n- CTA: reply to book 15 min`,

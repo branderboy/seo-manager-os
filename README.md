@@ -24,6 +24,14 @@ then (`src/services/discovery/`):
 No search key? Set `DISCOVERY_PROVIDER="mock"` — the funnel still runs and you
 can paste domains under **Scan domains**.
 
+## Email enrichment (Hunter.io)
+
+Set `HUNTER_API_KEY` and scans will auto-find a contact email (and name) for any
+site that doesn't expose one on its homepage, via Hunter Domain Search
+(`email-finder.ts`). Hunter is only called when the homepage has no email, to
+conserve credits. The contact name flows into the AI outreach for
+personalization, and `contact_name` + `email` ship in the CSV export.
+
 ## Pipeline
 
 Each domain runs through six steps (`src/services/scanner.ts`):
