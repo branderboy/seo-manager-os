@@ -6,6 +6,7 @@ import { normalizeDomain } from "@/lib/utils";
 import { scanDomains, type ScanResult } from "../scanner";
 import { getSearchProvider } from "./provider";
 import { buildQueries } from "./query-builder";
+import { hunterDiscover, isHunterDiscoverEnabled } from "./hunter-discover";
 
 export type DiscoverInput = {
   industries: string[];
@@ -39,26 +40,47 @@ const isContractor = (industry: string | null) =>
  *   5. Log the run and return funnel counts
  */
 export async function discoverContractors(input: DiscoverInput): Promise<DiscoverSummary> {
-  const provider = getSearchProvider();
   const limit = Math.min(Math.max(input.limit ?? 25, 1), 50);
   const perQuery = Math.min(Math.max(input.perQuery ?? 10, 1), 20);
 
-  const queries = buildQueries(input.industries, input.locations);
+  // Source candidate domains from either Hunter Discover or a web-search
+  // provider, depending on DISCOVERY_PROVIDER.
+  const useHunter =
+    (process.env.DISCOVERY_PROVIDER || "").toLowerCase() === "hunter" &&
+    isHunterDiscoverEnabled();
 
-  // 2-3. Search + filter + dedupe.
+  let providerName: string;
+  let queriesRun: number;
   const candidates = new Set<string>();
-  for (const q of queries) {
-    if (candidates.size >= limit * 2) break;
-    try {
-      const domains = await provider.search(q, perQuery);
-      for (const raw of domains) {
-        const domain = normalizeDomain(raw);
-        if (!domain || !domain.includes(".")) continue;
-        if (isDirectoryDomain(domain)) continue;
-        candidates.add(domain);
+
+  if (useHunter) {
+    providerName = "hunter-discover";
+    queriesRun = 1;
+    const domains = await hunterDiscover(input.locations, limit * 2);
+    for (const raw of domains) {
+      const domain = normalizeDomain(raw);
+      if (!domain || !domain.includes(".")) continue;
+      if (isDirectoryDomain(domain)) continue;
+      candidates.add(domain);
+    }
+  } else {
+    const provider = getSearchProvider();
+    providerName = provider.name;
+    const queries = buildQueries(input.industries, input.locations);
+    queriesRun = queries.length;
+    for (const q of queries) {
+      if (candidates.size >= limit * 2) break;
+      try {
+        const domains = await provider.search(q, perQuery);
+        for (const raw of domains) {
+          const domain = normalizeDomain(raw);
+          if (!domain || !domain.includes(".")) continue;
+          if (isDirectoryDomain(domain)) continue;
+          candidates.add(domain);
+        }
+      } catch (err) {
+        console.error(`[discover] query failed: "${q}"`, err);
       }
-    } catch (err) {
-      console.error(`[discover] query failed: "${q}"`, err);
     }
   }
 
@@ -88,10 +110,10 @@ export async function discoverContractors(input: DiscoverInput): Promise<Discove
 
   // 5. Log the run.
   await db.insert(discoveryRuns).values({
-    provider: provider.name,
+    provider: providerName,
     industries: input.industries,
     locations: input.locations,
-    queriesRun: queries.length,
+    queriesRun,
     candidatesFound: candidateList.length,
     newSites,
     wordpressSites,
@@ -99,8 +121,8 @@ export async function discoverContractors(input: DiscoverInput): Promise<Discove
   });
 
   const summary: DiscoverSummary = {
-    provider: provider.name,
-    queriesRun: queries.length,
+    provider: providerName,
+    queriesRun,
     candidatesFound: candidateList.length,
     newSites,
     scanned: results.length,
@@ -109,10 +131,15 @@ export async function discoverContractors(input: DiscoverInput): Promise<Discove
     results,
   };
 
-  if (provider.name === "mock") {
+  if (providerName === "mock") {
     summary.note =
-      "No search provider configured (DISCOVERY_PROVIDER / SERPER_API_KEY). " +
-      "Set one to pull live candidates, or paste domains under “Scan domains”.";
+      "No discovery source configured. Set DISCOVERY_PROVIDER to \"serper\" " +
+      "(+ SERPER_API_KEY) or \"hunter\" (+ HUNTER_API_KEY), or paste domains " +
+      "under “Scan domains”.";
+  } else if (useHunter && candidateList.length === 0) {
+    summary.note =
+      "Hunter Discover returned no candidates. The technology filter needs a " +
+      "paid Hunter plan with advanced Discover filters; check your plan/locations.";
   }
 
   return summary;

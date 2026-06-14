@@ -14,8 +14,15 @@ Plumbing, … preselected) and paste target `City, ST` locations. WP Prospector
 then (`src/services/discovery/`):
 
 1. Builds local-intent search queries (`query-builder.ts`).
-2. Searches via a pluggable provider — Serper.dev or Google Programmable Search
-   (`provider.ts`), set with `DISCOVERY_PROVIDER` + an API key.
+2. Sources candidates via a pluggable provider, set with `DISCOVERY_PROVIDER`:
+   - `serper` / `google` — web search for "trade + City, ST" (`provider.ts`).
+   - `hunter` — **Hunter Discover** (`hunter-discover.ts`): queries the B2B
+     database for `technology=wordpress` in the target locations and returns
+     company domains. Needs a paid Hunter plan with advanced Discover filters.
+     Because Hunter's industry taxonomy has no trade-level granularity
+     (Roofing/HVAC/…), we filter by WordPress + location and let our own
+     classifier pin the trade; narrow server-side with
+     `HUNTER_DISCOVER_INDUSTRIES` if you want.
 3. Drops directories/aggregators (Yelp, Angi, HomeAdvisor, social, …) and
    de-dupes against sites you already have (`DIRECTORY_DENYLIST`).
 4. Runs every surviving candidate through the scan pipeline below, tags it
