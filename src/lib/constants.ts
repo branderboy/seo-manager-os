@@ -56,3 +56,51 @@ export const US_STATES = [
 ] as const;
 
 export const PAGE_SIZE = 25;
+
+/**
+ * Domains that show up in contractor searches but are never the prospect
+ * themselves — directories, aggregators, social, marketplaces, big platforms.
+ * Discovery drops any candidate whose domain matches one of these.
+ */
+export const DIRECTORY_DENYLIST = [
+  "yelp.com",
+  "angi.com",
+  "angieslist.com",
+  "homeadvisor.com",
+  "thumbtack.com",
+  "bbb.org",
+  "yellowpages.com",
+  "houzz.com",
+  "porch.com",
+  "buildzoom.com",
+  "networx.com",
+  "expertise.com",
+  "nextdoor.com",
+  "facebook.com",
+  "instagram.com",
+  "linkedin.com",
+  "twitter.com",
+  "x.com",
+  "youtube.com",
+  "pinterest.com",
+  "tiktok.com",
+  "google.com",
+  "bing.com",
+  "mapquest.com",
+  "indeed.com",
+  "glassdoor.com",
+  "ziprecruiter.com",
+  "wikipedia.org",
+  "amazon.com",
+  "manta.com",
+  "chamberofcommerce.com",
+  "cylex.us.com",
+  "superpages.com",
+  "local.com",
+  "merchantcircle.com",
+] as const;
+
+export function isDirectoryDomain(domain: string): boolean {
+  const d = domain.toLowerCase();
+  return DIRECTORY_DENYLIST.some((bad) => d === bad || d.endsWith(`.${bad}`));
+}

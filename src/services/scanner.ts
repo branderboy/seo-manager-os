@@ -32,7 +32,10 @@ export type ScanResult = {
  *   5. Score     -> opportunity gap analysis
  *   6. Persist   -> websites + technology_detection + opportunity_detection
  */
-export async function scanDomain(rawDomain: string): Promise<ScanResult> {
+export async function scanDomain(
+  rawDomain: string,
+  source: string = "manual",
+): Promise<ScanResult> {
   const domain = normalizeDomain(rawDomain);
   if (!domain || !domain.includes(".")) {
     return {
@@ -52,7 +55,7 @@ export async function scanDomain(rawDomain: string): Promise<ScanResult> {
     // Still record the attempt so we don't re-scan dead domains constantly.
     await db
       .insert(websites)
-      .values({ domain, lastScannedAt: new Date(), wordpressDetected: false })
+      .values({ domain, source, lastScannedAt: new Date(), wordpressDetected: false })
       .onConflictDoUpdate({
         target: websites.domain,
         set: { lastScannedAt: new Date(), updatedAt: new Date() },
@@ -110,6 +113,7 @@ export async function scanDomain(rawDomain: string): Promise<ScanResult> {
       classificationConfidence: classification.confidence,
       opportunityScore: opportunity.score,
       suggestedProduct,
+      source,
       lastScannedAt: new Date(),
     })
     .onConflictDoUpdate({
@@ -182,6 +186,7 @@ export async function scanDomain(rawDomain: string): Promise<ScanResult> {
 export async function scanDomains(
   domains: string[],
   concurrency = 4,
+  source: string = "manual",
 ): Promise<ScanResult[]> {
   const results: ScanResult[] = [];
   const queue = [...domains];
@@ -191,7 +196,7 @@ export async function scanDomains(
       const next = queue.shift();
       if (!next) break;
       try {
-        results.push(await scanDomain(next));
+        results.push(await scanDomain(next, source));
       } catch (err) {
         results.push({
           domain: next,

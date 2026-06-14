@@ -33,6 +33,7 @@ export const websites = pgTable(
     classificationConfidence: real("classification_confidence"),
     opportunityScore: integer("opportunity_score").default(0).notNull(),
     suggestedProduct: text("suggested_product"),
+    source: text("source").default("manual").notNull(),
     lastScannedAt: timestamp("last_scanned_at"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -110,6 +111,25 @@ export const salesAssets = pgTable(
   }),
 );
 
+/**
+ * Discovery Runs — one row per "find local contractors" batch. Logs the
+ * targeting (industries + locations), which search provider ran, and the
+ * outcome counts so the funnel is auditable.
+ */
+export const discoveryRuns = pgTable("discovery_runs", {
+  id: serial("id").primaryKey(),
+  provider: text("provider").notNull(),
+  industries: jsonb("industries").$type<string[]>().notNull(),
+  locations: jsonb("locations").$type<string[]>().notNull(),
+  queriesRun: integer("queries_run").default(0).notNull(),
+  candidatesFound: integer("candidates_found").default(0).notNull(),
+  newSites: integer("new_sites").default(0).notNull(),
+  wordpressSites: integer("wordpress_sites").default(0).notNull(),
+  contractorSites: integer("contractor_sites").default(0).notNull(),
+  status: text("status").default("completed").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export type LeadListFilters = {
   industry?: string;
   city?: string;
@@ -133,3 +153,4 @@ export type TechnologyDetection = typeof technologyDetection.$inferSelect;
 export type OpportunityDetection = typeof opportunityDetection.$inferSelect;
 export type LeadList = typeof leadLists.$inferSelect;
 export type SalesAsset = typeof salesAssets.$inferSelect;
+export type DiscoveryRun = typeof discoveryRuns.$inferSelect;

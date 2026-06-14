@@ -7,6 +7,23 @@ sales opportunity, and generates ready-to-send outreach for every lead.
 Instead of finding contractors first and checking whether they use WordPress,
 WP Prospector starts from WordPress sites and classifies them into industries.
 
+## Discovery (find WordPress contractor sites)
+
+The **Discover** page targets **local contractors**: pick trades (Roofing, HVAC,
+Plumbing, … preselected) and paste target `City, ST` locations. WP Prospector
+then (`src/services/discovery/`):
+
+1. Builds local-intent search queries (`query-builder.ts`).
+2. Searches via a pluggable provider — Serper.dev or Google Programmable Search
+   (`provider.ts`), set with `DISCOVERY_PROVIDER` + an API key.
+3. Drops directories/aggregators (Yelp, Angi, HomeAdvisor, social, …) and
+   de-dupes against sites you already have (`DIRECTORY_DENYLIST`).
+4. Runs every surviving candidate through the scan pipeline below, tags it
+   `source = "discovery"`, and logs the run to `discovery_runs`.
+
+No search key? Set `DISCOVERY_PROVIDER="mock"` — the funnel still runs and you
+can paste domains under **Scan domains**.
+
 ## Pipeline
 
 Each domain runs through six steps (`src/services/scanner.ts`):
@@ -66,6 +83,7 @@ middleware.ts         route protection (JWT session cookie)
 
 | Method | Route                  | Purpose                                  |
 | ------ | ---------------------- | ---------------------------------------- |
+| POST   | `/api/discover`        | Find local contractor sites + scan them  |
 | POST   | `/api/scan`            | Run the pipeline for up to 50 domains    |
 | GET    | `/api/websites`        | Filtered + paginated leads               |
 | GET    | `/api/export`          | CSV export of the current filter set     |
