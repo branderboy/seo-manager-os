@@ -32,6 +32,14 @@ site that doesn't expose one on its homepage, via Hunter Domain Search
 conserve credits. The contact name flows into the AI outreach for
 personalization, and `contact_name` + `email` ship in the CSV export.
 
+**Bulk enrichment (at scale).** On the Leads page, **Find emails** runs Hunter
+across the *entire current filter set* that's missing an email — not one lead at
+a time. It works in batches of 100 with concurrency and keeps going until the
+set is exhausted (`email-enrichment.ts`, `POST /api/enrich-emails`). Domains
+Hunter can't resolve are marked so repeat runs never waste credits retrying
+them. Filter to **Qualified only** + **No Email**, click **Find emails**, then
+**Export CSV**.
+
 ## Pipeline
 
 Each domain runs through six steps (`src/services/scanner.ts`):

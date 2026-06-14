@@ -28,6 +28,7 @@ export function parseFilters(params: URLSearchParams): LeadListFilters {
     missingBookingTool: bool("missingBookingTool") || undefined,
     // Both gates on by default; opt out with ?qualifiedOnly=false.
     qualifiedOnly: params.get("qualifiedOnly") !== "false",
+    missingEmail: bool("missingEmail") || undefined,
     search: str("search"),
   };
 }

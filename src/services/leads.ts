@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, ilike, inArray, lte, or, sql, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, isNull, lte, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import {
   websites,
@@ -74,6 +74,12 @@ function buildWhere(filters: LeadListFilters): SQL | undefined {
         sql`${opportunityDetection.domain} is null`,
       )!,
     );
+  }
+  if (filters.missingEmail) {
+    conditions.push(isNull(websites.email));
+  }
+  if (filters.unattemptedEmail) {
+    conditions.push(isNull(websites.emailSource));
   }
   if (filters.missingBookingTool) {
     conditions.push(

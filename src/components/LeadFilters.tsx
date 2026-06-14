@@ -12,6 +12,7 @@ const PLUGIN_TOGGLES: { key: string; label: string }[] = [
   { key: "woocommerce", label: "WooCommerce" },
   { key: "missingQuoteTool", label: "No Quote Tool" },
   { key: "missingBookingTool", label: "No Booking" },
+  { key: "missingEmail", label: "No Email" },
   { key: "wordpressOnly", label: "WordPress Only" },
 ];
 

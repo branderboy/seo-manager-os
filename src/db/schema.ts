@@ -148,6 +148,10 @@ export type LeadListFilters = {
   missingBookingTool?: boolean;
   /** Only sites that pass both gates: WordPress = yes AND a contractor trade. */
   qualifiedOnly?: boolean;
+  /** Only sites that don't yet have an email (targets for enrichment). */
+  missingEmail?: boolean;
+  /** Only sites we haven't yet run through the email finder. */
+  unattemptedEmail?: boolean;
   search?: string;
 };
 
