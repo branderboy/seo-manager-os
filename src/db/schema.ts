@@ -132,6 +132,24 @@ export const discoveryRuns = pgTable("discovery_runs", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+/**
+ * Campaigns — saved trade+location targets that run automatically on a
+ * schedule (via Vercel Cron) so new leads keep flowing in without clicks.
+ */
+export const campaigns = pgTable("campaigns", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  industries: jsonb("industries").$type<string[]>().notNull(),
+  locations: jsonb("locations").$type<string[]>().notNull(),
+  perRunLimit: integer("per_run_limit").default(25).notNull(),
+  frequency: text("frequency").default("daily").notNull(), // daily | weekly | manual
+  enabled: boolean("enabled").default(true).notNull(),
+  lastRunAt: timestamp("last_run_at"),
+  lastRunSummary: jsonb("last_run_summary").$type<Record<string, number>>(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export type LeadListFilters = {
   industry?: string;
   city?: string;
@@ -162,3 +180,5 @@ export type OpportunityDetection = typeof opportunityDetection.$inferSelect;
 export type LeadList = typeof leadLists.$inferSelect;
 export type SalesAsset = typeof salesAssets.$inferSelect;
 export type DiscoveryRun = typeof discoveryRuns.$inferSelect;
+export type Campaign = typeof campaigns.$inferSelect;
+export type NewCampaign = typeof campaigns.$inferInsert;

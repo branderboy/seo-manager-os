@@ -47,6 +47,20 @@ Hunter can't resolve are marked so repeat runs never waste credits retrying
 them. Filter to **Qualified only** + **No Email**, click **Find emails**, then
 **Export CSV**.
 
+## Campaigns (autopilot)
+
+Save trades + cities once as a **campaign** (`/campaigns`). Active campaigns run
+the full funnel automatically on a schedule via **Vercel Cron**:
+
+- `vercel.json` hits `GET /api/cron/run-campaigns` daily (08:00 UTC).
+- The route (secured by `CRON_SECRET`) runs every campaign that's **due**
+  (`daily`/`weekly`) and records a per-run summary (`campaigns.ts`).
+- Each run discovers → confirms WordPress → keeps contractors → scores → finds
+  emails, bounded by the campaign's `perRunLimit` and `maxPerTick`.
+
+You can also hit **Run now** on any campaign at any time. No clicks needed for
+the scheduled flow once `CRON_SECRET` and a discovery/Hunter key are set.
+
 ## Pipeline
 
 Each domain runs through six steps (`src/services/scanner.ts`):
