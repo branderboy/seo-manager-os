@@ -144,6 +144,8 @@ export type LeadListFilters = {
   woocommerce?: boolean;
   missingQuoteTool?: boolean;
   missingBookingTool?: boolean;
+  /** Only sites that pass both gates: WordPress = yes AND a contractor trade. */
+  qualifiedOnly?: boolean;
   search?: string;
 };
 

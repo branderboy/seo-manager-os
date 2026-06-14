@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, ilike, lte, or, sql, type SQL } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, lte, or, sql, type SQL } from "drizzle-orm";
 import { db } from "@/db";
 import {
   websites,
@@ -6,7 +6,7 @@ import {
   opportunityDetection,
   type LeadListFilters,
 } from "@/db/schema";
-import { PAGE_SIZE } from "@/lib/constants";
+import { CONTRACTOR_INDUSTRIES, PAGE_SIZE } from "@/lib/constants";
 
 export type LeadRow = {
   id: number;
@@ -20,6 +20,7 @@ export type LeadRow = {
   phone: string | null;
   email: string | null;
   wordpressDetected: boolean;
+  contractor: boolean;
   opportunityScore: number;
   suggestedProduct: string | null;
   elementor: boolean;
@@ -39,6 +40,11 @@ function buildWhere(filters: LeadListFilters): SQL | undefined {
 
   if (filters.wordpressOnly) {
     conditions.push(eq(websites.wordpressDetected, true));
+  }
+  // The two simple gates: WordPress site = yes AND local contractor = yes.
+  if (filters.qualifiedOnly) {
+    conditions.push(eq(websites.wordpressDetected, true));
+    conditions.push(inArray(websites.industry, [...CONTRACTOR_INDUSTRIES]));
   }
   if (filters.industry) {
     conditions.push(eq(websites.industry, filters.industry));
@@ -118,6 +124,7 @@ export async function queryLeads(
       phone: websites.phone,
       email: websites.email,
       wordpressDetected: websites.wordpressDetected,
+      contractor: sql<boolean>`(${websites.industry} = any(${CONTRACTOR_INDUSTRIES}))`,
       opportunityScore: websites.opportunityScore,
       suggestedProduct: websites.suggestedProduct,
       elementor: sql<boolean>`coalesce(${technologyDetection.elementor}, false)`,

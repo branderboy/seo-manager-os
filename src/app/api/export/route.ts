@@ -15,7 +15,10 @@ export async function GET(req: Request) {
 
   const csvRows = rows.map((r) => ({
     domain: r.domain,
+    website_url: `https://${r.domain}`,
     company: r.companyName ?? "",
+    wordpress: r.wordpressDetected ? "yes" : "no",
+    contractor: r.contractor ? "yes" : "no",
     industry: r.industry ?? "",
     sub_industry: r.subIndustry ?? "",
     location: r.location ?? "",
@@ -23,7 +26,6 @@ export async function GET(req: Request) {
     email: r.email ?? "",
     opportunity_score: r.opportunityScore,
     suggested_product: r.suggestedProduct ?? "",
-    wordpress: r.wordpressDetected ? "yes" : "no",
     elementor: r.elementor ? "yes" : "no",
     wpforms: r.wpforms ? "yes" : "no",
     contact_form_7: r.contactForm7 ? "yes" : "no",

@@ -26,6 +26,8 @@ export function parseFilters(params: URLSearchParams): LeadListFilters {
     woocommerce: bool("woocommerce") || undefined,
     missingQuoteTool: bool("missingQuoteTool") || undefined,
     missingBookingTool: bool("missingBookingTool") || undefined,
+    // Both gates on by default; opt out with ?qualifiedOnly=false.
+    qualifiedOnly: params.get("qualifiedOnly") !== "false",
     search: str("search"),
   };
 }

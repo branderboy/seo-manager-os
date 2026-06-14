@@ -96,7 +96,23 @@ export function LeadFilters() {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          onClick={() =>
+            update({
+              qualifiedOnly: params.get("qualifiedOnly") === "false" ? null : "false",
+            })
+          }
+          className={`badge border ${
+            params.get("qualifiedOnly") !== "false"
+              ? "border-emerald-600 bg-emerald-50 text-emerald-700"
+              : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
+          }`}
+          title="WordPress = Yes AND Local contractor = Yes"
+        >
+          {params.get("qualifiedOnly") !== "false" ? "✓ " : ""}Qualified only (WordPress + Contractor)
+        </button>
+        <span className="mx-1 h-4 w-px bg-slate-200" />
         {PLUGIN_TOGGLES.map((t) => {
           const active = params.get(t.key) === "true";
           return (
