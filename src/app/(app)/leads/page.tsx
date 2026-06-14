@@ -4,6 +4,7 @@ import { parseFilters, parseSort } from "@/lib/filters";
 import { LeadFilters } from "@/components/LeadFilters";
 import { SaveListButton } from "@/components/SaveListButton";
 import { EnrichEmailsButton } from "@/components/EnrichEmailsButton";
+import { EnrollLeadsButton } from "@/components/EnrollLeadsButton";
 import { scoreColor } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -50,6 +51,7 @@ export default async function LeadsPage({
         </div>
         <div className="flex items-center gap-2">
           <EnrichEmailsButton />
+          <EnrollLeadsButton />
           <SaveListButton />
           <a className="btn-secondary" href={`/api/export?${exportQuery}`}>
             Export CSV

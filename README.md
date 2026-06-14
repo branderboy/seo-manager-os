@@ -61,6 +61,23 @@ the full funnel automatically on a schedule via **Vercel Cron**:
 You can also hit **Run now** on any campaign at any time. No clicks needed for
 the scheduled flow once `CRON_SECRET` and a discovery/Hunter key are set.
 
+## Outreach (single emails + sequences)
+
+Email the contractors you find, via **Resend** (`resend.ts`, mock without a key):
+
+- **Single send** — from a lead, `POST /api/outreach/send` ships the AI cold
+  email (subject parsed from the copy).
+- **Sequences** — define multi-step drips (subject/body + delay days, with
+  `{{firstName}}`/`{{company}}`/`{{domain}}` placeholders) on `/outreach`.
+  Enroll one lead or **bulk-enroll a filtered set** from the Leads page.
+- **Auto-drip** — a second Vercel Cron hits `/api/cron/process-sequences`; due
+  steps send and each enrollment advances or completes (`outreach.ts`).
+- **Compliance** — every email carries an unsubscribe link; `/api/unsubscribe`
+  opts the lead out (`email_opt_out`) and stops active enrollments, which all
+  sends respect. Every attempt is logged in `email_messages`.
+
+Set `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, and `APP_URL` (for unsubscribe links).
+
 ## Pipeline
 
 Each domain runs through six steps (`src/services/scanner.ts`):

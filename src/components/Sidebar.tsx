@@ -10,6 +10,7 @@ const NAV = [
   { href: "/lists", label: "Saved Lists", icon: "☰" },
   { href: "/scan", label: "Discover", icon: "✦" },
   { href: "/campaigns", label: "Campaigns", icon: "⟳" },
+  { href: "/outreach", label: "Outreach", icon: "✉" },
 ];
 
 export function Sidebar({ email }: { email: string }) {

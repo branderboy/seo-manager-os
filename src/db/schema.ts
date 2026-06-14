@@ -35,6 +35,7 @@ export const websites = pgTable(
     classificationConfidence: real("classification_confidence"),
     opportunityScore: integer("opportunity_score").default(0).notNull(),
     suggestedProduct: text("suggested_product"),
+    emailOptOut: boolean("email_opt_out").default(false).notNull(),
     source: text("source").default("manual").notNull(),
     lastScannedAt: timestamp("last_scanned_at"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -150,6 +151,66 @@ export const campaigns = pgTable("campaigns", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+/**
+ * Sequences — a reusable multi-step email drip (step 0 sends first, each later
+ * step waits `delayDays` after the previous send).
+ */
+export const sequences = pgTable("sequences", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  steps: jsonb("steps").$type<SequenceStep[]>().notNull(),
+  enabled: boolean("enabled").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+/** Enrollment of one lead into one sequence, tracking drip progress. */
+export const sequenceEnrollments = pgTable(
+  "sequence_enrollments",
+  {
+    id: serial("id").primaryKey(),
+    sequenceId: integer("sequence_id").notNull(),
+    domain: text("domain").notNull(),
+    status: text("status").default("active").notNull(), // active | completed | stopped | unsubscribed
+    currentStep: integer("current_step").default(0).notNull(),
+    nextSendAt: timestamp("next_send_at"),
+    lastSentAt: timestamp("last_sent_at"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => ({
+    domainIdx: index("enrollments_domain_idx").on(t.domain),
+    dueIdx: index("enrollments_due_idx").on(t.status, t.nextSendAt),
+  }),
+);
+
+/** Log of every email we attempted to send (single or sequence step). */
+export const emailMessages = pgTable(
+  "email_messages",
+  {
+    id: serial("id").primaryKey(),
+    domain: text("domain").notNull(),
+    toEmail: text("to_email").notNull(),
+    subject: text("subject").notNull(),
+    body: text("body").notNull(),
+    sequenceId: integer("sequence_id"),
+    stepIndex: integer("step_index"),
+    status: text("status").notNull(), // sent | failed | skipped
+    providerId: text("provider_id"),
+    error: text("error"),
+    sentAt: timestamp("sent_at").defaultNow().notNull(),
+  },
+  (t) => ({
+    domainIdx: index("email_messages_domain_idx").on(t.domain),
+  }),
+);
+
+export type SequenceStep = {
+  subject: string;
+  body: string;
+  /** Days to wait before sending this step (relative to the previous send). */
+  delayDays: number;
+};
+
 export type LeadListFilters = {
   industry?: string;
   city?: string;
@@ -182,3 +243,6 @@ export type SalesAsset = typeof salesAssets.$inferSelect;
 export type DiscoveryRun = typeof discoveryRuns.$inferSelect;
 export type Campaign = typeof campaigns.$inferSelect;
 export type NewCampaign = typeof campaigns.$inferInsert;
+export type Sequence = typeof sequences.$inferSelect;
+export type SequenceEnrollment = typeof sequenceEnrollments.$inferSelect;
+export type EmailMessage = typeof emailMessages.$inferSelect;
