@@ -114,11 +114,11 @@ export default function LocalDashboard() {
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <div className="mb-1 flex justify-between text-xs text-slate-500"><span>You</span><span>{d.reviews.velocity}/mo</span></div>
+                    <div className="mb-1 flex justify-between text-xs text-slate-600"><span>You</span><span>{d.reviews.velocity}/mo</span></div>
                     <Progress value={(d.reviews.velocity / d.reviews.marketVelocity) * 100} tone="bg-rose-500" />
                   </div>
                   <div>
-                    <div className="mb-1 flex justify-between text-xs text-slate-500"><span>Market median</span><span>{d.reviews.marketVelocity}/mo</span></div>
+                    <div className="mb-1 flex justify-between text-xs text-slate-600"><span>Market median</span><span>{d.reviews.marketVelocity}/mo</span></div>
                     <Progress value={100} tone="bg-slate-400" />
                   </div>
                 </div>
@@ -141,7 +141,7 @@ export default function LocalDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+                    <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
                       <th className="py-2 font-medium">Competitor</th>
                       <th className="py-2 font-medium">Reviews</th>
                       <th className="py-2 font-medium">Vel.</th>
@@ -223,7 +223,7 @@ export default function LocalDashboard() {
 function Stat({ label, value, icon, tone }: { label: string; value: string; icon?: React.ReactNode; tone?: "bad" }) {
   return (
     <div className="rounded-xl border border-[var(--border)] bg-white p-3">
-      <div className="text-xs text-slate-400">{label}</div>
+      <div className="text-xs text-slate-500">{label}</div>
       <div className={`mt-0.5 flex items-center gap-1.5 text-xl font-semibold ${tone === "bad" ? "text-rose-600" : "text-slate-900"}`}>
         {icon}
         {value}

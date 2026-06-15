@@ -28,15 +28,15 @@ export default function ClientsPage() {
       {/* Summary */}
       <div className="stagger grid gap-4 sm:grid-cols-3">
         <Card className="p-5">
-          <div className="text-sm text-slate-500">Total clients</div>
+          <div className="text-sm text-slate-600">Total clients</div>
           <div className="mt-1 text-2xl font-semibold text-slate-900">{clients.length}</div>
         </Card>
         <Card className="p-5">
-          <div className="text-sm text-slate-500">Active</div>
+          <div className="text-sm text-slate-600">Active</div>
           <div className="mt-1 text-2xl font-semibold text-slate-900">{active}</div>
         </Card>
         <Card className="p-5">
-          <div className="text-sm text-slate-500">Avg. health score</div>
+          <div className="text-sm text-slate-600">Avg. health score</div>
           <div className="mt-1 text-2xl font-semibold text-slate-900">{avgHealth}</div>
         </Card>
       </div>
@@ -44,13 +44,13 @@ export default function ClientsPage() {
       {/* Toolbar */}
       <div className="flex items-center justify-between gap-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <input
             placeholder="Search clients…"
-            className="h-9 w-64 rounded-lg border border-[var(--border)] bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-400 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
+            className="h-9 w-64 rounded-lg border border-[var(--border)] bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-500 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
           />
         </div>
-        <span className="text-sm text-slate-400">Sorted by health</span>
+        <span className="text-sm text-slate-500">Sorted by health</span>
       </div>
 
       {/* Client table */}
@@ -58,7 +58,7 @@ export default function ClientsPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-sm">
             <thead>
-              <tr className="border-b border-[var(--border)] text-left text-xs uppercase tracking-wide text-slate-400">
+              <tr className="border-b border-[var(--border)] text-left text-xs uppercase tracking-wide text-slate-500">
                 <th className="px-5 py-3 font-medium">Client</th>
                 <th className="px-3 py-3 font-medium">Model</th>
                 <th className="px-3 py-3 font-medium">Owner</th>

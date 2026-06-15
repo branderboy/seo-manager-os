@@ -28,7 +28,7 @@ export function GeoGrid({ grid }: { grid: number[][] }) {
           ))
         )}
       </div>
-      <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+      <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-600">
         <span className="flex items-center gap-1.5">
           <span className="h-3 w-3 rounded bg-emerald-500" /> Top 3
         </span>
@@ -38,7 +38,7 @@ export function GeoGrid({ grid }: { grid: number[][] }) {
         <span className="flex items-center gap-1.5">
           <span className="h-3 w-3 rounded bg-rose-500" /> 15+
         </span>
-        <span className="ml-auto text-slate-400">Center pin = headquarters</span>
+        <span className="ml-auto text-slate-500">Center pin = headquarters</span>
       </div>
     </div>
   );

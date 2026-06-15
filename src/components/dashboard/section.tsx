@@ -6,7 +6,7 @@ export function Section({ label, children }: { label: string; children: React.Re
   return (
     <section>
       <div className="mb-3 flex items-center gap-3">
-        <h2 className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">{label}</h2>
+        <h2 className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500">{label}</h2>
         <div className="h-px flex-1 bg-[var(--border)]" />
       </div>
       {children}
@@ -37,7 +37,7 @@ export function RootCause({
         <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
           <div className="h-full rounded-full bg-accent-500" style={{ width: `${confidence}%` }} />
         </div>
-        <div className="mt-1.5 flex justify-between text-xs text-slate-500">
+        <div className="mt-1.5 flex justify-between text-xs text-slate-600">
           <span>{confidence}% confidence</span>
           <span>{impact}</span>
         </div>

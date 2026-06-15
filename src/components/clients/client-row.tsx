@@ -36,13 +36,13 @@ export function ClientRow({ client: c }: { client: Client }) {
           </span>
           <span>
             <span className="block font-medium text-slate-800 group-hover:text-accent-600">{c.name}</span>
-            <span className="block text-xs text-slate-400">{c.industry} · {c.location}</span>
+            <span className="block text-xs text-slate-500">{c.industry} · {c.location}</span>
           </span>
         </div>
       </td>
       <td className="px-3 py-3.5">
         <span className="inline-flex items-center gap-1.5 text-slate-600">
-          <Icon className="h-4 w-4 text-slate-400" />
+          <Icon className="h-4 w-4 text-slate-500" />
           {c.model}
         </span>
       </td>
@@ -52,7 +52,7 @@ export function ClientRow({ client: c }: { client: Client }) {
           <div className="w-16">
             <Progress value={health} />
           </div>
-          <span className="text-xs font-medium text-slate-500">{health}</span>
+          <span className="text-xs font-medium text-slate-600">{health}</span>
         </div>
       </td>
       <td className="px-3 py-3.5 text-slate-600">{c.scores.ai}</td>

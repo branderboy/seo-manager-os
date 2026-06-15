@@ -42,7 +42,7 @@ export default function WorkflowPage() {
                     "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold ring-4 ring-[var(--surface-2)]",
                     status === "done" && "bg-emerald-500 text-white",
                     status === "active" && "bg-accent-500 text-white",
-                    status === "upcoming" && "border border-[var(--border)] bg-white text-slate-400"
+                    status === "upcoming" && "border border-[var(--border)] bg-white text-slate-500"
                   )}
                 >
                   {status === "done" ? <Check className="h-4 w-4" /> : s.n}
@@ -76,7 +76,7 @@ export default function WorkflowPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2.5">
-                    <Icon className={cn("h-4 w-4", status === "upcoming" ? "text-slate-400" : "text-accent-500")} />
+                    <Icon className={cn("h-4 w-4", status === "upcoming" ? "text-slate-500" : "text-accent-500")} />
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="text-sm font-semibold text-slate-900">{s.name}</h3>
@@ -86,7 +86,7 @@ export default function WorkflowPage() {
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-slate-500">{s.does}</p>
+                      <p className="text-sm text-slate-600">{s.does}</p>
                     </div>
                   </div>
                   <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition-colors group-hover:text-accent-500" />
@@ -94,7 +94,7 @@ export default function WorkflowPage() {
 
                 {/* Outputs — the artifacts this stage hands to the next */}
                 <div className="mt-3 pl-[26px]">
-                  <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                  <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
                     Output
                   </div>
                   <div className="flex flex-wrap gap-1.5">
@@ -104,7 +104,7 @@ export default function WorkflowPage() {
                         className={cn(
                           "rounded-md px-2 py-1 text-xs font-medium",
                           status === "upcoming"
-                            ? "bg-slate-50 text-slate-500"
+                            ? "bg-slate-50 text-slate-600"
                             : "bg-accent-50 text-accent-700"
                         )}
                       >

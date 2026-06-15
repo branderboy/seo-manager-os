@@ -17,7 +17,7 @@ export function ScoreCard({
   return (
     <Card className="p-5">
       <div className="flex items-start justify-between">
-        <span className="text-sm font-medium text-slate-500">{label}</span>
+        <span className="text-sm font-medium text-slate-600">{label}</span>
         {typeof delta === "number" && (
           <span
             className={`inline-flex items-center gap-0.5 text-xs font-semibold ${
@@ -34,7 +34,7 @@ export function ScoreCard({
       <div className="mt-3">
         <Progress value={value} />
       </div>
-      {blurb && <p className="mt-2.5 text-xs leading-relaxed text-slate-400">{blurb}</p>}
+      {blurb && <p className="mt-2.5 text-xs leading-relaxed text-slate-500">{blurb}</p>}
     </Card>
   );
 }

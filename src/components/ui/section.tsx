@@ -26,7 +26,7 @@ export function SectionHeading({
           {title}
         </h2>
         {description && (
-          <p className="mt-2 text-[15px] leading-relaxed text-slate-500">
+          <p className="mt-2 text-[15px] leading-relaxed text-slate-600">
             {description}
           </p>
         )}

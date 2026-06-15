@@ -45,7 +45,7 @@ export function StageBar() {
           </span>
         )}
         <div className="relative max-w-xl flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             placeholder="Search"
@@ -53,7 +53,7 @@ export function StageBar() {
           />
         </div>
       </div>
-      <div className="flex items-center gap-4 text-slate-500">
+      <div className="flex items-center gap-4 text-slate-600">
         <HelpCircle className="h-5 w-5 cursor-pointer hover:text-slate-700" />
         <Plus className="h-[22px] w-[22px] cursor-pointer hover:text-slate-700" />
         <Bell className="h-5 w-5 cursor-pointer hover:text-slate-700" />

@@ -80,7 +80,7 @@ export default function StrategyPage() {
               <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-900">
                 <EngName />
               </h2>
-              <div className="text-sm text-slate-400">
+              <div className="text-sm text-slate-500">
                 <EngModel /> SEO · <EngMarket /> · Prepared by SEO Manager OS
               </div>
             </div>
@@ -114,7 +114,7 @@ export default function StrategyPage() {
 
           {/* Priority matrix */}
           <Block icon={ListChecks} title="Priority Matrix">
-            <p className="mb-2 text-sm text-slate-500">
+            <p className="mb-2 text-sm text-slate-600">
               Impact vs. effort. The upper-left quadrant — high impact, low effort —
               is where execution starts.
             </p>
@@ -128,9 +128,9 @@ export default function StrategyPage() {
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {strategy.expectedOutcomes.map((o) => (
                 <div key={o.metric} className="rounded-xl border border-[var(--border)] bg-white p-4">
-                  <div className="text-sm text-slate-500">{o.metric}</div>
+                  <div className="text-sm text-slate-600">{o.metric}</div>
                   <div className="mt-2 flex items-baseline gap-2">
-                    <span className="text-slate-400 line-through">{o.from}</span>
+                    <span className="text-slate-500 line-through">{o.from}</span>
                     <ArrowRight className="h-3.5 w-3.5 text-slate-300" />
                     <span className="text-2xl font-semibold text-slate-900">{o.to}</span>
                   </div>

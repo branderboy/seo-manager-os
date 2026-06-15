@@ -38,7 +38,7 @@ export default function ExecutionPage() {
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[760px] text-sm">
                   <thead>
-                    <tr className="border-b border-[var(--border)] text-left text-xs uppercase tracking-wide text-slate-400">
+                    <tr className="border-b border-[var(--border)] text-left text-xs uppercase tracking-wide text-slate-500">
                       <th className="px-5 py-3 font-medium">Recommendation</th>
                       <th className="px-3 py-3 font-medium">Priority</th>
                       <th className="px-3 py-3 font-medium">Impact</th>
@@ -67,7 +67,7 @@ export default function ExecutionPage() {
                             <div className="h-1.5 w-14 overflow-hidden rounded-full bg-slate-100">
                               <div className="h-full rounded-full bg-accent-400" style={{ width: `${item.confidence}%` }} />
                             </div>
-                            <span className="text-xs font-medium text-slate-500">{item.confidence}%</span>
+                            <span className="text-xs font-medium text-slate-600">{item.confidence}%</span>
                           </div>
                         </td>
                         <td className="px-3 py-3.5 text-slate-600">{item.owner}</td>

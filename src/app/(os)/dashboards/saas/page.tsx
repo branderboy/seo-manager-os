@@ -83,7 +83,7 @@ export default function SaasDashboard() {
                 <li key={c.term} className="flex items-center justify-between gap-3 py-2.5">
                   <div>
                     <div className="text-sm font-medium text-slate-800">{c.term}</div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-slate-500">
                       {c.volume.toLocaleString()} vol · KD {c.difficulty}
                     </div>
                   </div>
@@ -109,9 +109,9 @@ export default function SaasDashboard() {
             <div className="text-3xl font-semibold text-slate-900">
               {d.programmatic.intentBacked}
             </div>
-            <p className="text-sm text-slate-500">demand-backed pages unbuilt</p>
+            <p className="text-sm text-slate-600">demand-backed pages unbuilt</p>
             <div className="mt-4">
-              <div className="mb-1 flex justify-between text-xs text-slate-500">
+              <div className="mb-1 flex justify-between text-xs text-slate-600">
                 <span>Built {d.programmatic.built}</span>
                 <span>Opportunity {d.programmatic.opportunity}</span>
               </div>
@@ -127,10 +127,10 @@ export default function SaasDashboard() {
             <div className="text-3xl font-semibold text-slate-900">
               {d.integrations.live}/{d.integrations.catalog}
             </div>
-            <p className="text-sm text-slate-500">integration pages live</p>
+            <p className="text-sm text-slate-600">integration pages live</p>
             <div className="mt-4">
               <Progress value={(d.integrations.live / d.integrations.catalog) * 100} tone="bg-accent-500" />
-              <div className="mt-1 text-xs text-slate-400">{d.integrations.ranking} ranking page 1</div>
+              <div className="mt-1 text-xs text-slate-500">{d.integrations.ranking} ranking page 1</div>
             </div>
           </CardContent>
         </Card>
@@ -142,7 +142,7 @@ export default function SaasDashboard() {
             <div className="flex items-center gap-2 text-3xl font-semibold text-amber-600">
               <Minus className="h-6 w-6" /> Thin
             </div>
-            <p className="text-sm text-slate-500">JTBD coverage at 35% of demand</p>
+            <p className="text-sm text-slate-600">JTBD coverage at 35% of demand</p>
             <div className="mt-4">
               <Progress value={35} tone="bg-amber-500" />
             </div>

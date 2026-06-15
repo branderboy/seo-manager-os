@@ -21,7 +21,7 @@ export function AeoPanel() {
               </h3>
               <Badge variant="bad">At risk</Badge>
             </div>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-slate-600">
               Presence across AI Overviews, citations and assistants.
             </p>
           </div>

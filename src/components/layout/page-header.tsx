@@ -37,7 +37,7 @@ export function PageHeader({
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{title}</h1>
           {description && (
-            <p className="mt-2 text-[15px] leading-relaxed text-slate-500">{description}</p>
+            <p className="mt-2 text-[15px] leading-relaxed text-slate-600">{description}</p>
           )}
         </div>
       </div>

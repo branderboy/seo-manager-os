@@ -22,7 +22,7 @@ export function StartHereCoach() {
             <h3 className="text-sm font-semibold text-slate-900">Start here 👋</h3>
             <button
               onClick={dismiss}
-              className="rounded-md p-1 text-slate-400 hover:bg-white hover:text-slate-700"
+              className="rounded-md p-1 text-slate-500 hover:bg-white hover:text-slate-700"
               aria-label="Dismiss"
             >
               <X className="h-4 w-4" />

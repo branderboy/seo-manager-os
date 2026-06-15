@@ -86,7 +86,7 @@ export function SettingsView() {
 
         {/* Save bar */}
         <div className="sticky bottom-4 flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-white/90 px-4 py-3 shadow-card backdrop-blur">
-          <span className="text-sm text-slate-500">
+          <span className="text-sm text-slate-600">
             {saved ? (
               <span className="inline-flex items-center gap-1.5 font-medium text-emerald-600">
                 <Check className="h-4 w-4" /> All changes saved
@@ -111,7 +111,7 @@ function Section({ title, desc, children }: { title: string; desc?: string; chil
   return (
     <Card className="p-6">
       <h3 className="text-[15px] font-semibold tracking-tight text-slate-900">{title}</h3>
-      {desc && <p className="mt-1 text-sm text-slate-500">{desc}</p>}
+      {desc && <p className="mt-1 text-sm text-slate-600">{desc}</p>}
       <div className="mt-5 space-y-5">{children}</div>
     </Card>
   );
@@ -130,13 +130,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-500">{label}</span>
+      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-600">{label}</span>
       <input
         defaultValue={defaultValue}
         onChange={onChange}
         className="h-10 w-full rounded-lg border border-[var(--border)] bg-white px-3 text-sm outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
       />
-      {hint && <span className="mt-1 block text-xs text-slate-400">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs text-slate-500">{hint}</span>}
     </label>
   );
 }
@@ -154,7 +154,7 @@ function SelectField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-500">{label}</span>
+      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-600">{label}</span>
       <select
         defaultValue={defaultValue}
         onChange={onChange}
@@ -184,7 +184,7 @@ function ToggleRow({
     <div className="flex items-start justify-between gap-4">
       <div>
         <div className="text-sm font-medium text-slate-800">{title}</div>
-        <div className="text-xs text-slate-500">{desc}</div>
+        <div className="text-xs text-slate-600">{desc}</div>
       </div>
       <Switch
         checked={on}
@@ -207,7 +207,7 @@ function Workspace({ onChange }: { onChange: () => void }) {
         </span>
         <div>
           <Button variant="secondary" size="sm">Upload logo</Button>
-          <p className="mt-1.5 text-xs text-slate-400">PNG or SVG, up to 1MB.</p>
+          <p className="mt-1.5 text-xs text-slate-500">PNG or SVG, up to 1MB.</p>
         </div>
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
@@ -292,7 +292,7 @@ function DataSources() {
                   {c.connected && <Badge variant="good"><Check className="h-3 w-3" /> Connected</Badge>}
                   {c.uploadOnly && !c.connected && <Badge variant="outline">Upload</Badge>}
                 </div>
-                <div className="truncate text-xs text-slate-400">{c.connected ? c.account : c.desc}</div>
+                <div className="truncate text-xs text-slate-500">{c.connected ? c.account : c.desc}</div>
               </div>
             </div>
             {c.connected ? (
@@ -367,7 +367,7 @@ function Scoring({ onChange }: { onChange: () => void }) {
           onChange();
         }}
       />
-      <div className="flex items-center gap-2 rounded-lg bg-[var(--surface-2)] p-3 text-xs text-slate-500">
+      <div className="flex items-center gap-2 rounded-lg bg-[var(--surface-2)] p-3 text-xs text-slate-600">
         <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-rose-500" /> Below {warn}</span>
         <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500" /> {warn}–{good - 1}</span>
         <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> {good}+</span>
@@ -426,7 +426,7 @@ function Team() {
               </span>
               <div>
                 <div className="text-sm font-medium text-slate-800">{m.name}</div>
-                <div className="text-xs text-slate-400">{m.email}</div>
+                <div className="text-xs text-slate-500">{m.email}</div>
               </div>
             </div>
             <Badge variant={m.role === "Owner" ? "accent" : "outline"}>{m.role}</Badge>
@@ -450,10 +450,10 @@ function Plan() {
             <span className="text-lg font-semibold text-slate-900">Agency</span>
             <Badge variant="accent">Current plan</Badge>
           </div>
-          <p className="mt-1 text-sm text-slate-500">Up to 25 clients · all SEO models · AEO module</p>
+          <p className="mt-1 text-sm text-slate-600">Up to 25 clients · all SEO models · AEO module</p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-semibold text-slate-900">$499<span className="text-sm font-normal text-slate-400">/mo</span></div>
+          <div className="text-2xl font-semibold text-slate-900">$499<span className="text-sm font-normal text-slate-500">/mo</span></div>
           <Button variant="secondary" size="sm" className="mt-1">Manage billing</Button>
         </div>
       </div>
@@ -469,7 +469,7 @@ function Plan() {
 function Usage({ label, value, pct }: { label: string; value: string; pct: number }) {
   return (
     <div className="rounded-xl border border-[var(--border)] bg-white p-4">
-      <div className="text-xs text-slate-400">{label}</div>
+      <div className="text-xs text-slate-500">{label}</div>
       <div className="mt-0.5 text-sm font-semibold text-slate-800">{value}</div>
       <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
         <div className="h-full rounded-full bg-accent-500" style={{ width: `${pct}%` }} />

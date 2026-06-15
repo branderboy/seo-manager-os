@@ -20,7 +20,7 @@ function AuditList({ audits }: { audits: Audit[] }) {
       <Card className="mb-5 flex items-center justify-between p-4">
         <div>
           <div className="text-sm font-medium text-slate-700">Investigation health</div>
-          <div className="text-xs text-slate-400">{audits.length} audits in this track</div>
+          <div className="text-xs text-slate-500">{audits.length} audits in this track</div>
         </div>
         <div className={`flex h-12 w-12 items-center justify-center rounded-xl text-lg font-semibold ring-1 ring-inset ${scoreToneClasses(avg)}`}>
           {avg}
@@ -35,13 +35,13 @@ function AuditList({ audits }: { audits: Audit[] }) {
                   <h3 className="text-sm font-semibold text-slate-900">{a.name}</h3>
                   <StatusBadge status={a.status} />
                 </div>
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-500">
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
                   {a.finding}
                 </p>
               </div>
               <div className="w-40 shrink-0">
                 <div className="mb-1 flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Score</span>
+                  <span className="text-slate-500">Score</span>
                   <span className="font-semibold text-slate-700">{a.score}</span>
                 </div>
                 <Progress value={a.score} />

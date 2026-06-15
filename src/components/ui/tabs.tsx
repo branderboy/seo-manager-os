@@ -26,12 +26,12 @@ export function Tabs({
               "relative -mb-px flex items-center gap-2 px-3.5 py-2.5 text-sm font-medium transition-colors",
               active === t.id
                 ? "text-slate-900"
-                : "text-slate-500 hover:text-slate-800"
+                : "text-slate-600 hover:text-slate-800"
             )}
           >
             {t.label}
             {typeof t.count === "number" && (
-              <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-semibold text-slate-500">
+              <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[11px] font-semibold text-slate-600">
                 {t.count}
               </span>
             )}

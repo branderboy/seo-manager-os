@@ -42,7 +42,7 @@ function CauseCard({ cause, rank }: { cause: Cause; rank: "Primary" | "Secondary
     <Card className={primary ? "border-accent-200 ring-1 ring-accent-100" : ""}>
       <div className="p-6">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
+          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
             {rank} cause
           </span>
           <ImpactBadge impact={cause.impact} />
@@ -53,7 +53,7 @@ function CauseCard({ cause, rank }: { cause: Cause; rank: "Primary" | "Secondary
 
         <div className="mt-5">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-500">Confidence</span>
+            <span className="text-slate-600">Confidence</span>
             <span className="font-semibold text-slate-800">{cause.confidence}%</span>
           </div>
           <div className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-slate-100">
@@ -65,7 +65,7 @@ function CauseCard({ cause, rank }: { cause: Cause; rank: "Primary" | "Secondary
         </div>
 
         <div className="mt-5">
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
             Evidence
           </div>
           <ul className="space-y-2">
@@ -114,12 +114,12 @@ export default function DiagnosisPage() {
       </div>
 
       {/* Source legend — every evidence point is tagged with where it was measured */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-1 text-xs text-slate-400">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-1 text-xs text-slate-500">
         <span className="font-semibold uppercase tracking-wide">Data sources</span>
         {(Object.keys(SOURCE_STYLES) as DataSource[]).map((s) => (
           <span key={s} className="flex items-center gap-1.5">
             <SourceTag source={s} />
-            <span className="text-slate-500">{SOURCE_LABELS[s]}</span>
+            <span className="text-slate-600">{SOURCE_LABELS[s]}</span>
           </span>
         ))}
       </div>
@@ -130,7 +130,7 @@ export default function DiagnosisPage() {
           <h3 className="text-[15px] font-semibold tracking-tight text-slate-900">
             Possible contributing causes
           </h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-600">
             Ranked by confidence. Monitored but not yet primary drivers.
           </p>
           <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -149,7 +149,7 @@ export default function DiagnosisPage() {
                   <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200">
                     <div className="h-full rounded-full bg-slate-400" style={{ width: `${p.confidence}%` }} />
                   </div>
-                  <span className="text-xs font-medium text-slate-500">{p.confidence}%</span>
+                  <span className="text-xs font-medium text-slate-600">{p.confidence}%</span>
                 </div>
               </div>
             ))}

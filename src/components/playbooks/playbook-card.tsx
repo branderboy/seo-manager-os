@@ -41,9 +41,9 @@ export function PlaybookCard({ pb }: { pb: Playbook }) {
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-semibold text-slate-900">{pb.name}</h3>
-          <p className="text-sm text-slate-500">{pb.goal}</p>
+          <p className="text-sm text-slate-600">{pb.goal}</p>
         </div>
-        <span className="shrink-0 text-xs font-medium text-slate-400">{pb.plays.length} plays</span>
+        <span className="shrink-0 text-xs font-medium text-slate-500">{pb.plays.length} plays</span>
       </div>
 
       {/* The plays inside this playbook */}
