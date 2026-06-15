@@ -135,6 +135,16 @@ body {
 .bg-radial-glow {
   background: radial-gradient(circle at top center, rgba(59, 130, 246, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
 }
+
+/* App content canvas — faint grid + top glow so the dashboard matches the homepage. */
+.app-canvas {
+  background-color: var(--surface-2);
+  background-image:
+    radial-gradient(circle at 50% -10%, rgba(37, 99, 235, 0.06) 0%, rgba(247, 248, 251, 0) 55%),
+    linear-gradient(to right, rgba(203, 213, 225, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(203, 213, 225, 0.35) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+}
 .glass-panel {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);

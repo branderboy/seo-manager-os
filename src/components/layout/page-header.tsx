@@ -29,8 +29,8 @@ export function PageHeader({
         <div className="max-w-2xl">
           <div className="mb-2 flex items-center gap-2">
             {typeof stage === "number" && (
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-accent-600">
-                Stage {stage}
+              <span className="font-mono text-xs font-semibold uppercase tracking-wider text-accent-600">
+                Stage {String(stage).padStart(2, "0")}
               </span>
             )}
             {badge && <Badge variant="accent">{badge}</Badge>}
