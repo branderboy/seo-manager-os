@@ -66,16 +66,16 @@ export function GuidedFlow() {
                   className={cn(
                     "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors",
                     active
-                      ? "bg-orange-400 text-white ring-4 ring-orange-100"
+                      ? "border-2 border-accent-600 bg-accent-100 text-accent-700 ring-4 ring-accent-50"
                       : done
-                        ? "bg-orange-400 text-white"
+                        ? "border-2 border-accent-600 bg-accent-100 text-accent-700"
                         : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
                   )}
                 >
                   {done ? <Check className="h-4 w-4" /> : s.n}
                 </span>
                 {i < STAGES.length - 1 && (
-                  <span className={cn("mx-0.5 h-0.5 flex-1 rounded-full", i < idx || i + 1 < furthest ? "bg-orange-300" : "bg-slate-100")} />
+                  <span className={cn("mx-0.5 h-0.5 flex-1 rounded-full", i < idx || i + 1 < furthest ? "bg-accent-400" : "bg-slate-100")} />
                 )}
               </Link>
             );
