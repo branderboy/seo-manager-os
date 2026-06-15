@@ -14,9 +14,9 @@ export default function MeasurementPage() {
   return (
     <>
       <PageHeader
-        stage={8}
+        stage={9}
         title="Measurement"
-        description="The scores that matter, tracked over time. Measurement feeds the next diagnosis — the loop never really ends."
+        description="Track results against the goals set in Discovery — rankings, traffic, leads, calls, AI visibility and revenue — rolled into performance reports that feed the next diagnosis."
       >
         <Badge variant="accent">
           <EngName />

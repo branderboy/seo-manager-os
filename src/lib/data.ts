@@ -283,35 +283,60 @@ export const executionPlans: { horizon: string; items: PlanItem[] }[] = [
   },
 ];
 
-// ── Execution tools catalog (Stage 7) ────────────────────────────────────────
-export const executionTools: Record<SeoModel, { name: string; blurb: string }[]> = {
-  Local: [
-    { name: "GBP Optimizer", blurb: "Categories, services, posts and attributes against best-in-market." },
-    { name: "Review Strategy", blurb: "Velocity targets, request cadence and response playbook." },
-    { name: "Internal Linking Planner", blurb: "Map service ↔ location ↔ money-page link paths." },
-    { name: "Location Page Builder", blurb: "Generate depth-complete location pages per market." },
-    { name: "Service Page Planner", blurb: "Map every GBP service to a ranking + converting page." },
-    { name: "Competitor Tracker", blurb: "Proximity, trust and content overlap vs. top rivals." },
-    { name: "AEO Planner", blurb: "Schema, entities and FAQs for AI-answer citation." },
-  ],
-  SaaS: [
-    { name: "BOFU Planner", blurb: "Solution, use-case and pricing-intent page map." },
-    { name: "Alternative Page Planner", blurb: "'Best alternative to X' set with demand backing." },
-    { name: "Comparison Page Planner", blurb: "vs-competitor pages and proof requirements." },
-    { name: "Integration Planner", blurb: "Integration landing pages from the catalog." },
-    { name: "Industry Page Planner", blurb: "Vertical landing pages mapped to ICPs." },
-    { name: "Programmatic Planner", blurb: "Templatable, demand-validated page sets." },
-    { name: "AEO Planner", blurb: "Citation strategy for category + JTBD answers." },
-  ],
-  Enterprise: [
-    { name: "Template Planner", blurb: "Per-template optimization and decay recovery." },
-    { name: "Internal Link Planner", blurb: "Resolve orphans; route equity to revenue pages." },
-    { name: "Entity Mapper", blurb: "Entity coverage and cross-region disambiguation." },
-    { name: "Indexation Planner", blurb: "Fix 'crawled — not indexed' at template scale." },
-    { name: "Crawl Budget Planner", blurb: "Eliminate crawl waste on parameter/facet URLs." },
-    { name: "Forecasting Tool", blurb: "Model traffic + revenue from each fix." },
-  ],
+// ── Playbooks: the action center (Stage 7) ───────────────────────────────────
+// Outcome-oriented playbooks. Each groups the plays that move one outcome and
+// produces a set of recommended actions that feed the Daily Task Engine.
+export type Playbook = {
+  key: string;
+  name: string;
+  goal: string;
+  plays: string[];
 };
+
+export const playbooks: Playbook[] = [
+  {
+    key: "traffic",
+    name: "Traffic Playbook",
+    goal: "Grow non-brand organic reach.",
+    plays: ["Content Clusters", "Programmatic SEO", "Internal Linking", "Keyword Expansion"],
+  },
+  {
+    key: "ctr",
+    name: "CTR Playbook",
+    goal: "Win more clicks from existing rankings.",
+    plays: ["Title Optimization", "Meta Optimization", "Rich Results", "SERP Testing"],
+  },
+  {
+    key: "lead",
+    name: "Lead Generation Playbook",
+    goal: "Turn visits into qualified leads.",
+    plays: ["Service Pages", "Conversion Optimization", "Forms", "Call Tracking", "Landing Pages"],
+  },
+  {
+    key: "revenue",
+    name: "Revenue Playbook",
+    goal: "Move high-intent demand to revenue.",
+    plays: ["Money Pages", "Offer Optimization", "Funnel Improvements", "High Intent Keywords"],
+  },
+  {
+    key: "local",
+    name: "Local SEO Playbook",
+    goal: "Expand the winnable local radius.",
+    plays: ["GBP", "Reviews", "Citations", "Service Areas", "Local Landing Pages"],
+  },
+  {
+    key: "geo",
+    name: "GEO Playbook",
+    goal: "Strengthen entity & AI visibility.",
+    plays: ["Entity Optimization", "Knowledge Graph", "AI Visibility", "Brand Mentions", "Structured Data"],
+  },
+  {
+    key: "aeo",
+    name: "AEO Playbook",
+    goal: "Get cited in AI & featured answers.",
+    plays: ["FAQs", "Q&A Content", "Featured Snippets", "AI Answer Optimization", "Voice Search"],
+  },
+];
 
 // ── Measurement trend series (Stage 8) ───────────────────────────────────────
 export const trend = [
