@@ -342,7 +342,7 @@ export const taskStats = {
 };
 
 export const taskAlerts = {
-  recipient: "kawani@digiwaxx.com",
+  recipient: "owner@northwindhvac.com",
   digestTime: "8:00 AM CT",
   cadence: "Daily digest + overdue nudges",
   channels: ["Email", "Slack"],
