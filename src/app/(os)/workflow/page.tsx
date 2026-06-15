@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, ChevronDown } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { STAGES } from "@/lib/stages";
 import { featuredInvestigation as inv } from "@/lib/model";
@@ -48,12 +48,21 @@ export default function WorkflowPage() {
                   {status === "done" ? <Check className="h-4 w-4" /> : s.n}
                 </span>
                 {!last && (
-                  <span
-                    className={cn(
-                      "mt-1 w-px flex-1",
-                      status === "done" ? "bg-emerald-300" : "bg-[var(--border)]"
-                    )}
-                  />
+                  <div className="mt-1 flex flex-1 flex-col items-center">
+                    <span
+                      className={cn(
+                        "w-px flex-1",
+                        status === "done" ? "bg-emerald-300" : "bg-[var(--border)]"
+                      )}
+                    />
+                    {/* Arrow marks the handoff to the next step */}
+                    <ChevronDown
+                      className={cn(
+                        "-my-0.5 h-4 w-4",
+                        status === "done" ? "text-emerald-400" : "text-slate-300"
+                      )}
+                    />
+                  </div>
                 )}
               </div>
 
