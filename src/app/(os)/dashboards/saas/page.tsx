@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Check, X, Minus } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { Section, RootCause } from "@/components/dashboard/section";
 import { AeoPanel } from "@/components/modules/aeo-panel";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +13,7 @@ export const metadata: Metadata = { title: "SaaS SEO Dashboard" };
 
 export default function SaasDashboard() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <DashboardHeader
         active="saas"
         account={d.account}
@@ -25,22 +26,28 @@ export default function SaasDashboard() {
         ]}
       />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Executive Summary</CardTitle>
-          <CardDescription>Where the product wins and leaks in search.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-[15px] leading-relaxed text-slate-600">
-            Flowdesk has strong top-of-funnel content but a thin bottom of funnel. Pricing
-            ranks, yet solution and use-case pages are missing, and competitors own the
-            comparison SERPs. The largest untapped lever is a programmatic integration set —
-            140 demand-backed pages currently unbuilt.
-          </p>
-        </CardContent>
-      </Card>
+      {/* ── Read first: where we stand + why ───────────────────────────────── */}
+      <div className="grid gap-5 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Executive Summary</CardTitle>
+            <CardDescription>Where the product wins and leaks in search.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-[15px] leading-relaxed text-slate-600">
+              Flowdesk has strong top-of-funnel content but a thin bottom of funnel. Pricing
+              ranks, yet solution and use-case pages are missing, and competitors own the
+              comparison SERPs. The largest untapped lever is a programmatic integration set —
+              140 demand-backed pages currently unbuilt.
+            </p>
+          </CardContent>
+        </Card>
+        <RootCause title="Thin bottom-of-funnel coverage" confidence={84} />
+      </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* ── Demand capture ─────────────────────────────────────────────────── */}
+      <Section label="Demand capture">
+      <div className="grid gap-5 lg:grid-cols-2">
         {/* BOFU coverage */}
         <Card>
           <CardHeader>
@@ -93,7 +100,7 @@ export default function SaasDashboard() {
       </div>
 
       {/* Programmatic + integrations + use cases */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="mt-5 grid gap-5 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>Programmatic Opportunity</CardTitle>
@@ -142,19 +149,25 @@ export default function SaasDashboard() {
           </CardContent>
         </Card>
       </div>
+      </Section>
 
-      {/* Conversion funnel */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Conversion Funnel</CardTitle>
-          <CardDescription>Organic sessions to qualified signup.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FunnelBars data={d.funnel} />
-        </CardContent>
-      </Card>
+      {/* ── Conversion ─────────────────────────────────────────────────────── */}
+      <Section label="Conversion">
+        <Card>
+          <CardHeader>
+            <CardTitle>Conversion Funnel</CardTitle>
+            <CardDescription>Organic sessions to qualified signup.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FunnelBars data={d.funnel} />
+          </CardContent>
+        </Card>
+      </Section>
 
-      <AeoPanel />
+      {/* ── AI visibility ──────────────────────────────────────────────────── */}
+      <Section label="AI visibility">
+        <AeoPanel />
+      </Section>
     </div>
   );
 }

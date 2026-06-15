@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { Section, RootCause } from "@/components/dashboard/section";
 import { AeoPanel } from "@/components/modules/aeo-panel";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -12,7 +13,7 @@ export const metadata: Metadata = { title: "Enterprise SEO Dashboard" };
 export default function EnterpriseDashboard() {
   const indexRate = Math.round((d.indexation.indexed / d.indexation.submitted) * 100);
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <DashboardHeader
         active="enterprise"
         account={d.account}
@@ -25,22 +26,28 @@ export default function EnterpriseDashboard() {
         ]}
       />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Executive Summary</CardTitle>
-          <CardDescription>The technical constraints capping organic revenue.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-[15px] leading-relaxed text-slate-600">
-            Vantage wastes a third of its crawl budget on parameter and facet URLs, leaving
-            61k valuable pages crawled-but-not-indexed. The category template has decayed
-            18% YoY and revenue pages average just 1.4 internal links. Fixing indexation and
-            internal linking models to +22% qualified sessions over six months.
-          </p>
-        </CardContent>
-      </Card>
+      {/* ── Read first: where we stand + why ───────────────────────────────── */}
+      <div className="grid gap-5 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Executive Summary</CardTitle>
+            <CardDescription>The technical constraints capping organic revenue.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-[15px] leading-relaxed text-slate-600">
+              Vantage wastes a third of its crawl budget on parameter and facet URLs, leaving
+              61k valuable pages crawled-but-not-indexed. The category template has decayed
+              18% YoY and revenue pages average just 1.4 internal links. Fixing indexation and
+              internal linking models to +22% qualified sessions over six months.
+            </p>
+          </CardContent>
+        </Card>
+        <RootCause title="Crawl budget wasted on parameter URLs" confidence={90} />
+      </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* ── Crawl & indexation ─────────────────────────────────────────────── */}
+      <Section label="Crawl & indexation">
+      <div className="grid gap-5 lg:grid-cols-2">
         {/* Crawl budget */}
         <Card>
           <CardHeader>
@@ -76,9 +83,11 @@ export default function EnterpriseDashboard() {
           </CardContent>
         </Card>
       </div>
+      </Section>
 
-      {/* Template performance + link graph */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* ── Site architecture ──────────────────────────────────────────────── */}
+      <Section label="Site architecture">
+      <div className="grid gap-5 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Template Performance</CardTitle>
@@ -123,19 +132,25 @@ export default function EnterpriseDashboard() {
           </CardContent>
         </Card>
       </div>
+      </Section>
 
-      {/* Forecast */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Forecasting</CardTitle>
-          <CardDescription>Modeled qualified sessions if fixes ship (indexed = 100).</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <AreaTrend data={d.forecast} dataKey="sessions" />
-        </CardContent>
-      </Card>
+      {/* ── Forecast ───────────────────────────────────────────────────────── */}
+      <Section label="Forecast">
+        <Card>
+          <CardHeader>
+            <CardTitle>Forecasting</CardTitle>
+            <CardDescription>Modeled qualified sessions if fixes ship (indexed = 100).</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AreaTrend data={d.forecast} dataKey="sessions" />
+          </CardContent>
+        </Card>
+      </Section>
 
-      <AeoPanel />
+      {/* ── AI visibility ──────────────────────────────────────────────────── */}
+      <Section label="AI visibility">
+        <AeoPanel />
+      </Section>
     </div>
   );
 }

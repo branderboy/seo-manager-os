@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Star, Check, X, TrendingDown, AlertTriangle, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { Star, Check, X, TrendingDown } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { Section, RootCause } from "@/components/dashboard/section";
 import { GeoGrid } from "@/components/dashboard/geo-grid";
 import { AeoPanel } from "@/components/modules/aeo-panel";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -53,25 +53,7 @@ export default function LocalDashboard() {
         </Card>
 
         {/* Root cause — high contrast, impossible to miss */}
-        <div className="flex flex-col justify-between rounded-xl bg-slate-900 p-5 text-white">
-          <div>
-            <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-              <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
-              Primary root cause
-            </div>
-            <div className="mt-1.5 text-lg font-semibold">{diagnosis.primary.title}</div>
-            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-              <div className="h-full rounded-full bg-amber-400" style={{ width: `${diagnosis.primary.confidence}%` }} />
-            </div>
-            <div className="mt-1.5 flex justify-between text-xs text-slate-400">
-              <span>{diagnosis.primary.confidence}% confidence</span>
-              <span>High impact</span>
-            </div>
-          </div>
-          <Link href="/diagnosis" className="mt-4 inline-flex w-max items-center gap-1 rounded-lg bg-white/10 px-3 py-1.5 text-sm font-medium hover:bg-white/20">
-            Full diagnosis <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+        <RootCause title={diagnosis.primary.title} confidence={diagnosis.primary.confidence} />
       </div>
 
       {/* ── Visibility ─────────────────────────────────────────────────────── */}
@@ -235,18 +217,6 @@ export default function LocalDashboard() {
         </Card>
       </Section>
     </div>
-  );
-}
-
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <section>
-      <div className="mb-3 flex items-center gap-3">
-        <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">{label}</h2>
-        <div className="h-px flex-1 bg-[var(--border)]" />
-      </div>
-      {children}
-    </section>
   );
 }
 
