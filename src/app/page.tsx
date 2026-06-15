@@ -80,7 +80,7 @@ export default function Landing() {
           {/* Flow ribbon */}
           <div className="mx-auto mt-16 max-w-4xl">
             <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-3 text-sm font-medium text-slate-500">
-              {["Interview", "Research", "Diagnosis", "Strategy", "Execution", "Measurement"].map(
+              {["Interview", "Research", "Diagnosis", "Strategy", "Execution", "Measurement", "Daily Tasks"].map(
                 (step, i, arr) => (
                   <span key={step} className="flex items-center gap-2">
                     <span className="rounded-full border border-[var(--border)] bg-white px-3 py-1.5 shadow-soft">

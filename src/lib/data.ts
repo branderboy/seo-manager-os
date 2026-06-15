@@ -310,6 +310,50 @@ export const trend = [
   { month: "Jun", visibility: 48, authority: 41, trust: 57, ai: 29 },
 ];
 
+// ── Daily Task Engine (Stage 9) ──────────────────────────────────────────────
+export type TaskGroup = "Today" | "Tomorrow" | "This week";
+export type DailyTask = {
+  id: string;
+  name: string;
+  owner: string;
+  priority: Impact;
+  due: string;
+  source: string; // which plan / stage it traces to
+  done: boolean;
+  group: TaskGroup;
+};
+
+export const dailyTasks: DailyTask[] = [
+  { id: "t1", name: "Send 8 review requests from yesterday's completed jobs", owner: "Ops", priority: "High", due: "9:00 AM", source: "30-Day · Review automation", done: true, group: "Today" },
+  { id: "t2", name: "Respond to 5 new Google reviews", owner: "Ops", priority: "High", due: "11:00 AM", source: "30-Day · Review automation", done: false, group: "Today" },
+  { id: "t3", name: "Fix NAP on Yelp + 2 chamber citations", owner: "Local SEO", priority: "High", due: "1:00 PM", source: "30-Day · Citation cleanup", done: false, group: "Today" },
+  { id: "t4", name: "Draft 'AC Repair' service page outline", owner: "Content", priority: "Medium", due: "3:00 PM", source: "30-Day · Service pages", done: false, group: "Today" },
+  { id: "t5", name: "Publish weekly GBP post + 4 photos", owner: "Local SEO", priority: "Medium", due: "4:30 PM", source: "30-Day · GBP refresh", done: false, group: "Today" },
+  { id: "t6", name: "QA + publish 'Furnace Replacement' page", owner: "Content", priority: "High", due: "Tomorrow", source: "90-Day · Service pages", done: false, group: "Tomorrow" },
+  { id: "t7", name: "Add FAQ schema to 3 service pages", owner: "SEO Lead", priority: "Medium", due: "Tomorrow", source: "90-Day · AEO foundation", done: false, group: "Tomorrow" },
+  { id: "t8", name: "Internal-link pass: 2 location pages → money pages", owner: "SEO Lead", priority: "Medium", due: "Thu", source: "90-Day · Internal linking", done: false, group: "This week" },
+  { id: "t9", name: "Outreach to 3 local sponsorship partners", owner: "Marketing", priority: "Low", due: "Fri", source: "90-Day · Local authority", done: false, group: "This week" },
+];
+
+export const taskStats = {
+  streakDays: 12,
+  weekCompleted: 31,
+  weekTarget: 40,
+};
+
+export const taskAlerts = {
+  recipient: "kawani@digiwaxx.com",
+  digestTime: "8:00 AM CT",
+  cadence: "Daily digest + overdue nudges",
+  channels: ["Email", "Slack"],
+  reminders: [
+    { label: "Morning digest", detail: "Today's tasks, owners and due times.", time: "8:00 AM" },
+    { label: "Midday nudge", detail: "Anything still open and due today.", time: "1:00 PM" },
+    { label: "Overdue alert", detail: "Tasks past due, escalated to the owner.", time: "As needed" },
+    { label: "End-of-day recap", detail: "Completed, carried over, and the streak.", time: "6:00 PM" },
+  ],
+};
+
 // ── AEO module (all dashboards) ──────────────────────────────────────────────
 export const aeo = {
   score: 29,

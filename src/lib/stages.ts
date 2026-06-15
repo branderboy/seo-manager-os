@@ -7,6 +7,7 @@ import {
   CalendarRange,
   Wrench,
   Gauge,
+  BellRing,
   type LucideIcon,
 } from "lucide-react";
 
@@ -84,6 +85,14 @@ export const STAGES: Stage[] = [
     short: "Measurement",
     blurb: "Track visibility, authority, trust, AI visibility, lead and revenue scores.",
     icon: Gauge,
+  },
+  {
+    n: 9,
+    slug: "tasks",
+    name: "Daily Task Engine",
+    short: "Daily Tasks",
+    blurb: "Today's worklist with email alerts that keep owners on task and on time.",
+    icon: BellRing,
   },
 ];
 
