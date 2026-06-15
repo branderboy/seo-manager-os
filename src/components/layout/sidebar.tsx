@@ -39,7 +39,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-[240px] shrink-0 flex-col bg-brand-900 lg:flex">
+    <aside className="hidden w-[240px] shrink-0 flex-col bg-brand-950 lg:flex">
       <div className="sticky top-0 flex h-screen flex-col">
         {/* Profile */}
         <Link

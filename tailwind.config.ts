@@ -20,6 +20,7 @@ const config: Config = {
           700: "#1546e1",
           800: "#173bb6",
           900: "#19378f",
+          950: "#101f4d",
         },
         // Search Intelligence OS accent (Stripe "blurple").
         accent: {

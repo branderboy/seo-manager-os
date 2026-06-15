@@ -44,7 +44,7 @@ export function MobileNav() {
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <nav className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto bg-brand-900 shadow-2xl">
+          <nav className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto bg-brand-950 shadow-2xl">
             <div className="flex h-[56px] shrink-0 items-center justify-between border-b border-white/10 px-4">
               <span className="text-sm font-bold tracking-wide text-white">SEO MANAGER OS</span>
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-white/80 hover:text-white">
