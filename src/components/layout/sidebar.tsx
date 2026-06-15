@@ -8,9 +8,9 @@ import {
   Cloud,
   Plug,
   Settings,
-  BellRing,
   MoreVertical,
   Users,
+  Workflow,
 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { currentUser } from "@/lib/crm";
@@ -25,6 +25,7 @@ export function Sidebar() {
 
   const main: Item[] = [
     { href: "/clients", label: "Clients", icon: Users },
+    { href: "/workflow", label: "Workflow", icon: Workflow },
     ...STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, badge: s.n })),
   ];
   const dashboards: Item[] = [
