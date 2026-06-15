@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { Search, HelpCircle, Plus, Bell } from "lucide-react";
 import { STAGES } from "@/lib/stages";
-import { currentUser } from "@/lib/crm";
 import { useEngagement } from "@/components/engagement/store";
 import { MobileNav } from "@/components/layout/mobile-nav";
 
@@ -55,12 +54,6 @@ export function StageBar() {
         </div>
       </div>
       <div className="flex items-center gap-4 text-slate-500">
-        <div className="hidden text-sm md:block">
-          Trial ends in <span className="font-semibold text-slate-900">{currentUser.trialDays} days</span>
-        </div>
-        <button className="rounded-md bg-accent-500 px-4 py-1.5 text-xs font-semibold uppercase text-white shadow-sm transition-colors hover:bg-accent-600">
-          Purchase
-        </button>
         <HelpCircle className="h-5 w-5 cursor-pointer hover:text-slate-700" />
         <Plus className="h-[22px] w-[22px] cursor-pointer hover:text-slate-700" />
         <Bell className="h-5 w-5 cursor-pointer hover:text-slate-700" />
