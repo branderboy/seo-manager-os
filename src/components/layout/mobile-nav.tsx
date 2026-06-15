@@ -44,7 +44,7 @@ export function MobileNav() {
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <nav className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto bg-brand-800 shadow-2xl">
+          <nav className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto bg-brand-900 shadow-2xl">
             <div className="flex h-[56px] shrink-0 items-center justify-between border-b border-white/10 px-4">
               <span className="text-sm font-bold tracking-wide text-white">SEO MANAGER OS</span>
               <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-white/80 hover:text-white">
@@ -85,7 +85,7 @@ function Group({ items, pathname, onNavigate }: { items: Item[]; pathname: strin
                 <span
                   className={cn(
                     "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
-                    active ? "bg-white text-brand-800 ring-2 ring-brand-300" : "border-2 border-brand-300 text-white"
+                    active ? "bg-white text-brand-900 ring-2 ring-brand-300" : "border-2 border-brand-300 text-white"
                   )}
                 >
                   {it.step}

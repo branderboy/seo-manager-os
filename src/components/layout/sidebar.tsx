@@ -39,7 +39,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-[240px] shrink-0 flex-col bg-brand-800 lg:flex">
+    <aside className="hidden w-[240px] shrink-0 flex-col bg-brand-900 lg:flex">
       <div className="sticky top-0 flex h-screen flex-col">
         {/* Profile */}
         <Link
@@ -71,7 +71,7 @@ export function Sidebar() {
         <div className="flex items-center justify-between border-t border-white/10 p-4">
           <div className="flex items-center gap-2 text-sm font-bold tracking-wide text-white">
             <span className="flex h-5 w-5 items-center justify-center rounded-sm bg-white">
-              <span className="h-3 w-3 rounded-sm bg-brand-800" />
+              <span className="h-3 w-3 rounded-sm bg-brand-900" />
             </span>
             <span className="text-xs">SEO MANAGER OS</span>
           </div>
@@ -105,7 +105,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
                     className={cn(
                       "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
                       active
-                        ? "bg-white text-brand-800 ring-2 ring-brand-300"
+                        ? "bg-white text-brand-900 ring-2 ring-brand-300"
                         : "border-2 border-brand-300 text-white"
                     )}
                   >
