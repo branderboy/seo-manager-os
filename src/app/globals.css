@@ -3,35 +3,53 @@
 @tailwind utilities;
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #ffffff;
+  --foreground: #0b1220;
+  --muted: #5b6472;
+  --border: #e9ecf2;
+  --surface: #ffffff;
+  --surface-2: #f7f8fb;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background: var(--surface-2);
   color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(99, 91, 255, 0.16);
+}
+
+/* Thin, unobtrusive scrollbars (Linear/Notion feel). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d4d8e0 transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d4d8e0;
+  border-radius: 9999px;
 }
 
 @layer components {
-  .card {
-    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
   }
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors;
-  }
-  .btn-primary {
-    @apply btn bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-50;
-  }
-  .btn-secondary {
-    @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
-  }
-  .input {
-    @apply w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100;
-  }
-  .label {
-    @apply mb-1 block text-xs font-medium uppercase tracking-wide text-slate-500;
-  }
-  .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  .grid-bg {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(11, 18, 32, 0.06) 1px,
+      transparent 0
+    );
+    background-size: 28px 28px;
   }
 }

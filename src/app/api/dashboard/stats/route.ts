@@ -1,9 +1,0 @@
-import { NextResponse } from "next/server";
-import { getDashboardStats } from "@/services/scanner";
-
-export const dynamic = "force-dynamic";
-
-export async function GET() {
-  const stats = await getDashboardStats();
-  return NextResponse.json(stats);
-}
