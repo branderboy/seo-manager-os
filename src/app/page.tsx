@@ -55,14 +55,14 @@ export default function HomePage() {
   return (
     <div className="flex h-screen overflow-hidden bg-[#F4F5F6] font-sans text-gray-900">
       {/* SIDEBAR */}
-      <aside className="flex h-full w-[240px] shrink-0 flex-col bg-[#333D49]">
+      <aside className="flex h-full w-[240px] shrink-0 flex-col bg-gradient-to-b from-brand-700 to-brand-900">
         <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-4">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-400 font-bold text-white">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 font-bold text-white ring-1 ring-white/25">
             {currentUser.initials}
           </span>
           <div className="truncate">
             <div className="truncate text-sm font-medium text-white">{currentUser.name}</div>
-            <div className="truncate text-xs text-slate-400">{currentUser.agency}</div>
+            <div className="truncate text-xs text-white/60">{currentUser.agency}</div>
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto py-3">
@@ -73,11 +73,11 @@ export default function HomePage() {
         <div className="flex items-center justify-between border-t border-white/10 p-4">
           <div className="flex items-center gap-2 text-xs font-bold tracking-wide text-white">
             <span className="flex h-5 w-5 items-center justify-center rounded-sm bg-white">
-              <span className="h-3 w-3 rounded-sm bg-[#333D49]" />
+              <span className="h-3 w-3 rounded-sm bg-brand-800" />
             </span>
             SEO MANAGER OS
           </div>
-          <MoreVertical className="h-4 w-4 text-slate-400" />
+          <MoreVertical className="h-4 w-4 text-white/60" />
         </div>
       </aside>
 
@@ -269,11 +269,11 @@ function NavItem({ label, icon: Icon, href, active }: { label: string; icon: Rea
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-3.5 border-l-4 py-2.5 text-sm text-white/90 transition-colors",
-        active ? "border-[#2196F3] bg-black/10 pl-5 text-white" : "border-transparent pl-6 hover:bg-white/5"
+        "flex items-center gap-3.5 border-l-4 py-2.5 text-sm transition-colors",
+        active ? "border-white bg-white/10 pl-5 font-medium text-white" : "border-transparent pl-6 text-white/85 hover:bg-white/5"
       )}
     >
-      <Icon className={cn("h-[18px] w-[18px]", active ? "text-[#2196F3]" : "text-slate-400")} />
+      <Icon className={cn("h-[18px] w-[18px]", active ? "text-white" : "text-white/70")} />
       {label}
     </Link>
   );
