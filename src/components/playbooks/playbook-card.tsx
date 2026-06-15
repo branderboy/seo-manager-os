@@ -34,7 +34,7 @@ export function PlaybookCard({ pb }: { pb: Playbook }) {
   const Icon = ICONS[pb.key] ?? TrendingUp;
 
   return (
-    <Card className="flex flex-col p-5">
+    <Card className="flex flex-col p-5 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-border-hover">
       <div className="flex items-start gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-50 text-accent-600">
           <Icon className="h-5 w-5" />

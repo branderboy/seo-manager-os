@@ -26,7 +26,7 @@ export default function ClientsPage() {
       </PageHeader>
 
       {/* Summary */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="stagger grid gap-4 sm:grid-cols-3">
         <Card className="p-5">
           <div className="text-sm text-slate-500">Total clients</div>
           <div className="mt-1 text-2xl font-semibold text-slate-900">{clients.length}</div>

@@ -31,7 +31,7 @@ export default function PlaybooksPage() {
         <span className="rounded-md bg-white px-2 py-0.5 font-medium text-accent-700 ring-1 ring-inset ring-accent-200">Recommended Actions → Daily Task Engine</span>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="stagger grid gap-4 lg:grid-cols-2">
         {playbooks.map((pb) => (
           <PlaybookCard key={pb.key} pb={pb} />
         ))}
