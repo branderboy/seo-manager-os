@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MapPin, Cloud, Building2, Sparkles } from "lucide-react";
+import { MapPin, Cloud, Building2, Sparkles, Plug, Settings } from "lucide-react";
 import { STAGES, DASHBOARDS } from "@/lib/stages";
 import { cn } from "@/lib/utils";
 
@@ -82,6 +82,35 @@ export function Sidebar() {
                   >
                     <Icon className="h-4 w-4 opacity-70" />
                     {d.name}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="px-2 pb-2 pt-6 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+            Workspace
+          </div>
+          <ul className="space-y-0.5">
+            {[
+              { href: "/integrations", name: "Integrations", icon: Plug },
+              { href: "/settings", name: "Settings", icon: Settings },
+            ].map((w) => {
+              const active = pathname === w.href;
+              const Icon = w.icon;
+              return (
+                <li key={w.href}>
+                  <Link
+                    href={w.href}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors",
+                      active
+                        ? "bg-accent-50 font-medium text-accent-700"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    )}
+                  >
+                    <Icon className="h-4 w-4 opacity-70" />
+                    {w.name}
                   </Link>
                 </li>
               );

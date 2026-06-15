@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/page-header";
+import { EvidencePanel } from "@/components/investigation/evidence-panel";
 import { Card } from "@/components/ui/card";
 import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -61,6 +62,7 @@ export default function InvestigationPage() {
         badge={`${account.model} track`}
         description="Where the audits run. Each surfaces the evidence behind a symptom — scored, with the single most important finding called out."
       />
+      <EvidencePanel />
       <Tabs
         initial={account.model}
         tabs={models.map((m) => ({
