@@ -55,7 +55,7 @@ export default function HomePage() {
   return (
     <div className="flex h-screen overflow-hidden bg-[#F4F5F6] font-sans text-gray-900">
       {/* SIDEBAR */}
-      <aside className="flex h-full w-[240px] shrink-0 flex-col bg-gradient-to-b from-brand-700 to-brand-900">
+      <aside className="flex h-full w-[240px] shrink-0 flex-col bg-brand-600">
         <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-4">
           <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 font-bold text-white ring-1 ring-white/25">
             {currentUser.initials}
