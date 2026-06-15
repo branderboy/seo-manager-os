@@ -1,16 +1,22 @@
-Build a modern SaaS application called **Search Intelligence OS**.
+Build a modern SaaS platform called **Search Intelligence OS**.
 
-This is NOT an SEO reporting dashboard.
+This is NOT an SEO dashboard.
 
-This is a strategic SEO investigation platform designed to diagnose why businesses are winning or losing in search.
+This is an SEO investigation, diagnosis, strategy, and execution operating system.
 
-The platform should think like a Senior SEO Strategist, SEO Director, or Agency Consultant.
+The platform should operate like a Senior SEO Strategist, Agency Director, Local Search Consultant, SaaS SEO Lead, or Enterprise SEO Manager.
 
-The product should support only three search models initially:
+The purpose is to answer:
 
-1. Local SEO
-2. SaaS SEO
-3. Enterprise SEO
+> Why is this business not winning in search?
+
+before recommending any SEO work.
+
+The platform should support:
+
+* Local SEO
+* SaaS SEO
+* Enterprise SEO
 
 Use:
 
@@ -22,21 +28,76 @@ Use:
 * Lucide Icons
 * Mock data only
 * No authentication
-* No backend required
 * Responsive design
 
-The design should feel like:
+Design inspiration:
 
 * Linear
-* Stripe Dashboard
 * Vercel
+* Stripe
 * Notion
 
-Avoid looking like Ahrefs, Semrush, or a typical SEO ranking tracker.
+Avoid looking like Ahrefs, Semrush, BrightLocal, or a traditional SEO reporting dashboard.
 
 ---
 
-PRODUCT POSITIONING
+CORE PHILOSOPHY
+
+Most SEO tools do:
+
+Data
+↓
+Charts
+↓
+Reports
+
+Search Intelligence OS should do:
+
+Interview
+↓
+Research
+↓
+Diagnosis
+↓
+Strategy
+↓
+Execution
+↓
+Measurement
+
+---
+
+APPLICATION FLOW
+
+The application should be organized into 8 stages.
+
+Stage 1
+Discovery Interview
+
+Stage 2
+Research
+
+Stage 3
+Investigation
+
+Stage 4
+Diagnosis
+
+Stage 5
+Strategy Brief
+
+Stage 6
+Execution Planning
+
+Stage 7
+Execution Tools
+
+Stage 8
+Measurement
+
+---
+
+LANDING PAGE
 
 Headline:
 
@@ -44,43 +105,39 @@ Search Intelligence OS
 
 Subheadline:
 
-Diagnose visibility, authority, trust, retrieval, and revenue opportunities before wasting time on SEO tasks.
+Diagnose search visibility, trust, authority, retrieval, and lead generation problems before wasting time on SEO tasks.
 
-Core philosophy:
+CTA:
 
-Most SEO tools tell you what happened.
-
-Search Intelligence OS explains why it happened.
-
----
-
-LANDING PAGE
-
-Create a professional SaaS landing page.
+Start Investigation
 
 Sections:
 
 Hero
 
-Features
-
 How It Works
 
-Dashboard Preview
+Supported SEO Models
 
-SEO Types Supported
+Platform Screenshots
+
+Features
 
 CTA
 
 ---
 
-NEW INVESTIGATION FLOW
+STAGE 1
 
-First screen after login:
+DISCOVERY INTERVIEW
 
-Create New Investigation
+This should feel like a consultant intake process.
 
-Step 1
+Create a multi-step wizard.
+
+Section 1
+
+Business Information
 
 Business Name
 
@@ -88,442 +145,327 @@ Website
 
 Industry
 
-Primary Competitors
+Locations
 
-Monthly Revenue
+Years In Business
 
-Primary Goal
+Revenue Range
 
-Options:
+Team Size
 
-* More Leads
-* More Calls
-* More Revenue
-* More Visibility
-* More AI Visibility
-* Recovery
+Section 2
 
-Step 2
-
-Business Type
+Business Model
 
 Options:
 
-* Local Business
-* SaaS
-* Enterprise
+Local Service Business
 
-Step 3
+SaaS
 
-Primary Problem
+Enterprise
 
-Options:
+Section 3
 
-* Rankings Down
-* Traffic Down
-* Leads Down
-* Not Ranking
-* AI Visibility Issues
-* Unknown
+Revenue Model
 
----
+Leads
 
-CLASSIFICATION ENGINE
-
-After project creation:
-
-Automatically load the proper dashboard.
-
-If Local Business:
-
-Load Local Search Intelligence Dashboard
-
-If SaaS:
-
-Load SaaS Search Intelligence Dashboard
-
-If Enterprise:
-
-Load Enterprise Search Intelligence Dashboard
-
----
-
-GLOBAL DASHBOARD
-
-Top KPI Cards
-
-Visibility Score
-
-Authority Score
-
-Trust Score
-
-AI Visibility Score
-
-Competitive Position
-
-Opportunity Score
-
-Each score should use realistic mock data.
-
----
-
-LOCAL SEARCH INTELLIGENCE DASHBOARD
-
-Purpose:
-
-Diagnose why local businesses are not generating enough visibility, calls, or leads.
-
-Modules:
-
-Executive Summary
-
-Geo Grid Visibility
-
-GBP Health
-
-Review Intelligence
-
-Entity Strength
-
-Local Authority
-
-Competitor Trust Analysis
-
-AI Visibility
-
-Diagnostic Engine
-
-Roadmap Generator
-
----
-
-LOCAL DASHBOARD DETAILS
-
-Geo Grid Module
-
-Show:
-
-Average Position
-
-Strong Areas
-
-Weak Areas
-
-Distance Decay
-
-Competitor Comparison
-
-GBP Health
-
-Show:
-
-Categories
-
-Services
-
-Photos
-
-Q&A
-
-Review Count
-
-Review Intelligence
-
-Show:
-
-Review Velocity
-
-Review Relevance
-
-Review Sentiment
-
-Review Entity Coverage
-
-Entity Strength
-
-Show:
-
-Business Entity
-
-Service Entities
-
-Location Entities
-
-Authority Signals
-
-Trust Signals
-
-Competitor Trust Analysis
-
-Compare:
-
-Client
-
-Competitor A
-
-Competitor B
-
-Metrics:
-
-Reviews
-
-Authority
-
-Coverage
-
-Mentions
-
-Links
-
-Trust Score
-
-Diagnostic Engine
-
-Output:
-
-Likely Root Cause
-
-Examples:
-
-* Weak proximity
-* Weak review velocity
-* Weak service coverage
-* Weak entity authority
-* Weak location coverage
-* Weak local trust
-
-Include:
-
-Confidence Score
-
-Impact Estimate
-
-Recommended Actions
-
----
-
-SAAS SEARCH INTELLIGENCE DASHBOARD
-
-Purpose:
-
-Diagnose why a SaaS product is not growing organic traffic, trials, demos, or revenue.
-
-Modules:
-
-Executive Summary
-
-BOFU Coverage
-
-Content Coverage
-
-Programmatic SEO
-
-Competitor Gap Analysis
-
-AEO Visibility
-
-Conversion Funnel
-
-Roadmap Generator
-
----
-
-SAAS DETAILS
-
-BOFU Coverage
-
-Track:
-
-Alternative Pages
-
-Comparison Pages
-
-Industry Pages
-
-Use Cases
-
-Integrations
-
-Programmatic SEO
-
-Track:
-
-Template Opportunities
-
-Comparison Opportunities
-
-Industry Opportunities
-
-Tool Opportunities
-
-Competitor Gap Analysis
-
-Show:
-
-Missing Pages
-
-Missing Topics
-
-Missing Entities
-
-Missing AEO Opportunities
-
-Conversion Funnel
-
-Track:
-
-Traffic
+Sales
 
 Trials
 
-Demos
+Subscriptions
 
-Paid Users
+Memberships
 
-Revenue
+Advertising
+
+Section 4
+
+Primary Goals
+
+More Leads
+
+More Calls
+
+More Revenue
+
+More Visibility
+
+More AI Visibility
+
+Traffic Recovery
+
+Section 5
+
+Current Problems
+
+Rankings Down
+
+Traffic Down
+
+Leads Down
+
+Not Ranking
+
+GBP Visibility Problems
+
+AI Visibility Problems
+
+Unknown
+
+Section 6
+
+Competitors
+
+Competitor 1
+
+Competitor 2
+
+Competitor 3
+
+Section 7
+
+Current Assets
+
+Google Business Profile
+
+GA4
+
+Search Console
+
+CRM
+
+Review Platform
+
+SEO Tools
+
+Section 8
+
+Automatic Classification
+
+Based on responses determine:
+
+Local SEO
+
+SaaS SEO
+
+Enterprise SEO
 
 ---
 
-ENTERPRISE SEARCH INTELLIGENCE DASHBOARD
+STAGE 2
 
-Purpose:
+RESEARCH ENGINE
 
-Diagnose visibility issues across large-scale websites.
+Automatically generate a research plan.
 
-Examples:
+For Local SEO
 
-GEICO
+Research:
 
-Netflix
+GBP
 
-Zillow
+Geo Grid
 
-DraftKings
+Reviews
 
-Ticketmaster
+Competitors
 
-Enterprise Modules:
+Entity Signals
 
-Executive Summary
+Service Coverage
+
+Location Coverage
+
+Internal Linking
+
+Local Authority
+
+For SaaS
+
+Research:
+
+Competitors
+
+BOFU Pages
+
+Comparisons
+
+Alternatives
+
+Integrations
+
+Use Cases
+
+Content Coverage
+
+Programmatic Opportunities
+
+For Enterprise
+
+Research:
 
 Crawl Budget
 
 Indexation
 
-Template SEO
+Templates
 
-Internal Link Graph
-
-Entity Graph
-
-AEO Visibility
-
-Forecasting
-
-Roadmap Generator
-
----
-
-ENTERPRISE DETAILS
-
-Crawl Budget
-
-Track:
-
-Pages Crawled
-
-Pages Ignored
-
-Crawl Waste
-
-Priority Pages
-
-Indexation
-
-Track:
-
-Indexed
-
-Discovered
-
-Not Indexed
-
-Orphan Pages
-
-Template SEO
-
-Show:
-
-Top Performing Templates
-
-Underperforming Templates
-
-Traffic by Template
-
-Revenue by Template
-
-Internal Link Graph
-
-Visualize:
-
-Authority Flow
-
-Hub Pages
-
-Orphan Pages
-
-Link Equity Distribution
-
-Entity Graph
-
-Visualize:
+Internal Linking
 
 Entities
 
-Relationships
+Content Inventory
 
-Topics
+Revenue Pages
 
-Authority Connections
+---
 
-Forecasting
+STAGE 3
+
+INVESTIGATION
+
+This is where audits happen.
+
+Local Investigation
+
+GBP Audit
+
+Geo Grid Audit
+
+Review Audit
+
+Entity Audit
+
+Competitor Audit
+
+Authority Audit
+
+AI Visibility Audit
+
+SaaS Investigation
+
+BOFU Audit
+
+Competitor Gap Audit
+
+Programmatic Audit
+
+Content Audit
+
+AEO Audit
+
+Conversion Audit
+
+Enterprise Investigation
+
+Crawl Audit
+
+Indexation Audit
+
+Template Audit
+
+Internal Link Audit
+
+Entity Audit
+
+Forecasting Audit
+
+---
+
+STAGE 4
+
+DIAGNOSIS ENGINE
+
+This is the most important screen.
+
+Do not show a generic audit.
 
 Show:
 
-Traffic Forecast
+Root Cause Analysis
 
-Indexation Forecast
+Example Output:
 
-Revenue Forecast
+Primary Cause
+
+Weak Review Velocity
+
+Confidence
+
+87%
+
+Impact
+
+High
+
+Secondary Cause
+
+Weak Service Coverage
+
+Confidence
+
+74%
+
+Impact
+
+Medium
+
+Possible Causes:
+
+Weak Authority
+
+Weak Internal Linking
+
+Weak Entity Signals
+
+Weak Content Coverage
+
+Weak Proximity
+
+Weak Indexation
+
+Weak BOFU Coverage
+
+Weak Template Performance
 
 ---
 
-AEO VISIBILITY MODULE
+STAGE 5
 
-Present in all dashboard types.
+STRATEGY BRIEF
 
-Track:
+Generate an executive-ready strategy document.
 
-Citation Visibility
+Sections:
 
-Retrieval Visibility
+Executive Summary
 
-AI Overview Presence
+Current State
 
-Entity Clarity
+Key Findings
 
-Brand Mentions
+Root Causes
 
-Competitor Mentions
+Opportunities
 
-Source Authority
+Risks
+
+Recommended Actions
+
+Priority Matrix
+
+Expected Outcomes
 
 ---
 
-ROADMAP GENERATOR
+STAGE 6
 
-Every dashboard should generate:
+EXECUTION PLANNER
+
+Generate:
 
 30-Day Plan
 
@@ -531,7 +473,7 @@ Every dashboard should generate:
 
 180-Day Plan
 
-Each recommendation should include:
+Every recommendation should contain:
 
 Priority
 
@@ -547,17 +489,188 @@ Status
 
 ---
 
-FINAL UX GOAL
+STAGE 7
 
-The application should feel like:
+EXECUTION TOOLS
 
-A Senior SEO Strategist operating system.
+LOCAL SEO
 
-Not an SEO ranking tracker.
+GBP Optimizer
 
-The user should immediately feel:
+Review Strategy
 
-"This tool helps me diagnose search problems and prioritize solutions."
+Internal Linking Planner
 
-Generate a complete clickable SaaS dashboard prototype with polished UI, realistic mock data, charts, tables, cards, navigation, and responsive layouts.
+Location Page Builder
 
+Service Page Planner
+
+Competitor Tracker
+
+AEO Planner
+
+SAAS SEO
+
+BOFU Planner
+
+Alternative Page Planner
+
+Comparison Page Planner
+
+Integration Planner
+
+Industry Page Planner
+
+Programmatic Planner
+
+AEO Planner
+
+ENTERPRISE SEO
+
+Template Planner
+
+Internal Link Planner
+
+Entity Mapper
+
+Indexation Planner
+
+Crawl Budget Planner
+
+Forecasting Tool
+
+---
+
+STAGE 8
+
+MEASUREMENT
+
+Track:
+
+Visibility Score
+
+Authority Score
+
+Trust Score
+
+AI Visibility Score
+
+Lead Score
+
+Revenue Score
+
+Opportunity Score
+
+Competitive Position
+
+---
+
+LOCAL SEO DASHBOARD
+
+Modules:
+
+Executive Summary
+
+Geo Grid
+
+GBP Health
+
+Review Intelligence
+
+Entity Strength
+
+Local Authority
+
+Competitor Trust Analysis
+
+AI Visibility
+
+Diagnostic Summary
+
+Roadmap
+
+---
+
+SAAS SEO DASHBOARD
+
+Modules:
+
+Executive Summary
+
+BOFU Coverage
+
+Alternative Pages
+
+Comparison Pages
+
+Integrations
+
+Use Cases
+
+Programmatic Opportunities
+
+AEO Visibility
+
+Conversion Funnel
+
+Roadmap
+
+---
+
+ENTERPRISE SEO DASHBOARD
+
+Modules:
+
+Executive Summary
+
+Crawl Budget
+
+Indexation
+
+Template Performance
+
+Internal Link Graph
+
+Entity Graph
+
+Forecasting
+
+AEO Visibility
+
+Roadmap
+
+---
+
+AEO MODULE
+
+Include in all dashboards.
+
+Track:
+
+Citation Visibility
+
+Retrieval Visibility
+
+AI Overview Presence
+
+Brand Mentions
+
+Entity Clarity
+
+Competitor Citations
+
+Source Authority
+
+---
+
+FINAL PRODUCT GOAL
+
+The platform should feel like:
+
+A Senior SEO Strategist Operating System.
+
+Not an SEO reporting tool.
+
+The user should feel:
+
+"I now know exactly why this business is not winning and what should happen next."
