@@ -7,9 +7,34 @@ import { ImpactBadge } from "@/components/ui/status-badge";
 import { ButtonLink } from "@/components/ui/button";
 import { EngName } from "@/components/engagement/eng";
 import { diagnosis } from "@/lib/data";
-import type { Cause } from "@/lib/data";
+import type { Cause, DataSource } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Diagnosis Engine" };
+
+/** Audit-trail provenance — color-coded so evidence buckets by source at a glance. */
+const SOURCE_STYLES: Record<DataSource, string> = {
+  GBP: "bg-blue-50 text-blue-700 ring-blue-200",
+  "Local Falcon": "bg-violet-50 text-violet-700 ring-violet-200",
+  "Site Crawl": "bg-slate-100 text-slate-600 ring-slate-200",
+  "Competitor Crawl": "bg-amber-50 text-amber-700 ring-amber-200",
+};
+
+const SOURCE_LABELS: Record<DataSource, string> = {
+  GBP: "Google Business Profile",
+  "Local Falcon": "Geo-grid rank tracker",
+  "Site Crawl": "On-site audit",
+  "Competitor Crawl": "Competitor audit",
+};
+
+function SourceTag({ source }: { source: DataSource }) {
+  return (
+    <span
+      className={`inline-flex shrink-0 items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset ${SOURCE_STYLES[source]}`}
+    >
+      {source}
+    </span>
+  );
+}
 
 function CauseCard({ cause, rank }: { cause: Cause; rank: "Primary" | "Secondary" }) {
   const primary = rank === "Primary";
@@ -45,9 +70,10 @@ function CauseCard({ cause, rank }: { cause: Cause; rank: "Primary" | "Secondary
           </div>
           <ul className="space-y-2">
             {cause.evidence.map((e) => (
-              <li key={e} className="flex items-start gap-2 text-sm text-slate-600">
+              <li key={e.text} className="flex items-start gap-2 text-sm text-slate-600">
                 <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
-                {e}
+                <span className="flex-1">{e.text}</span>
+                <SourceTag source={e.source} />
               </li>
             ))}
           </ul>
@@ -85,6 +111,17 @@ export default function DiagnosisPage() {
       <div className="grid gap-5 lg:grid-cols-2">
         <CauseCard cause={diagnosis.primary} rank="Primary" />
         <CauseCard cause={diagnosis.secondary} rank="Secondary" />
+      </div>
+
+      {/* Source legend — every evidence point is tagged with where it was measured */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-1 text-xs text-slate-400">
+        <span className="font-semibold uppercase tracking-wide">Data sources</span>
+        {(Object.keys(SOURCE_STYLES) as DataSource[]).map((s) => (
+          <span key={s} className="flex items-center gap-1.5">
+            <SourceTag source={s} />
+            <span className="text-slate-500">{SOURCE_LABELS[s]}</span>
+          </span>
+        ))}
       </div>
 
       {/* Possible causes */}

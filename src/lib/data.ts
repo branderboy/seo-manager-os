@@ -130,11 +130,24 @@ export const investigations: Record<SeoModel, Audit[]> = {
 };
 
 // ── Diagnosis engine (Stage 4) ───────────────────────────────────────────────
+/** Where a piece of evidence was measured — the audit-trail source. */
+export type DataSource =
+  | "GBP"
+  | "Local Falcon"
+  | "Site Crawl"
+  | "Competitor Crawl";
+
+export type Evidence = {
+  text: string;
+  /** The tool/dataset this number was pulled from. */
+  source: DataSource;
+};
+
 export type Cause = {
   title: string;
   confidence: number;
   impact: Impact;
-  evidence: string[];
+  evidence: Evidence[];
   model: SeoModel;
 };
 
@@ -146,9 +159,9 @@ export const diagnosis = {
     confidence: 87,
     impact: "High",
     evidence: [
-      "3 reviews/mo vs. market median of 11/mo",
-      "Response rate of 22% (top rival: 96%)",
-      "Geo-grid rank falls off exactly where review trust thins",
+      { text: "3 reviews/mo vs. market median of 11/mo", source: "GBP" },
+      { text: "Response rate of 22% (top rival: 96%)", source: "GBP" },
+      { text: "Geo-grid rank falls off exactly where review trust thins", source: "Local Falcon" },
     ],
     model: "Local",
   } as Cause,
@@ -157,9 +170,9 @@ export const diagnosis = {
     confidence: 74,
     impact: "Medium",
     evidence: [
-      "6 of 12 GBP services have no supporting page",
-      "Location pages exist for 1 of 3 markets",
-      "Competitors hold 2× location-page depth",
+      { text: "6 of 12 GBP services have no supporting page", source: "GBP" },
+      { text: "Location pages exist for 1 of 3 markets", source: "Site Crawl" },
+      { text: "Competitors hold 2× location-page depth", source: "Competitor Crawl" },
     ],
     model: "Local",
   } as Cause,
