@@ -70,8 +70,8 @@ export default function WorkflowPage() {
               <Link
                 href={`/${s.slug}`}
                 className={cn(
-                  "group mb-0 flex-1 rounded-xl border bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-300 hover:bg-accent-50/30 hover:shadow-card",
-                  status === "active" ? "border-accent-300 ring-1 ring-accent-200" : "border-[var(--border)]"
+                  "group mb-0 flex-1 rounded-xl bg-white p-4 shadow-border transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-accent-50/40 hover:shadow-border-hover",
+                  status === "active" && "ring-2 ring-accent-300"
                 )}
               >
                 <div className="flex items-start justify-between gap-3">

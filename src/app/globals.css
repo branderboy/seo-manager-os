@@ -9,6 +9,8 @@
   --border: #e9ecf2;
   --surface: #ffffff;
   --surface-2: #f7f8fb;
+  /* The golden curve — fast start, gentle settle. Default for entrances. */
+  --ease-golden: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
@@ -52,12 +54,7 @@ body {
   }
 }
 .reveal {
-  animation: reveal 0.6s cubic-bezier(0.21, 0.6, 0.35, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    animation: none;
-  }
+  animation: reveal 0.4s var(--ease-golden) both;
 }
 
 /* Score rings draw their arc in on mount (delight through selective emphasis). */
@@ -70,11 +67,31 @@ body {
   }
 }
 .ring-draw {
-  animation: ring-draw 0.9s cubic-bezier(0.21, 0.6, 0.35, 1) both;
+  animation: ring-draw 0.6s var(--ease-golden) both;
 }
+
+/* Reduced motion: still confirm the change, just fast — never remove it. */
 @media (prefers-reduced-motion: reduce) {
+  .reveal,
   .ring-draw {
-    animation: none;
+    animation-duration: 150ms;
+    animation-timing-function: ease;
+  }
+}
+
+@layer utilities {
+  /* Shadows-over-borders: three rgba layers create depth on any background. */
+  .shadow-border {
+    box-shadow:
+      0 0 0 1px rgba(16, 24, 40, 0.06),
+      0 1px 2px -1px rgba(16, 24, 40, 0.06),
+      0 2px 4px 0 rgba(16, 24, 40, 0.04);
+  }
+  .shadow-border-hover {
+    box-shadow:
+      0 0 0 1px rgba(16, 24, 40, 0.08),
+      0 1px 2px -1px rgba(16, 24, 40, 0.08),
+      0 6px 16px -6px rgba(16, 24, 40, 0.12);
   }
 }
 
