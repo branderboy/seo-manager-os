@@ -64,15 +64,15 @@ export function GuidedFlow() {
               >
                 <span
                   className={cn(
-                    "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold transition-colors",
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors",
                     active
-                      ? "bg-orange-400 text-brand-950 ring-4 ring-orange-100"
+                      ? "bg-orange-400 text-white ring-4 ring-orange-100"
                       : done
                         ? "bg-orange-400 text-white"
                         : "bg-slate-100 text-slate-400 group-hover:bg-slate-200"
                   )}
                 >
-                  {done ? <Check className="h-3 w-3" /> : s.n}
+                  {done ? <Check className="h-4 w-4" /> : s.n}
                 </span>
                 {i < STAGES.length - 1 && (
                   <span className={cn("mx-0.5 h-0.5 flex-1 rounded-full", i < idx || i + 1 < furthest ? "bg-orange-300" : "bg-slate-100")} />
