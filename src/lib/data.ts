@@ -338,7 +338,7 @@ export const playbooks: Playbook[] = [
   },
 ];
 
-// ── Measurement trend series (Stage 8) ───────────────────────────────────────
+// ── Reports trend series (Stage 9) ───────────────────────────────────────────
 export const trend = [
   { month: "Jan", visibility: 42, authority: 38, trust: 54, ai: 21 },
   { month: "Feb", visibility: 44, authority: 39, trust: 55, ai: 24 },

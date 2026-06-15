@@ -27,7 +27,7 @@ export type Stage = {
 /**
  * The 9-stage operating flow. Each stage consumes the prior stage's outputs and
  * produces its own — Discovery → Research → Investigation → Diagnosis → Strategy
- * → Execution Planner → Execution Tools → Measurement → Daily Tasks.
+ * → Execution Planner → Playbooks → Daily Tasks → Reports.
  */
 export const STAGES: Stage[] = [
   {
@@ -132,9 +132,9 @@ export const STAGES: Stage[] = [
   },
   {
     n: 9,
-    slug: "measurement",
-    name: "Measurement",
-    short: "Measurement",
+    slug: "reports",
+    name: "Reports",
+    short: "Reports",
     does: "Track results against goal.",
     blurb: "Track rankings, traffic, leads, calls, AI visibility and revenue against the goals set in Discovery.",
     outputs: ["Rankings", "Traffic", "Leads", "Calls", "AI Visibility", "Revenue Impact", "Performance Reports"],

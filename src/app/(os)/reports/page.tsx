@@ -6,18 +6,18 @@ import { AeoPanel } from "@/components/modules/aeo-panel";
 import { TrendChart } from "@/components/charts/charts";
 import { Badge } from "@/components/ui/badge";
 import { EngName } from "@/components/engagement/eng";
-import { ReportShare } from "@/components/measurement/report-share";
+import { ReportShare } from "@/components/reports/report-share";
 import { coreScores, trend } from "@/lib/data";
 
-export const metadata: Metadata = { title: "Measurement" };
+export const metadata: Metadata = { title: "Reports" };
 
-export default function MeasurementPage() {
+export default function ReportsPage() {
   return (
     <>
       <PageHeader
         stage={9}
-        title="Measurement"
-        description="Track results against the goals set in Discovery — rankings, traffic, leads, calls, AI visibility and revenue — rolled into performance reports that feed the next diagnosis."
+        title="Reports"
+        description="Track results against the goals set in Discovery — rankings, traffic, leads, calls, AI visibility and revenue — then approve and share the performance report."
       >
         <Badge variant="accent">
           <EngName />

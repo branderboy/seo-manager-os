@@ -38,7 +38,7 @@ const NAV_TOP = [
 ];
 const NAV_MID = [
   { label: "Tasks", icon: CheckSquare, href: "/tasks" },
-  { label: "Reports", icon: BarChart3, href: "/measurement" },
+  { label: "Reports", icon: BarChart3, href: "/reports" },
   { label: "Settings", icon: Settings, href: "/settings" },
 ];
 
