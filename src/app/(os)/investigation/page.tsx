@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/page-header";
+import { NextStep } from "@/components/layout/next-step";
 import { EvidencePanel } from "@/components/investigation/evidence-panel";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -73,6 +74,7 @@ export default function InvestigationPage() {
           content: <AuditList audits={investigations[m]} />,
         }))}
       />
+      <NextStep from={3} cta="Open the diagnosis" />
     </>
   );
 }

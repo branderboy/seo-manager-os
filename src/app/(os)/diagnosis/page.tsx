@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImpactBadge } from "@/components/ui/status-badge";
-import { ButtonLink } from "@/components/ui/button";
+import { NextStep } from "@/components/layout/next-step";
 import { EngName } from "@/components/engagement/eng";
 import { diagnosis } from "@/lib/data";
 import type { Cause, DataSource } from "@/lib/data";
@@ -157,12 +157,7 @@ export default function DiagnosisPage() {
         </div>
       </Card>
 
-      <div className="flex justify-end">
-        <ButtonLink href="/strategy">
-          Generate strategy brief
-          <ChevronRight className="h-4 w-4" />
-        </ButtonLink>
-      </div>
+      <NextStep from={4} cta="Generate strategy brief" />
     </>
   );
 }

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
+import { NextStep } from "@/components/layout/next-step";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ButtonLink } from "@/components/ui/button";
 import { StatusBadge, ImpactBadge } from "@/components/ui/status-badge";
 import { executionPlans } from "@/lib/data";
 import type { Impact } from "@/lib/data";
@@ -85,12 +84,7 @@ export default function ExecutionPage() {
         ))}
       </div>
 
-      <div className="flex justify-end">
-        <ButtonLink href="/tools">
-          Open execution playbooks
-          <ArrowRight className="h-4 w-4" />
-        </ButtonLink>
-      </div>
+      <NextStep from={6} cta="Open Playbooks" />
     </>
   );
 }

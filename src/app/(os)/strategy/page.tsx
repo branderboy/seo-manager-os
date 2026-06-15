@@ -10,8 +10,9 @@ import {
   Download,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
+import { NextStep } from "@/components/layout/next-step";
 import { Card } from "@/components/ui/card";
-import { Button, ButtonLink } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { PriorityScatter } from "@/components/charts/charts";
 import { EngName, EngModel, EngMarket } from "@/components/engagement/eng";
 import { strategy, priorityMatrix } from "@/lib/data";
@@ -143,12 +144,7 @@ export default function StrategyPage() {
         </div>
       </Card>
 
-      <div className="flex justify-end">
-        <ButtonLink href="/execution">
-          Build execution plan
-          <ArrowRight className="h-4 w-4" />
-        </ButtonLink>
-      </div>
+      <NextStep from={5} cta="Build execution plan" />
     </>
   );
 }
