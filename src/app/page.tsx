@@ -1,17 +1,10 @@
-"use client";
-
-import * as React from "react";
 import Link from "next/link";
 import {
-  X,
   Home,
   Target,
-  Users,
   Building2,
-  DollarSign,
   Briefcase,
   CheckSquare,
-  Mail,
   BarChart3,
   Settings,
   MoreVertical,
@@ -20,78 +13,69 @@ import {
   Plus,
   Bell,
   Star,
-  ChevronDown,
-  RefreshCw,
-  User,
+  Activity as ActivityIcon,
   FileText,
+  Clock,
+  ArrowUpRight,
 } from "lucide-react";
+import { cn, scoreToneClasses } from "@/lib/utils";
+import {
+  currentUser,
+  featuredInvestigation as inv,
+  clientById,
+  personById,
+  money,
+} from "@/lib/model";
 
-type NavItem = { label: string; icon: React.ComponentType<{ className?: string }>; href?: string; active?: boolean };
+const client = clientById(inv.clientId)!;
+const contact = personById(inv.primaryContactId)!;
 
-const NAV_TOP: NavItem[] = [
-  { label: "Dashboard", icon: Home, href: "/clients" },
-  { label: "Investigations", icon: Target, active: true },
-  { label: "People", icon: Users },
+const NAV_TOP = [
+  { label: "Dashboard", icon: Home, href: "/", active: true },
+  { label: "Investigations", icon: Target, href: "/investigation" },
   { label: "Clients", icon: Building2, href: "/clients" },
-  { label: "Opportunities", icon: DollarSign },
   { label: "Strategy Briefs", icon: Briefcase, href: "/strategy" },
 ];
-const NAV_MID: NavItem[] = [
+const NAV_MID = [
   { label: "Tasks", icon: CheckSquare, href: "/tasks" },
-  { label: "My Tracked Emails", icon: Mail, href: "/integrations" },
   { label: "Reports", icon: BarChart3, href: "/measurement" },
+  { label: "Settings", icon: Settings, href: "/settings" },
 ];
 
-function Avatar({ initials, color, size = "h-10 w-10" }: { initials: string; color: string; size?: string }) {
-  return (
-    <span className={`flex ${size} shrink-0 items-center justify-center rounded-full ${color} text-xs font-bold text-white`}>
-      {initials}
-    </span>
-  );
-}
+const SCORES: { key: keyof typeof inv.scores; label: string }[] = [
+  { key: "visibility", label: "Visibility" },
+  { key: "trust", label: "Trust" },
+  { key: "authority", label: "Authority" },
+  { key: "ai", label: "AI" },
+  { key: "lead", label: "Lead" },
+  { key: "revenue", label: "Revenue" },
+];
 
-export default function FirstPage() {
+export default function HomePage() {
   return (
-    <div className="flex h-screen overflow-hidden bg-white font-sans text-gray-900">
+    <div className="flex h-screen overflow-hidden bg-[#F4F5F6] font-sans text-gray-900">
       {/* SIDEBAR */}
       <aside className="flex h-full w-[240px] shrink-0 flex-col bg-[#333D49]">
-        {/* Profile */}
-        <div className="flex h-[72px] cursor-pointer items-center justify-between border-b border-white/10 px-4 hover:bg-white/5">
-          <div className="flex items-center gap-3 overflow-hidden">
-            <Avatar initials="JW" color="bg-gray-400" />
-            <div className="truncate">
-              <div className="truncate text-sm font-medium text-white">Josh Williamson</div>
-              <div className="truncate text-xs text-slate-400">Boring SEO Agency</div>
-            </div>
-          </div>
-          <X className="h-4 w-4 shrink-0 text-slate-400 hover:text-white" />
-        </div>
-
-        {/* Nav */}
-        <div className="flex-1 overflow-y-auto py-4">
-          {NAV_TOP.map((n) => (
-            <NavButton key={n.label} item={n} />
-          ))}
-          <div className="my-2 border-t border-white/10" />
-          {NAV_MID.map((n) => (
-            <NavButton key={n.label} item={n} />
-          ))}
-          <div className="my-2 border-t border-white/10" />
-          <div className="flex items-center justify-between pr-4">
-            <NavButton item={{ label: "Settings", icon: Settings, href: "/settings" }} className="flex-1" />
-            <button className="shrink-0 rounded bg-[#2196F3] px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-blue-500">
-              PURCHASE
-            </button>
+        <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-4">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-400 font-bold text-white">
+            {currentUser.initials}
+          </span>
+          <div className="truncate">
+            <div className="truncate text-sm font-medium text-white">{currentUser.name}</div>
+            <div className="truncate text-xs text-slate-400">{currentUser.agency}</div>
           </div>
         </div>
-
-        {/* Branding footer */}
+        <nav className="flex-1 overflow-y-auto py-3">
+          {NAV_TOP.map((n) => <NavItem key={n.label} {...n} />)}
+          <div className="my-2 border-t border-white/10" />
+          {NAV_MID.map((n) => <NavItem key={n.label} {...n} />)}
+        </nav>
         <div className="flex items-center justify-between border-t border-white/10 p-4">
-          <div className="flex items-center gap-2 text-sm font-bold tracking-wide text-white">
+          <div className="flex items-center gap-2 text-xs font-bold tracking-wide text-white">
             <span className="flex h-5 w-5 items-center justify-center rounded-sm bg-white">
               <span className="h-3 w-3 rounded-sm bg-[#333D49]" />
             </span>
-            <span>SEO MANAGER OS</span>
+            SEO MANAGER OS
           </div>
           <MoreVertical className="h-4 w-4 text-slate-400" />
         </div>
@@ -102,263 +86,240 @@ export default function FirstPage() {
         {/* Green header */}
         <header className="flex h-[56px] shrink-0 items-center justify-between bg-[#4CAF50] px-4">
           <div className="flex max-w-3xl flex-1 items-center gap-6">
-            <span className="text-lg font-medium text-white">Investigations</span>
+            <span className="text-lg font-medium text-white">Dashboard</span>
             <div className="relative max-w-xl flex-1">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/70" />
               <input
                 placeholder="Search"
-                className="w-full rounded-md border border-transparent bg-black/10 py-1.5 pl-9 pr-4 text-sm text-white placeholder-white/70 outline-none transition-colors hover:bg-black/20 focus:border-green-600 focus:bg-white focus:text-gray-900"
+                className="w-full rounded-md border border-transparent bg-black/10 py-1.5 pl-9 pr-4 text-sm text-white placeholder-white/70 outline-none hover:bg-black/20 focus:bg-white focus:text-gray-900"
               />
             </div>
           </div>
           <div className="flex items-center gap-5 text-white/90">
             <div className="hidden text-sm md:block">
-              Your trial ends in <span className="font-bold text-white">14 days</span>
+              Trial ends in <span className="font-bold text-white">{currentUser.trialDays} days</span>
             </div>
-            <button className="rounded bg-white/20 px-4 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-white/30">
-              Purchase
-            </button>
-            <HelpCircle className="h-5 w-5 cursor-pointer hover:text-white" />
-            <Plus className="h-[22px] w-[22px] cursor-pointer hover:text-white" />
-            <Bell className="h-5 w-5 cursor-pointer hover:text-white" />
+            <HelpCircle className="h-5 w-5" />
+            <Plus className="h-[22px] w-[22px]" />
+            <Bell className="h-5 w-5" />
           </div>
         </header>
 
-        {/* 3-column workspace */}
-        <main className="flex flex-1 overflow-hidden bg-white">
-          <DetailsColumn />
-          <ActivityColumn />
-          <RelatedColumn />
+        {/* WORKSPACE — laid out for glanceability: identity → scores → detail */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="mx-auto max-w-6xl space-y-5 p-6">
+            {/* 1 — Record identity (read first) */}
+            <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <span className={cn("flex h-12 w-12 items-center justify-center rounded-lg text-sm font-bold text-white", client.color)}>
+                    {client.initials}
+                  </span>
+                  <div>
+                    <h1 className="text-xl font-semibold tracking-tight text-gray-900">{inv.name}</h1>
+                    <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-500">
+                      <Link href="/clients" className="font-medium text-blue-600 hover:underline">{client.name}</Link>
+                      <span>·</span><span>{inv.model} SEO</span>
+                      <span>·</span><span className="font-semibold text-gray-700">{money(inv.value)}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Pill tone="open">{inv.status}</Pill>
+                  <Pill tone="stage">{inv.stageLabel}</Pill>
+                  <Star className="h-[18px] w-[18px] fill-current text-yellow-400" />
+                </div>
+              </div>
+              {/* Stage progress — one glance shows how far along */}
+              <div className="mt-4">
+                <div className="mb-1 flex items-center justify-between text-xs text-gray-500">
+                  <span>Stage {inv.currentStage} of 9 · {inv.owner}</span>
+                  <span className="font-medium text-gray-700">{inv.progress}%</span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+                  <div className="h-full rounded-full bg-[#4CAF50]" style={{ width: `${inv.progress}%` }} />
+                </div>
+              </div>
+            </section>
+
+            {/* 2 — Scores: the at-a-glance numbers */}
+            <section>
+              <SectionLabel>Search health</SectionLabel>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                {SCORES.map((s) => {
+                  const v = inv.scores[s.key];
+                  return (
+                    <div key={s.key} className="rounded-lg border border-gray-200 bg-white p-3.5 shadow-sm">
+                      <div className="text-[11px] font-medium uppercase tracking-wide text-gray-400">{s.label}</div>
+                      <div className="mt-1 flex items-baseline gap-2">
+                        <span className="text-2xl font-semibold tracking-tight text-gray-900">{v}</span>
+                        <span className={cn("rounded px-1.5 py-0.5 text-[10px] font-semibold ring-1 ring-inset", scoreToneClasses(v))}>
+                          {v >= 75 ? "Good" : v >= 50 ? "Fair" : "Low"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* 3 — Root cause callout (the "why", high contrast) */}
+            <section className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-[#333D49] p-5 text-white">
+              <div>
+                <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Primary root cause</div>
+                <div className="mt-0.5 text-lg font-semibold">{inv.rootCause.title}</div>
+              </div>
+              <div className="flex items-center gap-6 text-sm">
+                <div>
+                  <div className="text-slate-400">Confidence</div>
+                  <div className="text-lg font-semibold">{inv.rootCause.confidence}%</div>
+                </div>
+                <div>
+                  <div className="text-slate-400">Impact</div>
+                  <div className="text-lg font-semibold">{inv.rootCause.impact}</div>
+                </div>
+                <Link href="/diagnosis" className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/20">
+                  Diagnosis <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </section>
+
+            {/* 4 — Grouped detail: details · activity · related */}
+            <div className="grid gap-5 lg:grid-cols-3">
+              {/* Details */}
+              <Panel title="Details" icon={FileText}>
+                <DetailRow label="Pipeline" value={inv.pipeline} />
+                <DetailRow label="Stage" value={inv.stageLabel} />
+                <DetailRow label="Target date" value={inv.target} />
+                <DetailRow label="Source" value={inv.source} />
+                <DetailRow label="Owner" value={inv.owner} />
+                <div className="pt-3">
+                  <div className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-gray-400">Primary contact</div>
+                  <div className="flex items-center gap-3">
+                    <span className={cn("flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white", contact.color)}>
+                      {contact.initials}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-sm font-medium text-blue-600">{contact.name}</div>
+                      <div className="truncate text-xs text-gray-500">{contact.title} · {contact.email}</div>
+                    </div>
+                  </div>
+                </div>
+              </Panel>
+
+              {/* Activity */}
+              <Panel title="Activity" icon={ActivityIcon} count={inv.activity.length}>
+                <ol className="space-y-3">
+                  {inv.activity.map((a) => (
+                    <li key={a.id} className="flex items-start gap-3">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#4CAF50]" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm text-gray-800">{a.text}</p>
+                        <p className="text-xs text-gray-400">{a.day} · {a.time}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </Panel>
+
+              {/* Related */}
+              <Panel title="Related" icon={Briefcase}>
+                <RelatedGroup label="Tasks" count={inv.tasks.length}>
+                  {inv.tasks.slice(0, 3).map((t) => (
+                    <li key={t.id} className="flex items-center justify-between gap-2 py-1.5">
+                      <span className="flex items-center gap-2 truncate text-sm text-gray-700">
+                        <CheckSquare className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+                        <span className="truncate">{t.title}</span>
+                      </span>
+                      <span className="shrink-0 text-xs text-gray-400">{t.due}</span>
+                    </li>
+                  ))}
+                </RelatedGroup>
+                <RelatedGroup label="Files" count={inv.files.length}>
+                  {inv.files.map((f) => (
+                    <li key={f.id} className="flex items-center justify-between gap-2 py-1.5 text-sm text-gray-700">
+                      <span className="flex items-center gap-2 truncate"><FileText className="h-3.5 w-3.5 shrink-0 text-gray-400" /><span className="truncate">{f.name}</span></span>
+                      <span className="shrink-0 text-xs text-gray-400">{f.size}</span>
+                    </li>
+                  ))}
+                </RelatedGroup>
+                <RelatedGroup label="Strategy briefs" count={inv.briefs.length}>
+                  {inv.briefs.map((b) => (
+                    <li key={b.id} className="flex items-center justify-between gap-2 py-1.5 text-sm text-gray-700">
+                      <span className="flex items-center gap-2 truncate"><Briefcase className="h-3.5 w-3.5 shrink-0 text-gray-400" /><span className="truncate">{b.title}</span></span>
+                      <Pill tone="stage">{b.status}</Pill>
+                    </li>
+                  ))}
+                </RelatedGroup>
+              </Panel>
+            </div>
+
+            <div className="flex items-center gap-1 pb-2 text-xs text-gray-400">
+              <Clock className="h-3 w-3" /> Synced {inv.synced}
+            </div>
+          </div>
         </main>
       </div>
     </div>
   );
 }
 
-function NavButton({ item, className = "" }: { item: NavItem; className?: string }) {
-  const Icon = item.icon;
-  const inner = (
-    <span className="flex items-center gap-4">
-      <Icon className={`h-[18px] w-[18px] ${item.active ? "text-[#2196F3]" : "text-slate-400"}`} />
-      <span>{item.label}</span>
-    </span>
-  );
-  const cls = `flex w-full items-center justify-between border-l-4 py-3 pr-4 text-sm text-white transition-colors ${
-    item.active ? "border-blue-500 bg-black/10 pl-5" : "border-transparent pl-6 hover:bg-white/5"
-  } ${className}`;
-  return item.href ? (
-    <Link href={item.href} className={cls}>
-      {inner}
+function NavItem({ label, icon: Icon, href, active }: { label: string; icon: React.ComponentType<{ className?: string }>; href: string; active?: boolean }) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "flex items-center gap-3.5 border-l-4 py-2.5 text-sm text-white/90 transition-colors",
+        active ? "border-[#2196F3] bg-black/10 pl-5 text-white" : "border-transparent pl-6 hover:bg-white/5"
+      )}
+    >
+      <Icon className={cn("h-[18px] w-[18px]", active ? "text-[#2196F3]" : "text-slate-400")} />
+      {label}
     </Link>
-  ) : (
-    <button className={cls}>{inner}</button>
   );
 }
 
-// ── Column 1: Details ────────────────────────────────────────────────────────
-function DetailsColumn() {
-  const fields: { label: string; value: React.ReactNode; chevron?: boolean }[] = [
-    { label: "Name", value: "SaaS Technical Audit" },
-    { label: "Pipeline", value: "Investigations", chevron: true },
-    { label: "Target Date", value: "2/12/2026", chevron: true },
-    { label: "Company", value: <span className="text-blue-600 hover:underline">Acme Corp (sample)</span> },
-    { label: "Status", value: "Open", chevron: true },
-    { label: "Stage", value: "Follow-up", chevron: true },
-    { label: "Source", value: "No Source", chevron: true },
-  ];
-  return (
-    <div className="flex w-[320px] shrink-0 flex-col overflow-y-auto border-r border-gray-200">
-      <div className="border-b border-gray-200 p-5">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded border border-gray-200 bg-gray-100">
-              <DollarSign className="h-5 w-5 text-gray-400" />
-            </span>
-            <div>
-              <h1 className="cursor-pointer text-base font-medium text-green-600 hover:underline">SaaS Technical Audit</h1>
-              <p className="mt-0.5 text-sm text-gray-500">Acme Corp (sample) / $12,000</p>
-            </div>
-          </div>
-          <div className="flex gap-2 text-gray-400">
-            <Star className="h-[18px] w-[18px] cursor-pointer fill-current text-yellow-400" />
-            <MoreVertical className="h-[18px] w-[18px] cursor-pointer hover:text-gray-600" />
-          </div>
-        </div>
-      </div>
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return <div className="mb-2 px-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-gray-400">{children}</div>;
+}
 
-      <div className="p-5">
-        <div className="border-b border-gray-100 py-3">
-          <label className="mb-1 block text-xs font-medium text-gray-500">Primary Contact</label>
-          <div className="mt-2 flex items-center gap-3">
-            <Avatar initials="JL" color="bg-blue-500" />
-            <div>
-              <div className="cursor-pointer text-sm font-medium text-blue-600 hover:underline">Jon Lee</div>
-              <div className="text-xs text-gray-500">
-                CEO
-                <br />
-                (415) 355-4776 | <span className="text-blue-600 hover:underline">jonlee@acmecorp.com</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        {fields.map((f) => (
-          <div key={f.label} className="border-b border-gray-100 py-3 last:border-0">
-            <label className="mb-1 block text-xs font-medium text-gray-500">{f.label}</label>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-900">{f.value}</span>
-              {f.chevron && <ChevronDown className="h-3.5 w-3.5 text-gray-400" />}
-            </div>
-          </div>
-        ))}
+function Panel({ title, icon: Icon, count, children }: { title: string; icon: React.ComponentType<{ className?: string }>; count?: number; children: React.ReactNode }) {
+  return (
+    <section className="rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div className="flex items-center gap-2 border-b border-gray-100 px-4 py-3">
+        <Icon className="h-4 w-4 text-gray-400" />
+        <h3 className="text-sm font-semibold text-gray-800">{title}</h3>
+        {typeof count === "number" && <span className="text-xs text-gray-400">({count})</span>}
       </div>
+      <div className="p-4">{children}</div>
+    </section>
+  );
+}
+
+function DetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between border-b border-gray-100 py-2 last:border-0">
+      <span className="text-xs font-medium uppercase tracking-wide text-gray-400">{label}</span>
+      <span className="text-sm font-medium text-gray-800">{value}</span>
     </div>
   );
 }
 
-// ── Column 2: Activity log ───────────────────────────────────────────────────
-function ActivityColumn() {
-  const [tab, setTab] = React.useState<"log" | "note">("log");
-  const stats = [
-    { value: "0", label: "Interactions" },
-    { value: "--", label: "Last Contacted" },
-    { value: "--", label: "Inactive Days" },
-    { value: "0", label: "Days in Stage" },
-  ];
-  const feed: { icon: React.ComponentType<{ className?: string }>; node: React.ReactNode; time: string }[] = [
-    { icon: DollarSign, node: <>You assigned this to <span className="text-blue-600">&quot;You&quot;</span></>, time: "1:04 PM" },
-    { icon: DollarSign, node: <>You added this Investigation</>, time: "1:04 PM" },
-    { icon: User, node: <>You added the Person <span className="text-blue-600">&quot;Jo Bennett, (sample)&quot;</span></>, time: "1:04 PM" },
-    { icon: User, node: <>You added the Person <span className="text-blue-600">&quot;Jon Lee&quot;</span></>, time: "1:04 PM" },
-  ];
+function RelatedGroup({ label, count, children }: { label: string; count: number; children: React.ReactNode }) {
   return (
-    <div className="flex flex-1 flex-col overflow-y-auto bg-[#F4F5F6]">
-      <div className="mx-auto w-full max-w-3xl p-6">
-        <div className="mb-2 flex items-center gap-1 text-xs text-gray-500">
-          <span>Synced 4 minutes ago</span>
-          <RefreshCw className="h-3 w-3" />
-        </div>
-
-        {/* Stats */}
-        <div className="mb-6 flex divide-x divide-gray-200 rounded-sm border border-gray-200 bg-white text-center shadow-sm">
-          {stats.map((s) => (
-            <div key={s.label} className="flex-1 py-3">
-              <div className="text-2xl font-light text-gray-800">{s.value}</div>
-              <div className="mt-1 text-xs uppercase tracking-wide text-gray-500">{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Input */}
-        <div className="mb-6 rounded-sm border border-gray-200 bg-white shadow-sm">
-          <div className="flex border-b border-gray-200">
-            <button
-              onClick={() => setTab("log")}
-              className={`px-6 py-3 text-sm font-medium ${tab === "log" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
-            >
-              LOG ACTIVITY
-            </button>
-            <button
-              onClick={() => setTab("note")}
-              className={`px-6 py-3 text-sm font-medium ${tab === "note" ? "border-b-2 border-blue-600 text-blue-600" : "text-gray-500 hover:text-gray-700"}`}
-            >
-              CREATE NOTE
-            </button>
-          </div>
-          <div className="p-4">
-            <div className="mb-2 flex w-max cursor-pointer items-center text-sm text-gray-600 hover:text-gray-900">
-              {tab === "log" ? "To Do" : "Note"} <ChevronDown className="ml-1 h-3.5 w-3.5" />
-            </div>
-            <input
-              placeholder={tab === "log" ? "Click here to add a note" : "Write a note…"}
-              className="w-full border-b-2 border-blue-500 py-2 text-sm outline-none placeholder-gray-400"
-            />
-          </div>
-        </div>
-
-        {/* Feed */}
-        <div className="mb-2 flex items-center justify-between px-1">
-          <h3 className="text-sm font-medium text-gray-500">Today</h3>
-          <div className="cursor-pointer text-sm text-gray-500">
-            Showing: <span className="font-medium text-gray-900">All Activity</span> <ChevronDown className="inline h-3.5 w-3.5" />
-          </div>
-        </div>
-        <div className="divide-y divide-gray-100 rounded-sm border border-gray-200 bg-white shadow-sm">
-          {feed.map((f, i) => {
-            const Icon = f.icon;
-            return (
-              <div key={i} className="flex items-start gap-4 p-4">
-                <Icon className="mt-1 h-4 w-4 text-gray-400" />
-                <p className="flex-1 text-sm text-gray-800">{f.node}</p>
-                <span className="whitespace-nowrap text-xs text-gray-400">{f.time}</span>
-              </div>
-            );
-          })}
-        </div>
+    <div className="border-b border-gray-100 py-2 last:border-0">
+      <div className="mb-1 flex items-center justify-between">
+        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{label}</span>
+        <span className="text-xs text-gray-400">{count}</span>
       </div>
+      {count > 0 ? <ul className="divide-y divide-gray-50">{children}</ul> : <p className="py-1 text-xs text-gray-300">None</p>}
     </div>
   );
 }
 
-// ── Column 3: Related items ──────────────────────────────────────────────────
-function RelatedColumn() {
-  const [open, setOpen] = React.useState<Record<string, boolean>>({ People: true });
-  const toggle = (k: string) => setOpen((o) => ({ ...o, [k]: !o[k] }));
-
-  const sections = [
-    { key: "People", count: 2 },
-    { key: "Companies", count: 1 },
-    { key: "Tasks", count: 0 },
-    { key: "Files", count: 0 },
-    { key: "Calendar Events", count: 0 },
-    { key: "Strategy Briefs", count: 0 },
-  ];
-
-  return (
-    <div className="hidden w-[300px] shrink-0 overflow-y-auto border-l border-gray-200 bg-white lg:block">
-      {sections.map((s) => (
-        <div key={s.key} className="border-b border-gray-200">
-          <div
-            onClick={() => toggle(s.key)}
-            className="flex cursor-pointer items-center justify-between p-4 transition-colors hover:bg-gray-50"
-          >
-            <div className="flex items-center text-sm font-medium text-gray-600">
-              {s.key} ({s.count})
-              <ChevronDown className={`ml-1 h-3.5 w-3.5 text-gray-400 transition-transform ${open[s.key] ? "rotate-180" : ""}`} />
-            </div>
-            <Plus className="h-4 w-4 text-blue-500 hover:text-blue-700" />
-          </div>
-          {open[s.key] && s.key === "People" && (
-            <div className="px-4 pb-4">
-              <div className="space-y-4 pt-2">
-                <PersonRow initials="JL" color="bg-blue-500" name="Jon Lee" meta="(primary contact)" sub="CEO at Acme Corp" contact="(415) 355-4776 | jonlee@acme…" />
-                <PersonRow initials="JB" color="bg-rose-500" name="Jo Bennett" meta=", (sample)" sub="CEO at Sabre Inc (sa…" contact="jo@sabreinc.com" />
-                <div className="flex cursor-pointer items-center text-sm font-bold text-blue-600 hover:underline">
-                  <FileText className="mr-1 h-3.5 w-3.5" /> VIEW IN LIST
-                </div>
-              </div>
-            </div>
-          )}
-          {open[s.key] && s.key !== "People" && (
-            <div className="px-4 pb-4 text-sm text-gray-400">Nothing here yet.</div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function PersonRow({ initials, color, name, meta, sub, contact }: { initials: string; color: string; name: string; meta: string; sub: string; contact: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <Avatar initials={initials} color={color} size="h-8 w-8" />
-      <div>
-        <div className="text-sm text-gray-900">
-          <span className="cursor-pointer font-medium text-blue-600 hover:underline">{name}</span>
-          {meta}
-        </div>
-        <div className="mt-0.5 text-xs text-gray-500">{sub}</div>
-        <div className="mt-0.5 text-xs text-blue-600 hover:underline">{contact}</div>
-      </div>
-    </div>
-  );
+function Pill({ tone, children }: { tone: "open" | "stage"; children: React.ReactNode }) {
+  const cls = tone === "open"
+    ? "bg-emerald-50 text-emerald-700 ring-emerald-200"
+    : "bg-slate-100 text-slate-600 ring-slate-200";
+  return <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset", cls)}>{children}</span>;
 }

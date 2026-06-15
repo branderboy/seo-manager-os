@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { clients } from "@/lib/crm";
+import { clients, type Client } from "@/lib/model";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Clients" };
@@ -15,9 +15,15 @@ const modelIcon = { Local: MapPin, SaaS: Cloud, Enterprise: Building2 } as const
 const dashHref = { Local: "/dashboards/local", SaaS: "/dashboards/saas", Enterprise: "/dashboards/enterprise" } as const;
 const statusVariant = { Active: "good", Onboarding: "accent", Paused: "warn" } as const;
 
+/** Overall health = average of the six search scores. */
+const overall = (c: Client) =>
+  Math.round(
+    (c.scores.visibility + c.scores.authority + c.scores.trust + c.scores.ai + c.scores.lead + c.scores.revenue) / 6
+  );
+
 export default function ClientsPage() {
   const active = clients.filter((c) => c.status === "Active").length;
-  const avgHealth = Math.round(clients.reduce((s, c) => s + c.health, 0) / clients.length);
+  const avgHealth = Math.round(clients.reduce((s, c) => s + overall(c), 0) / clients.length);
 
   return (
     <>
@@ -77,7 +83,7 @@ export default function ClientsPage() {
             </thead>
             <tbody>
               {[...clients]
-                .sort((a, b) => b.health - a.health)
+                .sort((a, b) => overall(b) - overall(a))
                 .map((c) => {
                   const Icon = modelIcon[c.model];
                   return (
@@ -103,12 +109,12 @@ export default function ClientsPage() {
                       <td className="px-3 py-3.5">
                         <div className="flex items-center gap-2">
                           <div className="w-16">
-                            <Progress value={c.health} />
+                            <Progress value={overall(c)} />
                           </div>
-                          <span className="text-xs font-medium text-slate-500">{c.health}</span>
+                          <span className="text-xs font-medium text-slate-500">{overall(c)}</span>
                         </div>
                       </td>
-                      <td className="px-3 py-3.5 text-slate-600">{c.ai}</td>
+                      <td className="px-3 py-3.5 text-slate-600">{c.scores.ai}</td>
                       <td className="px-3 py-3.5">
                         <Badge variant={statusVariant[c.status]}>{c.status}</Badge>
                       </td>
