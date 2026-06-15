@@ -51,7 +51,7 @@ export function TaskBoard() {
           sub={`${openToday.length} still open`}
         />
         <StatCard
-          icon={<Flame className="h-4 w-4 text-orange-500" />}
+          icon={<Flame className="h-4 w-4 text-amber-500" />}
           label="Current streak"
           value={`${taskStats.streakDays} days`}
           sub="On-time completion"

@@ -39,7 +39,7 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-[240px] shrink-0 flex-col bg-brand-700 lg:flex">
+    <aside className="hidden w-[240px] shrink-0 flex-col bg-brand-800 lg:flex">
       <div className="sticky top-0 flex h-screen flex-col">
         {/* Profile */}
         <Link
@@ -105,8 +105,8 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
                     className={cn(
                       "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
                       active
-                        ? "bg-white text-brand-700 ring-2 ring-sky-300"
-                        : "border-2 border-sky-300 text-white"
+                        ? "bg-white text-brand-800 ring-2 ring-brand-300"
+                        : "border-2 border-brand-300 text-white"
                     )}
                   >
                     {it.step}

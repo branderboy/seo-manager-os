@@ -55,7 +55,7 @@ export default function HomePage() {
   return (
     <div className="flex h-screen overflow-hidden bg-[#F4F5F6] font-sans text-gray-900">
       {/* SIDEBAR */}
-      <aside className="flex h-full w-[240px] shrink-0 flex-col bg-brand-700">
+      <aside className="flex h-full w-[240px] shrink-0 flex-col bg-brand-800">
         <div className="flex h-[72px] items-center gap-3 border-b border-white/10 px-4">
           <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 font-bold text-white ring-1 ring-white/25">
             {currentUser.initials}
@@ -127,7 +127,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-2">
                   <Pill tone="open">{inv.status}</Pill>
                   <Pill tone="stage">{inv.stageLabel}</Pill>
-                  <Star className="h-[18px] w-[18px] fill-current text-yellow-400" />
+                  <Star className="h-[18px] w-[18px] fill-current text-amber-400" />
                 </div>
               </div>
               {/* Stage progress — one glance shows how far along */}
