@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 const dashIcons = { local: MapPin, saas: Cloud, enterprise: Building2 } as const;
 
-type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }>; badge?: number };
+type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }>; step?: number };
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -26,7 +26,7 @@ export function Sidebar() {
   const main: Item[] = [
     { href: "/clients", label: "Clients", icon: Users },
     { href: "/workflow", label: "Workflow", icon: Workflow },
-    ...STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, badge: s.n })),
+    ...STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n })),
   ];
   const dashboards: Item[] = [
     { href: "/dashboards/local", label: "Local SEO", icon: dashIcons.local },
@@ -93,26 +93,27 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
             <Link
               href={it.href}
               className={cn(
-                "flex items-center justify-between border-l-4 py-2.5 pr-4 text-sm transition-colors",
+                "flex items-center border-l-4 py-2.5 pr-4 text-sm transition-colors",
                 active
                   ? "border-[#2196F3] bg-black/10 pl-5 text-white"
                   : "border-transparent pl-6 text-white/90 hover:bg-white/5"
               )}
             >
               <span className="flex items-center gap-3.5">
-                <Icon className={cn("h-[18px] w-[18px]", active ? "text-[#2196F3]" : "text-slate-400")} />
+                {typeof it.step === "number" ? (
+                  <span
+                    className={cn(
+                      "flex h-[18px] w-[18px] items-center justify-center rounded-full text-[10px] font-semibold",
+                      active ? "bg-[#2196F3] text-white" : "border border-white/25 text-slate-400"
+                    )}
+                  >
+                    {it.step}
+                  </span>
+                ) : (
+                  <Icon className={cn("h-[18px] w-[18px]", active ? "text-[#2196F3]" : "text-slate-400")} />
+                )}
                 <span className="truncate">{it.label}</span>
               </span>
-              {typeof it.badge === "number" && (
-                <span
-                  className={cn(
-                    "flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-semibold",
-                    active ? "bg-[#2196F3] text-white" : "bg-white/10 text-slate-300"
-                  )}
-                >
-                  {it.badge}
-                </span>
-              )}
             </Link>
           </li>
         );

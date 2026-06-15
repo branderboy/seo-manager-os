@@ -163,22 +163,22 @@ export default function HomePage() {
               </div>
             </section>
 
-            {/* 3 — Root cause callout (the "why", high contrast) */}
-            <section className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-[#333D49] p-5 text-white">
+            {/* 3 — Root cause callout (the "why", blue outline) */}
+            <section className="flex flex-wrap items-center justify-between gap-4 rounded-lg border-2 border-accent-500 bg-transparent p-5">
               <div>
-                <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Primary root cause</div>
-                <div className="mt-0.5 text-lg font-semibold">{inv.rootCause.title}</div>
+                <div className="text-[11px] font-medium uppercase tracking-wide text-accent-600">Primary root cause</div>
+                <div className="mt-0.5 text-lg font-semibold text-gray-900">{inv.rootCause.title}</div>
               </div>
               <div className="flex items-center gap-6 text-sm">
                 <div>
-                  <div className="text-slate-400">Confidence</div>
-                  <div className="text-lg font-semibold">{inv.rootCause.confidence}%</div>
+                  <div className="text-gray-400">Confidence</div>
+                  <div className="text-lg font-semibold text-gray-900">{inv.rootCause.confidence}%</div>
                 </div>
                 <div>
-                  <div className="text-slate-400">Impact</div>
-                  <div className="text-lg font-semibold">{inv.rootCause.impact}</div>
+                  <div className="text-gray-400">Impact</div>
+                  <div className="text-lg font-semibold text-gray-900">{inv.rootCause.impact}</div>
                 </div>
-                <Link href="/diagnosis" className="inline-flex items-center gap-1 rounded-lg bg-white/10 px-3 py-2 text-sm font-medium hover:bg-white/20">
+                <Link href="/diagnosis" className="inline-flex items-center gap-1 rounded-lg border border-accent-500 px-3 py-2 text-sm font-medium text-accent-700 hover:bg-accent-50">
                   Diagnosis <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </div>

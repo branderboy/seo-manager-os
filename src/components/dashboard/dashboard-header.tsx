@@ -30,7 +30,7 @@ export function DashboardHeader({
               className={cn(
                 "inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-medium transition-colors",
                 on
-                  ? "border-slate-900 bg-slate-900 text-white"
+                  ? "border-accent-500 bg-transparent text-accent-700 ring-1 ring-accent-500"
                   : "border-[var(--border)] bg-white text-slate-600 hover:bg-slate-50"
               )}
             >
