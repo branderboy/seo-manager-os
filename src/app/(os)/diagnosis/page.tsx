@@ -68,16 +68,16 @@ export default function DiagnosisPage() {
       />
 
       {/* Headline summary */}
-      <Card className="border-slate-900 bg-slate-900 text-white">
+      <Card className="border-2 border-accent-500 bg-transparent">
         <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10">
-            <AlertTriangle className="h-5 w-5 text-accent-300" />
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-50">
+            <AlertTriangle className="h-5 w-5 text-accent-600" />
           </span>
           <div>
-            <div className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent-300">
+            <div className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent-600">
               Diagnosis · <EngName />
             </div>
-            <p className="text-[15px] leading-relaxed text-slate-200">{diagnosis.summary}</p>
+            <p className="text-[15px] leading-relaxed text-slate-600">{diagnosis.summary}</p>
           </div>
         </div>
       </Card>
