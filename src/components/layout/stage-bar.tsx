@@ -35,35 +35,35 @@ export function StageBar() {
   const { engagement } = useEngagement();
 
   return (
-    <header className="flex h-[56px] shrink-0 items-center justify-between bg-[#4CAF50] px-4">
+    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md">
       <div className="flex max-w-3xl flex-1 items-center gap-2 sm:gap-4">
         <MobileNav />
-        <span className="whitespace-nowrap text-lg font-medium text-white">{title}</span>
+        <span className="whitespace-nowrap text-base font-semibold tracking-tight text-slate-900">{title}</span>
         {engagement.business && (
-          <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full bg-black/15 px-2.5 py-1 text-xs font-medium text-white xl:inline-flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-white/80" />
+          <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-xs font-medium text-slate-600 xl:inline-flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent-500" />
             {engagement.business} · {engagement.model}
           </span>
         )}
         <div className="relative max-w-xl flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/70" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search"
-            className="w-full rounded-md border border-transparent bg-black/10 py-1.5 pl-9 pr-4 text-sm text-white placeholder-white/70 outline-none transition-colors hover:bg-black/20 focus:border-green-700 focus:bg-white focus:text-gray-900 focus:placeholder-gray-400"
+            className="w-full rounded-md border border-slate-200 bg-slate-50 py-1.5 pl-9 pr-4 text-sm text-slate-700 placeholder-slate-400 outline-none transition-colors hover:bg-slate-100 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100"
           />
         </div>
       </div>
-      <div className="flex items-center gap-5 text-white/90">
+      <div className="flex items-center gap-4 text-slate-500">
         <div className="hidden text-sm md:block">
-          Your trial ends in <span className="font-bold text-white">{currentUser.trialDays} days</span>
+          Trial ends in <span className="font-semibold text-slate-900">{currentUser.trialDays} days</span>
         </div>
-        <button className="rounded bg-white/20 px-4 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-white/30">
+        <button className="rounded-md bg-accent-500 px-4 py-1.5 text-xs font-semibold uppercase text-white shadow-sm transition-colors hover:bg-accent-600">
           Purchase
         </button>
-        <HelpCircle className="h-5 w-5 cursor-pointer hover:text-white" />
-        <Plus className="h-[22px] w-[22px] cursor-pointer hover:text-white" />
-        <Bell className="h-5 w-5 cursor-pointer hover:text-white" />
+        <HelpCircle className="h-5 w-5 cursor-pointer hover:text-slate-700" />
+        <Plus className="h-[22px] w-[22px] cursor-pointer hover:text-slate-700" />
+        <Bell className="h-5 w-5 cursor-pointer hover:text-slate-700" />
       </div>
     </header>
   );

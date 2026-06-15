@@ -73,7 +73,7 @@ export function DashboardHeader({
           {shownScores.map((s) => (
             <div key={s.label} className="flex flex-col items-center">
               <ScoreRing value={s.value} size={64} />
-              <span className="mt-1.5 text-xs font-medium uppercase tracking-wide text-slate-400">
+              <span className="mt-1.5 font-mono text-xs font-medium uppercase tracking-wide text-slate-400">
                 {s.label}
               </span>
             </div>

@@ -6,7 +6,7 @@ export function Section({ label, children }: { label: string; children: React.Re
   return (
     <section>
       <div className="mb-3 flex items-center gap-3">
-        <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">{label}</h2>
+        <h2 className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">{label}</h2>
         <div className="h-px flex-1 bg-[var(--border)]" />
       </div>
       {children}
