@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ImpactBadge } from "@/components/ui/status-badge";
 import { dailyTasks, taskStats, taskAlerts, taskRoles } from "@/lib/data";
-import type { DailyTask, TaskGroup, TaskRole } from "@/lib/data";
+import type { TaskGroup, TaskRole } from "@/lib/data";
+import { useTaskStore, isGenerated } from "@/components/tasks/task-store";
 
 const GROUPS: TaskGroup[] = ["Today", "Tomorrow", "This week"];
 
@@ -29,11 +30,8 @@ function RoleChip({ role }: { role: TaskRole }) {
 }
 
 export function TaskBoard() {
-  const [tasks, setTasks] = React.useState<DailyTask[]>(dailyTasks);
+  const { tasks, toggle } = useTaskStore();
   const [shared, setShared] = React.useState<Record<string, boolean>>({});
-
-  const toggle = (id: string) =>
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
 
   const today = tasks.filter((t) => t.group === "Today");
   const todayDone = today.filter((t) => t.done).length;
@@ -101,8 +99,13 @@ export function TaskBoard() {
                           {t.done && <Check className="h-3.5 w-3.5" />}
                         </button>
                         <div className="min-w-0 flex-1">
-                          <div className={cn("text-sm font-medium", t.done ? "text-slate-400 line-through" : "text-slate-800")}>
-                            {t.name}
+                          <div className={cn("flex items-center gap-2 text-sm font-medium", t.done ? "text-slate-400 line-through" : "text-slate-800")}>
+                            <span className="truncate">{t.name}</span>
+                            {isGenerated(t.id) && !t.done && (
+                              <span className="shrink-0 rounded-full bg-accent-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-700">
+                                New
+                              </span>
+                            )}
                           </div>
                           <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-400">
                             <RoleChip role={t.role} />
@@ -123,34 +126,36 @@ export function TaskBoard() {
 
         {/* Email alerts rail */}
         <div className="space-y-6">
-          {/* Share tasks with the SEO manager's team */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-accent-500" /> Share with team
-              </CardTitle>
-              <CardDescription>Route each role its open tasks under the SEO manager.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2.5">
+          {/* Share tasks with the SEO manager's team — bold panel so it stands out */}
+          <div className="overflow-hidden rounded-2xl border-2 border-accent-300 shadow-card">
+            <div className="bg-accent-500 px-4 py-3.5 text-white">
+              <div className="flex items-center gap-2 text-sm font-semibold">
+                <Users className="h-4 w-4" /> Share with team
+              </div>
+              <p className="mt-0.5 text-xs text-white/80">Route each role its open tasks under the SEO manager.</p>
+            </div>
+            <div className="space-y-2.5 bg-white p-3">
               {taskRoles.map(({ role, person, email }) => {
                 const open = tasks.filter((t) => t.role === role && !t.done).length;
                 const sent = shared[role];
                 return (
-                  <div key={role} className="flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] p-3">
+                  <div key={role} className="flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-3">
                     <div className="min-w-0">
                       <RoleChip role={role} />
-                      <div className="mt-1.5 truncate text-sm font-medium text-slate-800">{person}</div>
-                      <div className="truncate text-xs text-slate-400">{open} open · {email}</div>
+                      <div className="mt-1.5 truncate text-sm font-semibold text-slate-800">{person}</div>
+                      <div className="truncate text-xs text-slate-400">
+                        <span className="font-semibold text-slate-600">{open} open</span> · {email}
+                      </div>
                     </div>
                     {sent ? (
-                      <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-emerald-600">
+                      <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200">
                         <Check className="h-4 w-4" /> Sent
                       </span>
                     ) : (
                       <button
                         onClick={() => setShared((s) => ({ ...s, [role]: true }))}
                         disabled={open === 0}
-                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-accent-500 px-2.5 py-1.5 text-xs font-medium text-accent-700 transition-colors hover:bg-accent-50 disabled:cursor-not-allowed disabled:opacity-40"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
                       >
                         <Send className="h-3.5 w-3.5" /> Send {open}
                       </button>
@@ -158,8 +163,8 @@ export function TaskBoard() {
                   </div>
                 );
               })}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Schedule */}
           <Card>
