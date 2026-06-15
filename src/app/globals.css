@@ -123,6 +123,50 @@ body {
   }
 }
 
+/* ── Landing page (ported from the provided design) ────────────────────────── */
+.bg-grid-lines {
+  background-image:
+    linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 80%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 80%, transparent);
+}
+.bg-radial-glow {
+  background: radial-gradient(circle at top center, rgba(59, 130, 246, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
+}
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+@keyframes pin-pulse {
+  0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.pin-pulse {
+  animation: pin-pulse 2s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pin-pulse {
+    animation: none;
+  }
+}
+@media (min-width: 768px) {
+  .pipeline-card:not(:nth-child(3n))::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -24px;
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(to right, rgba(203, 213, 225, 1), transparent);
+    z-index: 0;
+  }
+}
+
 @layer components {
   .container-page {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
