@@ -1,25 +1,37 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, Flag } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Flag, SkipForward } from "lucide-react";
 import { STAGES } from "@/lib/stages";
+import { useTour } from "@/components/layout/tour";
 import { cn } from "@/lib/utils";
 
 /**
  * Floating "guided tour" bar shown on the stage pages. Gives a new viewer
  * constant orientation (step N of 9) and one-click forward motion, so the
- * Discovery → … → Daily Tasks flow runs on rails.
+ * Discovery → … → Daily Tasks flow runs on rails. Remembers the furthest
+ * stage reached and offers a Resume jump.
  */
 export function GuidedFlow() {
   const pathname = usePathname();
+  const { furthest, visit } = useTour();
   const slug = pathname.split("/")[1];
   const idx = STAGES.findIndex((s) => s.slug === slug);
-  if (idx === -1) return null; // only on stage pages
 
-  const current = STAGES[idx];
+  const current = idx >= 0 ? STAGES[idx] : null;
+
+  // Record progress whenever a stage is viewed.
+  React.useEffect(() => {
+    if (current) visit(current.n);
+  }, [current, visit]);
+
+  if (idx === -1 || !current) return null; // only on stage pages
+
   const prev = idx > 0 ? STAGES[idx - 1] : null;
   const next = idx < STAGES.length - 1 ? STAGES[idx + 1] : null;
+  const resume = furthest > current.n ? STAGES[furthest - 1] : null;
 
   return (
     <div className="pointer-events-none sticky bottom-4 z-30 flex justify-center px-4">
@@ -37,8 +49,9 @@ export function GuidedFlow() {
         {/* Stepper */}
         <div className="flex flex-1 items-center justify-center gap-1">
           {STAGES.map((s, i) => {
-            const done = i < idx;
             const active = i === idx;
+            // Done = passed this session OR reached on a previous visit.
+            const done = !active && (i < idx || i + 1 <= furthest);
             return (
               <Link
                 key={s.slug}
@@ -62,7 +75,7 @@ export function GuidedFlow() {
                   {done ? <Check className="h-3 w-3" /> : s.n}
                 </span>
                 {i < STAGES.length - 1 && (
-                  <span className={cn("mx-0.5 h-0.5 flex-1 rounded-full", i < idx ? "bg-accent-400" : "bg-slate-100")} />
+                  <span className={cn("mx-0.5 h-0.5 flex-1 rounded-full", i < idx || i + 1 < furthest ? "bg-accent-400" : "bg-slate-100")} />
                 )}
               </Link>
             );
@@ -71,6 +84,16 @@ export function GuidedFlow() {
 
         {/* Controls */}
         <div className="flex shrink-0 items-center gap-2">
+          {resume && (
+            <Link
+              href={`/${resume.slug}`}
+              className="hidden h-8 items-center gap-1.5 rounded-lg border border-accent-200 bg-accent-50 px-2.5 text-[13px] font-medium text-accent-700 hover:bg-accent-100 md:inline-flex"
+              title={`Resume at ${resume.name}`}
+            >
+              <SkipForward className="h-3.5 w-3.5" />
+              Resume
+            </Link>
+          )}
           {prev && (
             <Link
               href={`/${prev.slug}`}
