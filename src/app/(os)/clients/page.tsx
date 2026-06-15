@@ -1,29 +1,16 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Plus, Search, MapPin, Cloud, Building2, ChevronRight } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { clients, type Client } from "@/lib/model";
-import { cn } from "@/lib/utils";
+import { ClientRow } from "@/components/clients/client-row";
+import { clients, clientHealth } from "@/lib/model";
 
 export const metadata: Metadata = { title: "Clients" };
 
-const modelIcon = { Local: MapPin, SaaS: Cloud, Enterprise: Building2 } as const;
-const dashHref = { Local: "/dashboards/local", SaaS: "/dashboards/saas", Enterprise: "/dashboards/enterprise" } as const;
-const statusVariant = { Active: "good", Onboarding: "accent", Paused: "warn" } as const;
-
-/** Overall health = average of the six search scores. */
-const overall = (c: Client) =>
-  Math.round(
-    (c.scores.visibility + c.scores.authority + c.scores.trust + c.scores.ai + c.scores.lead + c.scores.revenue) / 6
-  );
-
 export default function ClientsPage() {
   const active = clients.filter((c) => c.status === "Active").length;
-  const avgHealth = Math.round(clients.reduce((s, c) => s + overall(c), 0) / clients.length);
+  const avgHealth = Math.round(clients.reduce((s, c) => s + clientHealth(c), 0) / clients.length);
 
   return (
     <>
@@ -83,49 +70,10 @@ export default function ClientsPage() {
             </thead>
             <tbody>
               {[...clients]
-                .sort((a, b) => overall(b) - overall(a))
-                .map((c) => {
-                  const Icon = modelIcon[c.model];
-                  return (
-                    <tr key={c.id} className="group border-b border-[var(--border)] last:border-0 hover:bg-slate-50/60">
-                      <td className="px-5 py-3.5">
-                        <Link href={dashHref[c.model]} className="flex items-center gap-3">
-                          <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-xs font-bold text-white", c.color)}>
-                            {c.initials}
-                          </span>
-                          <span>
-                            <span className="block font-medium text-slate-800 group-hover:text-accent-600">{c.name}</span>
-                            <span className="block text-xs text-slate-400">{c.industry} · {c.location}</span>
-                          </span>
-                        </Link>
-                      </td>
-                      <td className="px-3 py-3.5">
-                        <span className="inline-flex items-center gap-1.5 text-slate-600">
-                          <Icon className="h-4 w-4 text-slate-400" />
-                          {c.model}
-                        </span>
-                      </td>
-                      <td className="px-3 py-3.5 text-slate-600">{c.owner}</td>
-                      <td className="px-3 py-3.5">
-                        <div className="flex items-center gap-2">
-                          <div className="w-16">
-                            <Progress value={overall(c)} />
-                          </div>
-                          <span className="text-xs font-medium text-slate-500">{overall(c)}</span>
-                        </div>
-                      </td>
-                      <td className="px-3 py-3.5 text-slate-600">{c.scores.ai}</td>
-                      <td className="px-3 py-3.5">
-                        <Badge variant={statusVariant[c.status]}>{c.status}</Badge>
-                      </td>
-                      <td className="px-5 py-3.5 text-right">
-                        <Link href={dashHref[c.model]} className="inline-flex text-slate-300 group-hover:text-accent-500">
-                          <ChevronRight className="h-4 w-4" />
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
+                .sort((a, b) => clientHealth(b) - clientHealth(a))
+                .map((c) => (
+                  <ClientRow key={c.id} client={c} />
+                ))}
             </tbody>
           </table>
         </div>

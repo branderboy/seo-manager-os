@@ -86,6 +86,12 @@ export type Client = {
   color: string;
 };
 
+/** Overall client health = average of the six search scores. */
+export const clientHealth = (c: Client) =>
+  Math.round(
+    (c.scores.visibility + c.scores.authority + c.scores.trust + c.scores.ai + c.scores.lead + c.scores.revenue) / 6
+  );
+
 // ── Workspace identity ───────────────────────────────────────────────────────
 export const currentUser = {
   name: "Josh Williamson",

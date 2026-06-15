@@ -14,7 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useEngagement, type Model as EngModel } from "@/components/engagement/store";
+import { useEngagement, DEFAULT_ENGAGEMENT, type Model as EngModel } from "@/components/engagement/store";
 
 type Multi = Record<string, boolean>;
 type Model = "Local" | "SaaS" | "Enterprise" | "";
@@ -104,6 +104,7 @@ export function DiscoveryWizard() {
       assets: sel(data.assets),
       competitors: data.competitors.filter(Boolean),
       confidence: Math.min(97, 58 + infoFilled * 4 + Math.min(signals, 12)),
+      scores: DEFAULT_ENGAGEMENT.scores,
     });
   }, [data, setEngagement]);
 

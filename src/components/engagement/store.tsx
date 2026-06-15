@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import type { Client, Scores } from "@/lib/model";
 
 export type Model = "Local" | "SaaS" | "Enterprise";
 
@@ -15,6 +16,8 @@ export type Engagement = {
   assets: string[];
   competitors: string[];
   confidence: number;
+  scores: Scores;
+  clientId?: string;
 };
 
 // Default engagement so the app ships fully populated; the interview overwrites it.
@@ -29,7 +32,22 @@ export const DEFAULT_ENGAGEMENT: Engagement = {
   assets: ["Google Business Profile", "GA4", "Search Console", "CRM"],
   competitors: ["ATX Comfort Pros", "Lone Star Mechanical", "Hill Country HVAC"],
   confidence: 92,
+  scores: { visibility: 48, authority: 41, trust: 57, ai: 29, lead: 52, revenue: 61 },
+  clientId: "northwind",
 };
+
+/** Build an engagement context from a selected client (keeps prior discovery defaults). */
+export function engagementFromClient(c: Client): Engagement {
+  return {
+    ...DEFAULT_ENGAGEMENT,
+    business: c.name,
+    industry: c.industry,
+    market: c.location,
+    model: c.model,
+    scores: c.scores,
+    clientId: c.id,
+  };
+}
 
 const KEY = "smos.engagement";
 
