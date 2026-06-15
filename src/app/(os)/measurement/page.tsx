@@ -6,6 +6,7 @@ import { AeoPanel } from "@/components/modules/aeo-panel";
 import { TrendChart } from "@/components/charts/charts";
 import { Badge } from "@/components/ui/badge";
 import { EngName } from "@/components/engagement/eng";
+import { ReportShare } from "@/components/measurement/report-share";
 import { coreScores, trend } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Measurement" };
@@ -46,6 +47,8 @@ export default function MeasurementPage() {
           />
         </CardContent>
       </Card>
+
+      <ReportShare />
 
       <AeoPanel />
     </>
