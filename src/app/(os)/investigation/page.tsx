@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/page-header";
 import { EvidencePanel } from "@/components/investigation/evidence-panel";
 import { Card } from "@/components/ui/card";
-import { Tabs } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { StatusBadge } from "@/components/ui/status-badge";
+import { ModelTabs } from "@/components/engagement/model-tabs";
+import { ModelBadge } from "@/components/engagement/eng";
 import { scoreToneClasses } from "@/lib/utils";
-import { investigations, account } from "@/lib/data";
+import { investigations } from "@/lib/data";
 import type { SeoModel, Audit } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Investigation" };
@@ -59,12 +60,12 @@ export default function InvestigationPage() {
       <PageHeader
         stage={3}
         title="Investigation"
-        badge={`${account.model} track`}
         description="Where the audits run. Each surfaces the evidence behind a symptom — scored, with the single most important finding called out."
-      />
+      >
+        <ModelBadge suffix="track" />
+      </PageHeader>
       <EvidencePanel />
-      <Tabs
-        initial={account.model}
+      <ModelTabs
         tabs={models.map((m) => ({
           id: m,
           label: `${m} SEO`,

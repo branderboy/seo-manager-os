@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImpactBadge } from "@/components/ui/status-badge";
 import { ButtonLink } from "@/components/ui/button";
+import { EngName } from "@/components/engagement/eng";
 import { diagnosis } from "@/lib/data";
 import type { Cause } from "@/lib/data";
 
@@ -72,7 +73,12 @@ export default function DiagnosisPage() {
           <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10">
             <AlertTriangle className="h-5 w-5 text-accent-300" />
           </span>
-          <p className="text-[15px] leading-relaxed text-slate-200">{diagnosis.summary}</p>
+          <div>
+            <div className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent-300">
+              Diagnosis · <EngName />
+            </div>
+            <p className="text-[15px] leading-relaxed text-slate-200">{diagnosis.summary}</p>
+          </div>
         </div>
       </Card>
 

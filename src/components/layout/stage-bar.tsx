@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Search, HelpCircle, Plus, Bell } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { currentUser } from "@/lib/crm";
+import { useEngagement } from "@/components/engagement/store";
 
 const TITLES: Record<string, string> = {
   clients: "Clients",
@@ -30,11 +31,18 @@ function titleFor(pathname: string): string {
 export function StageBar() {
   const pathname = usePathname();
   const title = titleFor(pathname);
+  const { engagement } = useEngagement();
 
   return (
     <header className="flex h-[56px] shrink-0 items-center justify-between bg-[#4CAF50] px-4">
-      <div className="flex max-w-3xl flex-1 items-center gap-6">
+      <div className="flex max-w-3xl flex-1 items-center gap-4">
         <span className="whitespace-nowrap text-lg font-medium text-white">{title}</span>
+        {engagement.business && (
+          <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full bg-black/15 px-2.5 py-1 text-xs font-medium text-white xl:inline-flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-white/80" />
+            {engagement.business} · {engagement.model}
+          </span>
+        )}
         <div className="relative max-w-xl flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/70" />
           <input

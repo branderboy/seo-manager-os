@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useEngagement, type Model as EngModel } from "@/components/engagement/store";
 
 type Multi = Record<string, boolean>;
 type Model = "Local" | "SaaS" | "Enterprise" | "";
@@ -83,6 +84,28 @@ const STEPS = [
 export function DiscoveryWizard() {
   const [step, setStep] = React.useState(0);
   const [data, setData] = React.useState<FormState>(EMPTY);
+  const { setEngagement } = useEngagement();
+
+  // Flow the interview answers into the shared engagement (drives every later
+  // stage). Only writes once a business name exists, so empties never overwrite.
+  React.useEffect(() => {
+    if (!data.business.trim()) return;
+    const sel = (m: Multi) => Object.keys(m).filter((k) => m[k]);
+    const infoFilled = [data.business, data.website, data.industry, data.market].filter(Boolean).length;
+    const signals = sel(data.goals).length + sel(data.problems).length + sel(data.assets).length;
+    setEngagement({
+      business: data.business,
+      website: data.website,
+      industry: data.industry,
+      market: data.market,
+      model: (data.model || "Local") as EngModel,
+      goals: sel(data.goals),
+      problems: sel(data.problems),
+      assets: sel(data.assets),
+      competitors: data.competitors.filter(Boolean),
+      confidence: Math.min(97, 58 + infoFilled * 4 + Math.min(signals, 12)),
+    });
+  }, [data, setEngagement]);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) =>
     setData((d) => ({ ...d, [key]: value }));

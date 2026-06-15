@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
-import { Tabs } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { executionTools, account } from "@/lib/data";
+import { ModelTabs } from "@/components/engagement/model-tabs";
+import { ModelBadge } from "@/components/engagement/eng";
+import { executionTools } from "@/lib/data";
 import type { SeoModel } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Execution Tools" };
@@ -35,11 +36,11 @@ export default function ToolsPage() {
       <PageHeader
         stage={7}
         title="Execution Tools"
-        badge={`${account.model} tools featured`}
         description="Purpose-built planners that turn each recommendation into structured work. Every SEO model gets its own toolkit, plus a shared AEO planner."
-      />
-      <Tabs
-        initial={account.model}
+      >
+        <ModelBadge suffix="tools featured" />
+      </PageHeader>
+      <ModelTabs
         tabs={models.map((m) => ({
           id: m,
           label: `${m} SEO`,

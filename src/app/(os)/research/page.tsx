@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs } from "@/components/ui/tabs";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { researchPlans, account } from "@/lib/data";
+import { ModelTabs } from "@/components/engagement/model-tabs";
+import { ModelBadge } from "@/components/engagement/eng";
+import { researchPlans } from "@/lib/data";
 import type { SeoModel, ResearchItem } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Research Engine" };
@@ -55,11 +56,11 @@ export default function ResearchPage() {
       <PageHeader
         stage={2}
         title="Research Engine"
-        badge={`${account.model} playbook active`}
         description="From the classification, the OS assembles the research plan automatically — the exact signals to gather before forming any opinion."
-      />
-      <Tabs
-        initial={account.model}
+      >
+        <ModelBadge suffix="playbook active" />
+      </PageHeader>
+      <ModelTabs
         tabs={models.map((m) => ({
           id: m,
           label: `${m} SEO`,

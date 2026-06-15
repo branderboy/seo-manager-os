@@ -13,7 +13,8 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { PriorityScatter } from "@/components/charts/charts";
-import { strategy, priorityMatrix, account } from "@/lib/data";
+import { EngName, EngModel, EngMarket } from "@/components/engagement/eng";
+import { strategy, priorityMatrix } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Strategy Brief" };
 
@@ -76,10 +77,10 @@ export default function StrategyPage() {
                 Search Strategy
               </div>
               <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-900">
-                {account.business}
+                <EngName />
               </h2>
               <div className="text-sm text-slate-400">
-                {account.model} SEO · {account.primaryMarket} · Prepared by SEO Manager OS
+                <EngModel /> SEO · <EngMarket /> · Prepared by SEO Manager OS
               </div>
             </div>
             <FileText className="hidden h-8 w-8 text-slate-200 sm:block" />
