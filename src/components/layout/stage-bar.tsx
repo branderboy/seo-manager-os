@@ -1,58 +1,60 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Search, HelpCircle, Plus, Bell } from "lucide-react";
 import { STAGES } from "@/lib/stages";
+import { currentUser } from "@/lib/crm";
 
-/** Top bar shown on stage pages: breadcrumb + prev/next stage navigation. */
+const TITLES: Record<string, string> = {
+  clients: "Clients",
+  integrations: "Integrations",
+  settings: "Settings",
+};
+
+const DASH_TITLES: Record<string, string> = {
+  local: "Local SEO Dashboard",
+  saas: "SaaS SEO Dashboard",
+  enterprise: "Enterprise SEO Dashboard",
+};
+
+function titleFor(pathname: string): string {
+  const parts = pathname.split("/").filter(Boolean);
+  if (parts.length === 0) return "Dashboard";
+  if (parts[0] === "dashboards" && parts[1]) return DASH_TITLES[parts[1]] ?? "Dashboard";
+  const stage = STAGES.find((s) => s.slug === parts[0]);
+  if (stage) return stage.name;
+  return TITLES[parts[0]] ?? "SEO Manager OS";
+}
+
+/** Green top action bar from the SEO Manager OS design. */
 export function StageBar() {
   const pathname = usePathname();
-  const slug = pathname.split("/")[1];
-  const idx = STAGES.findIndex((s) => s.slug === slug);
-
-  const current = idx >= 0 ? STAGES[idx] : null;
-  const prev = idx > 0 ? STAGES[idx - 1] : null;
-  const next = idx >= 0 && idx < STAGES.length - 1 ? STAGES[idx + 1] : null;
+  const title = titleFor(pathname);
 
   return (
-    <div className="sticky top-0 z-20 border-b border-[var(--border)] bg-white/80 backdrop-blur">
-      <div className="flex h-14 items-center justify-between px-5 sm:px-8">
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-slate-400">SEO Manager OS</span>
-          {current && (
-            <>
-              <span className="text-slate-300">/</span>
-              <span className="font-medium text-slate-800">
-                Stage {current.n} · {current.name}
-              </span>
-            </>
-          )}
-        </div>
-
-        <div className="flex items-center gap-2">
-          {prev ? (
-            <Link
-              href={`/${prev.slug}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-[var(--border)] bg-white px-2.5 text-[13px] font-medium text-slate-600 hover:bg-slate-50"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{prev.short}</span>
-            </Link>
-          ) : (
-            <span />
-          )}
-          {next && (
-            <Link
-              href={`/${next.slug}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-slate-900 px-2.5 text-[13px] font-medium text-white hover:bg-slate-800"
-            >
-              <span className="hidden sm:inline">{next.short}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          )}
+    <header className="flex h-[56px] shrink-0 items-center justify-between bg-[#4CAF50] px-4">
+      <div className="flex max-w-3xl flex-1 items-center gap-6">
+        <span className="whitespace-nowrap text-lg font-medium text-white">{title}</span>
+        <div className="relative max-w-xl flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/70" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-full rounded-md border border-transparent bg-black/10 py-1.5 pl-9 pr-4 text-sm text-white placeholder-white/70 outline-none transition-colors hover:bg-black/20 focus:border-green-700 focus:bg-white focus:text-gray-900 focus:placeholder-gray-400"
+          />
         </div>
       </div>
-    </div>
+      <div className="flex items-center gap-5 text-white/90">
+        <div className="hidden text-sm md:block">
+          Your trial ends in <span className="font-bold text-white">{currentUser.trialDays} days</span>
+        </div>
+        <button className="rounded bg-white/20 px-4 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-white/30">
+          Purchase
+        </button>
+        <HelpCircle className="h-5 w-5 cursor-pointer hover:text-white" />
+        <Plus className="h-[22px] w-[22px] cursor-pointer hover:text-white" />
+        <Bell className="h-5 w-5 cursor-pointer hover:text-white" />
+      </div>
+    </header>
   );
 }
