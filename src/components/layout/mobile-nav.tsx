@@ -85,7 +85,7 @@ function Group({ items, pathname, onNavigate }: { items: Item[]; pathname: strin
                 <span
                   className={cn(
                     "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
-                    active ? "bg-orange-400 text-brand-950 ring-2 ring-orange-200" : "border-2 border-orange-400 text-white"
+                    active ? "bg-white text-brand-900 ring-2 ring-brand-300" : "border-2 border-brand-300 text-white"
                   )}
                 >
                   {it.step}
