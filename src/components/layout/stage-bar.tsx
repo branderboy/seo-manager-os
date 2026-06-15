@@ -5,6 +5,7 @@ import { Search, HelpCircle, Plus, Bell } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { currentUser } from "@/lib/crm";
 import { useEngagement } from "@/components/engagement/store";
+import { MobileNav } from "@/components/layout/mobile-nav";
 
 const TITLES: Record<string, string> = {
   clients: "Clients",
@@ -35,7 +36,8 @@ export function StageBar() {
 
   return (
     <header className="flex h-[56px] shrink-0 items-center justify-between bg-[#4CAF50] px-4">
-      <div className="flex max-w-3xl flex-1 items-center gap-4">
+      <div className="flex max-w-3xl flex-1 items-center gap-2 sm:gap-4">
+        <MobileNav />
         <span className="whitespace-nowrap text-lg font-medium text-white">{title}</span>
         {engagement.business && (
           <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full bg-black/15 px-2.5 py-1 text-xs font-medium text-white xl:inline-flex">
