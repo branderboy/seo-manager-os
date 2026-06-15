@@ -98,10 +98,10 @@ export const STAGES: Stage[] = [
   {
     n: 7,
     slug: "tools",
-    name: "Execution Tools",
-    short: "Tools",
+    name: "Execution Playbooks",
+    short: "Playbooks",
     does: "Do the work.",
-    blurb: "Purpose-built planners for local, SaaS and enterprise execution.",
+    blurb: "Model-specific playbooks that turn each recommendation into ready-to-run, structured work.",
     outputs: [
       "Content Generator",
       "Schema Generator",

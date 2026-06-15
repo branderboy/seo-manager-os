@@ -87,7 +87,7 @@ export default function ExecutionPage() {
 
       <div className="flex justify-end">
         <ButtonLink href="/tools">
-          Open execution tools
+          Open execution playbooks
           <ArrowRight className="h-4 w-4" />
         </ButtonLink>
       </div>
