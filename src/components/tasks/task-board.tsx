@@ -1,19 +1,36 @@
 "use client";
 
 import * as React from "react";
-import { Check, Flame, Mail, Clock, Bell } from "lucide-react";
+import { Check, Flame, Mail, Clock, Bell, Send, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ImpactBadge } from "@/components/ui/status-badge";
-import { dailyTasks, taskStats, taskAlerts } from "@/lib/data";
-import type { DailyTask, TaskGroup } from "@/lib/data";
+import { dailyTasks, taskStats, taskAlerts, taskRoles } from "@/lib/data";
+import type { DailyTask, TaskGroup, TaskRole } from "@/lib/data";
 
 const GROUPS: TaskGroup[] = ["Today", "Tomorrow", "This week"];
 
+/** Color per team role so tasks bucket by who owns them at a glance. */
+const ROLE_STYLES: Record<TaskRole, string> = {
+  "Tech SEO": "bg-blue-50 text-blue-700 ring-blue-200",
+  "Content (On-Page)": "bg-violet-50 text-violet-700 ring-violet-200",
+  "Citations & Links": "bg-amber-50 text-amber-700 ring-amber-200",
+  "Local / GBP": "bg-emerald-50 text-emerald-700 ring-emerald-200",
+};
+
+function RoleChip({ role }: { role: TaskRole }) {
+  return (
+    <span className={cn("inline-flex shrink-0 items-center rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset", ROLE_STYLES[role])}>
+      {role}
+    </span>
+  );
+}
+
 export function TaskBoard() {
   const [tasks, setTasks] = React.useState<DailyTask[]>(dailyTasks);
+  const [shared, setShared] = React.useState<Record<string, boolean>>({});
 
   const toggle = (id: string) =>
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
@@ -87,9 +104,8 @@ export function TaskBoard() {
                           <div className={cn("text-sm font-medium", t.done ? "text-slate-400 line-through" : "text-slate-800")}>
                             {t.name}
                           </div>
-                          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400">
-                            <span>{t.owner}</span>
-                            <span>·</span>
+                          <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-400">
+                            <RoleChip role={t.role} />
                             <span>Due {t.due}</span>
                             <span>·</span>
                             <span className="text-slate-400">{t.source}</span>
@@ -107,6 +123,44 @@ export function TaskBoard() {
 
         {/* Email alerts rail */}
         <div className="space-y-6">
+          {/* Share tasks with the SEO manager's team */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-accent-500" /> Share with team
+              </CardTitle>
+              <CardDescription>Route each role its open tasks under the SEO manager.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2.5">
+              {taskRoles.map(({ role, person, email }) => {
+                const open = tasks.filter((t) => t.role === role && !t.done).length;
+                const sent = shared[role];
+                return (
+                  <div key={role} className="flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] p-3">
+                    <div className="min-w-0">
+                      <RoleChip role={role} />
+                      <div className="mt-1.5 truncate text-sm font-medium text-slate-800">{person}</div>
+                      <div className="truncate text-xs text-slate-400">{open} open · {email}</div>
+                    </div>
+                    {sent ? (
+                      <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-emerald-600">
+                        <Check className="h-4 w-4" /> Sent
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => setShared((s) => ({ ...s, [role]: true }))}
+                        disabled={open === 0}
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-accent-500 px-2.5 py-1.5 text-xs font-medium text-accent-700 transition-colors hover:bg-accent-50 disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        <Send className="h-3.5 w-3.5" /> Send {open}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
+
           {/* Schedule */}
           <Card>
             <CardHeader>

@@ -350,10 +350,22 @@ export const trend = [
 
 // ── Daily Task Engine (Stage 9) ──────────────────────────────────────────────
 export type TaskGroup = "Today" | "Tomorrow" | "This week";
+
+/** Roles on the SEO manager's team that daily tasks get routed to. */
+export type TaskRole = "Tech SEO" | "Content (On-Page)" | "Citations & Links" | "Local / GBP";
+
+export const taskRoles: { role: TaskRole; person: string; email: string }[] = [
+  { role: "Tech SEO", person: "Priya Nair", email: "priya@agency.com" },
+  { role: "Content (On-Page)", person: "Jordan Lee", email: "jordan@agency.com" },
+  { role: "Citations & Links", person: "Sam Ortiz", email: "sam@agency.com" },
+  { role: "Local / GBP", person: "Mia Chen", email: "mia@agency.com" },
+];
+
 export type DailyTask = {
   id: string;
   name: string;
   owner: string;
+  role: TaskRole;
   priority: Impact;
   due: string;
   source: string; // which plan / stage it traces to
@@ -362,15 +374,15 @@ export type DailyTask = {
 };
 
 export const dailyTasks: DailyTask[] = [
-  { id: "t1", name: "Send 8 review requests from yesterday's completed jobs", owner: "Ops", priority: "High", due: "9:00 AM", source: "30-Day · Review automation", done: true, group: "Today" },
-  { id: "t2", name: "Respond to 5 new Google reviews", owner: "Ops", priority: "High", due: "11:00 AM", source: "30-Day · Review automation", done: false, group: "Today" },
-  { id: "t3", name: "Fix NAP on Yelp + 2 chamber citations", owner: "Local SEO", priority: "High", due: "1:00 PM", source: "30-Day · Citation cleanup", done: false, group: "Today" },
-  { id: "t4", name: "Draft 'AC Repair' service page outline", owner: "Content", priority: "Medium", due: "3:00 PM", source: "30-Day · Service pages", done: false, group: "Today" },
-  { id: "t5", name: "Publish weekly GBP post + 4 photos", owner: "Local SEO", priority: "Medium", due: "4:30 PM", source: "30-Day · GBP refresh", done: false, group: "Today" },
-  { id: "t6", name: "QA + publish 'Furnace Replacement' page", owner: "Content", priority: "High", due: "Tomorrow", source: "90-Day · Service pages", done: false, group: "Tomorrow" },
-  { id: "t7", name: "Add FAQ schema to 3 service pages", owner: "SEO Lead", priority: "Medium", due: "Tomorrow", source: "90-Day · AEO foundation", done: false, group: "Tomorrow" },
-  { id: "t8", name: "Internal-link pass: 2 location pages → money pages", owner: "SEO Lead", priority: "Medium", due: "Thu", source: "90-Day · Internal linking", done: false, group: "This week" },
-  { id: "t9", name: "Outreach to 3 local sponsorship partners", owner: "Marketing", priority: "Low", due: "Fri", source: "90-Day · Local authority", done: false, group: "This week" },
+  { id: "t1", name: "Send 8 review requests from yesterday's completed jobs", owner: "Ops", role: "Local / GBP", priority: "High", due: "9:00 AM", source: "30-Day · Review automation", done: true, group: "Today" },
+  { id: "t2", name: "Respond to 5 new Google reviews", owner: "Ops", role: "Local / GBP", priority: "High", due: "11:00 AM", source: "30-Day · Review automation", done: false, group: "Today" },
+  { id: "t3", name: "Fix NAP on Yelp + 2 chamber citations", owner: "Local SEO", role: "Citations & Links", priority: "High", due: "1:00 PM", source: "30-Day · Citation cleanup", done: false, group: "Today" },
+  { id: "t4", name: "Draft 'AC Repair' service page outline", owner: "Content", role: "Content (On-Page)", priority: "Medium", due: "3:00 PM", source: "30-Day · Service pages", done: false, group: "Today" },
+  { id: "t5", name: "Publish weekly GBP post + 4 photos", owner: "Local SEO", role: "Local / GBP", priority: "Medium", due: "4:30 PM", source: "30-Day · GBP refresh", done: false, group: "Today" },
+  { id: "t6", name: "QA + publish 'Furnace Replacement' page", owner: "Content", role: "Content (On-Page)", priority: "High", due: "Tomorrow", source: "90-Day · Service pages", done: false, group: "Tomorrow" },
+  { id: "t7", name: "Add FAQ schema to 3 service pages", owner: "SEO Lead", role: "Tech SEO", priority: "Medium", due: "Tomorrow", source: "90-Day · AEO foundation", done: false, group: "Tomorrow" },
+  { id: "t8", name: "Internal-link pass: 2 location pages → money pages", owner: "SEO Lead", role: "Tech SEO", priority: "Medium", due: "Thu", source: "90-Day · Internal linking", done: false, group: "This week" },
+  { id: "t9", name: "Outreach to 3 local sponsorship partners", owner: "Marketing", role: "Citations & Links", priority: "Low", due: "Fri", source: "90-Day · Local authority", done: false, group: "This week" },
 ];
 
 export const taskStats = {
