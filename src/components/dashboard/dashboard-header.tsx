@@ -41,7 +41,7 @@ export function DashboardHeader({
   });
 
   return (
-    <div className="space-y-5">
+    <div className="reveal space-y-5">
       <div className="flex flex-wrap items-center gap-2">
         {DASHBOARDS.map((d) => {
           const Icon = icons[d.slug];

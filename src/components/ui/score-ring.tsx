@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { scoreTone } from "@/lib/utils";
 
 const toneStroke: Record<string, string> = {
@@ -37,6 +38,7 @@ export function ScoreRing({
           strokeWidth={stroke}
         />
         <circle
+          className="ring-draw"
           cx={size / 2}
           cy={size / 2}
           r={r}
@@ -46,6 +48,7 @@ export function ScoreRing({
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={offset}
+          style={{ ["--ring-c" as string]: c, ["--ring-offset" as string]: offset } as CSSProperties}
         />
       </svg>
       <div className="absolute flex flex-col items-center leading-none">

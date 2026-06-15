@@ -60,6 +60,24 @@ body {
   }
 }
 
+/* Score rings draw their arc in on mount (delight through selective emphasis). */
+@keyframes ring-draw {
+  from {
+    stroke-dashoffset: var(--ring-c);
+  }
+  to {
+    stroke-dashoffset: var(--ring-offset);
+  }
+}
+.ring-draw {
+  animation: ring-draw 0.9s cubic-bezier(0.21, 0.6, 0.35, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ring-draw {
+    animation: none;
+  }
+}
+
 @layer components {
   .container-page {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8;

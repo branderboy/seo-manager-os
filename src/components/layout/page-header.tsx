@@ -19,7 +19,7 @@ export function PageHeader({
   const Icon = stageDef?.icon;
 
   return (
-    <div className="flex flex-wrap items-start justify-between gap-4 pb-2">
+    <div className="reveal flex flex-wrap items-start justify-between gap-4 pb-2">
       <div className="flex items-start gap-4">
         {Icon && (
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-accent-500 text-white shadow-soft">

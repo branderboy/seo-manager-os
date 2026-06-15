@@ -70,7 +70,7 @@ export default function WorkflowPage() {
               <Link
                 href={`/${s.slug}`}
                 className={cn(
-                  "group mb-0 flex-1 rounded-xl border bg-white p-4 transition-colors hover:border-accent-300 hover:bg-accent-50/30",
+                  "group mb-0 flex-1 rounded-xl border bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-300 hover:bg-accent-50/30 hover:shadow-card",
                   status === "active" ? "border-accent-300 ring-1 ring-accent-200" : "border-[var(--border)]"
                 )}
               >
