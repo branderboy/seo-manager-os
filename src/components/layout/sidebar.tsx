@@ -40,19 +40,17 @@ export function Sidebar() {
   return (
     <aside className="hidden w-[240px] shrink-0 flex-col bg-[#2F3E4D] shadow-xl lg:flex">
       <div className="sticky top-0 flex h-screen flex-col">
-        {/* Profile */}
+        {/* Brand */}
         <Link
           href="/clients"
-          className="flex h-[72px] items-center justify-between border-b border-white/10 px-4 hover:bg-white/5"
+          className="flex h-[72px] items-center gap-3 border-b border-white/10 px-4 hover:bg-white/5"
         >
-          <div className="flex items-center gap-3 overflow-hidden">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 font-bold text-white ring-1 ring-white/15">
-              KA
-            </span>
-            <div className="truncate">
-              <div className="truncate text-[15px] font-semibold text-white">Kawani Ali</div>
-              <div className="truncate text-xs text-slate-400">Workspace Admin</div>
-            </div>
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#51B34E]">
+            <span className="h-4 w-4 rounded-sm bg-white" />
+          </span>
+          <div className="truncate">
+            <div className="truncate text-[15px] font-semibold tracking-tight text-white">SEO Manager OS</div>
+            <div className="truncate font-mono text-xs text-white/60">v1.0</div>
           </div>
         </Link>
 
