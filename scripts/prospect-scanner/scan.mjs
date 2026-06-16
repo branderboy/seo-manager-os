@@ -131,41 +131,79 @@ function buildPitchDoc(scored, profile, stamp) {
   return out.join("\n");
 }
 
-// ── classification + scoring ─────────────────────────────────────────────────
-// Agency signal in the COMPANY NAME (generic words like "seo"/"marketing" are
-// avoided — they appear in nearly every SEO job description).
+// ── classification ───────────────────────────────────────────────────────────
+// Recruiters and job-board aggregators are middlemen, not real buyers/employers.
+const RECRUITER_NAME_WORDS = [
+  "recruiting", "recruitment", "staffing", "talent solutions", "talent acquisition",
+  "headhunter", "search partners", "virtualvocations", "motion recruitment", "method recruiting",
+];
+const BOARD_SOURCES = [
+  "talent.com", "mediabistro", "bebee", "digitalhire", "efinancialcareers",
+  "virtualvocations", "ziprecruiter feed", "jooble", "adzuna", "snagajob",
+];
+
+// Agency signal in the COMPANY NAME (generic words like "seo"/"marketing" appear
+// in nearly every SEO job description, so we key mostly off the employer name).
 const AGENCY_NAME_WORDS = [
   "agency", "agencies", "digital", "media", "creative", "studio", "studios",
   "consultancy", "consulting", "interactive", "labs", "collective", "advertising",
-  "web design", "marketing", "partners", "seo",
+  "web design", "marketing", "partners", "strategic solutions", "groupe", "publicis",
+  "accenture", "sparkfoundry", "& design", "and design", "performance content", "seo",
 ];
 // Strong agency phrases in the description (a brand hiring in-house won't say these).
 const AGENCY_PHRASES = [
   "our clients", "client-facing", "multiple clients", "client accounts",
   "agency environment", "white label", "white-label", "for our clients",
-  "portfolio of clients", "manage clients",
+  "portfolio of clients", "manage clients", "across clients",
 ];
 
 function classifyLead(job) {
   const name = (job.company || "").toLowerCase();
   const desc = (job.descriptionSnippet || "").toLowerCase();
+  const src = (job.source || "").toLowerCase();
+
+  if (RECRUITER_NAME_WORDS.some((w) => name.includes(w)) || BOARD_SOURCES.some((s) => src.includes(s))) {
+    return "Recruiter / Board";
+  }
   const nameHit = AGENCY_NAME_WORDS.some((w) => name.includes(w));
   const phraseHit = AGENCY_PHRASES.some((p) => desc.includes(p));
   return nameHit || phraseHit ? "Agency Prospect" : "Job Lead";
 }
 
+// ── scoring (with synonyms so AI-era skills actually match) ───────────────────
+const SKILL_ALIASES = {
+  "Local SEO": ["local seo", "local search", "gbp", "google business", "map pack", "local pack"],
+  "Technical SEO": ["technical seo", "crawl", "indexation", "core web vitals", "site speed", "rendering"],
+  "On-Page SEO": ["on-page", "onpage", "on page"],
+  "Backlinks": ["backlink", "link building", "off-page", "referring domain", "digital pr", "link acquisition"],
+  "AEO": ["aeo", "answer engine", "featured snippet", "ai overview", "ai-powered search"],
+  "GEO": ["geo", "generative engine", "ai search", "ai visibility", "llm", "generative search"],
+  "Structured Data": ["structured data", "schema", "json-ld", "rich result", "rich snippet"],
+  "Embeddings": ["embedding", "vector", "semantic search"],
+  "Analytics": ["analytics", "ga4", "google analytics", "search console", "gsc", "looker", "data studio"],
+  "CRO": ["cro", "conversion rate", "conversion optimization"],
+  "Content Strategy": ["content strategy", "content marketing", "editorial", "topic cluster"],
+  "Programmatic SEO": ["programmatic"],
+  "Keyword Research": ["keyword research", "keyword", "search demand"],
+  "Google Business Profile": ["google business", "gbp", "google my business", "gmb"],
+  "Schema": ["schema", "structured data", "json-ld"],
+};
+
 function scoreFit(job, skills) {
   const title = (job.title || "").toLowerCase();
   const desc = (job.descriptionSnippet || "").toLowerCase();
+  const hay = `${title} ${desc}`;
   const matched = [];
+  let titleHits = 0;
   for (const skill of skills) {
-    const s = skill.toLowerCase();
-    if (title.includes(s) || desc.includes(s)) matched.push(skill);
+    const aliases = SKILL_ALIASES[skill] || [skill.toLowerCase()];
+    if (aliases.some((a) => hay.includes(a))) {
+      matched.push(skill);
+      if (aliases.some((a) => title.includes(a))) titleHits++;
+    }
   }
-  // % of your skills that show up, with a small bonus for title hits.
-  const titleHits = matched.filter((m) => title.includes(m.toLowerCase())).length;
   const base = (matched.length / skills.length) * 100;
-  const fit = Math.min(100, Math.round(base + titleHits * 4));
+  const fit = Math.min(100, Math.round(base + titleHits * 5));
   const gaps = skills.filter((s) => !matched.includes(s));
   return { fit, matched, gaps };
 }
@@ -230,9 +268,12 @@ function dedupe(jobs) {
 }
 
 function salaryLabel(j) {
-  if (!j.salaryMin && !j.salaryMax) return "";
-  const f = (n) => (n ? `$${Math.round(n / 1000)}k` : "?");
-  return `${f(j.salaryMin)}–${f(j.salaryMax)}`;
+  const min = j.salaryMin || 0;
+  const max = j.salaryMax || 0;
+  // Skip when missing or sub-$1k (hourly/junk values that render as "$0k").
+  if (Math.max(min, max) < 1000) return "";
+  const f = (n) => (n >= 1000 ? `$${Math.round(n / 1000)}k` : "?");
+  return `${f(min)}–${f(max)}`;
 }
 
 function toCsv(rows) {
@@ -300,6 +341,7 @@ async function main() {
   // console table
   const prospects = scored.filter((j) => j.leadType === "Agency Prospect");
   const leads = scored.filter((j) => j.leadType === "Job Lead");
+  const recruiters = scored.filter((j) => j.leadType === "Recruiter / Board");
 
   const printGroup = (label, rows) => {
     console.log(`\n=== ${label} (${rows.length}) ===`);
@@ -316,6 +358,7 @@ async function main() {
 
   printGroup("AGENCY PROSPECTS (potential buyers)", prospects);
   printGroup("JOB LEADS (roles to apply to)", leads);
+  printGroup("RECRUITERS / BOARDS (middlemen — verify the real employer)", recruiters);
 
   // write files
   mkdirSync(opts.outDir, { recursive: true });
@@ -325,7 +368,7 @@ async function main() {
   writeFileSync(jsonPath, JSON.stringify(scored, null, 2));
   writeFileSync(csvPath, toCsv(scored));
 
-  console.log(`\n✔ ${scored.length} results · ${prospects.length} prospects · ${leads.length} job leads`);
+  console.log(`\n✔ ${scored.length} results · ${prospects.length} prospects · ${leads.length} job leads · ${recruiters.length} recruiters/boards`);
   console.log(`  saved ${jsonPath}`);
   console.log(`  saved ${csvPath}`);
 
