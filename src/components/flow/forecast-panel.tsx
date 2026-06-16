@@ -34,9 +34,9 @@ const LEVERS: {
   unit: string;
   constraint?: boolean;
 }[] = [
-  { key: "reviews", label: "Review velocity", min: 3, max: 20, unit: "/mo", constraint: true },
-  { key: "content", label: "Pages published", min: 0, max: 12, unit: "/mo" },
-  { key: "links", label: "Referring domains", min: 0, max: 20, unit: "/mo" },
+  { key: "reviews", label: "Review velocity", min: 3, max: 40, unit: "/mo", constraint: true },
+  { key: "content", label: "Pages published", min: 0, max: 50, unit: "/mo" },
+  { key: "links", label: "Referring domains", min: 0, max: 50, unit: "/mo" },
   { key: "technical", label: "Technical fixes", min: 0, max: 100, unit: "%" },
   { key: "aeo", label: "AEO / schema coverage", min: 0, max: 100, unit: "%" },
 ];
