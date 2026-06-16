@@ -25,8 +25,8 @@ export function Sidebar() {
   const main: Item[] = [
     { href: "/clients", label: "Clients", icon: Users },
     { href: "/workflow", label: "Workflow", icon: Workflow },
-    ...STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n })),
   ];
+  const pipeline: Item[] = STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n }));
   const dashboards: Item[] = [
     { href: "/dashboards/local", label: "Local SEO", icon: dashIcons.local },
     { href: "/dashboards/saas", label: "SaaS SEO", icon: dashIcons.saas },
@@ -59,6 +59,9 @@ export function Sidebar() {
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-3">
           <NavGroup items={main} pathname={pathname} />
+          <Divider />
+          <NavLabel>Workflow Stages</NavLabel>
+          <NavGroup items={pipeline} pathname={pathname} />
           <Divider />
           <NavLabel>Client Dashboards</NavLabel>
           <NavGroup items={dashboards} pathname={pathname} />
@@ -95,7 +98,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
                 "flex items-center border-l-4 py-2.5 pr-4 text-sm transition-colors",
                 active
                   ? "border-[#51B34E] bg-white/10 pl-5 font-medium text-white"
-                  : "border-transparent pl-6 text-slate-400 hover:bg-white/5 hover:text-white"
+                  : "border-transparent pl-6 text-white hover:bg-white/5 hover:text-white"
               )}
             >
               <span className="flex items-center gap-3.5">
@@ -105,7 +108,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
                       "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
                       active
                         ? "bg-[#51B34E] text-white"
-                        : "border-2 border-slate-500 text-slate-300"
+                        : "border-2 border-slate-500 text-white"
                     )}
                   >
                     {it.step}
