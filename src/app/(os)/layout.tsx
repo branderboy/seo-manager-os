@@ -9,12 +9,12 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
     <EngagementProvider>
       <TaskStoreProvider>
         <HandoffProvider>
-        <div className="flex min-h-screen bg-[var(--surface-2)]">
+        <div className="flex h-screen overflow-hidden bg-panel">
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <StageBar />
-            <main className="app-canvas flex-1 px-5 py-8 sm:px-8">
-              <div className="mx-auto w-full max-w-6xl space-y-8">{children}</div>
+            <main className="flex-1 overflow-y-auto bg-panel px-8 py-10">
+              <div className="mx-auto w-full max-w-4xl space-y-8 pb-16">{children}</div>
             </main>
           </div>
         </div>

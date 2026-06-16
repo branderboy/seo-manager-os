@@ -8,7 +8,7 @@
   --muted: #5b6472;
   --border: #e9ecf2;
   --surface: #ffffff;
-  --surface-2: #f7f8fb;
+  --surface-2: #f8fafc;
   /* The golden curve — fast start, gentle settle. Default for entrances. */
   --ease-golden: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -158,6 +158,23 @@ body {
 }
 .pin-pulse {
   animation: pin-pulse 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Shared sidebar design tokens — inherited by every page via the layout. */
+.pw-sidebar {
+  background-color: #2f3e4d;
+}
+.pw-nav-item {
+  color: #ffffff;
+}
+.pw-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+.pw-nav-item.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-left: 4px solid #51b34e;
 }
 @media (prefers-reduced-motion: reduce) {
   .pin-pulse {

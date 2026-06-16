@@ -2,135 +2,65 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Building2,
-  MapPin,
-  Cloud,
-  Plug,
-  Settings,
-  MoreVertical,
-  Users,
-  Workflow,
-} from "lucide-react";
+import { Settings } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
-
-const dashIcons = { local: MapPin, saas: Cloud, enterprise: Building2 } as const;
-
-type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }>; step?: number };
 
 export function Sidebar() {
   const pathname = usePathname();
 
-  const main: Item[] = [
-    { href: "/clients", label: "Clients", icon: Users },
-    { href: "/workflow", label: "Workflow", icon: Workflow },
-    ...STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n })),
-  ];
-  const dashboards: Item[] = [
-    { href: "/dashboards/local", label: "Local SEO", icon: dashIcons.local },
-    { href: "/dashboards/saas", label: "SaaS SEO", icon: dashIcons.saas },
-    { href: "/dashboards/enterprise", label: "Enterprise SEO", icon: dashIcons.enterprise },
-  ];
-  const workspace: Item[] = [
-    { href: "/integrations", label: "Integrations", icon: Plug },
-    { href: "/settings", label: "Settings", icon: Settings },
-  ];
-
   return (
-    <aside className="hidden w-[240px] shrink-0 flex-col bg-[#2F3E4D] shadow-xl lg:flex">
+    <aside className="pw-sidebar z-20 hidden w-64 flex-shrink-0 flex-col shadow-xl lg:flex">
       <div className="sticky top-0 flex h-screen flex-col">
         {/* Profile */}
-        <Link
-          href="/clients"
-          className="flex h-[72px] items-center justify-between border-b border-white/10 px-4 hover:bg-white/5"
-        >
-          <div className="flex items-center gap-3 overflow-hidden">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 font-bold text-white ring-1 ring-white/15">
-              KA
-            </span>
-            <div className="truncate">
+        <div className="flex h-[72px] items-center justify-between border-b border-white/10 px-5">
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-bold text-white">KA</span>
+            <div className="min-w-0">
               <div className="truncate text-[15px] font-semibold text-white">Kawani Ali</div>
-              <div className="truncate text-xs text-slate-400">Workspace Admin</div>
+              <div className="truncate text-xs text-white/70">Workspace Admin</div>
             </div>
           </div>
-        </Link>
+        </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-3">
-          <NavGroup items={main} pathname={pathname} />
-          <Divider />
-          <NavLabel>Client Dashboards</NavLabel>
-          <NavGroup items={dashboards} pathname={pathname} />
-          <Divider />
-          <NavGroup items={workspace} pathname={pathname} />
+        {/* Nav — the 9 stages, shared on every page */}
+        <nav className="flex-1 space-y-1.5 overflow-y-auto py-5">
+          {STAGES.map((s) => {
+            const href = `/${s.slug}`;
+            const active = pathname === href;
+            const Icon = s.icon;
+            return (
+              <Link
+                key={s.slug}
+                href={href}
+                className={cn("pw-nav-item flex items-center px-5 py-3 transition-all", active ? "active pl-4" : "")}
+              >
+                <Icon className="mr-3.5 h-5 w-5 opacity-70" />
+                <span className="text-[15px] font-medium">{s.name}</span>
+              </Link>
+            );
+          })}
         </nav>
 
-        {/* Branding footer */}
-        <div className="flex items-center justify-between border-t border-white/10 p-4">
-          <div className="flex items-center gap-2 text-sm font-bold tracking-wide text-white">
-            <span className="flex h-5 w-5 items-center justify-center rounded-sm bg-white">
-              <span className="h-3 w-3 rounded-sm bg-[#2F3E4D]" />
-            </span>
-            <span className="text-xs">SEO MANAGER OS</span>
+        {/* Bottom */}
+        <div className="border-t border-white/5 bg-black/10 py-4">
+          <div className="flex flex-col gap-2 px-4">
+            <Link
+              href="/settings"
+              className="pw-nav-item flex items-center rounded px-2 py-2 transition-all hover:bg-white/5"
+            >
+              <Settings className="mr-3.5 h-5 w-5 opacity-70" />
+              <span className="text-[15px] font-medium">Settings</span>
+            </Link>
+            <Link
+              href="/clients"
+              className="mt-2 w-full rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-bold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-blue-500 hover:shadow-lg"
+            >
+              All Clients
+            </Link>
           </div>
-          <MoreVertical className="h-4 w-4 text-white/60" />
         </div>
       </div>
     </aside>
   );
-}
-
-function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
-  return (
-    <ul>
-      {items.map((it) => {
-        const active = pathname === it.href;
-        const Icon = it.icon;
-        return (
-          <li key={it.href}>
-            <Link
-              href={it.href}
-              className={cn(
-                "flex items-center border-l-4 py-2.5 pr-4 text-sm transition-colors",
-                active
-                  ? "border-[#51B34E] bg-white/10 pl-5 font-medium text-white"
-                  : "border-transparent pl-6 text-slate-400 hover:bg-white/5 hover:text-white"
-              )}
-            >
-              <span className="flex items-center gap-3.5">
-                {typeof it.step === "number" ? (
-                  <span
-                    className={cn(
-                      "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
-                      active
-                        ? "bg-[#51B34E] text-white"
-                        : "border-2 border-slate-500 text-slate-300"
-                    )}
-                  >
-                    {it.step}
-                  </span>
-                ) : (
-                  <Icon className={cn("h-[18px] w-[18px]", active ? "text-white" : "text-white/70")} />
-                )}
-                <span className="truncate">{it.label}</span>
-              </span>
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function NavLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="px-6 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/50">
-      {children}
-    </div>
-  );
-}
-
-function Divider() {
-  return <div className="my-2 border-t border-white/10" />;
 }
