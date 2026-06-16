@@ -74,6 +74,63 @@ function loadSkills() {
   return skills;
 }
 
+function loadProfile() {
+  return JSON.parse(readFileSync(join(__dirname, "profile.json"), "utf8"));
+}
+
+// ── pitch / outreach generation (--pitch) ────────────────────────────────────
+function skillPhrase(matched) {
+  const s = matched.slice(0, 4);
+  if (!s.length) return "technical SEO, local SEO and AEO";
+  if (s.length === 1) return s[0];
+  return `${s.slice(0, -1).join(", ")} and ${s[s.length - 1]}`;
+}
+
+function prospectPitch(job, p) {
+  const subject = `Quick idea for ${job.company}'s SEO delivery`;
+  const body =
+`Hi ${job.company} team,
+
+I saw you're hiring a ${job.title} — usually a sign SEO delivery is scaling on your side. I build and run ${p.product}, a diagnosis-first SEO system that turns an audit into a ranked root-cause diagnosis, a forecast of the projected lift, and role-routed daily tasks — with AEO/GEO (AI search) built in.
+
+For your client work it could help most with ${skillPhrase(job.matched)}. Here's a 2-minute look: ${p.demoUrl}
+
+Worth a 15-minute call? (I'm also open to ${job.title.toLowerCase()} / consulting work if you're staffing.)
+
+Best,
+${p.name} — ${p.title}
+${p.email}`;
+  return { subject, body };
+}
+
+function whyIFit(job, p) {
+  return `Why I fit: my focus areas overlap directly — ${skillPhrase(job.matched)}. I run ${p.product}, a diagnosis-first workflow (root cause → forecast → daily tasks, AEO/GEO included). Demo: ${p.demoUrl}`;
+}
+
+function buildPitchDoc(scored, profile, stamp) {
+  const prospects = scored.filter((j) => j.leadType === "Agency Prospect");
+  const leads = scored.filter((j) => j.leadType === "Job Lead");
+  const out = [`# Outreach — ${stamp}`, ""];
+
+  out.push("## Agency Prospects (pitch the dashboard)", "");
+  if (!prospects.length) out.push("_None in this run._", "");
+  for (const j of prospects) {
+    const { subject, body } = prospectPitch(j, profile);
+    out.push(`### ${j.company} — ${j.title}  (${j.fit}% match)`);
+    if (j.applyUrl) out.push(`Listing: ${j.applyUrl}`);
+    out.push("", `**Subject:** ${subject}`, "", body, "", "---", "");
+  }
+
+  out.push("## Job Leads (apply — why I fit)", "");
+  if (!leads.length) out.push("_None in this run._", "");
+  for (const j of leads) {
+    out.push(`### ${j.company} — ${j.title}  (${j.fit}% match)`);
+    if (j.applyUrl) out.push(`Apply: ${j.applyUrl}`);
+    out.push("", whyIFit(j, profile), "", "---", "");
+  }
+  return out.join("\n");
+}
+
 // ── classification + scoring ─────────────────────────────────────────────────
 // Agency signal in the COMPANY NAME (generic words like "seo"/"marketing" are
 // avoided — they appear in nearly every SEO job description).
@@ -135,8 +192,12 @@ async function fetchJSearch({ q, location, remote, date, pages, key }) {
     if (res.status === 429) throw new Error("Rate limited by JSearch (429). Slow down or upgrade the plan.");
     if (!res.ok) throw new Error(`JSearch error ${res.status}: ${await res.text()}`);
     const json = await res.json();
+    if (json.status && json.status !== "OK") {
+      throw new Error(`JSearch returned status "${json.status}": ${json.error?.message || JSON.stringify(json.error || json)}`);
+    }
     all.push(...(json.data || []));
   }
+  console.log(`  → API returned ${all.length} raw listing(s)`);
   return all.map(normalizeJSearch);
 }
 
@@ -211,6 +272,7 @@ async function main() {
     minFit: parseInt(args["min-fit"], 10) || 0,
     outDir: typeof args.out === "string" ? args.out : join(__dirname, "out"),
     demo: !!args.demo,
+    pitch: !!args.pitch,
   };
 
   let raw;
@@ -266,6 +328,13 @@ async function main() {
   console.log(`\n✔ ${scored.length} results · ${prospects.length} prospects · ${leads.length} job leads`);
   console.log(`  saved ${jsonPath}`);
   console.log(`  saved ${csvPath}`);
+
+  if (opts.pitch) {
+    const profile = loadProfile();
+    const pitchPath = join(opts.outDir, `pitches-${stamp}.md`);
+    writeFileSync(pitchPath, buildPitchDoc(scored, profile, stamp));
+    console.log(`  saved ${pitchPath}  (tailored outreach emails)`);
+  }
 }
 
 main().catch((err) => {

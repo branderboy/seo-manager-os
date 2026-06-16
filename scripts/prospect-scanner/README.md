@@ -11,7 +11,15 @@ Zero dependencies. Requires **Node 18+** (uses built-in `fetch`).
 ## Try it now (no API key)
 
 ```bash
-node scripts/prospect-scanner/scan.mjs --demo
+node scripts/prospect-scanner/scan.mjs --demo --pitch
+```
+
+### PowerShell wrapper (Windows)
+
+```powershell
+.\scripts\prospect-scanner\scan.ps1 -Demo -Pitch
+.\scripts\prospect-scanner\scan.ps1 "SEO manager" "New York, NY" -Pages 2 -Pitch
+.\scripts\prospect-scanner\scan.ps1 "SEO strategist" -Remote -Date week -MinFit 40 -Pitch
 ```
 
 ## Live data
