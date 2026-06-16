@@ -47,7 +47,7 @@ export function Sidebar() {
               href="/settings"
               className="pw-nav-item flex items-center rounded px-2 py-2 transition-all hover:bg-white/5"
             >
-              <Settings className="mr-3.5 h-5 w-5 opacity-70" />
+              <span className="mr-3.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60" />
               <span className="text-[15px] font-medium">Settings</span>
             </Link>
             <Link
