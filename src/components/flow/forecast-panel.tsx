@@ -97,7 +97,7 @@ export function ForecastPanel() {
 
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Improvement levers */}
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           <div className="flex items-center justify-between">
             <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">Improvements</h4>
             <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
@@ -133,7 +133,7 @@ export function ForecastPanel() {
         </div>
 
         {/* Projected outcomes */}
-        <div>
+        <div className="min-w-0">
           <div className="mb-5 flex items-center justify-between">
             <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">
               Projection ({horizon} days)
@@ -144,9 +144,9 @@ export function ForecastPanel() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {metrics.map((o) => (
-              <div key={o.label} className="flex flex-col justify-center rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <div key={o.label} className="flex min-w-0 flex-col justify-center rounded-xl border border-slate-200 bg-slate-50 p-5">
                 <div className="mb-2 text-sm font-semibold text-slate-600">{o.label}</div>
-                <div className="flex items-center gap-2 font-mono text-lg font-bold">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-lg font-bold">
                   <span className="text-slate-400 line-through decoration-slate-300">{o.from}{o.suffix}</span>
                   <span className="text-slate-300">→</span>
                   <span className={o.color}>{o.to}{o.suffix}</span>
