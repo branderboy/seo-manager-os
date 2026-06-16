@@ -29,10 +29,9 @@ const PIPELINE = [
   { slug: "investigation", label: "03. Analysis", name: "Investigation", desc: "Sift through the data to identify specific opportunities and underlying issues.", tone: "text-blue-600" },
   { slug: "diagnosis", label: "04. Root Cause", name: "Diagnosis", desc: "Determine the exact constraints holding back performance.", tone: "text-amber-600" },
   { slug: "strategy", label: "05. Plan", name: "Project Brief", desc: "Create the focused game plan designed to resolve the diagnosis.", tone: "text-amber-600" },
-  { slug: "execution", label: "06. Structure", name: "Execution Planner", desc: "Break the strategy down into manageable, measurable projects.", tone: "text-amber-600" },
-  { slug: "tools", label: "07. Action", name: "Playbooks", desc: "Deploy standardized, tested SOPs to execute the planned projects efficiently.", tone: "text-emerald-600" },
-  { slug: "tasks", label: "08. Workflow", name: "Daily Task Engine", desc: "Generate and route today's specific work to the right person, automatically.", tone: "text-emerald-600" },
-  { slug: "reports", label: "09. Proof", name: "Reports", desc: "Track empirical results against the original goal and close the loop.", tone: "text-emerald-600" },
+  { slug: "tools", label: "06. Action", name: "Playbooks", desc: "Plan and run the work: outcome playbooks that turn the strategy into sequenced, owned tasks.", tone: "text-emerald-600" },
+  { slug: "tasks", label: "07. Workflow", name: "Daily Task Engine", desc: "Generate and route today's specific work to the right person, automatically.", tone: "text-emerald-600" },
+  { slug: "reports", label: "08. Proof", name: "Reports", desc: "Track empirical results against the original goal and close the loop.", tone: "text-emerald-600" },
 ];
 
 // 7×7 geo-grid sample (avg rank; center = HQ).

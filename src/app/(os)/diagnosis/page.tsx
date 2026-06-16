@@ -111,7 +111,7 @@ export default function DiagnosisPage() {
               <select className="w-full cursor-pointer appearance-none rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-base font-medium text-slate-800 transition-all focus:border-transparent focus:bg-white focus:ring-2 focus:ring-[#1DA1F2]">
                 <option>04. Diagnosis Engine</option>
                 <option>05. Strategy Brief</option>
-                <option>06. Execution Planner</option>
+                <option>06. Playbooks</option>
               </select>
               <ChevronDown className="pointer-events-none absolute inset-y-0 right-4 my-auto h-5 w-5 text-slate-500" />
             </div>
