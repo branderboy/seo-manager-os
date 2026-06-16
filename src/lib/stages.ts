@@ -21,6 +21,8 @@ export type Stage = {
   blurb: string;
   /** The concrete artifacts this stage produces — they become the next stage's inputs. */
   outputs: string[];
+  /** Integration ids (see lib/integrations) this stage uses to generate its data/plans/insights. */
+  apps: string[];
   icon: LucideIcon;
 };
 
@@ -38,6 +40,7 @@ export const STAGES: Stage[] = [
     does: "Understand the business.",
     blurb: "Consultant-style intake to understand the business before any audit.",
     outputs: ["Goals", "Services", "Locations", "Competitors", "Budget", "Resources"],
+    apps: ["gcal", "hubspot"],
     icon: ClipboardList,
   },
   {
@@ -48,6 +51,7 @@ export const STAGES: Stage[] = [
     does: "Sync the client's own data.",
     blurb: "Connect the client's internal data sources — Search Console, Analytics, GBP and the site crawl.",
     outputs: ["Search Console", "Analytics", "GBP Data", "Site Crawl", "Rankings", "CRM"],
+    apps: ["gsc", "ga4", "gbp", "screamingfrog"],
     icon: Telescope,
   },
   {
@@ -58,6 +62,7 @@ export const STAGES: Stage[] = [
     does: "Nail down intent, aligned to goals.",
     blurb: "Map search intent across the funnel (TOF / MOF / BOF) and align it to the business goals before diagnosing.",
     outputs: ["TOF Intent", "MOF Intent", "BOF Intent", "Goal Alignment"],
+    apps: ["semrush", "gsc", "gtrends"],
     icon: Target,
   },
   {
@@ -68,6 +73,7 @@ export const STAGES: Stage[] = [
     does: "Size up rivals and the SERP.",
     blurb: "Benchmark the competitors and read the search landscape — who's ranking, what's winning the SERP and AI answers, and where the open lanes are — before diagnosing your own gaps.",
     outputs: ["Competitor Set", "Share of Voice", "SERP Features", "Content Gaps vs Rivals", "Backlink Gaps", "AI Answer Coverage"],
+    apps: ["semrush", "ahrefs", "localfalcon"],
     icon: Radar,
   },
   {
@@ -78,6 +84,7 @@ export const STAGES: Stage[] = [
     does: "Find the gaps and root causes.",
     blurb: "Surface the gaps (content, technical, GEO, AEO, authority) and resolve every symptom to a ranked root cause with confidence and impact.",
     outputs: ["Content Gaps", "Technical Gaps", "GEO Gaps", "AEO Gaps", "Authority Gaps", "Root Causes"],
+    apps: ["screamingfrog", "gsc", "ahrefs"],
     icon: Stethoscope,
   },
   {
@@ -97,6 +104,7 @@ export const STAGES: Stage[] = [
       "AEO",
       "Recommended Actions",
     ],
+    apps: ["trello", "semrush"],
     icon: Wrench,
   },
   {
@@ -107,6 +115,7 @@ export const STAGES: Stage[] = [
     does: "Compile the plan for sign-off.",
     blurb: "An executive-ready brief generated from the diagnosis and selected playbooks.",
     outputs: ["SEO Strategy", "GEO Strategy", "AEO Strategy", "Priority Roadmap"],
+    apps: ["gdocs", "slack"],
     icon: FileText,
   },
   {
@@ -123,6 +132,7 @@ export const STAGES: Stage[] = [
       "Publish 2 location pages",
       "Answer 5 GBP reviews",
     ],
+    apps: ["gcal", "slack", "trello"],
     icon: BellRing,
   },
   {
@@ -133,6 +143,7 @@ export const STAGES: Stage[] = [
     does: "Track results against goal.",
     blurb: "Track rankings, traffic, leads, calls, AI visibility and revenue against the goals set in Discovery.",
     outputs: ["Rankings", "Traffic", "Leads", "Calls", "AI Visibility", "Revenue Impact", "Performance Reports"],
+    apps: ["looker", "ga4", "slack"],
     icon: Gauge,
   },
 ];

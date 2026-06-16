@@ -106,7 +106,7 @@ export function BriefApproval() {
               <div>
                 <div className="text-sm font-semibold text-slate-900">{launched ? "Project launched" : "Launch project"}</div>
                 <div className="text-xs text-slate-500">
-                  {launched ? "Approved and live — now turned into daily actions." : `Approved by ${MANAGER}. Flip to launch.`}
+                  {launched ? "Approved and live — scheduled into daily tasks via Google Calendar & Trello." : `Approved by ${MANAGER}. Flip to launch.`}
                 </div>
               </div>
             </div>
@@ -126,8 +126,11 @@ export function BriefApproval() {
               href="/tasks"
               className="flex items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
             >
-              <span className="text-sm font-semibold text-emerald-800">Turned into daily actions in the Daily Task Engine</span>
-              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700">View Daily Actions <ArrowRight className="h-4 w-4" /></span>
+              <span>
+                <span className="block text-sm font-semibold text-emerald-800">Turned into scheduled tasks in the Daily Task Engine</span>
+                <span className="mt-0.5 block text-xs text-emerald-700">Each task is dated and synced to Google Calendar &amp; Trello.</span>
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-emerald-700">View Daily Actions <ArrowRight className="h-4 w-4" /></span>
             </Link>
           )}
         </div>

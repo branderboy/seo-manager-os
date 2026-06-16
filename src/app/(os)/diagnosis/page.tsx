@@ -14,6 +14,7 @@ import {
   ClipboardList,
   Send,
 } from "lucide-react";
+import { StageApps } from "@/components/layout/stage-apps";
 
 export const metadata: Metadata = { title: "Diagnosis Engine" };
 
@@ -55,6 +56,8 @@ export default function DiagnosisPage() {
           </button>
         </div>
       </div>
+
+      <StageApps stage={5} />
 
       {/* Alert + Metrics grid */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
