@@ -44,9 +44,9 @@ export const STAGES: Stage[] = [
     slug: "research",
     name: "Data Collection",
     short: "Data",
-    does: "Gather data.",
-    blurb: "Auto-generate the research plan for the detected SEO model.",
-    outputs: ["Keywords", "Competitors", "SERPs", "Entities", "Technical Data", "GBP Data"],
+    does: "Sync the client's own data.",
+    blurb: "Connect the client's internal data sources — Search Console, Analytics, GBP and the site crawl.",
+    outputs: ["Search Console", "Analytics", "GBP Data", "Site Crawl", "Rankings", "CRM"],
     icon: Telescope,
   },
   {
