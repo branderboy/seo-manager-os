@@ -1,6 +1,5 @@
 import { Sidebar } from "@/components/layout/sidebar";
 import { StageBar } from "@/components/layout/stage-bar";
-import { GuidedFlow } from "@/components/layout/guided-flow";
 import { EngagementProvider } from "@/components/engagement/store";
 import { TaskStoreProvider } from "@/components/tasks/task-store";
 
@@ -15,7 +14,6 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
             <main className="app-canvas flex-1 px-5 py-8 sm:px-8">
               <div className="mx-auto w-full max-w-6xl space-y-8">{children}</div>
             </main>
-            <GuidedFlow />
           </div>
         </div>
       </TaskStoreProvider>
