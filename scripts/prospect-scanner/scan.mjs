@@ -120,6 +120,8 @@ function buildPitchDoc(scored, profile, stamp) {
     if (j.website) out.push(`Website: ${j.website}`);
     const emails = guessEmails(j.website);
     if (emails.length) out.push(`Email guesses (verify): ${emails.join(", ")}`);
+    const hunter = hunterUrl(j.website);
+    if (hunter) out.push(`Find verified contacts: ${hunter}`);
     if (j.applyUrl) out.push(`Listing: ${j.applyUrl}`);
     out.push("", `**Subject:** ${subject}`, "", body, "", "---", "");
   }
@@ -278,6 +280,12 @@ function guessEmails(website) {
   return ["info", "hello", "marketing", "careers"].map((u) => `${u}@${d}`);
 }
 
+/** One-click Hunter.io domain search to find verified, named contacts. */
+function hunterUrl(website) {
+  const d = domainFromUrl(website);
+  return d ? `https://hunter.io/search/${d}` : "";
+}
+
 // ── helpers ──────────────────────────────────────────────────────────────────
 function dedupe(jobs) {
   const seen = new Set();
@@ -299,13 +307,13 @@ function salaryLabel(j) {
 }
 
 function toCsv(rows) {
-  const cols = ["fit", "leadType", "title", "company", "location", "website", "emailGuesses", "source", "salary", "matched", "postedAt", "applyUrl"];
+  const cols = ["fit", "leadType", "title", "company", "location", "website", "emailGuesses", "hunterLookup", "source", "salary", "matched", "postedAt", "applyUrl"];
   const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const lines = [cols.join(",")];
   for (const r of rows) {
     lines.push([
       r.fit, r.leadType, r.title, r.company, r.location, r.website,
-      guessEmails(r.website).join(" / "), r.source,
+      guessEmails(r.website).join(" / "), hunterUrl(r.website), r.source,
       salaryLabel(r), r.matched.join(" / "), r.postedAt, r.applyUrl,
     ].map(esc).join(","));
   }
