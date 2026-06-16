@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Settings } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
 
 export function Sidebar() {
-  const pathname = usePathname();
+  const pathname = (usePathname() || "/").replace(/\/$/, "") || "/";
 
   return (
     <aside className="pw-sidebar z-20 hidden w-64 flex-shrink-0 flex-col shadow-xl lg:flex">
@@ -28,14 +27,13 @@ export function Sidebar() {
           {STAGES.map((s) => {
             const href = `/${s.slug}`;
             const active = pathname === href;
-            const Icon = s.icon;
             return (
               <Link
                 key={s.slug}
                 href={href}
                 className={cn("pw-nav-item flex items-center px-5 py-3 transition-all", active ? "active pl-4" : "")}
               >
-                <Icon className="mr-3.5 h-5 w-5 opacity-70" />
+                <span className="mr-3.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60" />
                 <span className="text-[15px] font-medium">{s.name}</span>
               </Link>
             );
