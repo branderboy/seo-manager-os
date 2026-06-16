@@ -34,29 +34,27 @@ export function StageBar() {
   const { engagement } = useEngagement();
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md">
-      <div className="flex max-w-3xl flex-1 items-center gap-2 sm:gap-4">
+    <header className="z-10 flex h-[72px] shrink-0 items-center justify-between bg-[#51B34E] px-6 text-white shadow-md">
+      <div className="flex flex-1 items-center gap-4 sm:gap-8">
         <MobileNav />
-        <span className="whitespace-nowrap text-base font-semibold tracking-tight text-slate-900">{title}</span>
-        {engagement.business && (
-          <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-xs font-medium text-slate-600 xl:inline-flex">
-            <span className="h-1.5 w-1.5 rounded-full bg-accent-500" />
-            {engagement.business} · {engagement.model}
-          </span>
-        )}
-        <div className="relative max-w-xl flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+        <h1 className="whitespace-nowrap text-xl font-bold tracking-wide">{title}</h1>
+        <div className="relative w-full max-w-lg">
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/70" />
           <input
             type="text"
-            placeholder="Search"
-            className="w-full rounded-md border border-slate-200 bg-slate-50 py-1.5 pl-9 pr-4 text-sm text-slate-700 placeholder-slate-400 outline-none transition-colors hover:bg-slate-100 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100"
+            placeholder="Search across workspace..."
+            className="block w-full rounded-lg border border-white/20 bg-black/10 py-2.5 pl-11 pr-4 text-[15px] text-white placeholder-white/70 shadow-inner outline-none transition-all focus:bg-white focus:text-slate-900 focus:placeholder-slate-400 focus:ring-4 focus:ring-green-400/30"
           />
         </div>
       </div>
-      <div className="flex items-center gap-4 text-slate-600">
-        <HelpCircle className="h-5 w-5 cursor-pointer hover:text-slate-700" />
-        <Plus className="h-[22px] w-[22px] cursor-pointer hover:text-slate-700" />
-        <Bell className="h-5 w-5 cursor-pointer hover:text-slate-700" />
+      <div className="flex items-center gap-2">
+        <button className="rounded-lg p-2 text-white/80 transition-all hover:bg-white/10 hover:text-white">
+          <HelpCircle className="h-6 w-6" />
+        </button>
+        <button className="relative rounded-lg p-2 text-white/80 transition-all hover:bg-white/10 hover:text-white">
+          <Bell className="h-6 w-6" />
+          <span className="absolute right-2 top-2 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-[#51B34E]" />
+        </button>
       </div>
     </header>
   );
