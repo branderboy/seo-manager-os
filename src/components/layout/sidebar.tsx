@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CheckCircle2, CircleDot, Circle, Settings } from "lucide-react";
 import { STAGES } from "@/lib/stages";
+import { featuredInvestigation as inv } from "@/lib/model";
 import { cn } from "@/lib/utils";
 
 export function Sidebar() {
@@ -22,18 +24,26 @@ export function Sidebar() {
           </div>
         </div>
 
-        {/* Nav — the 9 stages, shared on every page */}
+        {/* Nav — status-driven: done / current / upcoming */}
         <nav className="flex-1 space-y-1.5 overflow-y-auto py-5">
           {STAGES.map((s) => {
             const href = `/${s.slug}`;
             const active = pathname === href;
+            const done = s.n < inv.currentStage;
+            const current = s.n === inv.currentStage;
             return (
               <Link
                 key={s.slug}
                 href={href}
                 className={cn("pw-nav-item flex items-center px-5 py-3 transition-all", active ? "active pl-4" : "")}
               >
-                <span className="mr-3.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60" />
+                {done ? (
+                  <CheckCircle2 className="mr-3.5 h-[18px] w-[18px] shrink-0 text-[#51B34E]" />
+                ) : current ? (
+                  <CircleDot className="mr-3.5 h-[18px] w-[18px] shrink-0 text-white" />
+                ) : (
+                  <Circle className="mr-3.5 h-[18px] w-[18px] shrink-0 text-white/35" />
+                )}
                 <span className="text-[15px] font-medium">{s.name}</span>
               </Link>
             );
@@ -47,7 +57,7 @@ export function Sidebar() {
               href="/settings"
               className="pw-nav-item flex items-center rounded px-2 py-2 transition-all hover:bg-white/5"
             >
-              <span className="mr-3.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-current opacity-60" />
+              <Settings className="mr-3.5 h-[18px] w-[18px] shrink-0 opacity-70" />
               <span className="text-[15px] font-medium">Settings</span>
             </Link>
             <Link
