@@ -8,10 +8,10 @@ import {
   Activity,
   ArrowRight,
   Download,
-  History,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { CarriedFromDiagnosis } from "@/components/flow/carried-from-diagnosis";
+import { BriefVersions } from "@/components/flow/brief-versions";
 import { BriefShare } from "@/components/flow/brief-share";
 import { BriefApproval } from "@/components/flow/brief-approval";
 import { Card } from "@/components/ui/card";
@@ -21,15 +21,6 @@ import { EngName, EngModel, EngMarket } from "@/components/engagement/eng";
 import { strategy, priorityMatrix } from "@/lib/data";
 
 export const metadata: Metadata = { title: "Project Brief" };
-
-const BRIEF_VERSION = "v3";
-const BRIEF_UPDATED = "Jun 16, 2026 · 2:14 PM";
-
-const briefVersions = [
-  { version: "v3", note: "Forecast updated after diagnosis re-run", author: "Kawani Ali", at: "Jun 16, 2026 · 2:14 PM" },
-  { version: "v2", note: "Added GEO/AEO playbooks and risks", author: "Kawani Ali", at: "Jun 12, 2026 · 10:02 AM" },
-  { version: "v1", note: "Initial brief generated from diagnosis", author: "SEO Manager OS", at: "Jun 9, 2026 · 4:48 PM" },
-];
 
 function Block({
   icon: Icon,
@@ -83,6 +74,8 @@ export default function StrategyPage() {
 
       <CarriedFromDiagnosis />
 
+      <BriefVersions />
+
       <Card>
         <div className="space-y-9 p-7 sm:p-9">
           {/* Doc header */}
@@ -98,33 +91,8 @@ export default function StrategyPage() {
                 <EngModel /> SEO · <EngMarket /> · Prepared by SEO Manager OS
               </div>
             </div>
-            <div className="flex flex-col items-end gap-1.5 text-right">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200">
-                {BRIEF_VERSION} · Current
-              </span>
-              <span className="font-mono text-xs text-slate-500">Updated {BRIEF_UPDATED}</span>
-            </div>
+            <FileText className="hidden h-8 w-8 text-slate-200 sm:block" />
           </div>
-
-          {/* Version history */}
-          <Block icon={History} title="Version History">
-            <ul className="divide-y divide-[var(--border)] overflow-hidden rounded-xl border border-[var(--border)]">
-              {briefVersions.map((v, i) => (
-                <li key={v.version} className="flex items-center justify-between gap-3 px-4 py-3">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <span className={`inline-flex shrink-0 items-center rounded-md px-2 py-0.5 text-xs font-bold ${i === 0 ? "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-200" : "bg-slate-100 text-slate-600"}`}>
-                      {v.version}
-                    </span>
-                    <span className="truncate text-sm text-slate-700">{v.note}</span>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-3 text-xs text-slate-500">
-                    <span className="hidden sm:inline">{v.author}</span>
-                    <span className="font-mono">{v.at}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Block>
 
           <Block icon={FileText} title="Executive Summary">
             <p className="text-[15px] leading-relaxed text-slate-600">
