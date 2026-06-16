@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/page-header";
-import { NextStep } from "@/components/layout/next-step";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge, ImpactBadge } from "@/components/ui/status-badge";
@@ -84,7 +83,6 @@ export default function ExecutionPage() {
         ))}
       </div>
 
-      <NextStep from={6} cta="Open Playbooks" />
     </>
   );
 }

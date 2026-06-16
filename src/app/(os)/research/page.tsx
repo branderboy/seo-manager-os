@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/page-header";
-import { NextStep } from "@/components/layout/next-step";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -69,7 +68,6 @@ export default function ResearchPage() {
           content: <Plan items={researchPlans[m]} />,
         }))}
       />
-      <NextStep from={2} cta="Run the investigation" />
     </>
   );
 }

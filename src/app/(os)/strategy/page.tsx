@@ -10,7 +10,6 @@ import {
   Download,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
-import { NextStep } from "@/components/layout/next-step";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PriorityScatter } from "@/components/charts/charts";
@@ -144,7 +143,6 @@ export default function StrategyPage() {
         </div>
       </Card>
 
-      <NextStep from={5} cta="Build execution plan" />
     </>
   );
 }

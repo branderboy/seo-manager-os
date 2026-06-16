@@ -4,7 +4,6 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImpactBadge } from "@/components/ui/status-badge";
-import { NextStep } from "@/components/layout/next-step";
 import { EngName } from "@/components/engagement/eng";
 import { diagnosis } from "@/lib/data";
 import type { Cause, DataSource } from "@/lib/data";
@@ -157,7 +156,6 @@ export default function DiagnosisPage() {
         </div>
       </Card>
 
-      <NextStep from={4} cta="Generate strategy brief" />
     </>
   );
 }
