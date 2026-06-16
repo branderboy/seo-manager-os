@@ -43,15 +43,10 @@ export function Sidebar() {
         {/* Brand */}
         <Link
           href="/clients"
-          className="flex h-[72px] items-center gap-3 border-b border-white/10 px-4 hover:bg-white/5"
+          className="flex h-[72px] flex-col justify-center border-b border-white/10 px-5 hover:bg-white/5"
         >
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#51B34E]">
-            <span className="h-4 w-4 rounded-sm bg-white" />
-          </span>
-          <div className="truncate">
-            <div className="truncate text-[15px] font-semibold tracking-tight text-white">SEO Manager OS</div>
-            <div className="truncate font-mono text-xs text-white/60">v1.0</div>
-          </div>
+          <div className="truncate text-[16px] font-semibold tracking-tight text-white">SEO Manager OS</div>
+          <div className="truncate font-mono text-xs text-white/60">v1.0</div>
         </Link>
 
         {/* Nav */}
@@ -69,12 +64,7 @@ export function Sidebar() {
 
         {/* Branding footer */}
         <div className="flex items-center justify-between border-t border-white/10 p-4">
-          <div className="flex items-center gap-2 text-sm font-bold tracking-wide text-white">
-            <span className="flex h-5 w-5 items-center justify-center rounded-sm bg-white">
-              <span className="h-3 w-3 rounded-sm bg-[#2F3E4D]" />
-            </span>
-            <span className="text-xs">SEO MANAGER OS</span>
-          </div>
+          <div className="text-xs font-bold tracking-wide text-white">SEO MANAGER OS</div>
           <MoreVertical className="h-4 w-4 text-white/60" />
         </div>
       </div>
