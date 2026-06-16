@@ -60,7 +60,7 @@ export default function StrategyPage() {
   return (
     <>
       <PageHeader
-        stage={6}
+        stage={5}
         title="Project Brief"
         badge="Executive-ready"
         description="A board-ready strategy document, generated from the diagnosis. Everything traces back to a root cause and forward to an expected outcome."

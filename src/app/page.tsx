@@ -25,13 +25,12 @@ const CONTACT = "kawani@digiwaxx.com";
 
 const PIPELINE = [
   { slug: "discovery", label: "01. Interview", name: "Discovery", desc: "Understand the business, goals, and baseline metrics before touching a tool.", tone: "text-blue-600" },
-  { slug: "research", label: "02. Data", name: "Data Collection", desc: "Gather comprehensive market, competitor, and technical data.", tone: "text-blue-600" },
-  { slug: "investigation", label: "03. Analysis", name: "Gap Analysis", desc: "Sift through the data to identify specific opportunities and underlying issues.", tone: "text-blue-600" },
-  { slug: "diagnosis", label: "04. Root Cause", name: "Diagnosis", desc: "Determine the exact constraints holding back performance.", tone: "text-amber-600" },
-  { slug: "tools", label: "05. Action", name: "Playbooks", desc: "Select the outcome playbooks that resolve the diagnosis, sequenced into owned work.", tone: "text-amber-600" },
-  { slug: "strategy", label: "06. Plan", name: "Project Brief", desc: "Compile the selected playbooks into an executive-ready brief for sign-off.", tone: "text-emerald-600" },
-  { slug: "tasks", label: "07. Workflow", name: "Daily Task Engine", desc: "Generate and route today's specific work to the right person, automatically.", tone: "text-emerald-600" },
-  { slug: "reports", label: "08. Proof", name: "Reports", desc: "Track empirical results against the original goal and close the loop.", tone: "text-emerald-600" },
+  { slug: "research", label: "02. Data", name: "Data Collection", desc: "Sync the client's own data — Search Console, Analytics, GBP and the site crawl.", tone: "text-blue-600" },
+  { slug: "diagnosis", label: "03. Root Cause", name: "Diagnosis", desc: "Surface the gaps and resolve every symptom to a ranked root cause.", tone: "text-amber-600" },
+  { slug: "tools", label: "04. Action", name: "Playbooks", desc: "Select the outcome playbooks that resolve the diagnosis, sequenced into owned work.", tone: "text-amber-600" },
+  { slug: "strategy", label: "05. Plan", name: "Project Brief", desc: "Compile the selected playbooks into an executive-ready brief for sign-off.", tone: "text-emerald-600" },
+  { slug: "tasks", label: "06. Workflow", name: "Daily Task Engine", desc: "Generate and route today's specific work to the right person, automatically.", tone: "text-emerald-600" },
+  { slug: "reports", label: "07. Proof", name: "Reports", desc: "Track empirical results against the original goal and close the loop.", tone: "text-emerald-600" },
 ];
 
 // 7×7 geo-grid sample (avg rank; center = HQ).
