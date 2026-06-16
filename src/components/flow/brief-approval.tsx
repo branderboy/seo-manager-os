@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Check, X, RotateCcw, Rocket } from "lucide-react";
+import Link from "next/link";
+import { Check, X, RotateCcw, Rocket, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Status = "pending" | "approved" | "rejected";
@@ -96,27 +97,39 @@ export function BriefApproval() {
 
       {/* Launch (after approval) */}
       {status === "approved" && (
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-          <div className="flex items-center gap-3">
-            <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", launched ? "bg-emerald-100 text-emerald-600" : "bg-slate-200 text-slate-500")}>
-              <Rocket className="h-5 w-5" />
-            </span>
-            <div>
-              <div className="text-sm font-semibold text-slate-900">{launched ? "Project launched" : "Launch project"}</div>
-              <div className="text-xs text-slate-500">
-                {launched ? "Execution is live — Playbooks and Daily Tasks are active." : `Approved by ${MANAGER}. Flip to launch.`}
+        <div className="mt-5 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div className="flex items-center gap-3">
+              <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", launched ? "bg-emerald-100 text-emerald-600" : "bg-slate-200 text-slate-500")}>
+                <Rocket className="h-5 w-5" />
+              </span>
+              <div>
+                <div className="text-sm font-semibold text-slate-900">{launched ? "Project launched" : "Launch project"}</div>
+                <div className="text-xs text-slate-500">
+                  {launched ? "Approved and live — now turned into daily actions." : `Approved by ${MANAGER}. Flip to launch.`}
+                </div>
               </div>
             </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={launched}
+              onClick={() => setLaunched((v) => !v)}
+              className={cn("relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors", launched ? "bg-emerald-500" : "bg-slate-300")}
+            >
+              <span className={cn("inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform", launched ? "translate-x-6" : "translate-x-1")} />
+            </button>
           </div>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={launched}
-            onClick={() => setLaunched((v) => !v)}
-            className={cn("relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors", launched ? "bg-emerald-500" : "bg-slate-300")}
-          >
-            <span className={cn("inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform", launched ? "translate-x-6" : "translate-x-1")} />
-          </button>
+
+          {launched && (
+            <Link
+              href="/tasks"
+              className="flex items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 transition-colors hover:bg-emerald-100"
+            >
+              <span className="text-sm font-semibold text-emerald-800">Turned into daily actions in the Daily Task Engine</span>
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700">View Daily Actions <ArrowRight className="h-4 w-4" /></span>
+            </Link>
+          )}
         </div>
       )}
     </div>
