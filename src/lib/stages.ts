@@ -2,6 +2,7 @@ import {
   ClipboardList,
   Target,
   Telescope,
+  Radar,
   Stethoscope,
   FileText,
   Wrench,
@@ -61,6 +62,16 @@ export const STAGES: Stage[] = [
   },
   {
     n: 4,
+    slug: "competitors",
+    name: "Competitive Insights",
+    short: "Competitors",
+    does: "Size up rivals and the SERP.",
+    blurb: "Benchmark the competitors and read the search landscape — who's ranking, what's winning the SERP and AI answers, and where the open lanes are — before diagnosing your own gaps.",
+    outputs: ["Competitor Set", "Share of Voice", "SERP Features", "Content Gaps vs Rivals", "Backlink Gaps", "AI Answer Coverage"],
+    icon: Radar,
+  },
+  {
+    n: 5,
     slug: "diagnosis",
     name: "Diagnosis",
     short: "Diagnosis",
@@ -70,7 +81,7 @@ export const STAGES: Stage[] = [
     icon: Stethoscope,
   },
   {
-    n: 5,
+    n: 6,
     slug: "tools",
     name: "Playbooks",
     short: "Playbooks",
@@ -89,7 +100,7 @@ export const STAGES: Stage[] = [
     icon: Wrench,
   },
   {
-    n: 6,
+    n: 7,
     slug: "strategy",
     name: "Project Brief",
     short: "Project Brief",
@@ -99,7 +110,7 @@ export const STAGES: Stage[] = [
     icon: FileText,
   },
   {
-    n: 7,
+    n: 8,
     slug: "tasks",
     name: "Daily Task Engine",
     short: "Daily Tasks",
@@ -115,7 +126,7 @@ export const STAGES: Stage[] = [
     icon: BellRing,
   },
   {
-    n: 8,
+    n: 9,
     slug: "reports",
     name: "Reports",
     short: "Reports",

@@ -27,11 +27,12 @@ const PIPELINE = [
   { slug: "discovery", label: "01. Interview", name: "Discovery", desc: "Understand the business, goals, and baseline metrics before touching a tool.", tone: "text-blue-600" },
   { slug: "research", label: "02. Data", name: "Data Collection", desc: "Sync the client's own data — Search Console, Analytics, GBP and the site crawl.", tone: "text-blue-600" },
   { slug: "intent", label: "03. Intent", name: "Intent Mapping", desc: "Nail down search intent across the funnel (TOF / MOF / BOF) and align it to the goals.", tone: "text-blue-600" },
-  { slug: "diagnosis", label: "04. Root Cause", name: "Diagnosis", desc: "Surface the gaps and resolve every symptom to a ranked root cause.", tone: "text-amber-600" },
-  { slug: "tools", label: "05. Action", name: "Playbooks", desc: "Select the outcome playbooks that resolve the diagnosis, sequenced into owned work.", tone: "text-amber-600" },
-  { slug: "strategy", label: "06. Plan", name: "Project Brief", desc: "Compile the selected playbooks into an executive-ready brief for sign-off.", tone: "text-emerald-600" },
-  { slug: "tasks", label: "07. Workflow", name: "Daily Task Engine", desc: "Generate and route today's specific work to the right person, automatically.", tone: "text-emerald-600" },
-  { slug: "reports", label: "08. Proof", name: "Reports", desc: "Track empirical results against the original goal and close the loop.", tone: "text-emerald-600" },
+  { slug: "competitors", label: "04. Field", name: "Competitive Insights", desc: "Size up the rivals and read the SERP — who's winning, and where the open lanes are.", tone: "text-blue-600" },
+  { slug: "diagnosis", label: "05. Root Cause", name: "Diagnosis", desc: "Surface the gaps and resolve every symptom to a ranked root cause.", tone: "text-amber-600" },
+  { slug: "tools", label: "06. Action", name: "Playbooks", desc: "Select the outcome playbooks that resolve the diagnosis, sequenced into owned work.", tone: "text-amber-600" },
+  { slug: "strategy", label: "07. Plan", name: "Project Brief", desc: "Compile the selected playbooks into an executive-ready brief for sign-off.", tone: "text-emerald-600" },
+  { slug: "tasks", label: "08. Workflow", name: "Daily Task Engine", desc: "Generate and route today's specific work to the right person, automatically.", tone: "text-emerald-600" },
+  { slug: "reports", label: "09. Proof", name: "Reports", desc: "Track empirical results against the original goal and close the loop.", tone: "text-emerald-600" },
 ];
 
 // 7×7 geo-grid sample (avg rank; center = HQ).
@@ -215,7 +216,7 @@ export default function LandingPage() {
         {/* Pipeline */}
         <section className="relative z-10 mx-auto mb-32 max-w-7xl px-6">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">Eight stages, one connected pipeline.</h2>
+            <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">Nine stages, one connected pipeline.</h2>
             <p className="mx-auto max-w-2xl text-lg text-slate-600">
               Each stage consumes the previous one&apos;s output and produces its own. Nothing is arbitrary. Every
               task traces back to a diagnosis.

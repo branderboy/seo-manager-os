@@ -11,7 +11,7 @@ export default function PlaybooksPage() {
   return (
     <>
       <PageHeader
-        stage={5}
+        stage={6}
         title="Playbooks"
         description="The action center. Each playbook groups the plays that move one outcome — traffic, clicks, leads, revenue, local, GEO or AEO. Generate a playbook and its plays become tasks in the Daily Task Engine."
       >

@@ -8,7 +8,7 @@ export default function TasksPage() {
   return (
     <>
       <PageHeader
-        stage={7}
+        stage={8}
         title="Daily Task Engine"
         badge="Stay on task"
         description="The plan, broken into a daily worklist. Automated email alerts keep every owner on task and on time — so the strategy actually ships."
