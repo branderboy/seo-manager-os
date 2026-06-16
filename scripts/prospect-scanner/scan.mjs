@@ -117,6 +117,9 @@ function buildPitchDoc(scored, profile, stamp) {
   for (const j of prospects) {
     const { subject, body } = prospectPitch(j, profile);
     out.push(`### ${j.company} — ${j.title}  (${j.fit}% match)`);
+    if (j.website) out.push(`Website: ${j.website}`);
+    const emails = guessEmails(j.website);
+    if (emails.length) out.push(`Email guesses (verify): ${emails.join(", ")}`);
     if (j.applyUrl) out.push(`Listing: ${j.applyUrl}`);
     out.push("", `**Subject:** ${subject}`, "", body, "", "---", "");
   }
@@ -252,8 +255,27 @@ function normalizeJSearch(j) {
     salaryMin: j.job_min_salary || null,
     salaryMax: j.job_max_salary || null,
     applyUrl: j.job_apply_link || "",
+    website: j.employer_website || "",
     descriptionSnippet: (j.job_description || "").slice(0, 600),
   };
+}
+
+// ── contact-email helpers ────────────────────────────────────────────────────
+function domainFromUrl(url) {
+  if (!url) return "";
+  try {
+    const host = new URL(url.startsWith("http") ? url : `https://${url}`).hostname;
+    return host.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
+/** Likely outreach inboxes derived from the company domain (guesses to verify). */
+function guessEmails(website) {
+  const d = domainFromUrl(website);
+  if (!d) return [];
+  return ["info", "hello", "marketing", "careers"].map((u) => `${u}@${d}`);
 }
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -277,12 +299,13 @@ function salaryLabel(j) {
 }
 
 function toCsv(rows) {
-  const cols = ["fit", "leadType", "title", "company", "location", "source", "salary", "matched", "postedAt", "applyUrl"];
+  const cols = ["fit", "leadType", "title", "company", "location", "website", "emailGuesses", "source", "salary", "matched", "postedAt", "applyUrl"];
   const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const lines = [cols.join(",")];
   for (const r of rows) {
     lines.push([
-      r.fit, r.leadType, r.title, r.company, r.location, r.source,
+      r.fit, r.leadType, r.title, r.company, r.location, r.website,
+      guessEmails(r.website).join(" / "), r.source,
       salaryLabel(r), r.matched.join(" / "), r.postedAt, r.applyUrl,
     ].map(esc).join(","));
   }
@@ -291,10 +314,10 @@ function toCsv(rows) {
 
 // ── sample data for --demo (no API key needed) ───────────────────────────────
 const SAMPLE = [
-  { id: "1", title: "SEO Strategist", company: "Directive", location: "Remote", remote: true, source: "ZipRecruiter", postedAt: "2026-06-14", salaryMin: 75000, salaryMax: 95000, applyUrl: "https://www.ziprecruiter.com/", descriptionSnippet: "Own technical SEO, on-page, content strategy and AEO. Agency environment, client-facing. Local SEO and analytics a plus." },
-  { id: "2", title: "SEO Manager", company: "Northwind Home Services", location: "Austin, TX", remote: false, source: "Indeed", postedAt: "2026-06-13", salaryMin: 70000, salaryMax: 90000, applyUrl: "https://www.indeed.com/", descriptionSnippet: "In-house SEO manager for an HVAC brand. Local SEO, Google Business Profile, reviews, keyword research." },
-  { id: "3", title: "Senior SEO Consultant", company: "EyeUniversal Digital Agency", location: "Remote", remote: true, source: "ZipRecruiter", postedAt: "2026-06-12", salaryMin: 90000, salaryMax: 120000, applyUrl: "https://www.ziprecruiter.com/", descriptionSnippet: "Lead SEO for multiple clients. Technical SEO, backlinks, structured data, programmatic SEO, GEO and AEO experience valued." },
-  { id: "4", title: "Marketing Coordinator", company: "Acme Retail", location: "New York, NY", remote: false, source: "Indeed", postedAt: "2026-06-10", salaryMin: 55000, salaryMax: 65000, applyUrl: "https://www.indeed.com/", descriptionSnippet: "Support social, email and some SEO. Entry level. Analytics reporting." },
+  { id: "1", title: "SEO Strategist", company: "Directive", location: "Remote", remote: true, source: "ZipRecruiter", postedAt: "2026-06-14", salaryMin: 75000, salaryMax: 95000, applyUrl: "https://www.ziprecruiter.com/", website: "https://directiveconsulting.com", descriptionSnippet: "Own technical SEO, on-page, content strategy and AEO. Agency environment, client-facing. Local SEO and analytics a plus." },
+  { id: "2", title: "SEO Manager", company: "Northwind Home Services", location: "Austin, TX", remote: false, source: "Indeed", postedAt: "2026-06-13", salaryMin: 70000, salaryMax: 90000, applyUrl: "https://www.indeed.com/", website: "https://northwindhvac.com", descriptionSnippet: "In-house SEO manager for an HVAC brand. Local SEO, Google Business Profile, reviews, keyword research." },
+  { id: "3", title: "Senior SEO Consultant", company: "EyeUniversal Digital Agency", location: "Remote", remote: true, source: "ZipRecruiter", postedAt: "2026-06-12", salaryMin: 90000, salaryMax: 120000, applyUrl: "https://www.ziprecruiter.com/", website: "https://eyeuniversal.com", descriptionSnippet: "Lead SEO for multiple clients. Technical SEO, backlinks, structured data, programmatic SEO, GEO and AEO experience valued." },
+  { id: "4", title: "Marketing Coordinator", company: "Acme Retail", location: "New York, NY", remote: false, source: "Indeed", postedAt: "2026-06-10", salaryMin: 55000, salaryMax: 65000, applyUrl: "https://www.indeed.com/", website: "", descriptionSnippet: "Support social, email and some SEO. Entry level. Analytics reporting." },
 ];
 
 // ── main ─────────────────────────────────────────────────────────────────────
@@ -338,21 +361,30 @@ async function main() {
     .filter((j) => j.fit >= opts.minFit)
     .sort((a, b) => b.fit - a.fit);
 
-  // console table
+  // console table — clean: Fit · Title · Company · Location
   const prospects = scored.filter((j) => j.leadType === "Agency Prospect");
   const leads = scored.filter((j) => j.leadType === "Job Lead");
   const recruiters = scored.filter((j) => j.leadType === "Recruiter / Board");
 
+  const pad = (s, w) => {
+    s = String(s ?? "");
+    return (s.length > w ? s.slice(0, w - 1) + "…" : s).padEnd(w);
+  };
+  const W = { fit: 4, title: 40, company: 26, location: 22 };
+
   const printGroup = (label, rows) => {
     console.log(`\n=== ${label} (${rows.length}) ===`);
+    if (!rows.length) return;
+    console.log(
+      "  " + pad("FIT", W.fit) + "  " + pad("JOB TITLE", W.title) + "  " +
+        pad("COMPANY", W.company) + "  " + pad("LOCATION", W.location)
+    );
+    console.log("  " + "-".repeat(W.fit + W.title + W.company + W.location + 6));
     for (const r of rows) {
-      const sal = salaryLabel(r);
       console.log(
-        `  ${String(r.fit).padStart(3)}%  ${r.title} — ${r.company}` +
-          `  [${r.source}${r.location ? " · " + r.location : ""}${sal ? " · " + sal : ""}]`
+        "  " + pad(r.fit + "%", W.fit) + "  " + pad(r.title, W.title) + "  " +
+          pad(r.company, W.company) + "  " + pad(r.location || "—", W.location)
       );
-      if (r.matched.length) console.log(`        skills: ${r.matched.join(", ")}`);
-      if (r.applyUrl) console.log(`        ${r.applyUrl}`);
     }
   };
 
