@@ -1,5 +1,6 @@
 import {
   ClipboardList,
+  Target,
   Telescope,
   Stethoscope,
   FileText,
@@ -50,6 +51,16 @@ export const STAGES: Stage[] = [
   },
   {
     n: 3,
+    slug: "intent",
+    name: "Intent Mapping",
+    short: "Intent",
+    does: "Nail down intent, aligned to goals.",
+    blurb: "Map search intent across the funnel (TOF / MOF / BOF) and align it to the business goals before diagnosing.",
+    outputs: ["TOF Intent", "MOF Intent", "BOF Intent", "Goal Alignment"],
+    icon: Target,
+  },
+  {
+    n: 4,
     slug: "diagnosis",
     name: "Diagnosis",
     short: "Diagnosis",
@@ -59,7 +70,7 @@ export const STAGES: Stage[] = [
     icon: Stethoscope,
   },
   {
-    n: 4,
+    n: 5,
     slug: "tools",
     name: "Playbooks",
     short: "Playbooks",
@@ -78,7 +89,7 @@ export const STAGES: Stage[] = [
     icon: Wrench,
   },
   {
-    n: 5,
+    n: 6,
     slug: "strategy",
     name: "Project Brief",
     short: "Project Brief",
@@ -88,7 +99,7 @@ export const STAGES: Stage[] = [
     icon: FileText,
   },
   {
-    n: 6,
+    n: 7,
     slug: "tasks",
     name: "Daily Task Engine",
     short: "Daily Tasks",
@@ -104,7 +115,7 @@ export const STAGES: Stage[] = [
     icon: BellRing,
   },
   {
-    n: 7,
+    n: 8,
     slug: "reports",
     name: "Reports",
     short: "Reports",

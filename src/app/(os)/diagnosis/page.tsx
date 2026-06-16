@@ -109,9 +109,9 @@ export default function DiagnosisPage() {
             <label className="mb-2 block text-[13px] font-bold uppercase tracking-wide text-slate-500">Pipeline Stage</label>
             <div className="relative">
               <select className="w-full cursor-pointer appearance-none rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-base font-medium text-slate-800 transition-all focus:border-transparent focus:bg-white focus:ring-2 focus:ring-[#1DA1F2]">
-                <option>03. Diagnosis</option>
-                <option>04. Playbooks</option>
-                <option>05. Project Brief</option>
+                <option>04. Diagnosis</option>
+                <option>05. Playbooks</option>
+                <option>06. Project Brief</option>
               </select>
               <ChevronDown className="pointer-events-none absolute inset-y-0 right-4 my-auto h-5 w-5 text-slate-500" />
             </div>

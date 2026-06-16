@@ -15,7 +15,7 @@ export default function ReportsPage() {
   return (
     <>
       <PageHeader
-        stage={7}
+        stage={8}
         title="Reports"
         description="Track results against the goals set in Discovery — rankings, traffic, leads, calls, AI visibility and revenue — then approve and share the performance report."
       >
