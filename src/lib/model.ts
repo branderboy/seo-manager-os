@@ -130,7 +130,7 @@ export const investigations: Investigation[] = [
     owner: "Josh Williamson",
     status: "Open",
     pipeline: "Proposal",
-    stageLabel: "Strategy Brief",
+    stageLabel: "Project Brief",
     currentStage: 5,
     progress: 62,
     target: "2/12/2026",
@@ -140,7 +140,7 @@ export const investigations: Investigation[] = [
     scores: { visibility: 56, authority: 49, trust: 60, ai: 34, lead: 55, revenue: 61 },
     rootCause: { title: "Thin BOFU coverage", confidence: 81, impact: "High" },
     activity: [
-      { id: "a1", type: "stage", text: "Advanced to Strategy Brief", time: "1:04 PM", day: "Today" },
+      { id: "a1", type: "stage", text: "Advanced to Project Brief", time: "1:04 PM", day: "Today" },
       { id: "a2", type: "score", text: "AI Visibility recalculated to 34 (−6)", time: "12:40 PM", day: "Today" },
       { id: "a3", type: "email", text: "Sent audit proposal to Jon Lee", time: "11:18 AM", day: "Today" },
       { id: "a4", type: "person", text: 'Added the contact "Rita Shaw"', time: "Yesterday", day: "Yesterday" },
@@ -156,7 +156,7 @@ export const investigations: Investigation[] = [
       { id: "f2", name: "gsc-export-90d.csv", kind: "CSV", size: "880 KB", date: "Feb 1" },
       { id: "f3", name: "technical-audit-v1.pdf", kind: "PDF", size: "1.1 MB", date: "Feb 2" },
     ],
-    briefs: [{ id: "b1", title: "SaaS Technical Audit — Strategy Brief", date: "Feb 2", status: "Draft" }],
+    briefs: [{ id: "b1", title: "SaaS Technical Audit — Project Brief", date: "Feb 2", status: "Draft" }],
   },
   {
     id: "local-northwind",
@@ -187,7 +187,7 @@ export const investigations: Investigation[] = [
       { id: "t3", title: "Publish 2 service pages", owner: "Content", due: "Jan 28", priority: "Medium", status: "To do" },
     ],
     files: [{ id: "f1", name: "geo-grid-export.csv", kind: "CSV", size: "640 KB", date: "Jan 18" }],
-    briefs: [{ id: "b1", title: "Local Visibility — Strategy Brief", date: "Jan 26", status: "Draft" }],
+    briefs: [{ id: "b1", title: "Local Visibility — Project Brief", date: "Jan 26", status: "Draft" }],
   },
   {
     id: "ent-vantage",
@@ -265,7 +265,7 @@ export const investigations: Investigation[] = [
     ],
     tasks: [{ id: "t1", title: "Build 4 service pages", owner: "Content", due: "Jan 12", priority: "Medium", status: "Done" }],
     files: [{ id: "f1", name: "monthly-report-dec.pdf", kind: "PDF", size: "900 KB", date: "Jan 2" }],
-    briefs: [{ id: "b1", title: "Local SEO — Strategy Brief", date: "Dec 20", status: "Approved" }],
+    briefs: [{ id: "b1", title: "Local SEO — Project Brief", date: "Dec 20", status: "Approved" }],
   },
 ];
 

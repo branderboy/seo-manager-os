@@ -10,13 +10,14 @@ import {
   Download,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
+import { CarriedFromDiagnosis } from "@/components/flow/carried-from-diagnosis";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PriorityScatter } from "@/components/charts/charts";
 import { EngName, EngModel, EngMarket } from "@/components/engagement/eng";
 import { strategy, priorityMatrix } from "@/lib/data";
 
-export const metadata: Metadata = { title: "Strategy Brief" };
+export const metadata: Metadata = { title: "Project Brief" };
 
 function Block({
   icon: Icon,
@@ -58,7 +59,7 @@ export default function StrategyPage() {
     <>
       <PageHeader
         stage={5}
-        title="Strategy Brief"
+        title="Project Brief"
         badge="Executive-ready"
         description="A board-ready strategy document, generated from the diagnosis. Everything traces back to a root cause and forward to an expected outcome."
       >
@@ -67,6 +68,8 @@ export default function StrategyPage() {
           Export
         </Button>
       </PageHeader>
+
+      <CarriedFromDiagnosis />
 
       <Card>
         <div className="space-y-9 p-7 sm:p-9">

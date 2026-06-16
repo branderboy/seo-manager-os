@@ -5,10 +5,11 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImpactBadge } from "@/components/ui/status-badge";
 import { EngName } from "@/components/engagement/eng";
+import { PushToStrategy } from "@/components/flow/push-to-strategy";
 import { diagnosis } from "@/lib/data";
 import type { Cause, DataSource } from "@/lib/data";
 
-export const metadata: Metadata = { title: "Diagnosis Engine" };
+export const metadata: Metadata = { title: "Diagnosis" };
 
 /** Audit-trail provenance — color-coded so evidence buckets by source at a glance. */
 const SOURCE_STYLES: Record<DataSource, string> = {
@@ -87,9 +88,9 @@ export default function DiagnosisPage() {
     <>
       <PageHeader
         stage={4}
-        title="Diagnosis Engine"
+        title="Diagnosis"
         badge="Root-cause analysis"
-        description="Not a generic audit. The OS resolves every symptom to a ranked set of causes — each with confidence and impact — so the strategy targets the real constraint."
+        description="Not a generic audit. The OS resolves every symptom to a ranked set of causes, each with confidence and impact, so the plan targets the real constraint."
       />
 
       {/* Headline summary */}
@@ -156,6 +157,8 @@ export default function DiagnosisPage() {
         </div>
       </Card>
 
+      {/* Hand off to the next stage — select what carries forward */}
+      <PushToStrategy />
     </>
   );
 }

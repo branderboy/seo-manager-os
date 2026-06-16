@@ -63,7 +63,7 @@ export const STAGES: Stage[] = [
   {
     n: 4,
     slug: "diagnosis",
-    name: "Diagnosis Engine",
+    name: "Diagnosis",
     short: "Diagnosis",
     does: "Determine root causes.",
     blurb: "Root-cause analysis with confidence and impact — not a generic audit.",
@@ -78,7 +78,7 @@ export const STAGES: Stage[] = [
   {
     n: 5,
     slug: "strategy",
-    name: "Strategy Brief",
+    name: "Project Brief",
     short: "Strategy",
     does: "Create the game plan.",
     blurb: "An executive-ready strategy document generated from the diagnosis.",
