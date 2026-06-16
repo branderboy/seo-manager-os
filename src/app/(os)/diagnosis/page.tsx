@@ -15,6 +15,7 @@ import {
   Send,
 } from "lucide-react";
 import { StageApps } from "@/components/layout/stage-apps";
+import { ForecastPanel } from "@/components/flow/forecast-panel";
 
 export const metadata: Metadata = { title: "Diagnosis Engine" };
 
@@ -132,29 +133,10 @@ export default function DiagnosisPage() {
           </div>
         </div>
 
-        <div className="border-t border-slate-100 pt-8">
-          <div className="mb-5 flex items-center justify-between">
-            <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">Modeled Outcomes (90 Days)</h4>
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-emerald-800">Projection Active</span>
-          </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {[
-              { label: "Local Pack Share", from: 48, to: 67, color: "text-emerald-600" },
-              { label: "Qualified Leads / mo", from: 142, to: 205, color: "text-[#1DA1F2]" },
-              { label: "AI Visibility Index", from: 29, to: 55, color: "text-emerald-600" },
-            ].map((o) => (
-              <div key={o.label} className="flex flex-col justify-center rounded-xl border border-slate-200 bg-slate-50 p-5">
-                <div className="mb-2 text-sm font-semibold text-slate-600">{o.label}</div>
-                <div className="flex items-center gap-3 font-mono text-xl font-bold">
-                  <span className="text-slate-400 line-through decoration-slate-300">{o.from}</span>
-                  <span className="text-slate-300">→</span>
-                  <span className={o.color}>{o.to}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
+
+      {/* Forecast (live, based on this analysis) */}
+      <ForecastPanel />
 
       {/* Geo Grid */}
       <div className={`rounded-2xl border border-slate-200/70 bg-white p-8 ${soft}`}>
