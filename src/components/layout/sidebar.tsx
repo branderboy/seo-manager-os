@@ -60,7 +60,7 @@ export function Sidebar() {
         <nav className="flex-1 overflow-y-auto py-3">
           <NavGroup items={main} pathname={pathname} />
           <Divider />
-          <NavLabel>Workflow Stages</NavLabel>
+          <NavLabel>Pipeline</NavLabel>
           <NavGroup items={pipeline} pathname={pathname} />
           <Divider />
           <NavLabel>Client Dashboards</NavLabel>
