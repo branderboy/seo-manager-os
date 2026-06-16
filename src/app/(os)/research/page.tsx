@@ -8,7 +8,7 @@ import { ModelBadge } from "@/components/engagement/eng";
 import { researchPlans } from "@/lib/data";
 import type { SeoModel, ResearchItem } from "@/lib/data";
 
-export const metadata: Metadata = { title: "Research Engine" };
+export const metadata: Metadata = { title: "Data Collection" };
 
 function Plan({ items }: { items: ResearchItem[] }) {
   const total = items.reduce((s, i) => s + i.signals, 0);
@@ -55,7 +55,7 @@ export default function ResearchPage() {
     <>
       <PageHeader
         stage={2}
-        title="Research Engine"
+        title="Data Collection"
         description="From the classification, the OS assembles the research plan automatically — the exact signals to gather before forming any opinion."
       >
         <ModelBadge suffix="playbook active" />

@@ -25,8 +25,8 @@ const CONTACT = "kawani@digiwaxx.com";
 
 const PIPELINE = [
   { slug: "discovery", label: "01. Interview", name: "Discovery", desc: "Understand the business, goals, and baseline metrics before touching a tool.", tone: "text-blue-600" },
-  { slug: "research", label: "02. Data", name: "Research Engine", desc: "Gather comprehensive market, competitor, and technical data.", tone: "text-blue-600" },
-  { slug: "investigation", label: "03. Analysis", name: "Investigation", desc: "Sift through the data to identify specific opportunities and underlying issues.", tone: "text-blue-600" },
+  { slug: "research", label: "02. Data", name: "Data Collection", desc: "Gather comprehensive market, competitor, and technical data.", tone: "text-blue-600" },
+  { slug: "investigation", label: "03. Analysis", name: "Gap Analysis", desc: "Sift through the data to identify specific opportunities and underlying issues.", tone: "text-blue-600" },
   { slug: "diagnosis", label: "04. Root Cause", name: "Diagnosis", desc: "Determine the exact constraints holding back performance.", tone: "text-amber-600" },
   { slug: "tools", label: "05. Action", name: "Playbooks", desc: "Select the outcome playbooks that resolve the diagnosis, sequenced into owned work.", tone: "text-amber-600" },
   { slug: "strategy", label: "06. Plan", name: "Project Brief", desc: "Compile the selected playbooks into an executive-ready brief for sign-off.", tone: "text-emerald-600" },

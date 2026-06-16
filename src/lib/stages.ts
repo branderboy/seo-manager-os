@@ -42,8 +42,8 @@ export const STAGES: Stage[] = [
   {
     n: 2,
     slug: "research",
-    name: "Research Engine",
-    short: "Research",
+    name: "Data Collection",
+    short: "Data",
     does: "Gather data.",
     blurb: "Auto-generate the research plan for the detected SEO model.",
     outputs: ["Keywords", "Competitors", "SERPs", "Entities", "Technical Data", "GBP Data"],
@@ -52,8 +52,8 @@ export const STAGES: Stage[] = [
   {
     n: 3,
     slug: "investigation",
-    name: "Investigation",
-    short: "Investigation",
+    name: "Gap Analysis",
+    short: "Gaps",
     does: "Identify opportunities and issues.",
     blurb: "Run the audits that surface evidence behind the symptoms.",
     outputs: ["Content Gaps", "Technical Gaps", "GEO Gaps", "AEO Gaps", "Authority Gaps"],

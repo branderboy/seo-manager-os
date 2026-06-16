@@ -10,7 +10,7 @@ import { scoreToneClasses } from "@/lib/utils";
 import { investigations } from "@/lib/data";
 import type { SeoModel, Audit } from "@/lib/data";
 
-export const metadata: Metadata = { title: "Investigation" };
+export const metadata: Metadata = { title: "Gap Analysis" };
 
 function AuditList({ audits }: { audits: Audit[] }) {
   const avg = Math.round(audits.reduce((s, a) => s + a.score, 0) / audits.length);
@@ -18,7 +18,7 @@ function AuditList({ audits }: { audits: Audit[] }) {
     <div>
       <Card className="mb-5 flex items-center justify-between p-4">
         <div>
-          <div className="text-sm font-medium text-slate-700">Investigation health</div>
+          <div className="text-sm font-medium text-slate-700">Gap Analysis health</div>
           <div className="text-xs text-slate-500">{audits.length} audits in this track</div>
         </div>
         <div className={`flex h-12 w-12 items-center justify-center rounded-xl text-lg font-semibold ring-1 ring-inset ${scoreToneClasses(avg)}`}>
@@ -59,7 +59,7 @@ export default function InvestigationPage() {
     <>
       <PageHeader
         stage={3}
-        title="Investigation"
+        title="Gap Analysis"
         description="Where the audits run. Each surfaces the evidence behind a symptom — scored, with the single most important finding called out."
       >
         <ModelBadge suffix="track" />
