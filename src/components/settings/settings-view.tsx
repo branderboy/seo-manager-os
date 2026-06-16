@@ -22,6 +22,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { playbooks } from "@/lib/data";
 
 const SECTIONS = [
   { id: "workspace", label: "Workspace", icon: Building2 },
@@ -241,155 +242,98 @@ function Workspace({ onChange }: { onChange: () => void }) {
 }
 
 // ── Skills ──────────────────────────────────────────────────────────────────
-type SkillLevel = "Expert" | "Advanced" | "Core";
-type Skill = { id: string; name: string; desc: string; group: string; level: SkillLevel; on: boolean };
+// Top level = the business BENEFIT the client buys (Traffic, Leads, Revenue, AI
+// mentions/recommendations). The playbook is the outcome that delivers it; the
+// plays are the related skills (the effect) nested underneath. These are the
+// capabilities you select in Playbooks before the Project Brief.
+type Benefit = { benefit: string; tag: string; ringTone: string };
 
-const SKILL_GROUPS = [
-  "Content & On-Page",
-  "Technical SEO",
-  "Authority & Off-Page",
-  "Local SEO",
-  "AI Search (AEO / GEO)",
-  "Measurement & Strategy",
-] as const;
+const BENEFITS: Record<string, Benefit> = {
+  traffic: { benefit: "More Organic Traffic", tag: "Traffic", ringTone: "bg-blue-50 text-blue-700 ring-blue-200" },
+  ctr: { benefit: "More Clicks", tag: "CTR", ringTone: "bg-cyan-50 text-cyan-700 ring-cyan-200" },
+  lead: { benefit: "More Qualified Leads", tag: "Leads", ringTone: "bg-amber-50 text-amber-700 ring-amber-200" },
+  revenue: { benefit: "More Revenue", tag: "Revenue", ringTone: "bg-emerald-50 text-emerald-700 ring-emerald-200" },
+  local: { benefit: "Local Market Dominance", tag: "Local", ringTone: "bg-rose-50 text-rose-700 ring-rose-200" },
+  geo: { benefit: "AI Mentions", tag: "GEO", ringTone: "bg-violet-50 text-violet-700 ring-violet-200" },
+  aeo: { benefit: "AI Recommendations", tag: "AEO", ringTone: "bg-indigo-50 text-indigo-700 ring-indigo-200" },
+};
 
-const LEVELS: SkillLevel[] = ["Core", "Advanced", "Expert"];
-
-const SKILLS_SEED: Skill[] = [
-  // Content & On-Page
-  { id: "onpage", name: "On-Page SEO", desc: "Titles, headings, copy and internal links tuned to search intent.", group: "Content & On-Page", level: "Expert", on: true },
-  { id: "keyword", name: "Keyword Research", desc: "Demand, difficulty and intent mapping behind every page.", group: "Content & On-Page", level: "Expert", on: true },
-  { id: "content", name: "Content Strategy", desc: "Topic clusters and editorial roadmaps that earn rankings.", group: "Content & On-Page", level: "Advanced", on: true },
-  { id: "internal", name: "Internal Linking", desc: "Distribute authority and guide crawl paths to priority pages.", group: "Content & On-Page", level: "Advanced", on: true },
-  { id: "entity", name: "Entity Optimization", desc: "Model entities and relationships for the knowledge graph.", group: "Content & On-Page", level: "Advanced", on: true },
-
-  // Technical SEO
-  { id: "technical", name: "Technical SEO", desc: "Crawlability, indexation and rendering across the site.", group: "Technical SEO", level: "Expert", on: true },
-  { id: "structured", name: "Structured Data", desc: "Schema.org markup and rich-result eligibility.", group: "Technical SEO", level: "Advanced", on: true },
-  { id: "cwv", name: "Core Web Vitals", desc: "Site speed and page-experience optimization.", group: "Technical SEO", level: "Advanced", on: true },
-  { id: "architecture", name: "Site Architecture", desc: "URL structure, taxonomy and information architecture.", group: "Technical SEO", level: "Advanced", on: true },
-  { id: "intl", name: "International SEO", desc: "Hreflang and multi-region/multi-language targeting.", group: "Technical SEO", level: "Core", on: false },
-
-  // Authority & Off-Page
-  { id: "backlinks", name: "Backlinks", desc: "Link acquisition and referring-domain growth.", group: "Authority & Off-Page", level: "Advanced", on: true },
-  { id: "digitalpr", name: "Digital PR", desc: "Earned coverage and brand mentions at scale.", group: "Authority & Off-Page", level: "Advanced", on: true },
-  { id: "eeat", name: "E-E-A-T & Authority", desc: "Trust signals, author entities and topical authority.", group: "Authority & Off-Page", level: "Advanced", on: true },
-
-  // Local SEO
-  { id: "local", name: "Local SEO", desc: "Google Business Profile, citations and geo-grid rankings.", group: "Local SEO", level: "Expert", on: true },
-  { id: "reviews", name: "Reviews & Reputation", desc: "Review velocity, responses and reputation monitoring.", group: "Local SEO", level: "Advanced", on: true },
-
-  // AI Search
-  { id: "aeo", name: "AEO", desc: "Answer Engine Optimization for AI Overviews and assistants.", group: "AI Search (AEO / GEO)", level: "Advanced", on: true },
-  { id: "geo", name: "GEO", desc: "Generative Engine Optimization across LLM search surfaces.", group: "AI Search (AEO / GEO)", level: "Advanced", on: true },
-  { id: "embeddings", name: "Embeddings", desc: "Vector similarity, semantic clustering and content-gap analysis.", group: "AI Search (AEO / GEO)", level: "Core", on: true },
-
-  // Measurement & Strategy
-  { id: "metrics", name: "Metrics & Analytics", desc: "GA4, Search Console and KPI reporting that ties SEO to revenue.", group: "Measurement & Strategy", level: "Advanced", on: true },
-  { id: "competitor", name: "Competitor Analysis", desc: "Share of voice, SERP reads and gap analysis.", group: "Measurement & Strategy", level: "Advanced", on: true },
-  { id: "cro", name: "CRO", desc: "Turn earned traffic into leads, calls and revenue.", group: "Measurement & Strategy", level: "Core", on: false },
-];
-
-const levelTone: Record<SkillLevel, string> = {
-  Expert: "bg-emerald-50 text-emerald-700 ring-emerald-200",
-  Advanced: "bg-blue-50 text-blue-700 ring-blue-200",
-  Core: "bg-slate-100 text-slate-600 ring-slate-200",
+const BENEFIT_GOAL: Record<string, string> = {
+  geo: "Get the brand mentioned across AI engines and the knowledge graph.",
+  aeo: "Get cited and recommended inside AI answers and featured results.",
 };
 
 function Skills({ onChange }: { onChange: () => void }) {
-  const [skills, setSkills] = React.useState<Skill[]>(SKILLS_SEED);
-  const [draft, setDraft] = React.useState("");
-
-  const toggle = (id: string) => {
-    setSkills((s) => s.map((k) => (k.id === id ? { ...k, on: !k.on } : k)));
+  const [on, setOn] = React.useState<Record<string, boolean>>(
+    () => Object.fromEntries(playbooks.map((p) => [p.key, true]))
+  );
+  const toggle = (key: string) => {
+    setOn((s) => ({ ...s, [key]: !s[key] }));
     onChange();
   };
-  const cycleLevel = (id: string) => {
-    setSkills((s) =>
-      s.map((k) =>
-        k.id === id ? { ...k, level: LEVELS[(LEVELS.indexOf(k.level) + 1) % LEVELS.length] } : k
-      )
-    );
-    onChange();
-  };
-  const add = () => {
-    const name = draft.trim();
-    if (!name) return;
-    const id = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    if (skills.some((k) => k.id === id)) {
-      setDraft("");
-      return;
-    }
-    setSkills((s) => [...s, { id, name, desc: "Custom skill.", group: "Measurement & Strategy", level: "Core", on: true }]);
-    setDraft("");
-    onChange();
-  };
-
-  const active = skills.filter((s) => s.on).length;
+  const active = Object.values(on).filter(Boolean).length;
 
   return (
     <Section
-      title="SEO skills"
-      desc="The capabilities this workspace can deliver for clients — every lever that creates SEO value, from on-page to AI search. Toggle what's active and set the depth."
+      title="Skills"
+      desc="The top-level benefits this workspace delivers — what the business actually buys. Each benefit is powered by a playbook; the related skills underneath are how it gets done. Select these in Playbooks before the Project Brief."
     >
       <div className="flex items-center justify-between">
-        <Badge variant="good">{active} active skills</Badge>
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Expert</span>
-          <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-blue-500" /> Advanced</span>
-          <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-slate-400" /> Core</span>
-        </div>
+        <Badge variant="good">{active} of {playbooks.length} benefits active</Badge>
+        <Link href="/tools" className="inline-flex items-center gap-1 text-sm font-medium text-accent-600 hover:text-accent-700">
+          Select in Playbooks <ArrowUpRight className="h-3.5 w-3.5" />
+        </Link>
       </div>
 
-      {SKILL_GROUPS.map((group) => {
-        const items = skills.filter((s) => s.group === group);
-        if (!items.length) return null;
-        return (
-          <div key={group}>
-            <h4 className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{group}</h4>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {items.map((k) => (
-                <div
-                  key={k.id}
-                  className={cn(
-                    "flex items-start justify-between gap-3 rounded-xl border p-4 transition-colors",
-                    k.on ? "border-[var(--border)] bg-white" : "border-dashed border-slate-200 bg-slate-50/60"
-                  )}
-                >
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className={cn("truncate text-sm font-semibold", k.on ? "text-slate-900" : "text-slate-500")}>{k.name}</span>
-                      <button
-                        type="button"
-                        onClick={() => cycleLevel(k.id)}
-                        title="Click to change proficiency"
-                        className={cn("rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset transition-opacity hover:opacity-80", levelTone[k.level], !k.on && "opacity-50")}
-                      >
-                        {k.level}
-                      </button>
-                    </div>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-500">{k.desc}</p>
+      <div className="space-y-3">
+        {playbooks.map((p) => {
+          const b = BENEFITS[p.key] ?? { benefit: p.name, tag: p.name, ringTone: "bg-slate-100 text-slate-600 ring-slate-200" };
+          const enabled = on[p.key];
+          const goal = BENEFIT_GOAL[p.key] ?? p.goal;
+          return (
+            <div
+              key={p.key}
+              className={cn(
+                "rounded-xl border p-5 transition-colors",
+                enabled ? "border-[var(--border)] bg-white" : "border-dashed border-slate-200 bg-slate-50/60"
+              )}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={cn("text-[15px] font-semibold", enabled ? "text-slate-900" : "text-slate-500")}>
+                      {b.benefit}
+                    </span>
+                    <span className={cn("rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ring-1 ring-inset", b.ringTone, !enabled && "opacity-50")}>
+                      {b.tag}
+                    </span>
                   </div>
-                  <Switch checked={k.on} onChange={() => toggle(k.id)} label={k.name} />
+                  <p className={cn("mt-1 text-sm", enabled ? "text-slate-600" : "text-slate-400")}>{goal}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-        );
-      })}
+                <Switch checked={enabled} onChange={() => toggle(p.key)} label={b.benefit} />
+              </div>
 
-      {/* Add custom skill */}
-      <div className="flex flex-wrap items-center gap-2 border-t border-[var(--border)] pt-5">
-        <input
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && add()}
-          placeholder="Add a skill (e.g. Programmatic SEO)…"
-          className="h-10 flex-1 rounded-lg border border-[var(--border)] bg-white px-3 text-sm outline-none focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
-        />
-        <Button variant="secondary" size="sm" onClick={add} disabled={!draft.trim()}>
-          <Plus className="h-4 w-4" /> Add skill
-        </Button>
+              <div className="mt-4 border-t border-[var(--border)] pt-3">
+                <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                  Related skills
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {p.plays.map((play) => (
+                    <span
+                      key={play}
+                      className={cn(
+                        "rounded-full px-2.5 py-1 text-xs font-medium",
+                        enabled ? "bg-slate-100 text-slate-600" : "bg-slate-100 text-slate-400"
+                      )}
+                    >
+                      {play}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </Section>
   );
