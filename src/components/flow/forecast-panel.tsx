@@ -50,6 +50,8 @@ export function ForecastPanel() {
 
   const out = project(levers, horizon);
   const baseRevenue = Math.round(BASE.leads * CLOSE_RATE * JOB_VALUE);
+  const edited =
+    horizon !== 90 || (Object.keys(DEFAULTS) as (keyof typeof DEFAULTS)[]).some((k) => levers[k] !== DEFAULTS[k]);
 
   const metrics = [
     { label: "Local Pack Share", from: `${BASE.share}`, to: `${out.share}`, suffix: "%", color: "text-emerald-600" },
@@ -66,7 +68,7 @@ export function ForecastPanel() {
             <TrendingUp className="h-6 w-6 text-[#1DA1F2]" /> Forecast
           </h3>
           <p className="mt-1 text-base font-medium text-slate-500">
-            Based on this analysis — edit the improvements live and the projection updates.
+            The system predicts this from the diagnosis first — then you can edit the improvements live.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -85,9 +87,10 @@ export function ForecastPanel() {
           </div>
           <button
             onClick={() => { setLevers(DEFAULTS); setHorizon(90); }}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 shadow-sm transition-all hover:border-[#1DA1F2] hover:text-[#1DA1F2]"
+            disabled={!edited}
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 shadow-sm transition-all hover:border-[#1DA1F2] hover:text-[#1DA1F2] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
           >
-            <RotateCcw className="h-4 w-4" /> Reset
+            <RotateCcw className="h-4 w-4" /> System forecast
           </button>
         </div>
       </div>
@@ -95,7 +98,12 @@ export function ForecastPanel() {
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Improvement levers */}
         <div className="space-y-6">
-          <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">Improvements</h4>
+          <div className="flex items-center justify-between">
+            <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">Improvements</h4>
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+              {edited ? "Your scenario" : "System recommended"}
+            </span>
+          </div>
           {LEVERS.map((lv) => (
             <div key={lv.key}>
               <div className="mb-1.5 flex items-center justify-between text-sm">
@@ -130,8 +138,8 @@ export function ForecastPanel() {
             <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">
               Projection ({horizon} days)
             </h4>
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-emerald-800">
-              Live
+            <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${edited ? "bg-[#1DA1F2]/10 text-[#1DA1F2]" : "bg-emerald-100 text-emerald-800"}`}>
+              {edited ? "Edited" : "System prediction"}
             </span>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -147,8 +155,9 @@ export function ForecastPanel() {
             ))}
           </div>
           <p className="mt-4 text-xs font-medium leading-relaxed text-slate-400">
-            Projections model the lift from the improvements above against the current baseline. They
-            carry into the Project Brief as the engagement&apos;s expected outcomes.
+            The system generates this prediction from the diagnosis first; adjust the levers to model
+            your own scenario. The active projection carries into the Project Brief as the
+            engagement&apos;s expected outcomes.
           </p>
         </div>
       </div>
