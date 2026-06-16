@@ -12,7 +12,6 @@ import {
 import { PageHeader } from "@/components/layout/page-header";
 import { CarriedFromDiagnosis } from "@/components/flow/carried-from-diagnosis";
 import { BriefShare } from "@/components/flow/brief-share";
-import { BriefApproval } from "@/components/flow/brief-approval";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PriorityScatter } from "@/components/charts/charts";
@@ -148,7 +147,6 @@ export default function StrategyPage() {
         </div>
       </Card>
 
-      <BriefApproval />
       <BriefShare />
     </>
   );
