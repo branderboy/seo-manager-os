@@ -11,6 +11,7 @@ import {
   MoreVertical,
   Users,
   Workflow,
+  LineChart,
 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ export function Sidebar() {
   const main: Item[] = [
     { href: "/clients", label: "Clients", icon: Users },
     { href: "/workflow", label: "Workflow", icon: Workflow },
+    { href: "/tracker", label: "Tracker", icon: LineChart },
   ];
   const pipeline: Item[] = STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n }));
   const dashboards: Item[] = [

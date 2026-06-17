@@ -43,6 +43,8 @@ export const integrations: Integration[] = [
   { id: "semrush", name: "Semrush", blurb: "Keyword, backlink and competitor data.", category: "SEO Data", initials: "SE", color: "bg-orange-600", connected: true, account: "Project: Northwind HVAC", synced: "Today, 6:00 AM", metric: "1,860 keywords" },
   { id: "ahrefs", name: "Ahrefs", blurb: "Backlinks, referring domains and rank tracking.", category: "SEO Data", initials: "AH", color: "bg-blue-600", connected: false },
   { id: "screamingfrog", name: "Screaming Frog", blurb: "Full technical site crawl — status codes, schema and on-page.", category: "SEO Data", initials: "SF", color: "bg-green-700", connected: true, account: "northwindhvac.com", synced: "Today, 5:40 AM", metric: "1,930 URLs crawled" },
+  { id: "ranktracker", name: "Rank Tracker", blurb: "Daily keyword rank scans across markets — desktop, mobile and local.", category: "SEO Data", initials: "RT", color: "bg-violet-600", connected: true, account: "184 keywords · 3 markets", synced: "Today, 6:00 AM", metric: "Daily scans on" },
+  { id: "aitracker", name: "AI Answer Tracker", blurb: "Track brand mentions and citations across ChatGPT, Perplexity, Gemini, Claude and AI Overviews.", category: "SEO Data", initials: "AI", color: "bg-fuchsia-600", connected: true, account: "64 prompts · 5 engines", synced: "Today, 6:00 AM", metric: "31% mention rate" },
 
   // Planning & Delivery
   { id: "gcal", name: "Google Calendar", blurb: "Schedule intake calls and push due-dated tasks to the calendar.", category: "Planning & Delivery", initials: "GC", color: "bg-blue-600", connected: true, account: "kawani@digiwaxx.com", synced: "Connected", metric: "Tasks on calendar" },
