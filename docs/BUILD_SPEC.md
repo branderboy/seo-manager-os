@@ -8,7 +8,7 @@
 >
 > Design decisions locked in by the team:
 > 1. **Scrape, don't pay for gated APIs** where the API is restrictive or expensive
->    (Google reviews, Yelp, local data, SERPs). Keep paid APIs only where they're clearly
+>    (Google reviews, local data, SERPs). Keep paid APIs only where they're clearly
 >    cheaper/safer than scraping.
 > 2. **LLM-mention tracking is a multi-LLM "searcher"** — one service fans a prompt set out
 >    across the top assistants, captures each answer, and an LLM-judge extracts mentions,
@@ -110,8 +110,7 @@ Grouped by subsystem. "Build" = we run it; "Buy" = SaaS; "Either" = decide by vo
 ### Scraped data (gated/expensive APIs we're skipping)
 | Need | Approach |
 |---|---|
-| Yelp reviews & ratings | Scrape (Yelp API is heavily restricted) |
-| Competitor reviews (Google/Yelp) | Scrape — you don't own the profile, so no API access |
+| Competitor Google reviews | Scrape — you don't own the profile, so no API access |
 | Third-party citations / directories | Scrape directory listings for NAP consistency |
 | SERP features (PAA, snippets, local pack) | Scrape from the same SERP fetch as rank tracking |
 
@@ -158,13 +157,13 @@ Same architecture as the prospect-scanner's swappable data source, but browser-d
 **What it scrapes**
 - **SERP rank + features:** organic positions, local pack, PAA, featured snippets, and the
   **AI Overview** block (the only way to track Google AI presence — no API exists).
-- **Reviews (Google/Yelp):** rating, count, velocity, recent review text → sentiment via the
+- **Reviews (Google):** rating, count, velocity, recent review text → sentiment via the
   judge prompt. Works for the client *and* competitors (no profile ownership needed).
 - **Local/geo-grid:** run the local-pack scrape from N proxy locations across the service
   radius to rebuild the geo-grid heatmap.
 - **Citations/NAP:** directory listings for name/address/phone consistency.
 
-> ⚠️ **Compliance note (say it once, then it's the team's call):** scraping Google/Yelp is
+> ⚠️ **Compliance note (say it once, then it's the team's call):** scraping Google is
 > against their ToS and can get IPs/accounts blocked; results can break when markup changes.
 > Mitigations: residential proxies, low request rates, raw-HTML caching so a parser change
 > doesn't force a re-scrape, and DataForSEO/SerpApi as a paid fallback for high-value terms.
