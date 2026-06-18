@@ -7,12 +7,20 @@
 > mention tracker, and the AI prompts that power the generated stages.
 >
 > Design decisions locked in by the team:
+> 0. **Scope: LOCAL SEO only.** SaaS and Enterprise are out of scope for now — the product
+>    targets local/service-area businesses. (The SaaS/Enterprise dashboards in the prototype
+>    are parked, not built on.)
 > 1. **Scrape, don't pay for gated APIs** where the API is restrictive or expensive
 >    (Google reviews, local data, SERPs). Keep paid APIs only where they're clearly
 >    cheaper/safer than scraping.
 > 2. **LLM-mention tracking is a multi-LLM "searcher"** — one service fans a prompt set out
 >    across the top assistants, captures each answer, and an LLM-judge extracts mentions,
->    citations, sentiment, and competitor share.
+>    citations, sentiment, and competitor share. Treat it as *one traffic source among many*,
+>    not the headline — the product is about showing up locally and routing more traffic.
+> 3. **No auto-publishing.** The tool diagnoses, plans, and reports; it does not publish GBP
+>    posts or push live content.
+> 4. **Grounded scores, never invented** — every score traces to real inputs via the model in
+>    `docs/SCORING.md` (implemented in `src/lib/scoring.ts`).
 
 ---
 
@@ -246,19 +254,20 @@ JSON schema) so every response is machine-parseable. Never prefill the assistant
 The prompts below are the system prompts. Feed collected evidence as a JSON `user` message;
 constrain the reply with a JSON schema matching the existing TS types in `src/lib/data.ts`.
 
-### 6.1 Discovery classification (Local / SaaS / Enterprise)
+### 6.1 Discovery intake (Local SEO)
 ```
-You are a senior SEO strategist classifying a new engagement. Given the intake answers,
-decide whether this business is best served by a LOCAL, SAAS, or ENTERPRISE SEO model.
+You are a senior local-SEO strategist processing a new engagement intake. The product is
+scoped to LOCAL SEO (physical/service-area businesses). Confirm the business fits the local
+model and extract the structured profile the pipeline needs.
 
-Output JSON: { "model": "Local|SaaS|Enterprise", "confidence": 0-100,
+Output JSON: { "fits_local": true|false, "confidence": 0-100,
+  "service_area": ["cities/ZIPs"], "primary_services": ["..."],
+  "competitors": ["..."], "goals": ["leads|calls|bookings|..."],
   "reasoning": "one paragraph", "signals": ["the 3-5 intake facts that drove this"] }
 
-Rules:
-- LOCAL: physical service area, maps/GBP relevance, "near me" demand, lead/call goals.
-- SAAS: product sold online, comparison/alternative/BOFU demand, signup/demo goals.
-- ENTERPRISE: large site (>10k URLs), template/crawl/indexation concerns, scale goals.
-Weigh business model and goals over industry. Do not invent facts not in the intake.
+Local signals: physical service area, maps/GBP relevance, "near me" demand, lead/call goals.
+If the business is clearly not local (pure e-commerce, national SaaS), set fits_local=false
+and say why. Do not invent facts not in the intake.
 ```
 
 ### 6.2 Diagnosis engine (root cause from evidence)
@@ -288,8 +297,7 @@ You are an Agency Director writing an executive-ready strategy brief from a comp
 diagnosis. The audience is the business owner. Be concrete and outcome-oriented; tie every
 recommendation to a diagnosed root cause and an expected metric movement.
 
-Given: the diagnosis JSON, the business goals, the model (Local/SaaS/Enterprise), budget and
-team constraints. Produce:
+Given: the diagnosis JSON, the business goals, budget and team constraints. Produce:
 { "executiveSummary": "...",
   "currentState": ["..."], "keyFindings": ["..."], "rootCauses": ["..."],
   "opportunities": ["..."], "risks": ["..."],

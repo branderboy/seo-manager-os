@@ -12,6 +12,7 @@ import {
   Users,
   Workflow,
   LineChart,
+  Bot,
 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,7 @@ export function Sidebar() {
     { href: "/clients", label: "Clients", icon: Users },
     { href: "/workflow", label: "Workflow", icon: Workflow },
     { href: "/tracker", label: "Tracker", icon: LineChart },
+    { href: "/agents", label: "Agent Store", icon: Bot },
   ];
   const pipeline: Item[] = STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n }));
   const dashboards: Item[] = [

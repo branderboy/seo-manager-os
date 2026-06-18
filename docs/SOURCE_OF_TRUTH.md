@@ -106,6 +106,18 @@ These supersede earlier framing where they conflict.
    source. Keep the Tracker, but the product is about **showing up and routing more traffic**,
    not "winning AI." Don't over-invest in the AI-mention side.
 
+## Built this session (beyond the prototype)
+
+- **Tracker** (`/tracker`) — rankings + AI-mention monitoring (mock data).
+- **Agent Store** (`/agents`) — Orchestrator + 8 specialist agents, deployable here or inline
+  from each pipeline stage's header (shared deploy state in `deploy-store.ts`). See
+  `docs/AGENTS.md`. Files: `src/lib/agents.ts`, `src/components/agents/*`.
+- **Scoring model** — `src/lib/scoring.ts` implements grounded Results / Opportunity /
+  Difficulty / Priority with traceable inputs (the Opportunity Scoring Agent uses it). See
+  `docs/SCORING.md`. Note: the UI's `coreScores` still read mock numbers — wiring them to
+  `scoring.ts` is a follow-up.
+- **BUILD_SPEC scoped to Local SEO** (SaaS/Enterprise removed).
+
 ## Not done / open questions
 
 - Everything backend (auth, DB, jobs, real integrations) — see `BUILD_SPEC.md` roadmap.
