@@ -118,6 +118,13 @@ These supersede earlier framing where they conflict.
   `scoring.ts` is a follow-up.
 - **BUILD_SPEC scoped to Local SEO** (SaaS/Enterprise removed).
 
+### Engineering focus (agreed)
+
+The **Orchestrator is the magic and the risk** — sequencing the 8 agents and passing each
+one's output cleanly into the next is where engagement quality lives or dies. That is where the
+real engineering goes; the specialists are comparatively simple (prompt + stage inputs). Build
+the Orchestrator well or the product is just a dashboard with a chatbot. See `docs/AGENTS.md`.
+
 ## Not done / open questions
 
 - Everything backend (auth, DB, jobs, real integrations) — see `BUILD_SPEC.md` roadmap.

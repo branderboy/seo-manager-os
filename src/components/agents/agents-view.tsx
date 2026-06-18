@@ -52,6 +52,15 @@ export function AgentsView() {
               </span>
             ))}
           </div>
+
+          {/* Why the Orchestrator matters */}
+          <p className="mt-5 max-w-3xl border-t border-white/20 pt-4 text-xs leading-relaxed text-white/75">
+            <span className="font-semibold text-white">Why this matters:</span> the Orchestrator
+            sequences these specialists and hands each one&apos;s output to the next — research
+            into the audit, the diagnosis into scoring, scored opportunities into execution.
+            Those clean handoffs between agents are where engagement quality lives or dies. It is
+            the core of the system, and where the real engineering goes.
+          </p>
         </div>
       </Card>
 
