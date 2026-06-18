@@ -22,6 +22,9 @@ in search?"*
   versioning/approval/share, discovery wizard, tour, integration toggles).
 - **Backend: 0%.** No server, database, auth, or live integrations. Every number is mock data
   in `src/lib/*.ts`. Clearing browser storage resets everything.
+- **Data is designed-in, not missing.** Discovery (`/discovery`) captures the client's data
+  sources/assets (GBP, GA4, Search Console, CRM) and Data Collection (`/research`) syncs them.
+  The gap is *wiring to live sources*, not a missing data model.
 - As a **demo/prototype: ~95% done.** As a **shippable product: ~10–15% done** (the UI is the
   smaller half of the work; the data engine is unbuilt).
 
@@ -75,6 +78,33 @@ Plus: model dashboards (`/dashboards/{local,saas,enterprise}`), `/clients`, `/wo
 6. **AI generation = Claude.** Opus 4.8 for diagnosis/strategy/task generation; Haiku 4.5 for
    the high-volume mention judge. Structured outputs to the existing TS shapes. Prompts in
    `docs/BUILD_SPEC.md` §6.
+
+## Product direction (updated 2026-06-18, from review)
+
+These supersede earlier framing where they conflict.
+
+1. **Scope: Local SEO only for now.** Park the SaaS and Enterprise dashboards; focus the
+   product on local-services agencies. Don't go deep on enterprise-scale features yet.
+2. **Real, client-specific intelligence.** The diagnosis and strategy must be generated from
+   the client's actual data — not the canned Northwind example. This is the priority to
+   improve (Claude generation grounded in collected evidence; see `BUILD_SPEC.md` §6).
+3. **Grounded scores — no invented numbers.** Scores must derive from real signals:
+   **valid results, opportunity, and difficulty.** Define and document the formula; every
+   score must be traceable to its inputs. No black-box "48".
+4. **Client-facing sharing.** Let the agency share the **project brief, the project stages,
+   and the results** with the end client (read-only/branded share, not a full login system).
+5. **Data export over team management.** Multi-seat auth/roles/approvals are *not* a priority.
+   What's needed is straightforward **data export** (CSV/PDF) of briefs, tasks, and results.
+6. **Multi-agent section (new).** Add a place where the agency can **activate and deploy
+   agents** for its repetitive work (e.g. recurring audits, review-response drafting, report
+   generation). A library of agents the agency turns on per client.
+7. **No auto-publishing.** The tool **advises and plans**; it does not publish GBP posts,
+   push live content, etc. Drop "execution actually does things" — that's useless work here.
+8. **Close the measurement loop (valuable).** Tie work → metric movement → before/after proof.
+   Show whether a fix actually moved rankings/traffic. This is worth building.
+9. **AI-visibility tracking is not the headline.** It's early and it's just another traffic
+   source. Keep the Tracker, but the product is about **showing up and routing more traffic**,
+   not "winning AI." Don't over-invest in the AI-mention side.
 
 ## Not done / open questions
 
