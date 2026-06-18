@@ -103,14 +103,21 @@ Grouped by subsystem. "Build" = we run it; "Buy" = SaaS; "Either" = decide by vo
 | Search Console | Google Search Console API (free) |
 | Analytics | GA4 Data API (free) |
 | Business Profile / Google reviews | Google Business Profile API (free, owner-authed) |
+| Yelp ratings / counts / business data | **Yelp Fusion API** (free tier) — works for client *and* competitors, no auth on the target |
 | CRM / leads / revenue | HubSpot / Salesforce APIs |
 | Call tracking | CallRail API |
 | Site crawl | **Build** a crawler (Playwright/Cheerio) or self-host; Screaming Frog is desktop-only |
 
-### Scraped data (gated/expensive APIs we're skipping)
+> **Yelp Fusion caveat:** the API is free, but its reviews endpoint returns only **up to 3
+> truncated review excerpts** per business. Use Fusion for rating, review count, categories,
+> hours and business metadata; scrape the Yelp profile (below) when you need full review
+> text, velocity, or sentiment over time.
+
+### Scraped data (gated/expensive APIs we're skipping or supplementing)
 | Need | Approach |
 |---|---|
 | Competitor Google reviews | Scrape — you don't own the profile, so no API access |
+| Full Yelp review text / velocity / sentiment | Scrape the Yelp profile (Fusion only returns 3 truncated excerpts) |
 | Third-party citations / directories | Scrape directory listings for NAP consistency |
 | SERP features (PAA, snippets, local pack) | Scrape from the same SERP fetch as rank tracking |
 
@@ -134,7 +141,7 @@ Each mock export becomes a table + a sync job. The UI contracts don't change.
 | `data.ts` → `coreScores`, `trend` | Computed from GSC + ranks + reviews + mentions | Nightly rollup |
 | `data.ts` → `diagnosis`, `strategy` | **Claude generation** (§6) from collected evidence | On demand / weekly |
 | `data.ts` → `playbooks`, `executionPlans`, `dailyTasks` | **Claude generation** from diagnosis | On strategy approval |
-| `dashboards.ts` → reviews, geo-grid, GBP | GBP API (owned) + scrape (competitors) | Daily |
+| `dashboards.ts` → reviews, geo-grid, GBP | GBP API (owned) + Yelp Fusion API + scrape (competitors / deep Yelp text) | Daily |
 | `integrations.ts` connection states | OAuth tokens per client in DB | On connect |
 
 ---
@@ -159,12 +166,16 @@ Same architecture as the prospect-scanner's swappable data source, but browser-d
   **AI Overview** block (the only way to track Google AI presence — no API exists).
 - **Reviews (Google):** rating, count, velocity, recent review text → sentiment via the
   judge prompt. Works for the client *and* competitors (no profile ownership needed).
+- **Reviews (Yelp):** Yelp Fusion API (free) supplies rating/count/business data; scrape the
+  Yelp profile only for full review text, velocity, and sentiment beyond Fusion's 3 excerpts.
 - **Local/geo-grid:** run the local-pack scrape from N proxy locations across the service
   radius to rebuild the geo-grid heatmap.
 - **Citations/NAP:** directory listings for name/address/phone consistency.
 
-> ⚠️ **Compliance note (say it once, then it's the team's call):** scraping Google is
+> ⚠️ **Compliance note (say it once, then it's the team's call):** scraping Google or Yelp is
 > against their ToS and can get IPs/accounts blocked; results can break when markup changes.
+> Prefer the free Yelp Fusion API for Yelp data and only scrape Yelp profiles for the deep
+> review text Fusion won't return.
 > Mitigations: residential proxies, low request rates, raw-HTML caching so a parser change
 > doesn't force a re-scrape, and DataForSEO/SerpApi as a paid fallback for high-value terms.
 > Owned data (the client's own GBP/GSC/GA4) should always go through official APIs — it's
