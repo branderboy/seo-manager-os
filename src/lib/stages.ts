@@ -148,10 +148,9 @@ export const STAGES: Stage[] = [
   },
 ];
 
+// Local-only OS — SaaS and Enterprise dashboards are out of scope.
 export const DASHBOARDS = [
   { slug: "local", name: "Local SEO", model: "Local" },
-  { slug: "saas", name: "SaaS SEO", model: "SaaS" },
-  { slug: "enterprise", name: "Enterprise SEO", model: "Enterprise" },
 ] as const;
 
 export function stageHref(slug: string) {

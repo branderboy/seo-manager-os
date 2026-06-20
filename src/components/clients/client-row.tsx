@@ -9,7 +9,8 @@ import { clientHealth, type Client } from "@/lib/model";
 import { engagementFromClient, useEngagement } from "@/components/engagement/store";
 
 const modelIcon = { Local: MapPin, SaaS: Cloud, Enterprise: Building2 } as const;
-const dashHref = { Local: "/dashboards/local", SaaS: "/dashboards/saas", Enterprise: "/dashboards/enterprise" } as const;
+// Local-only OS — every client opens the Local SEO dashboard.
+const dashHref = { Local: "/dashboards/local", SaaS: "/dashboards/local", Enterprise: "/dashboards/local" } as const;
 const statusVariant = { Active: "good", Onboarding: "accent", Paused: "warn" } as const;
 
 export function ClientRow({ client: c }: { client: Client }) {
