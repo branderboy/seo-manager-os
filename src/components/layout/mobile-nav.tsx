@@ -24,8 +24,6 @@ export function MobileNav() {
   ];
   const dashboards: Item[] = [
     { href: "/dashboards/local", label: "Local SEO", icon: dashIcons.local },
-    { href: "/dashboards/saas", label: "SaaS SEO", icon: dashIcons.saas },
-    { href: "/dashboards/enterprise", label: "Enterprise SEO", icon: dashIcons.enterprise },
   ];
   const workspace: Item[] = [
     { href: "/integrations", label: "Integrations", icon: Plug },
