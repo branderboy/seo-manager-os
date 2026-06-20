@@ -21,46 +21,43 @@ export function AgentsView() {
 
   return (
     <div className="space-y-6">
-      {/* Orchestrator hero */}
-      <Card className="overflow-hidden border-0">
-        <div className="relative bg-gradient-to-br from-accent-600 via-accent-500 to-[#2F3E4D] p-6 text-white">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-start gap-4">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 backdrop-blur">
-                <orchestrator.icon className="h-6 w-6" />
-              </span>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold tracking-tight">{orchestrator.name}</h2>
-                  <span className="rounded-full bg-white/20 px-2 py-0.5 text-xs font-semibold backdrop-blur">
-                    {count} / {agents.length} deployed
-                  </span>
-                </div>
-                <p className="mt-1 max-w-xl text-sm text-white/80">{orchestrator.role}</p>
-              </div>
+      {/* Orchestrator */}
+      <Card className="p-6">
+        <div className="flex items-start gap-4">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent-600">
+            <orchestrator.icon className="h-5 w-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-[15px] font-semibold tracking-tight text-slate-900">
+                {orchestrator.name}
+              </h2>
+              <Badge variant="accent">
+                {count} / {agents.length} deployed
+              </Badge>
             </div>
-          </div>
+            <p className="mt-1 text-sm text-slate-600">{orchestrator.role}</p>
 
-          {/* Run order */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-1.5 gap-y-2">
-            {workflow.map((step, i) => (
-              <span key={step} className="flex items-center gap-1.5">
-                <span className="rounded-md bg-white/10 px-2 py-1 text-[11px] font-medium text-white/90 backdrop-blur">
-                  {step}
+            {/* Run order */}
+            <div className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-2">
+              {workflow.map((step, i) => (
+                <span key={step} className="flex items-center gap-1.5">
+                  <span className="rounded-md bg-slate-100 px-2 py-1 text-[11px] font-medium text-slate-600">
+                    {step}
+                  </span>
+                  {i < workflow.length - 1 && <ArrowRight className="h-3 w-3 text-slate-300" />}
                 </span>
-                {i < workflow.length - 1 && <ArrowRight className="h-3 w-3 text-white/40" />}
-              </span>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Why the Orchestrator matters */}
-          <p className="mt-5 max-w-3xl border-t border-white/20 pt-4 text-xs leading-relaxed text-white/75">
-            <span className="font-semibold text-white">Why this matters:</span> the Orchestrator
-            sequences these specialists and hands each one&apos;s output to the next — research
-            into the audit, the diagnosis into scoring, scored opportunities into execution.
-            Those clean handoffs between agents are where engagement quality lives or dies. It is
-            the core of the system, and where the real engineering goes.
-          </p>
+            <p className="mt-4 border-t border-[var(--border)] pt-4 text-xs leading-relaxed text-slate-500">
+              <span className="font-semibold text-slate-700">Why this matters:</span> the
+              Orchestrator sequences these specialists and hands each one&apos;s output to the next
+              — research into the audit, the diagnosis into scoring, scored opportunities into
+              execution. Those clean handoffs are where engagement quality lives or dies, and where
+              the real engineering goes.
+            </p>
+          </div>
         </div>
       </Card>
 
