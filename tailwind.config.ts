@@ -45,6 +45,17 @@ const config: Config = {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
+      // Bumped up from Tailwind defaults — readable for humans, not tiny.
+      fontSize: {
+        xs: ["0.8125rem", { lineHeight: "1.15rem" }], // 13px (was 12)
+        sm: ["0.9375rem", { lineHeight: "1.45rem" }], // 15px (was 14)
+        base: ["1.0625rem", { lineHeight: "1.65rem" }], // 17px (was 16)
+        lg: ["1.1875rem", { lineHeight: "1.8rem" }], // 19px (was 18)
+        xl: ["1.3125rem", { lineHeight: "1.85rem" }], // 21px (was 20)
+        "2xl": ["1.625rem", { lineHeight: "2.1rem" }], // 26px (was 24)
+        "3xl": ["2rem", { lineHeight: "2.4rem" }], // 32px (was 30)
+        "4xl": ["2.5rem", { lineHeight: "2.85rem" }], // 40px (was 36)
+      },
       boxShadow: {
         soft: "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
         float: "0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)",
