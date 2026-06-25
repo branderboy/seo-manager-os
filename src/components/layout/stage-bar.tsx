@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Search, HelpCircle, Plus, Bell } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { useEngagement } from "@/components/engagement/store";
+import { ClientSwitcher } from "@/components/engagement/client-switcher";
 import { MobileNav } from "@/components/layout/mobile-nav";
 
 const TITLES: Record<string, string> = {
@@ -42,6 +43,7 @@ export function StageBar() {
       <div className="flex flex-1 items-center gap-4 sm:gap-8">
         <MobileNav />
         <h1 className="whitespace-nowrap text-xl font-bold tracking-wide">{title}</h1>
+        <ClientSwitcher />
         <div className="relative w-full max-w-lg">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/70" />
           <input
