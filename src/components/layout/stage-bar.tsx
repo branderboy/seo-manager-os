@@ -42,7 +42,7 @@ export function StageBar() {
   const crumbs = crumbsFor(pathname);
 
   return (
-    <header className="sticky top-0 z-20 flex h-[57px] shrink-0 items-center justify-between gap-3 border-b border-[var(--border)] bg-[var(--surface)]/90 px-5 backdrop-blur-md">
+    <header className="sticky top-0 z-20 flex h-[60px] shrink-0 items-center justify-between gap-3 border-b border-[var(--border)] bg-[var(--surface)]/90 px-5 backdrop-blur-md">
       <div className="flex min-w-0 items-center gap-2.5">
         <MobileNav />
         <nav className="flex min-w-0 items-center gap-1.5 text-sm">

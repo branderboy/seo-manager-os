@@ -58,21 +58,21 @@ export function Sidebar() {
   const [pipelineOpen, setPipelineOpen] = React.useState(true);
 
   return (
-    <aside className="hidden w-[244px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--sidebar)] lg:flex">
+    <aside className="hidden w-[272px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--sidebar)] lg:flex">
       <div className="flex h-screen flex-col">
         {/* Brand */}
         <Link
           href="/command"
-          className="flex h-[57px] items-center gap-2.5 border-b border-[var(--border)] px-4"
+          className="flex h-[60px] items-center gap-3 border-b border-[var(--border)] px-4"
         >
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent-600 text-[13px] font-bold text-white">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-base font-bold text-white">
             S
           </span>
           <span className="min-w-0 leading-tight">
-            <span className="block truncate text-[13px] font-semibold tracking-tight text-[var(--foreground)]">
+            <span className="block truncate text-md font-bold tracking-tight text-[var(--foreground)]">
               SEO Manager OS
             </span>
-            <span className="block truncate text-2xs text-[var(--muted)]">
+            <span className="block truncate text-xs text-[var(--muted)]">
               {currentUser.agency}
             </span>
           </span>
@@ -80,8 +80,8 @@ export function Sidebar() {
 
         {/* Command palette affordance */}
         <div className="px-3 pt-3">
-          <button className="group flex w-full items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-sm text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--ink-soft)]">
-            <CommandIcon className="h-3.5 w-3.5" />
+          <button className="group flex w-full items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--ink-soft)]">
+            <CommandIcon className="h-4 w-4" />
             <span className="flex-1 text-left">Search…</span>
             <span className="kbd">⌘K</span>
           </button>
@@ -171,10 +171,10 @@ function NavItem({
       <Link
         href={item.href}
         className={cn(
-          "group relative flex items-center gap-2.5 rounded-md px-2.5 text-sm transition-colors",
-          dense ? "py-1.5" : "py-[7px]",
+          "group relative flex items-center gap-3 rounded-md px-2.5 transition-colors",
+          dense ? "py-2 text-base" : "py-2.5 text-md font-medium",
           active
-            ? "bg-[var(--accent-tint)] font-medium text-[var(--accent-ink)]"
+            ? "bg-[var(--accent-tint)] font-semibold text-[var(--accent-ink)]"
             : "text-[var(--ink-soft)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]"
         )}
       >
@@ -184,7 +184,7 @@ function NavItem({
         {typeof item.step === "number" ? (
           <span
             className={cn(
-              "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] text-2xs font-semibold tnum",
+              "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md text-xs font-bold tnum",
               active
                 ? "bg-accent-500 text-white"
                 : "bg-[var(--surface-3)] text-[var(--muted)] group-hover:bg-[var(--border)]"
@@ -195,7 +195,7 @@ function NavItem({
         ) : (
           <Icon
             className={cn(
-              "h-[16px] w-[16px] shrink-0",
+              "h-[20px] w-[20px] shrink-0",
               active ? "text-accent-600" : "text-[var(--muted)]"
             )}
           />
