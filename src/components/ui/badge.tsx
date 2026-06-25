@@ -2,17 +2,18 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// Quiet, low-chroma status chips. A leading dot carries the color; the fill stays calm.
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset whitespace-nowrap",
+  "inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium whitespace-nowrap",
   {
     variants: {
       variant: {
-        default: "bg-slate-100 text-slate-700 ring-slate-200",
-        accent: "bg-accent-50 text-accent-700 ring-accent-200",
-        good: "bg-emerald-50 text-emerald-700 ring-emerald-200",
-        warn: "bg-amber-50 text-amber-700 ring-amber-200",
-        bad: "bg-rose-50 text-rose-700 ring-rose-200",
-        outline: "bg-white text-slate-700 ring-slate-200",
+        default: "bg-surface-2 text-ink-2",
+        accent: "bg-signal-weak text-signal-ink",
+        good: "bg-ok-weak text-ok",
+        warn: "bg-warn-weak text-warn",
+        bad: "bg-danger-weak text-danger",
+        outline: "border border-line text-ink-2",
       },
     },
     defaultVariants: { variant: "default" },

@@ -8,7 +8,6 @@ import {
   Cloud,
   Plug,
   Settings,
-  MoreVertical,
   Users,
   Workflow,
   LineChart,
@@ -49,39 +48,44 @@ export function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-[240px] shrink-0 flex-col bg-[#2F3E4D] shadow-xl lg:flex">
+    <aside className="hidden w-[244px] shrink-0 flex-col border-r border-line bg-surface lg:flex">
       <div className="sticky top-0 flex h-screen flex-col">
         {/* Brand */}
         <Link
           href="/command"
-          className="flex h-14 items-center gap-2.5 border-b border-white/10 px-4 hover:bg-white/5"
+          className="flex h-14 items-center gap-2.5 px-4 transition-colors hover:bg-surface-2"
         >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-sm font-bold text-white">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-ink text-xs font-bold text-ink-inv">
             S
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold tracking-tight text-white">SEO Manager OS</span>
-            <span className="block truncate text-xs text-white/50">{currentUser.agency}</span>
+            <span className="block truncate text-sm font-semibold tracking-tight text-ink">SEO Manager OS</span>
+            <span className="block truncate text-xs text-ink-3">{currentUser.agency}</span>
           </span>
         </Link>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-3">
+        <nav className="flex-1 overflow-y-auto px-3 pb-4 pt-2">
           <NavGroup items={main} pathname={pathname} />
-          <Divider />
           <NavLabel>The Pipeline</NavLabel>
           <NavGroup items={pipeline} pathname={pathname} />
-          <Divider />
           <NavLabel>Client Dashboards</NavLabel>
           <NavGroup items={dashboards} pathname={pathname} />
-          <Divider />
+          <div className="my-3 h-px bg-line" />
           <NavGroup items={workspace} pathname={pathname} />
         </nav>
 
-        {/* Branding footer */}
-        <div className="flex items-center justify-between border-t border-white/10 p-4">
-          <div className="text-xs font-bold tracking-wide text-white">SEO MANAGER OS</div>
-          <MoreVertical className="h-4 w-4 text-white/60" />
+        {/* Account */}
+        <div className="border-t border-line p-3">
+          <button className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-surface-2">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-signal text-xs font-semibold text-white">
+              {currentUser.initials}
+            </span>
+            <span className="min-w-0 leading-tight">
+              <span className="block truncate text-sm font-medium text-ink">{currentUser.name}</span>
+              <span className="block truncate text-xs text-ink-3">{currentUser.agency}</span>
+            </span>
+          </button>
         </div>
       </div>
     </aside>
@@ -90,7 +94,7 @@ export function Sidebar() {
 
 function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
   return (
-    <ul>
+    <ul className="space-y-0.5">
       {items.map((it) => {
         const active = pathname === it.href;
         const Icon = it.icon;
@@ -99,29 +103,28 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
             <Link
               href={it.href}
               className={cn(
-                "flex items-center border-l-4 py-2.5 pr-4 text-sm transition-colors",
+                "group relative flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors",
                 active
-                  ? "border-accent-500 bg-white/10 pl-5 font-medium text-white"
-                  : "border-transparent pl-6 text-white hover:bg-white/5 hover:text-white"
+                  ? "bg-surface-2 font-medium text-ink"
+                  : "text-ink-2 hover:bg-surface-2 hover:text-ink"
               )}
             >
-              <span className="flex items-center gap-3.5">
-                {typeof it.step === "number" ? (
-                  <span
-                    className={cn(
-                      "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
-                      active
-                        ? "bg-accent-500 text-white"
-                        : "border-2 border-white/30 text-white"
-                    )}
-                  >
-                    {it.step}
-                  </span>
-                ) : (
-                  <Icon className={cn("h-[18px] w-[18px]", active ? "text-white" : "text-white/70")} />
-                )}
-                <span className="truncate">{it.label}</span>
-              </span>
+              {active && (
+                <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-signal" />
+              )}
+              {typeof it.step === "number" ? (
+                <span
+                  className={cn(
+                    "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-md text-2xs font-semibold nums",
+                    active ? "bg-signal text-white" : "bg-surface-2 text-ink-3 group-hover:bg-surface-3"
+                  )}
+                >
+                  {it.step}
+                </span>
+              ) : (
+                <Icon className={cn("h-[17px] w-[17px] shrink-0", active ? "text-signal" : "text-ink-3 group-hover:text-ink-2")} />
+              )}
+              <span className="truncate">{it.label}</span>
             </Link>
           </li>
         );
@@ -132,12 +135,8 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
 
 function NavLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="px-6 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/50">
+    <div className="px-2.5 pb-1 pt-4 text-2xs font-semibold uppercase tracking-wider text-ink-3">
       {children}
     </div>
   );
-}
-
-function Divider() {
-  return <div className="my-2 border-t border-white/10" />;
 }
