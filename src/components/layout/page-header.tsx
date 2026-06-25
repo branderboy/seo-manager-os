@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
-import { StageApps } from "@/components/layout/stage-apps";
 import { StageAgents } from "@/components/agents/stage-agents";
 
 export function PageHeader({
@@ -35,8 +34,7 @@ export function PageHeader({
         </div>
         {children && <div className="flex items-center gap-2">{children}</div>}
       </div>
-      <StageApps stage={stage} className="mt-4" />
-      <StageAgents stage={stage} className="mt-3" />
+      <StageAgents stage={stage} className="mt-4" />
     </div>
   );
 }
