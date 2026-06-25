@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs } from "@/components/ui/tabs";
 import { EngName } from "@/components/engagement/eng";
+import { WorkView } from "@/components/tracker/work-view";
 import { RankingsView } from "@/components/tracker/rankings-view";
 import { MentionsView } from "@/components/tracker/mentions-view";
 import { trackerStats, lastScan } from "@/lib/tracker";
@@ -36,6 +37,7 @@ export default function TrackerPage() {
       <Tabs
         className="mt-2"
         tabs={[
+          { id: "work", label: "Work", content: <WorkView /> },
           { id: "rankings", label: "Search Rankings", content: <RankingsView /> },
           { id: "mentions", label: "AI Mentions", content: <MentionsView /> },
         ]}
