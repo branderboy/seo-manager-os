@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { STAGES } from "@/lib/stages";
 import { featuredInvestigation as inv } from "@/lib/model";
 import { cn } from "@/lib/utils";
+import { WorkflowDependencies } from "@/components/workflow/dependencies";
 
 export const metadata: Metadata = { title: "Workflow" };
 
@@ -36,6 +37,9 @@ export default function WorkflowPage() {
           <div className="h-full rounded-full bg-accent-500" style={{ width: `${pct}%` }} />
         </div>
       </div>
+
+      {/* Dependency flow — work moving through the system */}
+      <WorkflowDependencies />
 
       {/* Journey */}
       <ol className="space-y-2">

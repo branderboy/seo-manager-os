@@ -27,18 +27,25 @@ Client Interview → Research → Audit → Diagnosis → Strategy
   → Prioritized Opportunities → Execution → Reporting
 ```
 
-## The 8 specialists
+## The 15 specialists
 
-| # | Agent | Owns (stage) | Output | Deploys from |
-|---|---|---|---|---|
-| 1 | **Intake** | Client Interview | Engagement profile + SEO-type classification (Local/SaaS/Enterprise/AEO-GEO) | `/discovery` |
-| 2 | **Research** | Research | Keywords, competitor set, intent map, content gaps | `/research`, `/intent`, `/competitors` |
-| 3 | **Technical SEO** | Audit | Technical audit + prioritized fixes (crawl, index, speed, schema, links) | `/diagnosis` |
-| 4 | **Content Strategy** | Strategy | Page plan + content briefs (service/location/blog/landing/comparison) | `/strategy`, `/tools` |
-| 5 | **Local SEO** | Strategy | Local action plan (GBP, reviews, categories, service areas, citations) | `/tools`, `/dashboards/local` |
-| 6 | **AEO/GEO** | Strategy | AI-answer optimization plan + tracked-prompt set | `/tools`, `/tracker` |
-| 7 | **Opportunity Scoring** | Prioritized Opportunities | Priority-ranked list with traceable scores (uses `src/lib/scoring.ts`) | `/diagnosis` |
-| 8 | **Execution** | Execution | Drafts: briefs, copy, schema, internal-link plan, tasks, reports | `/tasks` |
+| Agent | Owns (stage) | Output | Deploys from |
+|---|---|---|---|
+| **Discovery Specialist** | Client Interview | Client profile, discovery summary, goals | `/discovery` |
+| **Research Analyst** | Research | Keywords, gaps, demand | `/research` |
+| **Intent Mapper** | Research | Intent map + content gaps | `/intent` |
+| **Competitive Analyst** | Competitive Insights | Competitive opportunities | `/competitors` |
+| **Technical Auditor** | Audit | Technical audit + prioritized fixes | `/diagnosis` |
+| **Diagnosis Specialist** | Diagnosis | Ranked root causes (confidence + impact) | `/diagnosis` |
+| **Strategy Planner** | Strategy | Strategy + priority roadmap | `/strategy` |
+| **Project Brief Generator** | Project Brief | Executive project brief | `/strategy` |
+| **Playbook Builder** | Playbooks | Execution playbooks → tasks | `/tools` |
+| **Content Strategist** | Strategy | Page plan + content briefs | `/tools` |
+| **Local SEO Specialist** | Playbooks | Local action plan (GBP, reviews, citations) | `/tools` |
+| **Schema Engineer** | Playbooks | Schema specs + validation | `/tools` |
+| **Internal Linking Specialist** | Playbooks | Internal-link plan | `/tools` |
+| **QA Inspector** | Execution | QA + deployment verification | `/tasks` |
+| **Reporting Specialist** | Reporting | Manager report + executive summary | `/reports` |
 
 > **No auto-publishing.** Every agent output is a draft, plan, or recommendation — agents
 > never push live content (no GBP posting, etc.).

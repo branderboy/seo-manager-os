@@ -13,6 +13,10 @@ import {
   Workflow,
   LineChart,
   Bot,
+  LayoutDashboard,
+  ShieldAlert,
+  Trophy,
+  Rocket,
 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
@@ -25,9 +29,13 @@ export function Sidebar() {
   const pathname = usePathname();
 
   const main: Item[] = [
+    { href: "/command", label: "Command Center", icon: LayoutDashboard },
     { href: "/clients", label: "Clients", icon: Users },
+    { href: "/risk", label: "Risk Center", icon: ShieldAlert },
+    { href: "/wins", label: "Wins", icon: Trophy },
     { href: "/workflow", label: "Workflow", icon: Workflow },
     { href: "/tracker", label: "Tracker", icon: LineChart },
+    { href: "/deployments", label: "Deployments", icon: Rocket },
     { href: "/agents", label: "Agent Store", icon: Bot },
   ];
   const pipeline: Item[] = STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n }));
@@ -44,7 +52,7 @@ export function Sidebar() {
       <div className="sticky top-0 flex h-screen flex-col">
         {/* Brand */}
         <Link
-          href="/clients"
+          href="/command"
           className="flex h-[72px] flex-col justify-center border-b border-white/10 px-5 hover:bg-white/5"
         >
           <div className="truncate text-[16px] font-semibold tracking-tight text-white">SEO Manager OS</div>

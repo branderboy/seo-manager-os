@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { StageApps } from "@/components/layout/stage-apps";
 import { ForecastPanel } from "@/components/flow/forecast-panel";
+import { DiagnosisPriorities } from "@/components/diagnosis/priorities";
 
 export const metadata: Metadata = { title: "Diagnosis Engine" };
 
@@ -59,6 +60,9 @@ export default function DiagnosisPage() {
       </div>
 
       <StageApps stage={5} />
+
+      {/* Diagnosis v2 — prioritized fixes (what to do first) */}
+      <DiagnosisPriorities />
 
       {/* Alert + Metrics grid */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">

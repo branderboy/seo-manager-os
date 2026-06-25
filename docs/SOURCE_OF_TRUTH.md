@@ -79,6 +79,18 @@ Plus: model dashboards (`/dashboards/{local,saas,enterprise}`), `/clients`, `/wo
    the high-volume mention judge. Structured outputs to the existing TS shapes. Prompts in
    `docs/BUILD_SPEC.md` §6.
 
+## v2 direction
+
+The canonical v2 architecture lives in **`docs/ARCHITECTURE_V2.md`** — read it for the full
+vision. Headlines: keep the Clients → Workflow (9 stages) → Tracker → Agent Store foundation;
+make every stage generate deliverables that auto-feed the next; Tracker becomes the project
+command center; Agent Store is internally the **AI Workforce** (Orchestrator + ~15 specialists,
+each owning a stage). New surfaces to build: **Command Center** (homepage), **Workflow
+Dependencies** (visual), **Risk Center** (replaces Health Score), **Wins Feed**, **Deployment
+Verification**. **Scope resolved: SEO Operations Platform** — one engine, playbooks vary by
+client type (Local/Ecom/SaaS/Enterprise/Migration/AI Search). The earlier "local-only" scoping
+is superseded.
+
 ## Product direction (updated 2026-06-18, from review)
 
 These supersede earlier framing where they conflict.
@@ -105,6 +117,18 @@ These supersede earlier framing where they conflict.
 9. **AI-visibility tracking is not the headline.** It's early and it's just another traffic
    source. Keep the Tracker, but the product is about **showing up and routing more traffic**,
    not "winning AI." Don't over-invest in the AI-mention side.
+
+## v2 progress (Phases 1–3 built — UI on mock data)
+
+- **Phase 1:** Command Center (`/command`, homepage) · Diagnosis v2 (`/diagnosis`, prioritized
+  fixes via `scoring.ts`) · Task lifecycle + Tracker "Work" tab · Workflow Dependencies.
+- **Phase 2:** Risk Center (`/risk`, replaces health score) · Wins Feed (`/wins`) · Morning
+  Briefing (Command Center) · AI Workforce expanded to 15 specialists.
+- **Phase 3:** Deployment Verification (`/deployments`) · expanded integrations catalog
+  (PageSpeed, Lighthouse, DataForSEO, OpenAI, Claude, Recurring Audits, Webhooks, API, White
+  Label, Team Seats).
+- Remaining for "real": live data + the backend/worker layer in `BUILD_SPEC.md` (the
+  integrations are catalog entries; deployment verification needs a real crawler).
 
 ## Built this session (beyond the prototype)
 

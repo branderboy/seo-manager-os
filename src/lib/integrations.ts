@@ -4,6 +4,7 @@ export type IntegrationCategory =
   | "Local & Reviews"
   | "CRM & Leads"
   | "SEO Data"
+  | "AI"
   | "Planning & Delivery"
   | "Alerts & Automation";
 
@@ -57,6 +58,26 @@ export const integrations: Integration[] = [
   { id: "slack", name: "Slack", blurb: "Post task reminders and score changes to a channel.", category: "Alerts & Automation", initials: "SL", color: "bg-violet-600", connected: true, account: "#seo-northwind", synced: "Connected", metric: "Nudges on" },
   { id: "twilio", name: "Twilio SMS", blurb: "Text overdue-task alerts to owners.", category: "Alerts & Automation", initials: "TW", color: "bg-red-500", connected: false },
   { id: "zapier", name: "Zapier", blurb: "Trigger 6,000+ apps from OS events.", category: "Alerts & Automation", initials: "ZP", color: "bg-orange-500", connected: false },
+
+  // Search & Analytics — performance
+  { id: "pagespeed", name: "PageSpeed Insights", blurb: "Field + lab performance scores per URL.", category: "Search & Analytics", initials: "PS", color: "bg-lime-600", connected: true, account: "northwindhvac.com", synced: "Today", metric: "LCP / CLS tracked" },
+  { id: "lighthouse", name: "Lighthouse", blurb: "Automated performance, SEO and best-practice audits.", category: "Search & Analytics", initials: "LH", color: "bg-orange-500", connected: false },
+
+  // SEO Data
+  { id: "dataforseo", name: "DataForSEO", blurb: "SERP, keyword volume and rank data via API.", category: "SEO Data", initials: "DF", color: "bg-blue-700", connected: true, account: "Pay-as-you-go", synced: "Today, 6:00 AM", metric: "SERP API on" },
+
+  // AI
+  { id: "openai", name: "OpenAI", blurb: "GPT models for generation and the AI-mention tracker.", category: "AI", initials: "OA", color: "bg-emerald-700", connected: true, account: "gpt-4o", synced: "Connected", metric: "Generation on" },
+  { id: "claude", name: "Claude (Anthropic)", blurb: "Powers diagnosis, strategy and the mention judge.", category: "AI", initials: "CL", color: "bg-orange-600", connected: true, account: "Opus / Haiku", synced: "Connected", metric: "Reasoning on" },
+
+  // Planning & Delivery
+  { id: "whitelabel", name: "White Label", blurb: "Brand the client-facing reports and portal as your agency.", category: "Planning & Delivery", initials: "WL", color: "bg-fuchsia-700", connected: true, account: "Boring SEO Agency", synced: "Connected", metric: "Branding on" },
+  { id: "teams", name: "Team Seats", blurb: "Invite teammates and route work by role.", category: "Planning & Delivery", initials: "TS", color: "bg-teal-600", connected: true, account: "5 seats", synced: "Connected", metric: "5 members" },
+
+  // Alerts & Automation
+  { id: "recurring", name: "Recurring Audits", blurb: "Schedule automatic re-audits and re-crawls per client.", category: "Alerts & Automation", initials: "RA", color: "bg-indigo-600", connected: true, account: "Weekly", synced: "Scheduled", metric: "Auto-audits on" },
+  { id: "webhooks", name: "Webhooks", blurb: "Fire events to external systems on deploys, approvals and wins.", category: "Alerts & Automation", initials: "WH", color: "bg-slate-600", connected: false },
+  { id: "api", name: "API Access", blurb: "Programmatic access to clients, tasks and reports.", category: "Alerts & Automation", initials: "AP", color: "bg-slate-800", connected: false },
 ];
 
 export const integrationCategories: IntegrationCategory[] = [
@@ -64,6 +85,7 @@ export const integrationCategories: IntegrationCategory[] = [
   "Local & Reviews",
   "CRM & Leads",
   "SEO Data",
+  "AI",
   "Planning & Delivery",
   "Alerts & Automation",
 ];

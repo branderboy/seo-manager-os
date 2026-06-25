@@ -5,7 +5,8 @@ import { MapPin, Cloud, Building2, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { clientHealth, type Client } from "@/lib/model";
+import { type Client } from "@/lib/model";
+import { riskForClient, riskTone, riskBadge } from "@/lib/risk";
 import { engagementFromClient, useEngagement } from "@/components/engagement/store";
 
 const modelIcon = { Local: MapPin, SaaS: Cloud, Enterprise: Building2 } as const;
@@ -17,7 +18,7 @@ export function ClientRow({ client: c }: { client: Client }) {
   const { setEngagement } = useEngagement();
   const router = useRouter();
   const Icon = modelIcon[c.model];
-  const health = clientHealth(c);
+  const risk = riskForClient(c);
 
   // Selecting a client makes it the active engagement, then opens its dashboard.
   const open = () => {
@@ -51,9 +52,9 @@ export function ClientRow({ client: c }: { client: Client }) {
       <td className="px-3 py-3.5">
         <div className="flex items-center gap-2">
           <div className="w-16">
-            <Progress value={health} />
+            <Progress value={risk.overall} tone={riskTone(risk.overall)} />
           </div>
-          <span className="text-xs font-medium text-slate-600">{health}</span>
+          <Badge variant={riskBadge(risk.level)}>{risk.overall}</Badge>
         </div>
       </td>
       <td className="px-3 py-3.5 text-slate-600">{c.scores.ai}</td>

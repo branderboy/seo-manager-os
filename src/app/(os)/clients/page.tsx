@@ -4,13 +4,13 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ClientRow } from "@/components/clients/client-row";
-import { clients, clientHealth } from "@/lib/model";
+import { clients } from "@/lib/model";
+import { riskForClient, riskSummary } from "@/lib/risk";
 
 export const metadata: Metadata = { title: "Clients" };
 
 export default function ClientsPage() {
   const active = clients.filter((c) => c.status === "Active").length;
-  const avgHealth = Math.round(clients.reduce((s, c) => s + clientHealth(c), 0) / clients.length);
 
   return (
     <>
@@ -36,8 +36,8 @@ export default function ClientsPage() {
           <div className="mt-1 text-2xl font-semibold text-slate-900">{active}</div>
         </Card>
         <Card className="p-5">
-          <div className="text-sm text-slate-600">Avg. health score</div>
-          <div className="mt-1 text-2xl font-semibold text-slate-900">{avgHealth}</div>
+          <div className="text-sm text-slate-600">Avg. risk</div>
+          <div className="mt-1 text-2xl font-semibold text-slate-900">{riskSummary.avg}</div>
         </Card>
       </div>
 
@@ -50,7 +50,7 @@ export default function ClientsPage() {
             className="h-9 w-64 rounded-lg border border-[var(--border)] bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-500 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
           />
         </div>
-        <span className="text-sm text-slate-500">Sorted by health</span>
+        <span className="text-sm text-slate-500">Sorted by risk</span>
       </div>
 
       {/* Client table */}
@@ -62,7 +62,7 @@ export default function ClientsPage() {
                 <th className="px-5 py-3 font-medium">Client</th>
                 <th className="px-3 py-3 font-medium">Model</th>
                 <th className="px-3 py-3 font-medium">Owner</th>
-                <th className="px-3 py-3 font-medium">Health</th>
+                <th className="px-3 py-3 font-medium">Risk</th>
                 <th className="px-3 py-3 font-medium">AI</th>
                 <th className="px-3 py-3 font-medium">Status</th>
                 <th className="px-5 py-3" />
@@ -70,7 +70,7 @@ export default function ClientsPage() {
             </thead>
             <tbody>
               {[...clients]
-                .sort((a, b) => clientHealth(b) - clientHealth(a))
+                .sort((a, b) => riskForClient(b).overall - riskForClient(a).overall)
                 .map((c) => (
                   <ClientRow key={c.id} client={c} />
                 ))}
