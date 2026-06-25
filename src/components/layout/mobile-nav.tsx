@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, LayoutDashboard, Users, Workflow, LineChart, Bot, MapPin, Cloud, Building2, Plug, Settings } from "lucide-react";
+import { Menu, X, LayoutDashboard, Users, ShieldAlert, Trophy, Workflow, LineChart, Bot, MapPin, Cloud, Building2, Plug, Settings } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +18,8 @@ export function MobileNav() {
   const main: Item[] = [
     { href: "/command", label: "Command Center", icon: LayoutDashboard },
     { href: "/clients", label: "Clients", icon: Users },
+    { href: "/risk", label: "Risk Center", icon: ShieldAlert },
+    { href: "/wins", label: "Wins", icon: Trophy },
     { href: "/workflow", label: "Workflow", icon: Workflow },
     { href: "/tracker", label: "Tracker", icon: LineChart },
     { href: "/agents", label: "Agent Store", icon: Bot },

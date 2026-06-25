@@ -14,6 +14,7 @@ import {
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { morningBriefing } from "@/lib/wins";
 import {
   morningBrief,
   opsStats,
@@ -51,10 +52,43 @@ export default function CommandCenterPage() {
         <Badge variant="accent">{morningBrief.date}</Badge>
       </PageHeader>
 
-      {/* Morning brief */}
+      {/* Morning briefing */}
       <Card className="p-6">
-        <h2 className="text-lg font-semibold tracking-tight text-slate-900">{morningBrief.greeting}</h2>
-        <p className="mt-2 text-[15px] leading-relaxed text-slate-600">{morningBrief.line}</p>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-lg font-semibold tracking-tight text-slate-900">{morningBrief.greeting}</h2>
+          <span className="text-sm font-medium text-slate-500">Your morning briefing</span>
+        </div>
+        <p className="mt-2 text-[15px] font-medium leading-relaxed text-slate-700">{morningBriefing.headline}</p>
+
+        <div className="mt-5 grid gap-5 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Focus today</div>
+            <ul className="space-y-2.5">
+              {morningBriefing.focus.map((f, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-slate-600">
+                  <span className="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-50 text-[11px] font-bold text-accent-700">
+                    {i + 1}
+                  </span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Overnight</div>
+            <ul className="space-y-2">
+              {morningBriefing.overnight.map((o) => (
+                <li key={o} className="flex items-start gap-2 text-sm text-slate-600">
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+                  {o}
+                </li>
+              ))}
+            </ul>
+            <Link href="/wins" className="mt-3 inline-block text-sm font-medium text-accent-600 hover:text-accent-700">
+              See all wins →
+            </Link>
+          </div>
+        </div>
       </Card>
 
       {/* Ops stats */}
