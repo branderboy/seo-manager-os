@@ -8,33 +8,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // App accent — navy, ported from the Pro Wash design system.
+        // App accent — professional blue.
         accent: {
-          50: "#eaf1fb",
-          100: "#d7e6f6",
-          200: "#c9dcf0",
-          300: "#9bbbe0",
-          400: "#4f7bb0",
-          500: "#16345f",
-          600: "#102a4d",
-          700: "#0a1e3d",
-          800: "#0a1e3d",
-          900: "#081831",
+          50: "#eff6ff",
+          100: "#dbeafe",
+          200: "#bfdbfe",
+          300: "#93c5fd",
+          400: "#60a5fa",
+          500: "#2563eb",
+          600: "#1d4ed8",
+          700: "#1e40af",
+          800: "#1e3a8a",
+          900: "#172554",
         },
-        // Brand red — CTAs and active accents.
-        brand: {
-          50: "#fdecec",
-          100: "#fad6d6",
-          200: "#f4d3d3",
-          300: "#eba3a3",
-          400: "#dd5560",
-          500: "#ce1126",
-          600: "#b5101f",
-          700: "#a50f20",
-        },
-        // Your design tokens — global, inherited by every page.
-        primary: "#16345f",
-        sidebar: "#0a1e3d",
+        primary: "#2563eb",
+        sidebar: "#0f172a",
         panel: "#f4f7fc",
       },
       fontFamily: {

@@ -101,7 +101,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
               className={cn(
                 "flex items-center border-l-4 py-2.5 pr-4 text-sm transition-colors",
                 active
-                  ? "border-brand-500 bg-white/10 pl-5 font-medium text-white"
+                  ? "border-accent-500 bg-white/10 pl-5 font-medium text-white"
                   : "border-transparent pl-6 text-white hover:bg-white/5 hover:text-white"
               )}
             >
@@ -111,7 +111,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
                     className={cn(
                       "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
                       active
-                        ? "bg-brand-500 text-white"
+                        ? "bg-accent-500 text-white"
                         : "border-2 border-white/30 text-white"
                     )}
                   >

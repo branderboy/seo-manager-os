@@ -82,14 +82,14 @@ function Group({ items, pathname, onNavigate }: { items: Item[]; pathname: strin
               onClick={onNavigate}
               className={cn(
                 "flex items-center gap-3.5 border-l-4 py-2.5 pr-4 text-sm transition-colors",
-                active ? "border-brand-500 bg-white/10 pl-5 font-medium text-white" : "border-transparent pl-6 text-slate-300 hover:bg-white/5 hover:text-white"
+                active ? "border-accent-500 bg-white/10 pl-5 font-medium text-white" : "border-transparent pl-6 text-slate-300 hover:bg-white/5 hover:text-white"
               )}
             >
               {typeof it.step === "number" ? (
                 <span
                   className={cn(
                     "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
-                    active ? "bg-brand-500 text-white" : "border-2 border-white/30 text-slate-300"
+                    active ? "bg-accent-500 text-white" : "border-2 border-white/30 text-slate-300"
                   )}
                 >
                   {it.step}
