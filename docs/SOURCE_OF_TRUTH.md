@@ -130,6 +130,16 @@ These supersede earlier framing where they conflict.
 - Remaining for "real": live data + the backend/worker layer in `BUILD_SPEC.md` (the
   integrations are catalog entries; deployment verification needs a real crawler).
 
+### Type-aware engine (built)
+
+The whole pipeline now adapts to the active client's SEO type via the top-bar **Client
+Switcher** (6 types: Local / Ecommerce / SaaS / Enterprise / Migration / AI Search):
+Discovery deliverables, Intent Mapping, Competitive Insights, Diagnosis (root cause + fixes),
+Playbooks, Project Brief (doc + project plan), and Data Collection all change with the client.
+Reports v2 (manager reporting), the Client record page (`/clients/[id]`), and the Daily Task
+Engine lifecycle board are built. Command Center / Wins / Risk remain **portfolio-wide by
+design** (manager surfaces across all clients).
+
 ## Built this session (beyond the prototype)
 
 - **Tracker** (`/tracker`) — rankings + AI-mention monitoring (mock data).
