@@ -24,19 +24,19 @@ export default function RiskCenterPage() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         <Card className="p-5">
-          <div className="text-sm font-medium text-slate-600">Portfolio risk</div>
+          <div className="text-sm font-medium text-slate-700">Portfolio risk</div>
           <div className="mt-1 text-3xl font-semibold tracking-tight text-slate-900">{riskSummary.avg}</div>
           <div className="mt-2"><Progress value={riskSummary.avg} tone={riskTone(riskSummary.avg)} /></div>
         </Card>
         <Card className="p-5">
-          <div className="text-sm font-medium text-slate-600">High-risk clients</div>
+          <div className="text-sm font-medium text-slate-700">High-risk clients</div>
           <div className="mt-1 text-3xl font-semibold tracking-tight text-rose-600">{riskSummary.high}</div>
-          <div className="mt-2 text-sm text-slate-500">of {riskSummary.clients} accounts</div>
+          <div className="mt-2 text-sm text-slate-600">of {riskSummary.clients} accounts</div>
         </Card>
         <Card className="hidden p-5 lg:block">
-          <div className="text-sm font-medium text-slate-600">Most common exposure</div>
+          <div className="text-sm font-medium text-slate-700">Most common exposure</div>
           <div className="mt-1 text-3xl font-semibold tracking-tight text-slate-900">AI Search</div>
-          <div className="mt-2 text-sm text-slate-500">across the portfolio</div>
+          <div className="mt-2 text-sm text-slate-600">across the portfolio</div>
         </Card>
       </div>
 
@@ -59,7 +59,7 @@ function RiskCard({ risk: r }: { risk: ClientRisk }) {
           </span>
           <div>
             <div className="text-[15px] font-semibold tracking-tight text-slate-900">{r.client.name}</div>
-            <div className="text-sm text-slate-500">
+            <div className="text-sm text-slate-600">
               {r.client.model} · {r.client.industry}
             </div>
           </div>
@@ -67,7 +67,7 @@ function RiskCard({ risk: r }: { risk: ClientRisk }) {
         <div className="flex items-center gap-3">
           <div className="text-right">
             <div className="text-2xl font-bold text-slate-900">{r.overall}</div>
-            <div className="text-[11px] font-medium uppercase tracking-wide text-slate-400">risk</div>
+            <div className="text-[11px] font-medium uppercase tracking-wide text-slate-500">risk</div>
           </div>
           <Badge variant={riskBadge(r.level)}>{r.level}</Badge>
         </div>
@@ -77,7 +77,7 @@ function RiskCard({ risk: r }: { risk: ClientRisk }) {
         {RISK_DIMS.map((d) => (
           <div key={d}>
             <div className="mb-1 flex items-center justify-between text-xs">
-              <span className={`text-slate-500 ${d === r.topRisk ? "font-semibold text-slate-700" : ""}`}>{d}</span>
+              <span className={`text-slate-600 ${d === r.topRisk ? "font-semibold text-slate-700" : ""}`}>{d}</span>
               <span className="font-medium text-slate-700">{r.dims[d]}</span>
             </div>
             <Progress value={r.dims[d]} tone={riskTone(r.dims[d])} />

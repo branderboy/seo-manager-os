@@ -13,7 +13,7 @@ export function StageApps({ stage, className }: { stage?: number; className?: st
 
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
-      <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+      <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
         Powered by
       </span>
       {s.apps.map((id) => {

@@ -60,7 +60,7 @@ export function MentionsView() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
+                <tr className="text-left text-xs uppercase tracking-wide text-slate-600">
                   <th className="py-2 font-medium">Prompt</th>
                   <th className="py-2 font-medium">Engine</th>
                   <th className="py-2 font-medium">Result</th>
@@ -118,7 +118,7 @@ function PromptRow({ p }: { p: AiPromptResult }) {
   return (
     <tr className="border-t border-[var(--border)]">
       <td className="py-2.5 pr-3 text-slate-700">{p.prompt}</td>
-      <td className="py-2.5 text-slate-600">{p.engine}</td>
+      <td className="py-2.5 text-slate-700">{p.engine}</td>
       <td className="py-2.5">
         {p.status === "Cited" ? (
           <Badge variant="good">
@@ -137,8 +137,8 @@ function PromptRow({ p }: { p: AiPromptResult }) {
           </Badge>
         )}
       </td>
-      <td className="py-2.5 text-slate-600">
-        {p.competitorCited ?? <span className="text-slate-400">—</span>}
+      <td className="py-2.5 text-slate-700">
+        {p.competitorCited ?? <span className="text-slate-500">—</span>}
       </td>
     </tr>
   );

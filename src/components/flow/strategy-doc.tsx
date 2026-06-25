@@ -17,7 +17,7 @@ export function StrategyDoc() {
           <div>
             <div className="text-xs font-semibold uppercase tracking-[0.14em] text-accent-600">Search Strategy</div>
             <h2 className="mt-1 text-xl font-semibold tracking-tight text-slate-900">{engagement.business}</h2>
-            <div className="text-sm text-slate-500">
+            <div className="text-sm text-slate-600">
               {engagement.model} SEO · {engagement.market} · Prepared by SEO Manager OS
             </div>
           </div>
@@ -25,7 +25,7 @@ export function StrategyDoc() {
         </div>
 
         <Block icon={FileText} title="Executive Summary">
-          <p className="text-[15px] leading-relaxed text-slate-600">{st.executiveSummary}</p>
+          <p className="text-[15px] leading-relaxed text-slate-700">{st.executiveSummary}</p>
         </Block>
 
         <div className="grid gap-9 sm:grid-cols-2">
@@ -39,9 +39,9 @@ export function StrategyDoc() {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {st.expectedOutcomes.map((o) => (
               <div key={o.metric} className="rounded-xl border border-[var(--border)] bg-white p-4">
-                <div className="text-sm text-slate-600">{o.metric}</div>
+                <div className="text-sm text-slate-700">{o.metric}</div>
                 <div className="mt-2 flex items-baseline gap-2">
-                  <span className="text-slate-500 line-through">{o.from}</span>
+                  <span className="text-slate-600 line-through">{o.from}</span>
                   <ArrowRight className="h-3.5 w-3.5 text-slate-300" />
                   <span className="text-2xl font-semibold text-slate-900">{o.to}</span>
                 </div>
@@ -69,7 +69,7 @@ function Block({
   return (
     <section>
       <div className="mb-3 flex items-center gap-2.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-700">
           <Icon className="h-4 w-4" />
         </span>
         <h3 className="text-[15px] font-semibold tracking-tight text-slate-900">{title}</h3>
@@ -83,7 +83,7 @@ function Bullets({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2 pl-1">
       {items.map((i) => (
-        <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-600">
+        <li key={i} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-700">
           <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-400" />
           {i}
         </li>

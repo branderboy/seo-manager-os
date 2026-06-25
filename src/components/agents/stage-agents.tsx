@@ -21,7 +21,7 @@ export function StageAgents({ stage, className }: { stage?: number; className?: 
 
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
-      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
         Agents
       </span>
       {list.map((a) => {
@@ -34,7 +34,7 @@ export function StageAgents({ stage, className }: { stage?: number; className?: 
               "inline-flex items-center gap-2 rounded-full border px-2.5 py-1 text-xs transition-colors",
               on
                 ? "border-accent-200 bg-accent-50 text-accent-700"
-                : "border-[var(--border)] bg-white text-slate-600"
+                : "border-[var(--border)] bg-white text-slate-700"
             )}
           >
             <Icon className="h-3.5 w-3.5" />

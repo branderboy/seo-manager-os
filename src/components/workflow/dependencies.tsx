@@ -15,7 +15,7 @@ const nodeBorder: Record<NodeStatus, string> = {
 const countTone: Record<NodeStatus, string> = {
   flowing: "bg-accent-50 text-accent-700",
   waiting: "bg-amber-50 text-amber-700",
-  done: "bg-slate-100 text-slate-500",
+  done: "bg-slate-100 text-slate-600",
 };
 
 export function WorkflowDependencies() {
@@ -24,7 +24,7 @@ export function WorkflowDependencies() {
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
           <h3 className="text-lg font-semibold tracking-tight text-slate-900">How work flows</h3>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-600">
             {flowSummary.inFlight} items in flight across the content pipeline.
           </p>
         </div>
@@ -48,7 +48,7 @@ export function WorkflowDependencies() {
                 <span className={`rounded px-1.5 py-0.5 text-xs font-semibold ${countTone[n.status]}`}>
                   {n.count}
                 </span>
-                {n.note && <span className="text-[11px] text-slate-400">waiting · {n.note}</span>}
+                {n.note && <span className="text-[11px] text-slate-500">waiting · {n.note}</span>}
               </div>
             </div>
             {i < contentFlow.length - 1 && (
@@ -58,7 +58,7 @@ export function WorkflowDependencies() {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-[var(--border)] pt-3 text-xs text-slate-500">
+      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-[var(--border)] pt-3 text-xs text-slate-600">
         <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-accent-500" /> Flowing</span>
         <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500" /> Waiting</span>
         <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Clear</span>

@@ -49,7 +49,7 @@ export function IntegrationsView() {
     <div className="space-y-6">
       {/* Summary + search */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-sm text-slate-600">
+        <div className="flex items-center gap-2 text-sm text-slate-700">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 font-medium text-emerald-700 ring-1 ring-inset ring-emerald-200">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             {connectedCount} connected
@@ -57,12 +57,12 @@ export function IntegrationsView() {
           <span>{items.length - connectedCount} available</span>
         </div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-600" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search integrations…"
-            className="h-9 w-64 rounded-lg border border-[var(--border)] bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-500 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
+            className="h-9 w-64 rounded-lg border border-[var(--border)] bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-600 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
           />
         </div>
       </div>
@@ -72,7 +72,7 @@ export function IntegrationsView() {
         if (!group.length) return null;
         return (
           <section key={cat}>
-            <h2 className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
               {cat}
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -124,7 +124,7 @@ function IntegrationCard({
               </Badge>
             )}
           </div>
-          <p className="mt-1 text-sm leading-relaxed text-slate-600">{i.blurb}</p>
+          <p className="mt-1 text-sm leading-relaxed text-slate-700">{i.blurb}</p>
         </div>
       </div>
 
@@ -135,7 +135,7 @@ function IntegrationCard({
           {i.metric && <Row label="Status" value={i.metric} />}
         </div>
       ) : (
-        <div className="mt-4 rounded-lg border border-dashed border-[var(--border)] p-3 text-xs text-slate-500">
+        <div className="mt-4 rounded-lg border border-dashed border-[var(--border)] p-3 text-xs text-slate-600">
           Not connected — link your account to start syncing data.
         </div>
       )}
@@ -174,7 +174,7 @@ function IntegrationCard({
 function Row({ label, value, icon }: { label: string; value: string; icon?: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="text-slate-500">{label}</span>
+      <span className="text-slate-600">{label}</span>
       <span className="flex items-center gap-1 truncate font-medium text-slate-700">
         {icon}
         {value}

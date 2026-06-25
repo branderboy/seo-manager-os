@@ -32,7 +32,7 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
         <Badge variant={riskBadge(risk.level)}>{risk.level} risk · {risk.overall}</Badge>
       </PageHeader>
 
-      <Link href="/clients" className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-slate-700">
+      <Link href="/clients" className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-700">
         <ArrowLeft className="h-4 w-4" /> All clients
       </Link>
 
@@ -47,10 +47,10 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
               <Row icon={Server} label="Hosting" value={profile.hosting} />
               <Row icon={Users} label="Owner" value={client.owner} />
               <div className="sm:col-span-2">
-                <div className="mb-1 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-400">
+                <div className="mb-1 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500">
                   <Mic className="h-3.5 w-3.5" /> Brand voice
                 </div>
-                <p className="text-sm text-slate-600">{profile.brandVoice}</p>
+                <p className="text-sm text-slate-700">{profile.brandVoice}</p>
               </div>
             </dl>
           </CardContent>
@@ -68,7 +68,7 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
             </div>
             <div className="mt-4 border-t border-[var(--border)] pt-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">Overall risk</span>
+                <span className="text-slate-700">Overall risk</span>
                 <span className="font-semibold text-slate-800">{risk.overall}</span>
               </div>
               <div className="mt-1.5"><Progress value={risk.overall} tone={riskTone(risk.overall)} /></div>
@@ -88,15 +88,15 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
       {/* Contacts + Records */}
       <div className="grid gap-5 lg:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><Users className="h-4 w-4 text-slate-400" /> Contacts</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2"><Users className="h-4 w-4 text-slate-500" /> Contacts</CardTitle></CardHeader>
           <CardContent>
             <ul className="divide-y divide-[var(--border)]">
               {people.map((p) => (
                 <li key={p.id} className="flex items-center gap-3 py-2.5">
                   <span className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold text-white ${p.color}`}>{p.initials}</span>
                   <div className="min-w-0">
-                    <div className="truncate font-medium text-slate-800">{p.name} · <span className="font-normal text-slate-500">{p.title}</span></div>
-                    <div className="truncate text-sm text-slate-500">{p.email}</div>
+                    <div className="truncate font-medium text-slate-800">{p.name} · <span className="font-normal text-slate-600">{p.title}</span></div>
+                    <div className="truncate text-sm text-slate-600">{p.email}</div>
                   </div>
                 </li>
               ))}
@@ -105,16 +105,16 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
         </Card>
 
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><FileText className="h-4 w-4 text-slate-400" /> Engagements</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2"><FileText className="h-4 w-4 text-slate-500" /> Engagements</CardTitle></CardHeader>
           <CardContent>
             <ul className="divide-y divide-[var(--border)]">
               {records.map((r) => (
                 <li key={r.id} className="flex items-center justify-between gap-3 py-2.5">
                   <div className="min-w-0">
                     <div className="truncate font-medium text-slate-800">{r.name}</div>
-                    <div className="text-sm text-slate-500">{r.stageLabel} · {r.progress}%</div>
+                    <div className="text-sm text-slate-600">{r.stageLabel} · {r.progress}%</div>
                   </div>
-                  <span className="shrink-0 text-sm font-medium text-slate-600">{money(r.value)}</span>
+                  <span className="shrink-0 text-sm font-medium text-slate-700">{money(r.value)}</span>
                 </li>
               ))}
             </ul>
@@ -125,19 +125,19 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
       {/* Documents + Notes */}
       <div className="grid gap-5 lg:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><FolderOpen className="h-4 w-4 text-slate-400" /> Documents</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2"><FolderOpen className="h-4 w-4 text-slate-500" /> Documents</CardTitle></CardHeader>
           <CardContent>
             {profile.documents.length === 0 ? (
-              <p className="text-sm text-slate-400">No documents yet.</p>
+              <p className="text-sm text-slate-500">No documents yet.</p>
             ) : (
               <ul className="divide-y divide-[var(--border)]">
                 {profile.documents.map((d) => (
                   <li key={d.name} className="flex items-center justify-between gap-3 py-2.5">
                     <span className="flex min-w-0 items-center gap-2">
-                      <FileText className="h-4 w-4 shrink-0 text-slate-400" />
+                      <FileText className="h-4 w-4 shrink-0 text-slate-500" />
                       <span className="truncate text-sm text-slate-700">{d.name}</span>
                     </span>
-                    <span className="shrink-0 text-sm text-slate-500">{d.kind} · {d.date}</span>
+                    <span className="shrink-0 text-sm text-slate-600">{d.kind} · {d.date}</span>
                   </li>
                 ))}
               </ul>
@@ -146,13 +146,13 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
         </Card>
 
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2"><StickyNote className="h-4 w-4 text-slate-400" /> Notes</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2"><StickyNote className="h-4 w-4 text-slate-500" /> Notes</CardTitle></CardHeader>
           <CardContent>
             <ul className="space-y-3">
               {profile.notes.map((n) => (
                 <li key={n.text} className="text-sm">
                   <p className="text-slate-700">{n.text}</p>
-                  <p className="mt-0.5 text-xs text-slate-400">{n.by} · {n.when}</p>
+                  <p className="mt-0.5 text-xs text-slate-500">{n.by} · {n.when}</p>
                 </li>
               ))}
             </ul>
@@ -166,7 +166,7 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
 function Row({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
   return (
     <div>
-      <div className="mb-0.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-slate-400">
+      <div className="mb-0.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-slate-500">
         <Icon className="h-3.5 w-3.5" /> {label}
       </div>
       <div className="text-sm font-medium text-slate-700">{value}</div>
@@ -178,7 +178,7 @@ function Score({ label, value }: { label: string; value: number }) {
   return (
     <div>
       <div className="mb-1 flex justify-between text-sm">
-        <span className="text-slate-600">{label}</span>
+        <span className="text-slate-700">{label}</span>
         <span className="font-semibold text-slate-800">{value}</span>
       </div>
       <Progress value={value} />
@@ -190,11 +190,11 @@ function Chips({ icon: Icon, title, items }: { icon: React.ComponentType<{ class
   return (
     <Card className="p-5">
       <div className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-slate-700">
-        <Icon className="h-4 w-4 text-slate-400" /> {title}
+        <Icon className="h-4 w-4 text-slate-500" /> {title}
       </div>
       <ul className="flex flex-wrap gap-1.5">
         {items.map((i) => (
-          <li key={i} className="rounded-md bg-[var(--surface-2)] px-2 py-1 text-xs font-medium text-slate-600 ring-1 ring-inset ring-[var(--border)]">
+          <li key={i} className="rounded-md bg-[var(--surface-2)] px-2 py-1 text-xs font-medium text-slate-700 ring-1 ring-inset ring-[var(--border)]">
             {i}
           </li>
         ))}

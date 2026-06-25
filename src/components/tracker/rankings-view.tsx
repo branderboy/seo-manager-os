@@ -44,7 +44,7 @@ export function RankingsView() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
+                  <tr className="text-left text-xs uppercase tracking-wide text-slate-600">
                     <th className="py-2 font-medium">Keyword</th>
                     <th className="py-2 font-medium">Pos.</th>
                     <th className="py-2 font-medium">Change</th>
@@ -101,24 +101,24 @@ function KeywordRow({ k }: { k: RankedKeyword }) {
     <tr className="border-t border-[var(--border)] align-top">
       <td className="py-2.5 pr-3">
         <div className="font-medium text-slate-800">{k.keyword}</div>
-        <div className="mt-0.5 font-mono text-xs text-slate-400">{k.url}</div>
+        <div className="mt-0.5 font-mono text-xs text-slate-500">{k.url}</div>
       </td>
       <td className="py-2.5">
         {ranking ? (
           <span className="font-semibold text-slate-900">{k.position}</span>
         ) : (
-          <span className="text-xs text-slate-400">—</span>
+          <span className="text-xs text-slate-500">—</span>
         )}
       </td>
       <td className="py-2.5">
         <ChangeCell change={change} ranking={ranking} />
       </td>
-      <td className="py-2.5 text-slate-600">{k.best > 0 ? k.best : "—"}</td>
-      <td className="py-2.5 text-slate-600">{k.volume.toLocaleString()}</td>
+      <td className="py-2.5 text-slate-700">{k.best > 0 ? k.best : "—"}</td>
+      <td className="py-2.5 text-slate-700">{k.volume.toLocaleString()}</td>
       <td className="py-2.5">
         <div className="flex flex-wrap gap-1">
           {k.features.length === 0 ? (
-            <span className="text-xs text-slate-400">—</span>
+            <span className="text-xs text-slate-500">—</span>
           ) : (
             k.features.map((f) => (
               <Badge key={f} variant={f === "AI Overview" ? "accent" : "outline"}>
@@ -136,7 +136,7 @@ function ChangeCell({ change, ranking }: { change: number; ranking: boolean }) {
   if (!ranking) return <Badge variant="bad">New gap</Badge>;
   if (change === 0)
     return (
-      <span className="inline-flex items-center gap-0.5 text-xs font-medium text-slate-400">
+      <span className="inline-flex items-center gap-0.5 text-xs font-medium text-slate-500">
         <Minus className="h-3.5 w-3.5" />0
       </span>
     );

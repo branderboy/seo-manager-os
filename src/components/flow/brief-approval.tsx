@@ -32,7 +32,7 @@ export function BriefApproval() {
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-[15px] font-semibold tracking-tight text-slate-900">Feedback &amp; Status</h3>
-          <p className="mt-1 text-sm text-slate-600">Approve or reject the brief, then launch to make the project active.</p>
+          <p className="mt-1 text-sm text-slate-700">Approve or reject the brief, then launch to make the project active.</p>
         </div>
         <span className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold uppercase ring-1 ring-inset", statusPill)}>
           {launched && <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />}
@@ -60,7 +60,7 @@ export function BriefApproval() {
             </div>
           ) : (
             <div>
-              <label className="mb-2 block text-[13px] font-bold uppercase tracking-wide text-slate-500">Feedback notes</label>
+              <label className="mb-2 block text-[13px] font-bold uppercase tracking-wide text-slate-600">Feedback notes</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -72,11 +72,11 @@ export function BriefApproval() {
                 <button
                   onClick={() => { setSavedNotes(notes.trim()); setStatus("rejected"); setShowReject(false); }}
                   disabled={!notes.trim()}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-rose-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-rose-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
                 >
                   <X className="h-4 w-4" /> Submit rejection
                 </button>
-                <button onClick={() => setShowReject(false)} className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-500 hover:bg-slate-50">Cancel</button>
+                <button onClick={() => setShowReject(false)} className="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancel</button>
               </div>
             </div>
           )}
@@ -87,7 +87,7 @@ export function BriefApproval() {
         <div className="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-4">
           <div className="flex items-center justify-between gap-3">
             <span className="inline-flex items-center gap-2 text-sm font-semibold text-rose-700"><X className="h-4 w-4" /> Rejected by {MANAGER}</span>
-            <button onClick={() => { setStatus("pending"); setNotes(savedNotes); }} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+            <button onClick={() => { setStatus("pending"); setNotes(savedNotes); }} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">
               <RotateCcw className="h-3.5 w-3.5" /> Reopen
             </button>
           </div>
@@ -100,12 +100,12 @@ export function BriefApproval() {
         <div className="mt-5 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
             <div className="flex items-center gap-3">
-              <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", launched ? "bg-emerald-100 text-emerald-600" : "bg-slate-200 text-slate-500")}>
+              <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", launched ? "bg-emerald-100 text-emerald-600" : "bg-slate-200 text-slate-600")}>
                 <Rocket className="h-5 w-5" />
               </span>
               <div>
                 <div className="text-sm font-semibold text-slate-900">{launched ? "Project launched" : "Launch project"}</div>
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-slate-600">
                   {launched ? "Approved and live — scheduled into daily tasks via Google Calendar & Trello." : `Approved by ${MANAGER}. Flip to launch.`}
                 </div>
               </div>

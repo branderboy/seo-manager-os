@@ -30,7 +30,7 @@ export function ActiveResearchPlan() {
 
   return (
     <div>
-      <div className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-600">
+      <div className="mb-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-700">
         <Badge variant="accent">{engagement.model} SEO</Badge>
         <span>
           <strong className="text-slate-800">{items.length}</strong> research areas
@@ -47,15 +47,15 @@ export function ActiveResearchPlan() {
           <Card key={item.name} className="p-4">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-600">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-700">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="text-sm font-semibold text-slate-900">{item.name}</h3>
               </div>
               <StatusBadge status={item.status} />
             </div>
-            <p className="mt-2.5 text-sm leading-relaxed text-slate-600">{item.detail}</p>
-            <div className="mt-3 flex items-center gap-2 text-xs text-slate-500">
+            <p className="mt-2.5 text-sm leading-relaxed text-slate-700">{item.detail}</p>
+            <div className="mt-3 flex items-center gap-2 text-xs text-slate-600">
               <Badge variant="outline">{item.signals} signals</Badge>
             </div>
           </Card>

@@ -7,8 +7,8 @@ export function TaskLifecycle() {
   const steps = countByStep();
   return (
     <Card className="p-5">
-      <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Task lifecycle</h3>
-      <p className="mt-1 text-sm text-slate-500">
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">Task lifecycle</h3>
+      <p className="mt-1 text-sm text-slate-600">
         Every recommendation becomes work and moves through these stages until it&apos;s verified and closed.
       </p>
       <div className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-3">

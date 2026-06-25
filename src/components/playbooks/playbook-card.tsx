@@ -41,9 +41,9 @@ export function PlaybookCard({ pb }: { pb: Playbook }) {
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-semibold text-slate-900">{pb.name}</h3>
-          <p className="text-sm text-slate-600">{pb.goal}</p>
+          <p className="text-sm text-slate-700">{pb.goal}</p>
         </div>
-        <span className="shrink-0 text-xs font-medium text-slate-500">{pb.plays.length} plays</span>
+        <span className="shrink-0 text-xs font-medium text-slate-600">{pb.plays.length} plays</span>
       </div>
 
       {/* The plays inside this playbook */}
@@ -51,7 +51,7 @@ export function PlaybookCard({ pb }: { pb: Playbook }) {
         {pb.plays.map((play) => (
           <li
             key={play}
-            className="rounded-md bg-[var(--surface-2)] px-2 py-1 text-xs font-medium text-slate-600 ring-1 ring-inset ring-[var(--border)]"
+            className="rounded-md bg-[var(--surface-2)] px-2 py-1 text-xs font-medium text-slate-700 ring-1 ring-inset ring-[var(--border)]"
           >
             {play}
           </li>

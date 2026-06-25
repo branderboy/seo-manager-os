@@ -43,15 +43,15 @@ export default function CommandCenterPage() {
       <Card className="border-l-4 border-accent-500 p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-lg font-semibold tracking-tight text-slate-900">{morningBrief.greeting}</h2>
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">Morning briefing</span>
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">Morning briefing</span>
         </div>
         <p className="mt-2 text-lg font-medium leading-relaxed text-slate-800">{morningBriefing.headline}</p>
         <div className="mt-5 grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Focus today</div>
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Focus today</div>
             <ul className="space-y-2.5">
               {morningBriefing.focus.map((f, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-slate-600">
+                <li key={i} className="flex items-start gap-2.5 text-[15px] leading-relaxed text-slate-700">
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-500 text-[11px] font-bold text-white">
                     {i + 1}
                   </span>
@@ -61,10 +61,10 @@ export default function CommandCenterPage() {
             </ul>
           </div>
           <div>
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Overnight</div>
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Overnight</div>
             <ul className="space-y-2">
               {morningBriefing.overnight.map((o) => (
-                <li key={o} className="flex items-start gap-2 text-sm text-slate-600">
+                <li key={o} className="flex items-start gap-2 text-sm text-slate-700">
                   <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                   {o}
                 </li>
@@ -81,9 +81,9 @@ export default function CommandCenterPage() {
       <Card className="grid grid-cols-2 divide-y divide-[var(--border)] sm:grid-cols-4 sm:divide-x sm:divide-y-0">
         {opsStats.map((s) => (
           <div key={s.key} className="p-5">
-            <div className="text-sm font-medium text-slate-600">{s.label}</div>
+            <div className="text-sm font-medium text-slate-700">{s.label}</div>
             <div className={`mt-1 text-2xl font-semibold tracking-tight ${statTone[s.tone]}`}>{s.value}</div>
-            <div className="mt-1 text-xs text-slate-500">{s.sub}</div>
+            <div className="mt-1 text-xs text-slate-600">{s.sub}</div>
           </div>
         ))}
       </Card>
@@ -101,11 +101,11 @@ export default function CommandCenterPage() {
                   <li key={t.name} className="flex items-center justify-between gap-4 py-3">
                     <div className="min-w-0">
                       <div className="truncate font-medium text-slate-800">{t.name}</div>
-                      <div className="mt-0.5 text-sm text-slate-500">{t.client} · {t.owner}</div>
+                      <div className="mt-0.5 text-sm text-slate-600">{t.client} · {t.owner}</div>
                     </div>
                     <div className="flex shrink-0 items-center gap-3">
                       <Badge variant={sevBadge[t.priority]}>{t.priority}</Badge>
-                      <span className="text-sm font-medium text-slate-600">{t.due}</span>
+                      <span className="text-sm font-medium text-slate-700">{t.due}</span>
                     </div>
                   </li>
                 ))}
@@ -124,7 +124,7 @@ export default function CommandCenterPage() {
                     <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${sevDot[c.severity]}`} />
                     <div>
                       <div className="font-medium text-slate-800">{c.client}</div>
-                      <div className="text-sm text-slate-500">{c.reason}</div>
+                      <div className="text-sm text-slate-600">{c.reason}</div>
                     </div>
                   </li>
                 ))}
@@ -142,7 +142,7 @@ export default function CommandCenterPage() {
               {blockers.map((b) => (
                 <li key={b.task} className="text-sm">
                   <div className="font-medium text-slate-700">{b.task}</div>
-                  <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-slate-500">
+                  <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-slate-600">
                     <span>{b.client}</span><Badge variant="warn">Waiting on {b.waitingOn}</Badge><span>· {b.age}</span>
                   </div>
                 </li>
@@ -153,8 +153,8 @@ export default function CommandCenterPage() {
             <ul className="space-y-2.5">
               {approvals.map((a) => (
                 <li key={a.item} className="flex items-center justify-between gap-3 text-sm">
-                  <div className="min-w-0"><div className="truncate font-medium text-slate-700">{a.item}</div><div className="text-slate-500">{a.client}</div></div>
-                  <span className="shrink-0 text-slate-400">{a.since}</span>
+                  <div className="min-w-0"><div className="truncate font-medium text-slate-700">{a.item}</div><div className="text-slate-600">{a.client}</div></div>
+                  <span className="shrink-0 text-slate-500">{a.since}</span>
                 </li>
               ))}
             </ul>
@@ -163,8 +163,8 @@ export default function CommandCenterPage() {
             <ul className="space-y-2.5">
               {aiJobs.map((j) => (
                 <li key={`${j.agent}-${j.client}`} className="flex items-center justify-between gap-3 text-sm">
-                  <div className="min-w-0"><div className="truncate font-medium text-slate-700">{j.agent}</div><div className="text-slate-500">{j.client}</div></div>
-                  <span className="shrink-0 text-slate-400">{j.eta}</span>
+                  <div className="min-w-0"><div className="truncate font-medium text-slate-700">{j.agent}</div><div className="text-slate-600">{j.client}</div></div>
+                  <span className="shrink-0 text-slate-500">{j.eta}</span>
                 </li>
               ))}
             </ul>
@@ -180,7 +180,7 @@ export default function CommandCenterPage() {
               {deployments.map((d) => (
                 <li key={d.item} className="flex items-center justify-between gap-3 text-sm">
                   <span className="min-w-0 truncate font-medium text-slate-700">{d.item}</span>
-                  <span className="shrink-0 text-slate-400">{d.when}</span>
+                  <span className="shrink-0 text-slate-500">{d.when}</span>
                 </li>
               ))}
             </ul>
@@ -200,7 +200,7 @@ export default function CommandCenterPage() {
               {wins.slice(0, 5).map((w) => (
                 <li key={w.text} className="flex items-start gap-2 text-sm">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-                  <span className="text-slate-600">{w.text}</span>
+                  <span className="text-slate-700">{w.text}</span>
                 </li>
               ))}
             </ul>
@@ -214,8 +214,8 @@ export default function CommandCenterPage() {
 function Panel({ icon: Icon, title, children }: { icon: React.ComponentType<{ className?: string }>; title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-[var(--border)] bg-white p-4">
-      <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-        <Icon className="h-4 w-4 text-slate-400" /> {title}
+      <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-600">
+        <Icon className="h-4 w-4 text-slate-500" /> {title}
       </div>
       {children}
     </div>

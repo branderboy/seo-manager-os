@@ -28,7 +28,7 @@ export function CompetitiveView() {
 
   return (
     <>
-      <div className="flex items-center gap-2 text-sm text-slate-500">
+      <div className="flex items-center gap-2 text-sm text-slate-600">
         <Badge variant="accent">{engagement.model} SEO</Badge>
         <span>Market read for {engagement.business} · {engagement.market}</span>
       </div>
@@ -36,7 +36,7 @@ export function CompetitiveView() {
       <Card>
         <div className="p-6">
           <h3 className="text-[15px] font-semibold tracking-tight text-slate-900">Competitor set &amp; share of voice</h3>
-          <p className="mt-1 text-sm text-slate-600">Benchmarked against the goals and intent mapped upstream.</p>
+          <p className="mt-1 text-sm text-slate-700">Benchmarked against the goals and intent mapped upstream.</p>
           <div className="mt-5 space-y-3">
             {set.map((c) => (
               <div key={c.name} className={`rounded-lg border p-4 ${c.you ? "border-accent-300 bg-accent-50/40" : "border-[var(--border)]"}`}>
@@ -51,7 +51,7 @@ export function CompetitiveView() {
                   </div>
                   <Badge variant={c.ai === "Cited" ? "accent" : "outline"}>{c.ai} in AI</Badge>
                 </div>
-                <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-500">
+                <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-600">
                   <span>Avg. rank <strong className="text-slate-700">{c.rank}</strong></span>
                 </div>
                 <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
@@ -66,9 +66,9 @@ export function CompetitiveView() {
       <div className="grid gap-5 sm:grid-cols-2">
         {landscape.map((s) => (
           <Card key={s.label} className="p-6">
-            <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{s.label}</div>
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{s.label}</div>
             <div className="mt-2 text-lg font-bold text-slate-900">{s.value}</div>
-            <p className="mt-1 text-sm text-slate-500">{s.note}</p>
+            <p className="mt-1 text-sm text-slate-600">{s.note}</p>
           </Card>
         ))}
       </div>

@@ -44,7 +44,7 @@ export function BriefShare() {
               </span>
               <span className="min-w-0">
                 <span className="block text-sm font-medium text-slate-800">{t.title}</span>
-                <span className="block truncate text-xs text-slate-500">{t.detail}</span>
+                <span className="block truncate text-xs text-slate-600">{t.detail}</span>
               </span>
             </button>
           );

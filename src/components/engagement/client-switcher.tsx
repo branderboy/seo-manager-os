@@ -19,14 +19,14 @@ export function ClientSwitcher() {
       >
         <span className="max-w-[160px] truncate text-sm font-medium">{engagement.business}</span>
         <span className="rounded bg-accent-50 px-1.5 py-0.5 text-[11px] font-semibold text-accent-700">{engagement.model}</span>
-        <ChevronDown className="h-4 w-4 text-slate-400" />
+        <ChevronDown className="h-4 w-4 text-slate-500" />
       </button>
 
       {open && (
         <>
           <div className="fixed inset-0 z-20" onClick={() => setOpen(false)} />
           <div className="absolute left-0 top-full z-30 mt-1.5 w-80 rounded-xl border border-[var(--border)] bg-white p-1.5 shadow-lift">
-            <div className="px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+            <div className="px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
               Switch client · SEO type
             </div>
             {demoEngagements.map((e) => {
@@ -43,7 +43,7 @@ export function ClientSwitcher() {
                 >
                   <div className="min-w-0">
                     <div className="truncate text-sm font-medium text-slate-800">{e.business}</div>
-                    <div className="truncate text-xs text-slate-500">
+                    <div className="truncate text-xs text-slate-600">
                       {e.industry} · {e.market}
                     </div>
                   </div>

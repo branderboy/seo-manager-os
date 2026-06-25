@@ -8,21 +8,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Existing WP Prospector brand (kept so the legacy app still styles).
-        brand: {
-          50: "#eef6ff",
-          100: "#d9eaff",
-          200: "#bcd9ff",
-          300: "#8ec1ff",
-          400: "#599fff",
-          500: "#337bff",
-          600: "#1b5af5",
-          700: "#1546e1",
-          800: "#173bb6",
-          900: "#19378f",
-          950: "#101f4d",
-        },
-        // App accent — aligned to the landing page blue.
+        // App accent — professional blue.
         accent: {
           50: "#eff6ff",
           100: "#dbeafe",
@@ -35,11 +21,9 @@ const config: Config = {
           800: "#1e3a8a",
           900: "#172554",
         },
-        // Your design tokens — global, inherited by every page.
-        primary: "#1DA1F2",
-        sidebar: "#2F3E4D",
-        panel: "#F8FAFC",
-        greenbar: "#51B34E",
+        primary: "#2563eb",
+        sidebar: "#0f172a",
+        panel: "#f4f7fc",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
@@ -57,7 +41,7 @@ const config: Config = {
         "4xl": ["2.5rem", { lineHeight: "2.85rem" }], // 40px (was 36)
       },
       boxShadow: {
-        soft: "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
+        soft: "0 10px 28px -12px rgba(10, 30, 61, 0.22), 0 2px 6px -2px rgba(10, 30, 61, 0.1)",
         float: "0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)",
         card: "0 1px 3px rgba(16,24,40,0.06), 0 8px 24px -12px rgba(16,24,40,0.12)",
         lift: "0 12px 40px -16px rgba(16,24,40,0.24)",

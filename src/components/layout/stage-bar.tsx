@@ -49,17 +49,17 @@ export function StageBar() {
 
       <div className="flex items-center gap-1.5 sm:gap-2">
         <div className="relative hidden md:block">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             placeholder="Search…"
-            className="h-9 w-52 rounded-lg border border-[var(--border)] bg-[var(--surface-2)] pl-9 pr-3 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100 lg:w-72"
+            className="h-9 w-52 rounded-lg border border-[var(--border)] bg-[var(--surface-2)] pl-9 pr-3 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-500 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100 lg:w-72"
           />
         </div>
-        <button className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700" aria-label="Help">
+        <button className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-700" aria-label="Help">
           <LifeBuoy className="h-5 w-5" />
         </button>
-        <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700" aria-label="Notifications">
+        <button className="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-700" aria-label="Notifications">
           <Bell className="h-5 w-5" />
           <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
         </button>
@@ -70,7 +70,7 @@ export function StageBar() {
           </span>
           <span className="hidden leading-tight lg:block">
             <span className="block text-sm font-medium text-slate-800">{currentUser.name}</span>
-            <span className="block text-xs text-slate-400">{currentUser.agency}</span>
+            <span className="block text-xs text-slate-500">{currentUser.agency}</span>
           </span>
         </button>
       </div>

@@ -54,7 +54,7 @@ export function ScoreRing({
       <div className="absolute flex flex-col items-center leading-none">
         <span className="text-lg font-semibold text-slate-900">{pct}</span>
         {label && (
-          <span className="mt-0.5 text-[10px] uppercase tracking-wide text-slate-500">
+          <span className="mt-0.5 text-[10px] uppercase tracking-wide text-slate-600">
             {label}
           </span>
         )}

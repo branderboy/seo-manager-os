@@ -50,11 +50,11 @@ export function AgentsView() {
                 {count} of {agents.length} deployed
               </span>
             </div>
-            <p className="mt-1 text-sm text-slate-600">{orchestrator.role}</p>
+            <p className="mt-1 text-sm text-slate-700">{orchestrator.role}</p>
             <div className="mt-4 flex flex-wrap items-center gap-x-1.5 gap-y-2">
               {workflow.map((step, i) => (
                 <span key={step} className="flex items-center gap-1.5">
-                  <span className="rounded-md bg-slate-100 px-2 py-1 text-[11px] font-medium text-slate-600">{step}</span>
+                  <span className="rounded-md bg-slate-100 px-2 py-1 text-[11px] font-medium text-slate-700">{step}</span>
                   {i < workflow.length - 1 && <span className="text-slate-300">›</span>}
                 </span>
               ))}
@@ -84,7 +84,7 @@ function AgentRow({ agent, active, onToggle }: { agent: Agent; active: boolean; 
       <span
         className={cn(
           "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
-          active ? "bg-accent-50 text-accent-600" : "bg-slate-100 text-slate-500"
+          active ? "bg-accent-50 text-accent-600" : "bg-slate-100 text-slate-600"
         )}
       >
         <Icon className="h-5 w-5" />
@@ -94,9 +94,9 @@ function AgentRow({ agent, active, onToggle }: { agent: Agent; active: boolean; 
           <span className={`h-2 w-2 shrink-0 rounded-full ${impactDot[agent.effectiveness]}`} title={`${agent.effectiveness} impact`} />
           <span className="truncate text-sm font-semibold text-slate-900">{agent.name}</span>
         </div>
-        <p className="truncate text-sm text-slate-500">{agent.role}</p>
+        <p className="truncate text-sm text-slate-600">{agent.role}</p>
       </div>
-      <span className="hidden shrink-0 text-xs font-medium text-slate-400 sm:block">{agent.cadence}</span>
+      <span className="hidden shrink-0 text-xs font-medium text-slate-500 sm:block">{agent.cadence}</span>
       <Switch checked={active} onChange={onToggle} label={`Deploy ${agent.name}`} />
     </div>
   );

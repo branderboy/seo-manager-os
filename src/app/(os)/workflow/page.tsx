@@ -28,7 +28,7 @@ export default function WorkflowPage() {
       {/* Progress summary */}
       <div className="rounded-2xl bg-white p-5 shadow-border">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <span className="font-mono text-xs font-semibold uppercase tracking-wider text-slate-600">
             Stage {inv.currentStage} of {total}
           </span>
           <span className="text-sm font-semibold text-slate-900">{pct}% complete</span>
@@ -61,7 +61,7 @@ export default function WorkflowPage() {
                     "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold",
                     status === "done" && "bg-emerald-500 text-white",
                     status === "current" && "bg-accent-500 text-white",
-                    status === "upcoming" && "border-2 border-slate-200 text-slate-400"
+                    status === "upcoming" && "border-2 border-slate-200 text-slate-500"
                   )}
                 >
                   {status === "done" ? <Check className="h-4 w-4" /> : s.n}
@@ -71,7 +71,7 @@ export default function WorkflowPage() {
                   <div
                     className={cn(
                       "text-sm",
-                      status === "done" ? "text-emerald-600" : status === "current" ? "text-accent-600" : "text-slate-500"
+                      status === "done" ? "text-emerald-600" : status === "current" ? "text-accent-600" : "text-slate-600"
                     )}
                   >
                     {label}

@@ -112,7 +112,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
                       "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
                       active
                         ? "bg-accent-500 text-white"
-                        : "border-2 border-slate-500 text-white"
+                        : "border-2 border-white/30 text-white"
                     )}
                   >
                     {it.step}
