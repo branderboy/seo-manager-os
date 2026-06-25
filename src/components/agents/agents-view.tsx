@@ -1,7 +1,18 @@
 "use client";
 
 import * as React from "react";
-import { Gauge, ListChecks, CheckCircle2, History } from "lucide-react";
+import {
+  Gauge,
+  ListChecks,
+  CheckCircle2,
+  History,
+  Telescope,
+  Wrench,
+  Stethoscope,
+  PenLine,
+  ShieldCheck,
+  type LucideIcon,
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge, StatusDot } from "@/components/ui/badge";
@@ -17,39 +28,66 @@ const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> =
   Idle: "warn",
   Offline: "default",
 };
-const dotTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> = {
-  Working: "good",
-  Queued: "accent",
-  Idle: "warn",
-  Offline: "default",
-};
 
-// Each specialist gets its own color identity so the roster reads as a team
-// of distinct people, not a wall of identical green icons.
-const AGENT_COLOR: Record<string, { bg: string; bar: string }> = {
-  discovery: { bg: "bg-sky-500", bar: "bg-sky-500" },
-  research: { bg: "bg-blue-500", bar: "bg-blue-500" },
-  "technical-auditor": { bg: "bg-indigo-500", bar: "bg-indigo-500" },
-  intent: { bg: "bg-cyan-500", bar: "bg-cyan-500" },
-  competitive: { bg: "bg-violet-500", bar: "bg-violet-500" },
-  diagnosis: { bg: "bg-rose-500", bar: "bg-rose-500" },
-  strategy: { bg: "bg-amber-500", bar: "bg-amber-500" },
-  playbook: { bg: "bg-orange-500", bar: "bg-orange-500" },
-  brief: { bg: "bg-lime-600", bar: "bg-lime-600" },
-  content: { bg: "bg-teal-500", bar: "bg-teal-500" },
-  local: { bg: "bg-emerald-500", bar: "bg-emerald-500" },
-  schema: { bg: "bg-fuchsia-500", bar: "bg-fuchsia-500" },
-  "internal-linking": { bg: "bg-purple-500", bar: "bg-purple-500" },
-  qa: { bg: "bg-orange-600", bar: "bg-orange-600" },
-  reporting: { bg: "bg-pink-500", bar: "bg-pink-500" },
-};
-const AGENT_FALLBACK = { bg: "bg-slate-500", bar: "bg-slate-500" };
+// ── Departments — specialists grouped by function. Each department owns one
+// color from a green-complementary palette, so the roster reads as an organized
+// set of assets, not a clashing pile of icons.
+type Accent = { solid: string; tint: string; text: string; ring: string };
 
-type Filter = "all" | "working" | "idle" | "offline";
+const DEPARTMENTS: {
+  id: string;
+  name: string;
+  desc: string;
+  icon: LucideIcon;
+  accent: Accent;
+  ids: string[];
+}[] = [
+  {
+    id: "research",
+    name: "Research & Discovery",
+    desc: "Understand the business, the market and the demand",
+    icon: Telescope,
+    accent: { solid: "bg-teal-500", tint: "bg-teal-50", text: "text-teal-700", ring: "ring-teal-200" },
+    ids: ["discovery", "research", "intent", "competitive"],
+  },
+  {
+    id: "technical",
+    name: "Technical SEO",
+    desc: "Crawl, indexation, schema, structure and links",
+    icon: Wrench,
+    accent: { solid: "bg-sky-600", tint: "bg-sky-50", text: "text-sky-700", ring: "ring-sky-200" },
+    ids: ["technical-auditor", "schema", "internal-linking"],
+  },
+  {
+    id: "strategy",
+    name: "Diagnosis & Strategy",
+    desc: "Decide what to fix first and chart the roadmap",
+    icon: Stethoscope,
+    accent: { solid: "bg-amber-500", tint: "bg-amber-50", text: "text-amber-700", ring: "ring-amber-200" },
+    ids: ["diagnosis", "strategy", "brief"],
+  },
+  {
+    id: "content",
+    name: "Content & Local",
+    desc: "Produce pages, briefs and local presence",
+    icon: PenLine,
+    accent: { solid: "bg-emerald-600", tint: "bg-emerald-50", text: "text-emerald-700", ring: "ring-emerald-200" },
+    ids: ["content", "playbook", "local"],
+  },
+  {
+    id: "delivery",
+    name: "Quality & Delivery",
+    desc: "Verify the work and report the results",
+    icon: ShieldCheck,
+    accent: { solid: "bg-green-700", tint: "bg-green-50", text: "text-green-700", ring: "ring-green-200" },
+    ids: ["qa", "reporting"],
+  },
+];
+
+const agentById = Object.fromEntries(agents.map((a) => [a.id, a]));
 
 export function AgentsView() {
   const deployed = useDeployState();
-  const [filter, setFilter] = React.useState<Filter>("all");
 
   const states = agents.map((a) => ({ agent: a, deployed: !!deployed[a.id], state: workerState(a.id, !!deployed[a.id]) }));
   const deployedCount = states.filter((s) => s.deployed).length;
@@ -58,20 +96,6 @@ export function AgentsView() {
   const avgPerf = Math.round(
     states.filter((s) => s.deployed).reduce((n, s) => n + s.state.performance, 0) / Math.max(1, deployedCount)
   );
-
-  const filtered = states.filter((s) => {
-    if (filter === "all") return true;
-    if (filter === "working") return s.state.status === "Working" || s.state.status === "Queued";
-    if (filter === "idle") return s.state.status === "Idle";
-    return s.state.status === "Offline";
-  });
-
-  const counts = {
-    all: states.length,
-    working: states.filter((s) => s.state.status === "Working" || s.state.status === "Queued").length,
-    idle: states.filter((s) => s.state.status === "Idle").length,
-    offline: states.filter((s) => s.state.status === "Offline").length,
-  };
 
   return (
     <div className="space-y-7">
@@ -112,76 +136,80 @@ export function AgentsView() {
         <StatTile label="Avg. performance" value={`${avgPerf}%`} sub="QA pass rate" icon={Gauge} />
       </StatRow>
 
-      {/* ── Roster ──────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-[var(--foreground)]">Specialist roster</h3>
-        <div className="flex items-center gap-0.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-0.5 text-sm shadow-card">
-          {(["all", "working", "idle", "offline"] as Filter[]).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={cn(
-                "rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors",
-                filter === f
-                  ? "bg-accent-600 text-white"
-                  : "text-[var(--muted)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]"
-              )}
-            >
-              {f} <span className="tnum opacity-60">{counts[f]}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-        {filtered.map(({ agent, deployed: dep, state }) => (
-          <AgentCard
-            key={agent.id}
-            agent={agent}
-            deployed={dep}
-            state={state}
-            onToggle={(v) => toggleAgent(agent.id, v)}
-          />
-        ))}
-      </div>
+      {/* ── Departments ─────────────────────────────────────────────────────── */}
+      {DEPARTMENTS.map((dept) => {
+        const members = dept.ids.map((id) => agentById[id]).filter(Boolean);
+        const deployedHere = members.filter((m) => deployed[m.id]).length;
+        const workingHere = members.filter((m) => deployed[m.id] && workerState(m.id, true).status === "Working").length;
+        const DeptIcon = dept.icon;
+        return (
+          <section key={dept.id}>
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-sm", dept.accent.solid)}>
+                <DeptIcon className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-base font-bold tracking-tight text-[var(--foreground)]">{dept.name}</h3>
+                <p className="text-xs text-[var(--muted)]">{dept.desc}</p>
+              </div>
+              <span className={cn("rounded-md px-2 py-1 text-2xs font-bold ring-1 ring-inset", dept.accent.tint, dept.accent.text, dept.accent.ring)}>
+                {deployedHere}/{members.length} deployed
+              </span>
+              <span className="rounded-md bg-[var(--ok-tint)] px-2 py-1 text-2xs font-bold text-[#157552]">
+                {workingHere} working
+              </span>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {members.map((agent) => (
+                <AgentCard
+                  key={agent.id}
+                  agent={agent}
+                  accent={dept.accent}
+                  deployed={!!deployed[agent.id]}
+                  state={workerState(agent.id, !!deployed[agent.id])}
+                  onToggle={(v) => toggleAgent(agent.id, v)}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }
 
 function AgentCard({
   agent,
+  accent,
   deployed,
   state,
   onToggle,
 }: {
   agent: Agent;
+  accent: Accent;
   deployed: boolean;
   state: ReturnType<typeof workerState>;
   onToggle: (v: boolean) => void;
 }) {
   const Icon = agent.icon;
-  const color = AGENT_COLOR[agent.id] ?? AGENT_FALLBACK;
   return (
-    <Card
-      interactive
-      className={cn("flex flex-col overflow-hidden", !deployed && "opacity-[0.9]")}
-    >
-      {/* Colored identity bar */}
-      <div className={cn("h-1 w-full", deployed ? color.bar : "bg-[var(--border)]")} />
+    <Card interactive className={cn("flex flex-col overflow-hidden", !deployed && "opacity-[0.92]")}>
+      {/* Department identity bar */}
+      <div className={cn("h-1 w-full", deployed ? accent.solid : "bg-[var(--border)]")} />
 
-      {/* Header — identity + live status */}
+      {/* Header — identity + deploy toggle */}
       <div className="flex items-start gap-3 p-4 pb-3">
         <span
           className={cn(
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white shadow-sm",
-            deployed ? color.bg : "bg-[var(--surface-3)] text-[var(--muted)]"
+            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl shadow-sm",
+            deployed ? cn(accent.solid, "text-white") : "bg-[var(--surface-3)] text-[var(--muted)]"
           )}
         >
           <Icon className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-[var(--foreground)]">{agent.name}</div>
-          <div className="truncate text-xs text-[var(--muted)]">{agent.stage} · {agent.cadence}</div>
+          <div className="truncate text-xs text-[var(--muted)]">{agent.role}</div>
         </div>
         <Switch checked={deployed} onChange={onToggle} label={`Deploy ${agent.name}`} />
       </div>
@@ -189,17 +217,15 @@ function AgentCard({
       {/* Status line */}
       <div className="flex items-center gap-2 px-4 pb-3">
         <Badge variant={statusTone[state.status]} className="gap-1.5">
-          <StatusDot tone={dotTone[state.status]} pulse={state.status === "Working"} />
+          <StatusDot tone={statusTone[state.status]} pulse={state.status === "Working"} />
           {state.status}
         </Badge>
         <span className="truncate text-xs text-[var(--muted)]">{state.availability}</span>
       </div>
 
-      {/* Current task — the focal content */}
+      {/* Current task */}
       <div className="border-t border-[var(--border)] bg-[var(--surface-2)] px-4 py-3">
-        <div className="mb-1 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">
-          Current task
-        </div>
+        <div className="mb-1 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">Current task</div>
         {state.currentTask ? (
           <div>
             <div className="text-sm font-medium leading-snug text-[var(--foreground)]">{state.currentTask}</div>
@@ -218,20 +244,6 @@ function AgentCard({
         <Stat label="Completed" value={state.completed} />
         <Stat label="Performance" value={`${state.performance}%`} />
       </div>
-
-      {/* Recent work */}
-      {state.recentWork.length > 0 && (
-        <div className="border-t border-[var(--border)] px-4 py-2.5">
-          <div className="mb-1 flex items-center gap-1.5 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">
-            <History className="h-3 w-3" /> Recent work
-          </div>
-          <ul className="space-y-0.5">
-            {state.recentWork.slice(0, 2).map((w) => (
-              <li key={w} className="truncate text-xs text-[var(--muted)]">{w}</li>
-            ))}
-          </ul>
-        </div>
-      )}
     </Card>
   );
 }
