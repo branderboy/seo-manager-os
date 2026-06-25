@@ -118,6 +118,18 @@ These supersede earlier framing where they conflict.
    source. Keep the Tracker, but the product is about **showing up and routing more traffic**,
    not "winning AI." Don't over-invest in the AI-mention side.
 
+## v2 progress (Phases 1–3 built — UI on mock data)
+
+- **Phase 1:** Command Center (`/command`, homepage) · Diagnosis v2 (`/diagnosis`, prioritized
+  fixes via `scoring.ts`) · Task lifecycle + Tracker "Work" tab · Workflow Dependencies.
+- **Phase 2:** Risk Center (`/risk`, replaces health score) · Wins Feed (`/wins`) · Morning
+  Briefing (Command Center) · AI Workforce expanded to 15 specialists.
+- **Phase 3:** Deployment Verification (`/deployments`) · expanded integrations catalog
+  (PageSpeed, Lighthouse, DataForSEO, OpenAI, Claude, Recurring Audits, Webhooks, API, White
+  Label, Team Seats).
+- Remaining for "real": live data + the backend/worker layer in `BUILD_SPEC.md` (the
+  integrations are catalog entries; deployment verification needs a real crawler).
+
 ## Built this session (beyond the prototype)
 
 - **Tracker** (`/tracker`) — rankings + AI-mention monitoring (mock data).

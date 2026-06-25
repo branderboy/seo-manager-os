@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, LayoutDashboard, Users, ShieldAlert, Trophy, Workflow, LineChart, Bot, MapPin, Cloud, Building2, Plug, Settings } from "lucide-react";
+import { Menu, X, LayoutDashboard, Users, ShieldAlert, Trophy, Workflow, LineChart, Rocket, Bot, MapPin, Cloud, Building2, Plug, Settings } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +22,7 @@ export function MobileNav() {
     { href: "/wins", label: "Wins", icon: Trophy },
     { href: "/workflow", label: "Workflow", icon: Workflow },
     { href: "/tracker", label: "Tracker", icon: LineChart },
+    { href: "/deployments", label: "Deployments", icon: Rocket },
     { href: "/agents", label: "Agent Store", icon: Bot },
     ...STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n })),
   ];

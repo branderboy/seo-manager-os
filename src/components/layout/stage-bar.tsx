@@ -11,6 +11,7 @@ const TITLES: Record<string, string> = {
   clients: "Clients",
   risk: "Risk Center",
   wins: "Wins",
+  deployments: "Deployment Verification",
   integrations: "Integrations",
   settings: "Settings",
 };
