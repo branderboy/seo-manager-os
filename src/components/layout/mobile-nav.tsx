@@ -3,36 +3,46 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, LayoutDashboard, Users, ShieldAlert, Trophy, Workflow, LineChart, Rocket, Bot, MapPin, Cloud, Building2, Plug, Settings } from "lucide-react";
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  Users,
+  GitBranch,
+  LineChart,
+  Bot,
+  FileBarChart,
+  Plug,
+  Settings,
+} from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
 
 type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }>; step?: number };
 
-const dashIcons = { local: MapPin, saas: Cloud, enterprise: Building2 } as const;
+const PRIMARY: Item[] = [
+  { href: "/command", label: "Command Center", icon: LayoutDashboard },
+  { href: "/clients", label: "Clients", icon: Users },
+  { href: "/workflow", label: "SEO Pipeline", icon: GitBranch },
+  { href: "/tracker", label: "Operations Tracker", icon: LineChart },
+  { href: "/agents", label: "AI Workforce", icon: Bot },
+  { href: "/reports", label: "Reports", icon: FileBarChart },
+];
+
+const PIPELINE: Item[] = STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n }));
+
+const WORKSPACE: Item[] = [
+  { href: "/integrations", label: "Integrations", icon: Plug },
+  { href: "/settings", label: "Settings", icon: Settings },
+];
+
+function isActive(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(href + "/");
+}
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-
-  const main: Item[] = [
-    { href: "/command", label: "Command Center", icon: LayoutDashboard },
-    { href: "/clients", label: "Clients", icon: Users },
-    { href: "/risk", label: "Risk Center", icon: ShieldAlert },
-    { href: "/wins", label: "Wins", icon: Trophy },
-    { href: "/workflow", label: "Workflow", icon: Workflow },
-    { href: "/tracker", label: "Tracker", icon: LineChart },
-    { href: "/deployments", label: "Deployments", icon: Rocket },
-    { href: "/agents", label: "Agent Store", icon: Bot },
-    ...STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n })),
-  ];
-  const dashboards: Item[] = [
-    { href: "/dashboards/local", label: "Local SEO", icon: dashIcons.local },
-  ];
-  const workspace: Item[] = [
-    { href: "/integrations", label: "Integrations", icon: Plug },
-    { href: "/settings", label: "Settings", icon: Settings },
-  ];
 
   return (
     <>
@@ -40,27 +50,30 @@ export function MobileNav() {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Open menu"
-        className="flex h-9 w-9 items-center justify-center rounded-md text-white hover:bg-black/15 lg:hidden"
+        className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--surface-3)] lg:hidden"
       >
         <Menu className="h-5 w-5" />
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <nav className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto bg-[#2F3E4D] shadow-2xl">
-            <div className="flex h-[56px] shrink-0 items-center justify-between border-b border-white/10 px-4">
-              <span className="text-sm font-bold tracking-wide text-white">SEO MANAGER OS</span>
-              <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-white/80 hover:text-white">
+          <div className="absolute inset-0 bg-[var(--foreground)]/30 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <nav className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto border-r border-[var(--border)] bg-[var(--surface)] shadow-pop">
+            <div className="flex h-14 shrink-0 items-center justify-between border-b border-[var(--border)] px-4">
+              <span className="flex items-center gap-2.5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-600 text-xs font-bold text-white">S</span>
+                <span className="text-sm font-semibold tracking-tight text-[var(--foreground)]">SEO Manager OS</span>
+              </span>
+              <button onClick={() => setOpen(false)} aria-label="Close menu" className="text-[var(--muted)] hover:text-[var(--foreground)]">
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <div className="py-3">
-              <Group items={main} pathname={pathname} onNavigate={() => setOpen(false)} />
-              <Label>Client Dashboards</Label>
-              <Group items={dashboards} pathname={pathname} onNavigate={() => setOpen(false)} />
-              <div className="my-2 border-t border-white/10" />
-              <Group items={workspace} pathname={pathname} onNavigate={() => setOpen(false)} />
+            <div className="px-3 py-3">
+              <Group items={PRIMARY} pathname={pathname} onNavigate={() => setOpen(false)} />
+              <Label>Pipeline</Label>
+              <Group items={PIPELINE} pathname={pathname} onNavigate={() => setOpen(false)} />
+              <div className="my-3 h-px bg-[var(--border)]" />
+              <Group items={WORKSPACE} pathname={pathname} onNavigate={() => setOpen(false)} />
             </div>
           </nav>
         </div>
@@ -71,9 +84,9 @@ export function MobileNav() {
 
 function Group({ items, pathname, onNavigate }: { items: Item[]; pathname: string; onNavigate: () => void }) {
   return (
-    <ul>
+    <ul className="space-y-0.5">
       {items.map((it) => {
-        const active = pathname === it.href;
+        const active = isActive(pathname, it.href);
         const Icon = it.icon;
         return (
           <li key={it.href}>
@@ -81,21 +94,24 @@ function Group({ items, pathname, onNavigate }: { items: Item[]; pathname: strin
               href={it.href}
               onClick={onNavigate}
               className={cn(
-                "flex items-center gap-3.5 border-l-4 py-2.5 pr-4 text-sm transition-colors",
-                active ? "border-accent-500 bg-white/10 pl-5 font-medium text-white" : "border-transparent pl-6 text-slate-300 hover:bg-white/5 hover:text-white"
+                "group relative flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm transition-colors",
+                active
+                  ? "bg-[var(--accent-tint)] font-medium text-[var(--accent-ink)]"
+                  : "text-[var(--ink-soft)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]"
               )}
             >
+              {active && <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-r-full bg-accent-500" />}
               {typeof it.step === "number" ? (
                 <span
                   className={cn(
-                    "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
-                    active ? "bg-accent-500 text-white" : "border-2 border-white/30 text-slate-300"
+                    "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] text-2xs font-semibold tnum",
+                    active ? "bg-accent-500 text-white" : "bg-[var(--surface-3)] text-[var(--muted)]"
                   )}
                 >
                   {it.step}
                 </span>
               ) : (
-                <Icon className={cn("h-[18px] w-[18px]", active ? "text-white" : "text-white/70")} />
+                <Icon className={cn("h-[17px] w-[17px] shrink-0", active ? "text-accent-600" : "text-[var(--muted)]")} />
               )}
               <span className="truncate">{it.label}</span>
             </Link>
@@ -108,6 +124,6 @@ function Group({ items, pathname, onNavigate }: { items: Item[]; pathname: strin
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <div className="px-6 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/50">{children}</div>
+    <div className="px-2.5 pb-1 pt-4 text-2xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)]">{children}</div>
   );
 }
