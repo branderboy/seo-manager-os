@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import type { Client, Scores } from "@/lib/model";
+import type { PlaybookType } from "@/lib/playbooks";
 
-export type Model = "Local" | "SaaS" | "Enterprise";
+/** The active SEO type — drives playbooks, specialists and recommendations. */
+export type Model = PlaybookType;
 
 export type Engagement = {
   business: string;

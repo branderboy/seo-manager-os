@@ -10,8 +10,6 @@ import { riskForClient, riskTone, riskBadge } from "@/lib/risk";
 import { engagementFromClient, useEngagement } from "@/components/engagement/store";
 
 const modelIcon = { Local: MapPin, SaaS: Cloud, Enterprise: Building2 } as const;
-// Local-only OS — every client opens the Local SEO dashboard.
-const dashHref = { Local: "/dashboards/local", SaaS: "/dashboards/local", Enterprise: "/dashboards/local" } as const;
 const statusVariant = { Active: "good", Onboarding: "accent", Paused: "warn" } as const;
 
 export function ClientRow({ client: c }: { client: Client }) {
@@ -20,10 +18,10 @@ export function ClientRow({ client: c }: { client: Client }) {
   const Icon = modelIcon[c.model];
   const risk = riskForClient(c);
 
-  // Selecting a client makes it the active engagement, then opens its dashboard.
+  // Selecting a client makes it the active engagement, then opens its record.
   const open = () => {
     setEngagement(engagementFromClient(c));
-    router.push(dashHref[c.model]);
+    router.push(`/clients/${c.id}`);
   };
 
   return (

@@ -5,7 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { useEngagement } from "@/components/engagement/store";
 import { researchPlans } from "@/lib/data";
-import type { ResearchItem } from "@/lib/data";
+import type { ResearchItem, SeoModel } from "@/lib/data";
+
+// Map the broad SEO type onto the closest research-plan template.
+const RESEARCH_MODEL: Record<string, SeoModel> = {
+  Local: "Local",
+  SaaS: "SaaS",
+  Enterprise: "Enterprise",
+  Ecommerce: "Enterprise",
+  Migration: "Enterprise",
+  "AI Search": "SaaS",
+};
 
 /**
  * The Data Collection plan for the *active* client only. The engagement is one
@@ -14,7 +24,7 @@ import type { ResearchItem } from "@/lib/data";
  */
 export function ActiveResearchPlan() {
   const { engagement } = useEngagement();
-  const items: ResearchItem[] = researchPlans[engagement.model] ?? [];
+  const items: ResearchItem[] = researchPlans[RESEARCH_MODEL[engagement.model] ?? "Local"] ?? [];
   const total = items.reduce((s, i) => s + i.signals, 0);
   const done = items.filter((i) => i.status === "Complete").length;
 
