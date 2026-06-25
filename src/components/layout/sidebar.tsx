@@ -55,70 +55,72 @@ export function Sidebar() {
     <aside className="hidden w-[256px] shrink-0 flex-col bg-[#0b2e1f] text-white lg:flex">
       <div className="flex h-screen flex-col">
         {/* Brand */}
-        <Link href="/command" className="flex h-[68px] items-center gap-2.5 px-5">
+        <Link href="/command" className="flex shrink-0 items-center gap-3 px-5 pb-4 pt-6">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-500 text-white shadow-[0_4px_12px_-2px_rgba(22,179,100,0.5)]">
             <Leaf className="h-5 w-5" />
           </span>
-          <span className="text-[15px] font-bold leading-tight tracking-tight">
-            SEO<br />
+          <span className="flex flex-col text-[15px] font-bold leading-[1.15] tracking-tight">
+            <span>SEO</span>
             <span className="text-white/90">MANAGER OS</span>
           </span>
         </Link>
 
-        {/* Nav */}
-        <nav className="px-3 pt-2">
-          <ul className="space-y-1">
-            {NAV.map((it) => {
-              const active = isActive(pathname, it.href);
-              const Icon = it.icon;
-              return (
-                <li key={it.href}>
+        {/* Scrollable: nav + favorites (so the footer never clips) */}
+        <div className="flex-1 overflow-y-auto px-3">
+          <nav>
+            <ul className="space-y-1">
+              {NAV.map((it) => {
+                const active = isActive(pathname, it.href);
+                const Icon = it.icon;
+                return (
+                  <li key={it.href}>
+                    <Link
+                      href={it.href}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                        active
+                          ? "bg-accent-500 text-white shadow-[0_4px_12px_-3px_rgba(22,179,100,0.5)]"
+                          : "text-white/65 hover:bg-white/5 hover:text-white"
+                      )}
+                    >
+                      <Icon className={cn("h-[18px] w-[18px] shrink-0", active ? "text-white" : "text-white/55")} />
+                      {it.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          {/* Favorite clients */}
+          <div className="mt-5">
+            <div className="flex items-center justify-between px-3 pb-2">
+              <span className="text-2xs font-bold uppercase tracking-[0.1em] text-white/40">Favorite clients</span>
+              <button className="flex h-5 w-5 items-center justify-center rounded text-white/40 hover:bg-white/10 hover:text-white">
+                <Plus className="h-3.5 w-3.5" />
+              </button>
+            </div>
+            <ul className="space-y-0.5">
+              {favorites.map(({ c, risk }) => (
+                <li key={c.id}>
                   <Link
-                    href={it.href}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                      active
-                        ? "bg-accent-500 text-white shadow-[0_4px_12px_-3px_rgba(22,179,100,0.5)]"
-                        : "text-white/65 hover:bg-white/5 hover:text-white"
-                    )}
+                    href={`/clients/${c.id}`}
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 transition-colors hover:bg-white/5"
                   >
-                    <Icon className={cn("h-[18px] w-[18px] shrink-0", active ? "text-white" : "text-white/55")} />
-                    {it.label}
+                    <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-2xs font-bold text-white", c.color)}>
+                      {c.initials}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-white/85">{c.name}</span>
+                    <span className={cn("text-2xs font-semibold", riskText[risk.level])}>{risk.level}</span>
                   </Link>
                 </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        {/* Favorite clients */}
-        <div className="mt-5 flex-1 overflow-y-auto px-3">
-          <div className="flex items-center justify-between px-3 pb-2">
-            <span className="text-2xs font-bold uppercase tracking-[0.1em] text-white/40">Favorite clients</span>
-            <button className="flex h-5 w-5 items-center justify-center rounded text-white/40 hover:bg-white/10 hover:text-white">
-              <Plus className="h-3.5 w-3.5" />
-            </button>
+              ))}
+            </ul>
           </div>
-          <ul className="space-y-0.5">
-            {favorites.map(({ c, risk }) => (
-              <li key={c.id}>
-                <Link
-                  href={`/clients/${c.id}`}
-                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 transition-colors hover:bg-white/5"
-                >
-                  <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-2xs font-bold text-white", c.color)}>
-                    {c.initials}
-                  </span>
-                  <span className="min-w-0 flex-1 truncate text-sm font-medium text-white/85">{c.name}</span>
-                  <span className={cn("text-2xs font-semibold", riskText[risk.level])}>{risk.level}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* AI Workforce promo */}
-        <div className="px-3 pb-3">
+        <div className="shrink-0 px-3 pb-3 pt-2">
           <Link
             href="/agents"
             className="block overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-[#0f3a28] to-[#082016] p-4"
@@ -136,7 +138,7 @@ export function Sidebar() {
         </div>
 
         {/* User */}
-        <div className="flex items-center gap-2.5 border-t border-white/10 px-4 py-3">
+        <div className="flex shrink-0 items-center gap-2.5 border-t border-white/10 px-4 py-3">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-500 text-2xs font-bold text-white">
             {currentUser.initials}
           </span>

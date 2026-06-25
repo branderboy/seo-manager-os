@@ -24,6 +24,27 @@ const dotTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> = {
   Offline: "default",
 };
 
+// Each specialist gets its own color identity so the roster reads as a team
+// of distinct people, not a wall of identical green icons.
+const AGENT_COLOR: Record<string, { bg: string; bar: string }> = {
+  discovery: { bg: "bg-sky-500", bar: "bg-sky-500" },
+  research: { bg: "bg-blue-500", bar: "bg-blue-500" },
+  "technical-auditor": { bg: "bg-indigo-500", bar: "bg-indigo-500" },
+  intent: { bg: "bg-cyan-500", bar: "bg-cyan-500" },
+  competitive: { bg: "bg-violet-500", bar: "bg-violet-500" },
+  diagnosis: { bg: "bg-rose-500", bar: "bg-rose-500" },
+  strategy: { bg: "bg-amber-500", bar: "bg-amber-500" },
+  playbook: { bg: "bg-orange-500", bar: "bg-orange-500" },
+  brief: { bg: "bg-lime-600", bar: "bg-lime-600" },
+  content: { bg: "bg-teal-500", bar: "bg-teal-500" },
+  local: { bg: "bg-emerald-500", bar: "bg-emerald-500" },
+  schema: { bg: "bg-fuchsia-500", bar: "bg-fuchsia-500" },
+  "internal-linking": { bg: "bg-purple-500", bar: "bg-purple-500" },
+  qa: { bg: "bg-orange-600", bar: "bg-orange-600" },
+  reporting: { bg: "bg-pink-500", bar: "bg-pink-500" },
+};
+const AGENT_FALLBACK = { bg: "bg-slate-500", bar: "bg-slate-500" };
+
 type Filter = "all" | "working" | "idle" | "offline";
 
 export function AgentsView() {
@@ -139,17 +160,21 @@ function AgentCard({
   onToggle: (v: boolean) => void;
 }) {
   const Icon = agent.icon;
+  const color = AGENT_COLOR[agent.id] ?? AGENT_FALLBACK;
   return (
     <Card
       interactive
-      className={cn("flex flex-col overflow-hidden", !deployed && "opacity-[0.85]")}
+      className={cn("flex flex-col overflow-hidden", !deployed && "opacity-[0.9]")}
     >
+      {/* Colored identity bar */}
+      <div className={cn("h-1 w-full", deployed ? color.bar : "bg-[var(--border)]")} />
+
       {/* Header — identity + live status */}
       <div className="flex items-start gap-3 p-4 pb-3">
         <span
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
-            deployed ? "bg-[var(--accent-tint)] text-accent-600" : "bg-[var(--surface-3)] text-[var(--muted)]"
+            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white shadow-sm",
+            deployed ? color.bg : "bg-[var(--surface-3)] text-[var(--muted)]"
           )}
         >
           <Icon className="h-5 w-5" />
