@@ -3,22 +3,33 @@ import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// Mechanical radii, weighty-but-quiet. No pills, no glow.
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-full text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-200 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-1.5 rounded-md text-sm font-medium whitespace-nowrap transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-200 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
+        // Primary action = near-black, the most confident control on the page.
         primary:
-          "bg-accent-500 text-white shadow-soft hover:bg-accent-600 active:bg-accent-700",
+          "bg-[var(--foreground)] text-white shadow-xs hover:bg-[#262c36] active:bg-black",
+        // Accent = the one blue call-to-action when emphasis is warranted.
+        accent:
+          "bg-accent-500 text-white shadow-xs hover:bg-accent-600 active:bg-accent-700",
         secondary:
-          "border border-[var(--border)] bg-white text-slate-700 hover:bg-slate-50",
-        ghost: "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
-        dark: "bg-slate-900 text-white hover:bg-slate-800",
+          "border border-[var(--border)] bg-[var(--surface)] text-[var(--ink-soft)] shadow-xs hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]",
+        ghost:
+          "text-[var(--ink-soft)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]",
+        danger:
+          "bg-[var(--danger)] text-white shadow-xs hover:brightness-95 active:brightness-90",
+        // Back-compat alias used in a few places.
+        dark:
+          "bg-[var(--foreground)] text-white shadow-xs hover:bg-[#262c36] active:bg-black",
       },
       size: {
-        sm: "h-8 px-3 text-[13px]",
-        md: "h-10 px-4",
-        lg: "h-11 px-5 text-[15px]",
+        xs: "h-7 px-2 text-xs",
+        sm: "h-8 px-2.5",
+        md: "h-9 px-3.5",
+        lg: "h-10 px-4 text-md",
       },
     },
     defaultVariants: { variant: "primary", size: "md" },
@@ -56,3 +67,5 @@ export function ButtonLink({
     />
   );
 }
+
+export { buttonVariants };

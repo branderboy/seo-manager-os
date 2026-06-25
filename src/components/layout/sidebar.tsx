@@ -2,142 +2,206 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import * as React from "react";
 import {
-  Building2,
-  MapPin,
-  Cloud,
   Plug,
   Settings,
-  MoreVertical,
   Users,
-  Workflow,
   LineChart,
   Bot,
   LayoutDashboard,
-  ShieldAlert,
-  Trophy,
-  Rocket,
+  GitBranch,
+  FileBarChart,
+  ChevronRight,
+  Command as CommandIcon,
 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { currentUser } from "@/lib/model";
 import { cn } from "@/lib/utils";
 
-const dashIcons = { local: MapPin, saas: Cloud, enterprise: Building2 } as const;
+type Item = {
+  href: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  step?: number;
+};
 
-type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }>; step?: number };
+// Enterprise primary IA — the operations the agency runs on, in priority order.
+const PRIMARY: Item[] = [
+  { href: "/command", label: "Command Center", icon: LayoutDashboard },
+  { href: "/clients", label: "Clients", icon: Users },
+  { href: "/workflow", label: "SEO Pipeline", icon: GitBranch },
+  { href: "/tracker", label: "Operations Tracker", icon: LineChart },
+  { href: "/agents", label: "AI Workforce", icon: Bot },
+  { href: "/reports", label: "Reports", icon: FileBarChart },
+];
+
+const WORKSPACE: Item[] = [
+  { href: "/integrations", label: "Integrations", icon: Plug },
+  { href: "/settings", label: "Settings", icon: Settings },
+];
+
+const PIPELINE: Item[] = STAGES.map((s) => ({
+  href: `/${s.slug}`,
+  label: s.name,
+  icon: s.icon,
+  step: s.n,
+}));
+
+function isActive(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(href + "/");
+}
 
 export function Sidebar() {
   const pathname = usePathname();
-
-  const main: Item[] = [
-    { href: "/command", label: "Command Center", icon: LayoutDashboard },
-    { href: "/clients", label: "Clients", icon: Users },
-    { href: "/risk", label: "Risk Center", icon: ShieldAlert },
-    { href: "/wins", label: "Wins", icon: Trophy },
-    { href: "/workflow", label: "Workflow", icon: Workflow },
-    { href: "/tracker", label: "Tracker", icon: LineChart },
-    { href: "/deployments", label: "Deployments", icon: Rocket },
-    { href: "/agents", label: "Agent Store", icon: Bot },
-  ];
-  const pipeline: Item[] = STAGES.map((s) => ({ href: `/${s.slug}`, label: s.name, icon: s.icon, step: s.n }));
-  const dashboards: Item[] = [
-    { href: "/dashboards/local", label: "Local SEO", icon: dashIcons.local },
-  ];
-  const workspace: Item[] = [
-    { href: "/integrations", label: "Integrations", icon: Plug },
-    { href: "/settings", label: "Settings", icon: Settings },
-  ];
+  const pipelineActive = PIPELINE.some((p) => isActive(pathname, p.href));
+  const [pipelineOpen, setPipelineOpen] = React.useState(true);
 
   return (
-    <aside className="hidden w-[240px] shrink-0 flex-col bg-[#2F3E4D] shadow-xl lg:flex">
-      <div className="sticky top-0 flex h-screen flex-col">
+    <aside className="hidden w-[244px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--sidebar)] lg:flex">
+      <div className="flex h-screen flex-col">
         {/* Brand */}
         <Link
           href="/command"
-          className="flex h-14 items-center gap-2.5 border-b border-white/10 px-4 hover:bg-white/5"
+          className="flex h-[57px] items-center gap-2.5 border-b border-[var(--border)] px-4"
         >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-sm font-bold text-white">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[var(--foreground)] text-[13px] font-bold text-white">
             S
           </span>
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold tracking-tight text-white">SEO Manager OS</span>
-            <span className="block truncate text-xs text-white/50">{currentUser.agency}</span>
+          <span className="min-w-0 leading-tight">
+            <span className="block truncate text-[13px] font-semibold tracking-tight text-[var(--foreground)]">
+              SEO Manager OS
+            </span>
+            <span className="block truncate text-2xs text-[var(--muted)]">
+              {currentUser.agency}
+            </span>
           </span>
         </Link>
 
+        {/* Command palette affordance */}
+        <div className="px-3 pt-3">
+          <button className="group flex w-full items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-sm text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--ink-soft)]">
+            <CommandIcon className="h-3.5 w-3.5" />
+            <span className="flex-1 text-left">Search…</span>
+            <span className="kbd">⌘K</span>
+          </button>
+        </div>
+
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-3">
-          <NavGroup items={main} pathname={pathname} />
-          <Divider />
-          <NavLabel>The Pipeline</NavLabel>
-          <NavGroup items={pipeline} pathname={pathname} />
-          <Divider />
-          <NavLabel>Client Dashboards</NavLabel>
-          <NavGroup items={dashboards} pathname={pathname} />
-          <Divider />
-          <NavGroup items={workspace} pathname={pathname} />
+        <nav className="flex-1 overflow-y-auto px-3 py-3">
+          <ul className="space-y-0.5">
+            {PRIMARY.map((it) => (
+              <NavItem key={it.href} item={it} active={isActive(pathname, it.href)} />
+            ))}
+          </ul>
+
+          {/* Pipeline — collapsible, the product's spine */}
+          <div className="mt-5">
+            <button
+              onClick={() => setPipelineOpen((v) => !v)}
+              className="flex w-full items-center justify-between px-2.5 pb-1 pt-1.5"
+            >
+              <span className="eyebrow">Pipeline</span>
+              <ChevronRight
+                className={cn(
+                  "h-3.5 w-3.5 text-[var(--faint)] transition-transform",
+                  (pipelineOpen || pipelineActive) && "rotate-90"
+                )}
+              />
+            </button>
+            {(pipelineOpen || pipelineActive) && (
+              <ul className="space-y-0.5">
+                {PIPELINE.map((it) => (
+                  <NavItem
+                    key={it.href}
+                    item={it}
+                    active={isActive(pathname, it.href)}
+                    dense
+                  />
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="mt-5">
+            <div className="px-2.5 pb-1 pt-1.5">
+              <span className="eyebrow">Workspace</span>
+            </div>
+            <ul className="space-y-0.5">
+              {WORKSPACE.map((it) => (
+                <NavItem key={it.href} item={it} active={isActive(pathname, it.href)} />
+              ))}
+            </ul>
+          </div>
         </nav>
 
-        {/* Branding footer */}
-        <div className="flex items-center justify-between border-t border-white/10 p-4">
-          <div className="text-xs font-bold tracking-wide text-white">SEO MANAGER OS</div>
-          <MoreVertical className="h-4 w-4 text-white/60" />
+        {/* Account */}
+        <div className="border-t border-[var(--border)] p-3">
+          <button className="flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-[var(--surface-3)]">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-500 text-2xs font-bold text-white">
+              {currentUser.initials}
+            </span>
+            <span className="min-w-0 flex-1 leading-tight">
+              <span className="block truncate text-sm font-medium text-[var(--foreground)]">
+                {currentUser.name}
+              </span>
+              <span className="block truncate text-2xs text-[var(--muted)]">
+                SEO Manager
+              </span>
+            </span>
+          </button>
         </div>
       </div>
     </aside>
   );
 }
 
-function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
+function NavItem({
+  item,
+  active,
+  dense,
+}: {
+  item: Item;
+  active: boolean;
+  dense?: boolean;
+}) {
+  const Icon = item.icon;
   return (
-    <ul>
-      {items.map((it) => {
-        const active = pathname === it.href;
-        const Icon = it.icon;
-        return (
-          <li key={it.href}>
-            <Link
-              href={it.href}
-              className={cn(
-                "flex items-center border-l-4 py-2.5 pr-4 text-sm transition-colors",
-                active
-                  ? "border-accent-500 bg-white/10 pl-5 font-medium text-white"
-                  : "border-transparent pl-6 text-white hover:bg-white/5 hover:text-white"
-              )}
-            >
-              <span className="flex items-center gap-3.5">
-                {typeof it.step === "number" ? (
-                  <span
-                    className={cn(
-                      "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
-                      active
-                        ? "bg-accent-500 text-white"
-                        : "border-2 border-white/30 text-white"
-                    )}
-                  >
-                    {it.step}
-                  </span>
-                ) : (
-                  <Icon className={cn("h-[18px] w-[18px]", active ? "text-white" : "text-white/70")} />
-                )}
-                <span className="truncate">{it.label}</span>
-              </span>
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+    <li>
+      <Link
+        href={item.href}
+        className={cn(
+          "group relative flex items-center gap-2.5 rounded-md px-2.5 text-sm transition-colors",
+          dense ? "py-1.5" : "py-[7px]",
+          active
+            ? "bg-[var(--accent-tint)] font-medium text-[var(--accent-ink)]"
+            : "text-[var(--ink-soft)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]"
+        )}
+      >
+        {active && (
+          <span className="absolute inset-y-1 left-0 w-[3px] rounded-r-full bg-accent-500" />
+        )}
+        {typeof item.step === "number" ? (
+          <span
+            className={cn(
+              "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] text-2xs font-semibold tnum",
+              active
+                ? "bg-accent-500 text-white"
+                : "bg-[var(--surface-3)] text-[var(--muted)] group-hover:bg-[var(--border)]"
+            )}
+          >
+            {item.step}
+          </span>
+        ) : (
+          <Icon
+            className={cn(
+              "h-[16px] w-[16px] shrink-0",
+              active ? "text-accent-600" : "text-[var(--muted)]"
+            )}
+          />
+        )}
+        <span className="truncate">{item.label}</span>
+      </Link>
+    </li>
   );
-}
-
-function NavLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="px-6 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/50">
-      {children}
-    </div>
-  );
-}
-
-function Divider() {
-  return <div className="my-2 border-t border-white/10" />;
 }

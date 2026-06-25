@@ -124,3 +124,52 @@ export const aiJobs: AiJob[] = [
   { agent: "Content Strategist", client: "Northwind HVAC", status: "Running", eta: "~15 min" },
   { agent: "Reporting Specialist", client: "Lakeside Spa", status: "Queued", eta: "next" },
 ];
+
+// ── Risk alerts — portfolio-level warnings that need a manager's eyes ───────
+export type RiskAlert = {
+  client: string;
+  signal: string;
+  metric: string;
+  severity: Severity;
+};
+
+export const riskAlerts: RiskAlert[] = [
+  { client: "Northwind HVAC", signal: "Organic traffic down 14% WoW", metric: "−14%", severity: "high" },
+  { client: "Beacon Dental", signal: "Schema deploy blocked 3 days — SLA risk", metric: "3d", severity: "high" },
+  { client: "Trailhead Outfitters", signal: "Migration batch 2 awaiting Google indexation", metric: "5d", severity: "medium" },
+];
+
+// ── Upcoming deadlines — what's due, in order ──────────────────────────────
+export type Deadline = {
+  item: string;
+  client: string;
+  when: string;
+  owner: string;
+  due: "overdue" | "today" | "soon";
+};
+
+export const upcomingDeadlines: Deadline[] = [
+  { item: "Approve 6 location-page briefs", client: "Northwind HVAC", when: "Today, 10:00 AM", owner: "You", due: "today" },
+  { item: "Ship title-tag fixes to dev", client: "Beacon Dental", when: "Today, 11:30 AM", owner: "Priya", due: "today" },
+  { item: "Monthly report to client", client: "Lakeside Spa", when: "Tomorrow", owner: "You", due: "soon" },
+  { item: "Q3 strategy sign-off", client: "Summit Roofing", when: "Jun 27", owner: "You", due: "soon" },
+];
+
+// ── Recent activity — the live operational feed ────────────────────────────
+export type Activity = {
+  actor: string;
+  action: string;
+  target: string;
+  client: string;
+  when: string;
+  kind: "deploy" | "approve" | "agent" | "win" | "comment" | "alert";
+};
+
+export const recentActivity: Activity[] = [
+  { actor: "Competitive Analyst", action: "completed", target: "SERP gap analysis", client: "Summit Roofing", when: "2m ago", kind: "agent" },
+  { actor: "Priya", action: "deployed", target: "title-tag fixes · 12 pages", client: "Beacon Dental", when: "18m ago", kind: "deploy" },
+  { actor: "System", action: "indexed", target: "12 new collection pages", client: "Trailhead Outfitters", when: "1h ago", kind: "win" },
+  { actor: "Jordan", action: "approved", target: "homepage meta + H1", client: "Summit Roofing", when: "2h ago", kind: "approve" },
+  { actor: "Technical Auditor", action: "flagged", target: "review velocity stalled", client: "Northwind HVAC", when: "3h ago", kind: "alert" },
+  { actor: "You", action: "commented on", target: "Q3 roadmap brief", client: "Lakeside Spa", when: "4h ago", kind: "comment" },
+];

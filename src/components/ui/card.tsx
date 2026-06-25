@@ -1,11 +1,21 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+/**
+ * The one true surface. Hairline border + faint lift. Pass `interactive` for
+ * hover affordance, `flush` to drop the default padding (tables, lists).
+ */
+export function Card({
+  className,
+  interactive,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { interactive?: boolean }) {
   return (
     <div
       className={cn(
-        "rounded-2xl border border-[var(--border)] bg-white shadow-border transition-[box-shadow] duration-200",
+        "rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-card",
+        interactive &&
+          "transition-all duration-150 hover:border-[var(--border-strong)] hover:shadow-md",
         className
       )}
       {...props}
@@ -19,7 +29,10 @@ export function CardHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex flex-col gap-1 px-5 pt-5 pb-3", className)}
+      className={cn(
+        "flex items-center justify-between gap-3 border-b border-[var(--border)] px-4 py-3",
+        className
+      )}
       {...props}
     />
   );
@@ -32,7 +45,7 @@ export function CardTitle({
   return (
     <h3
       className={cn(
-        "text-[15px] font-bold tracking-tight text-slate-900",
+        "text-sm font-semibold tracking-tight text-[var(--foreground)]",
         className
       )}
       {...props}
@@ -45,7 +58,7 @@ export function CardDescription({
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <p className={cn("text-sm text-slate-700", className)} {...props} />
+    <p className={cn("text-sm text-[var(--muted)]", className)} {...props} />
   );
 }
 
@@ -53,5 +66,5 @@ export function CardContent({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("px-5 pb-5", className)} {...props} />;
+  return <div className={cn("p-4", className)} {...props} />;
 }
