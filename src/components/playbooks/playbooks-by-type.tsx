@@ -28,14 +28,14 @@ export function PlaybooksByType() {
                 "rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors",
                 type === t
                   ? "border-accent-500 bg-accent-50 text-accent-700"
-                  : "border-[var(--border)] bg-white text-slate-600 hover:bg-slate-50"
+                  : "border-[var(--border)] bg-white text-slate-700 hover:bg-slate-50"
               )}
             >
               {t}
             </button>
           ))}
         </div>
-        <p className="mt-3 text-sm text-slate-500">
+        <p className="mt-3 text-sm text-slate-600">
           Same engine, specialized plays — {list.length} playbooks · {plays} plays for{" "}
           <span className="font-medium text-slate-700">{type}</span> SEO.
         </p>

@@ -29,7 +29,7 @@ export function PageHeader({
           </div>
           <h1 className="text-[28px] font-extrabold leading-tight tracking-[-0.02em] text-slate-900">{title}</h1>
           {description && (
-            <p className="mt-2 max-w-[58ch] text-[15px] leading-relaxed text-slate-600">{description}</p>
+            <p className="mt-2 max-w-[58ch] text-[15px] leading-relaxed text-slate-700">{description}</p>
           )}
         </div>
         {children && <div className="flex items-center gap-2">{children}</div>}

@@ -83,7 +83,7 @@ export function EvidencePanel() {
           <h3 className="text-[15px] font-semibold tracking-tight text-slate-900">
             Evidence &amp; data sources
           </h3>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-700">
             Upload exports or connect live sources — the audits run on whatever you provide.
           </p>
         </div>
@@ -98,7 +98,7 @@ export function EvidencePanel() {
           return (
             <div key={src.id} className="bg-white p-5">
               <div className="flex items-start gap-3">
-                <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", hasData ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-600")}>
+                <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", hasData ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-700")}>
                   <Icon className="h-5 w-5" />
                 </span>
                 <div className="min-w-0 flex-1">
@@ -108,11 +108,11 @@ export function EvidencePanel() {
                       <Badge variant="good"><Check className="h-3 w-3" /> Connected</Badge>
                     )}
                   </div>
-                  <p className="mt-0.5 text-sm leading-relaxed text-slate-600">{src.desc}</p>
+                  <p className="mt-0.5 text-sm leading-relaxed text-slate-700">{src.desc}</p>
 
                   {/* Connected detail */}
                   {st.connected && st.account && (
-                    <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-600">
+                    <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-700">
                       <RefreshCw className="h-3 w-3" />
                       {st.account}
                     </div>
@@ -121,12 +121,12 @@ export function EvidencePanel() {
                   {/* Uploaded file */}
                   {st.fileName && (
                     <div className="mt-2 flex items-center justify-between gap-2 rounded-lg bg-[var(--surface-2)] px-2.5 py-1.5">
-                      <span className="flex min-w-0 items-center gap-1.5 text-xs text-slate-600">
+                      <span className="flex min-w-0 items-center gap-1.5 text-xs text-slate-700">
                         <FileSpreadsheet className="h-3.5 w-3.5 shrink-0 text-emerald-600" />
                         <span className="truncate">{st.fileName}</span>
-                        <span className="shrink-0 text-slate-500">· {st.rows?.toLocaleString()} rows</span>
+                        <span className="shrink-0 text-slate-600">· {st.rows?.toLocaleString()} rows</span>
                       </span>
-                      <button onClick={() => clearFile(src.id)} className="text-slate-500 hover:text-slate-700">
+                      <button onClick={() => clearFile(src.id)} className="text-slate-600 hover:text-slate-700">
                         <X className="h-3.5 w-3.5" />
                       </button>
                     </div>

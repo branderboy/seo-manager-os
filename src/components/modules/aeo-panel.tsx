@@ -21,7 +21,7 @@ export function AeoPanel() {
               </h3>
               <Badge variant="bad">At risk</Badge>
             </div>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-700">
               Presence across AI Overviews, citations and assistants.
             </p>
           </div>
@@ -34,7 +34,7 @@ export function AeoPanel() {
           {aeo.metrics.map((m) => (
             <div key={m.label}>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">{m.label}</span>
+                <span className="text-slate-700">{m.label}</span>
                 <span className="font-semibold text-slate-800">{m.value}</span>
               </div>
               <div className="mt-1.5">

@@ -12,7 +12,7 @@ const badgeVariants = cva(
         good: "bg-emerald-50 text-emerald-700 ring-emerald-200",
         warn: "bg-amber-50 text-amber-700 ring-amber-200",
         bad: "bg-rose-50 text-rose-700 ring-rose-200",
-        outline: "bg-white text-slate-600 ring-slate-200",
+        outline: "bg-white text-slate-700 ring-slate-200",
       },
     },
     defaultVariants: { variant: "default" },

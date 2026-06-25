@@ -3,12 +3,22 @@
 @tailwind utilities;
 
 :root {
+  /* Ported from the Pro Wash design system — navy + red on white, real depth. */
   --background: #ffffff;
-  --foreground: #0b1220;
+  --foreground: #0c0f14;
+  --ink-soft: #1e232b;
   --muted: #5b6472;
-  --border: #e9ecf2;
+  --border: #d4dceb;
   --surface: #ffffff;
-  --surface-2: #f8fafc;
+  --surface-2: #f4f7fc;
+  --tint: #eaf1fb;
+  --tint-line: #c9dcf0;
+  --navy: #16345f;
+  --navy-deep: #0a1e3d;
+  --brand: #ce1126;
+  --brand-deep: #a50f20;
+  --shadow: 0 10px 28px -12px rgba(10, 30, 61, 0.22), 0 2px 6px -2px rgba(10, 30, 61, 0.1);
+  --shadow-lg: 0 22px 48px -18px rgba(10, 30, 61, 0.32), 0 4px 12px -4px rgba(10, 30, 61, 0.12);
   /* The golden curve — fast start, gentle settle. Default for entrances. */
   --ease-golden: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -110,16 +120,10 @@ body {
 @layer utilities {
   /* Shadows-over-borders: three rgba layers create depth on any background. */
   .shadow-border {
-    box-shadow:
-      0 0 0 1px rgba(16, 24, 40, 0.06),
-      0 1px 2px -1px rgba(16, 24, 40, 0.06),
-      0 2px 4px 0 rgba(16, 24, 40, 0.04);
+    box-shadow: var(--shadow);
   }
   .shadow-border-hover {
-    box-shadow:
-      0 0 0 1px rgba(16, 24, 40, 0.08),
-      0 1px 2px -1px rgba(16, 24, 40, 0.08),
-      0 6px 16px -6px rgba(16, 24, 40, 0.12);
+    box-shadow: var(--shadow-lg);
   }
 }
 

@@ -61,7 +61,7 @@ function StatCard({
   return (
     <Card className="p-5">
       <div className="flex items-start justify-between">
-        <span className="text-sm font-medium text-slate-600">{label}</span>
+        <span className="text-sm font-medium text-slate-700">{label}</span>
         <span
           className={`inline-flex items-center gap-0.5 text-xs font-semibold ${
             up ? "text-emerald-600" : "text-rose-600"
@@ -73,7 +73,7 @@ function StatCard({
         </span>
       </div>
       <div className="mt-1 text-3xl font-semibold tracking-tight text-slate-900">{value}</div>
-      <p className="mt-2.5 text-xs leading-relaxed text-slate-500">{blurb}</p>
+      <p className="mt-2.5 text-xs leading-relaxed text-slate-600">{blurb}</p>
     </Card>
   );
 }

@@ -81,7 +81,7 @@ export default function LandingPage() {
             </span>
           </h1>
 
-          <p className="mx-auto mb-10 max-w-3xl text-xl font-light leading-relaxed text-slate-600 md:text-2xl">
+          <p className="mx-auto mb-10 max-w-3xl text-xl font-light leading-relaxed text-slate-700 md:text-2xl">
             Not a rank tracker. A diagnosis-first workflow that finds the real constraint, turns the fix into
             role-routed daily work, and closes the loop with a client-ready report.
           </p>
@@ -92,7 +92,7 @@ export default function LandingPage() {
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link href="/clients" className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-8 py-3.5 font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 sm:w-auto">
-              <Eye className="h-4 w-4 text-slate-400" />
+              <Eye className="h-4 w-4 text-slate-500" />
               See a client workspace
             </Link>
           </div>
@@ -108,7 +108,7 @@ export default function LandingPage() {
                 <span className="h-3 w-3 rounded-full bg-amber-400" />
                 <span className="h-3 w-3 rounded-full bg-emerald-400" />
               </div>
-              <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 font-mono text-xs text-slate-500 shadow-sm">
+              <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-1.5 font-mono text-xs text-slate-600 shadow-sm">
                 <Lock className="h-3 w-3" />
                 workspace.seomanager.os / northwind
               </div>
@@ -131,7 +131,7 @@ export default function LandingPage() {
                     { l: "AI", v: 29, c: "text-rose-600" },
                   ].map((s) => (
                     <div key={s.l} className="min-w-[80px] rounded-lg border border-slate-200 bg-white p-3 text-center shadow-sm">
-                      <div className="mb-1 font-mono text-xs font-medium uppercase text-slate-500">{s.l}</div>
+                      <div className="mb-1 font-mono text-xs font-medium uppercase text-slate-600">{s.l}</div>
                       <div className={`text-xl font-bold ${s.c}`}>{s.v}</div>
                     </div>
                   ))}
@@ -145,9 +145,9 @@ export default function LandingPage() {
                   <div className="mb-6 flex items-center justify-between">
                     <div>
                       <h3 className="mb-1 font-semibold text-slate-900">Geo Grid</h3>
-                      <p className="text-xs font-medium text-slate-500">Avg. rank across the service radius</p>
+                      <p className="text-xs font-medium text-slate-600">Avg. rank across the service radius</p>
                     </div>
-                    <div className="flex gap-3 font-mono text-xs text-slate-600">
+                    <div className="flex gap-3 font-mono text-xs text-slate-700">
                       <div className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Top 3</div>
                       <div className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-amber-500" /> 4 to 10</div>
                       <div className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-rose-500" /> 11+</div>
@@ -170,7 +170,7 @@ export default function LandingPage() {
                         <MapPin className="h-4 w-4 text-emerald-600" />
                       </div>
                     </div>
-                    <div className="absolute bottom-4 left-0 right-0 text-center font-mono text-[10px] font-medium text-slate-400">
+                    <div className="absolute bottom-4 left-0 right-0 text-center font-mono text-[10px] font-medium text-slate-500">
                       Center pin = headquarters
                     </div>
                   </div>
@@ -182,7 +182,7 @@ export default function LandingPage() {
                     <h3 className="mb-1 flex items-center gap-2 font-semibold text-slate-900">
                       <TrendingUp className="h-5 w-5 text-blue-600" /> Modeled outcome
                     </h3>
-                    <p className="mb-8 text-xs font-medium text-slate-500">
+                    <p className="mb-8 text-xs font-medium text-slate-600">
                       Projection for the 6-month Northwind engagement based on root-cause fixes.
                     </p>
                     <div className="space-y-4">
@@ -190,7 +190,7 @@ export default function LandingPage() {
                         <div key={o.metric} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 p-4 transition-colors hover:bg-slate-100">
                           <span className="text-sm font-medium text-slate-700">{o.metric}</span>
                           <div className="flex items-center gap-3 font-mono">
-                            <span className="text-slate-400">{o.from}</span>
+                            <span className="text-slate-500">{o.from}</span>
                             <ArrowRight className="h-4 w-4 text-emerald-500" />
                             <span className="text-lg font-bold text-emerald-600">{o.to}</span>
                           </div>
@@ -199,7 +199,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-                    <div className="text-xs font-medium text-slate-500">
+                    <div className="text-xs font-medium text-slate-600">
                       Root cause detected:{" "}
                       <span className="rounded border border-amber-100 bg-amber-50 px-2 py-0.5 font-semibold text-amber-600">Weak Review Velocity</span>
                     </div>
@@ -217,7 +217,7 @@ export default function LandingPage() {
         <section className="relative z-10 mx-auto mb-32 max-w-7xl px-6">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">Nine stages, one connected pipeline.</h2>
-            <p className="mx-auto max-w-2xl text-lg text-slate-600">
+            <p className="mx-auto max-w-2xl text-lg text-slate-700">
               Each stage consumes the previous one&apos;s output and produces its own. Nothing is arbitrary. Every
               task traces back to a diagnosis.
             </p>
@@ -234,7 +234,7 @@ export default function LandingPage() {
                 </div>
                 <div className={`mb-2 font-mono text-sm font-semibold ${s.tone}`}>{s.label}</div>
                 <h3 className="relative z-10 mb-2 text-xl font-bold text-slate-900">{s.name}</h3>
-                <p className="relative z-10 text-sm text-slate-600">{s.desc}</p>
+                <p className="relative z-10 text-sm text-slate-700">{s.desc}</p>
               </Link>
             ))}
           </div>
@@ -245,7 +245,7 @@ export default function LandingPage() {
           <h2 className="mb-10 text-3xl font-bold text-slate-900 md:text-4xl">
             Built on the thinking,
             <br />
-            <span className="text-slate-400">not the dashboards.</span>
+            <span className="text-slate-500">not the dashboards.</span>
           </h2>
           <div className="grid auto-rows-[minmax(250px,auto)] grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Diagnosis (large) */}
@@ -256,7 +256,7 @@ export default function LandingPage() {
                   <Search className="h-6 w-6 text-blue-600" />
                 </div>
                 <h3 className="mb-3 text-2xl font-bold text-slate-900">Diagnosis, not an audit.</h3>
-                <p className="max-w-xl text-lg leading-relaxed text-slate-600">
+                <p className="max-w-xl text-lg leading-relaxed text-slate-700">
                   Every symptom resolves to a ranked root cause, with confidence and the evidence behind it.
                   Northwind&apos;s reach wasn&apos;t a content problem. It was review velocity at 3/mo against a
                   market median of 11.
@@ -272,7 +272,7 @@ export default function LandingPage() {
                   <Zap className="h-6 w-6 text-violet-600" />
                 </div>
                 <h3 className="mb-3 text-xl font-bold text-slate-900">Made for AI search.</h3>
-                <p className="leading-relaxed text-slate-600">
+                <p className="leading-relaxed text-slate-700">
                   AEO and GEO are first-class. Entity models, schema and answer-shaped content to get cited in AI
                   Overviews, where most local brands are currently invisible.
                 </p>
@@ -287,7 +287,7 @@ export default function LandingPage() {
                   <ClipboardCheck className="h-6 w-6 text-emerald-600" />
                 </div>
                 <h3 className="mb-3 text-xl font-bold text-slate-900">Strategy that becomes Monday&apos;s work.</h3>
-                <p className="leading-relaxed text-slate-600">
+                <p className="leading-relaxed text-slate-700">
                   Playbooks expand into tasks routed to the right person (Tech SEO, Content, Citations, Local/GBP)
                   on a daily board with email nudges that keep owners on time.
                 </p>
@@ -303,7 +303,7 @@ export default function LandingPage() {
                     <RefreshCcw className="h-6 w-6 text-amber-600" />
                   </div>
                   <h3 className="mb-3 text-2xl font-bold text-slate-900">Closes the loop with the client.</h3>
-                  <p className="text-lg leading-relaxed text-slate-600">
+                  <p className="text-lg leading-relaxed text-slate-700">
                     A performance report you approve, share with the team on Slack, then send to the client,
                     measured against the goals set back in Discovery.
                   </p>
@@ -311,7 +311,7 @@ export default function LandingPage() {
                 <div className="w-full shrink-0 rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm md:w-64">
                   <div className="mb-4 flex items-center gap-2 border-b border-slate-200 pb-3">
                     <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                    <span className="font-mono text-xs font-semibold text-slate-600">Client Report Generated</span>
+                    <span className="font-mono text-xs font-semibold text-slate-700">Client Report Generated</span>
                   </div>
                   <div className="space-y-2">
                     <div className="h-2 w-full rounded bg-slate-200" />
@@ -331,15 +331,15 @@ export default function LandingPage() {
 
       <footer className="relative z-10 border-t border-slate-200 bg-white py-12">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 md:flex-row">
-          <div className="text-sm text-slate-500">
+          <div className="text-sm text-slate-600">
             <span className="font-bold tracking-tight text-slate-900">SEO MANAGER OS</span>
             <span className="mx-2 text-slate-300">·</span>
             Designed and built by <span className="font-semibold text-slate-700">{AUTHOR}</span>, {ROLE}
           </div>
           <div className="flex gap-4 font-medium">
-            <Link href="/workflow" className="text-sm text-slate-500 transition-colors hover:text-blue-600">Demo</Link>
-            <Link href="/workflow" className="text-sm text-slate-500 transition-colors hover:text-blue-600">Methodology</Link>
-            <a href={`mailto:${CONTACT}`} className="text-sm text-slate-500 transition-colors hover:text-blue-600">Contact</a>
+            <Link href="/workflow" className="text-sm text-slate-600 transition-colors hover:text-blue-600">Demo</Link>
+            <Link href="/workflow" className="text-sm text-slate-600 transition-colors hover:text-blue-600">Methodology</Link>
+            <a href={`mailto:${CONTACT}`} className="text-sm text-slate-600 transition-colors hover:text-blue-600">Contact</a>
           </div>
         </div>
       </footer>

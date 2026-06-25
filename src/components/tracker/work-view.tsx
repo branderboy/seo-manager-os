@@ -31,7 +31,7 @@ export function WorkView() {
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {summary.map((s) => (
           <Card key={s.label} className="p-5">
-            <div className="text-sm font-medium text-slate-600">{s.label}</div>
+            <div className="text-sm font-medium text-slate-700">{s.label}</div>
             <div className="mt-1 text-3xl font-semibold tracking-tight text-slate-900">{s.value}</div>
           </Card>
         ))}
@@ -44,7 +44,7 @@ export function WorkView() {
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span className={laneAccent[g.lane] ?? "text-slate-700"}>{g.lane}</span>
-                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">
+                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
                   {g.tasks.length}
                 </span>
               </CardTitle>
@@ -71,9 +71,9 @@ export function WorkView() {
                 <li key={t.id} className="flex items-center justify-between gap-3 py-2.5">
                   <div className="min-w-0">
                     <div className="truncate font-medium text-slate-800">{t.title}</div>
-                    <div className="text-sm text-slate-500">{t.client}</div>
+                    <div className="text-sm text-slate-600">{t.client}</div>
                   </div>
-                  <span className="shrink-0 text-sm font-medium text-slate-600">{t.due}</span>
+                  <span className="shrink-0 text-sm font-medium text-slate-700">{t.due}</span>
                 </li>
               ))}
             </ul>
@@ -91,14 +91,14 @@ function TaskRow({ task: t }: { task: WorkTask }) {
         <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${prDot[t.priority]}`} />
         <div className="min-w-0">
           <div className="truncate font-medium text-slate-800">{t.title}</div>
-          <div className="text-sm text-slate-500">
+          <div className="text-sm text-slate-600">
             {t.client} · {t.owner}
           </div>
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <Badge variant="outline">{t.step}</Badge>
-        <span className="text-sm text-slate-500">{t.due}</span>
+        <span className="text-sm text-slate-600">{t.due}</span>
       </div>
     </li>
   );

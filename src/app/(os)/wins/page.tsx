@@ -35,7 +35,7 @@ export default function WinsPage() {
           (g) =>
             g.items.length > 0 && (
               <section key={g.group}>
-                <h2 className="mb-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                <h2 className="mb-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-600">
                   {g.group}
                 </h2>
                 <Card>
@@ -49,7 +49,7 @@ export default function WinsPage() {
                           </span>
                           <div className="min-w-0 flex-1">
                             <div className="font-medium text-slate-800">{w.text}</div>
-                            <div className="mt-0.5 text-sm text-slate-500">
+                            <div className="mt-0.5 text-sm text-slate-600">
                               {w.client} · {w.when}
                             </div>
                           </div>

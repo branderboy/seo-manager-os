@@ -16,7 +16,7 @@ export function StartHereCoach() {
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-accent-200/40 blur-3xl" />
       <button
         onClick={dismiss}
-        className="absolute right-4 top-4 rounded-md p-1.5 text-slate-500 hover:bg-white hover:text-slate-700"
+        className="absolute right-4 top-4 rounded-md p-1.5 text-slate-600 hover:bg-white hover:text-slate-700"
         aria-label="Dismiss"
       >
         <X className="h-5 w-5" />
@@ -28,7 +28,7 @@ export function StartHereCoach() {
         </span>
         <div className="flex-1">
           <h3 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">Start here 👋</h3>
-          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-slate-600">
+          <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-slate-700">
             This is a guided walkthrough. Answer the interview below (or hit{" "}
             <span className="font-semibold text-slate-800">Prefill sample</span> to skip ahead), then use the{" "}
             <span className="inline-flex items-center gap-1 font-semibold text-accent-700">

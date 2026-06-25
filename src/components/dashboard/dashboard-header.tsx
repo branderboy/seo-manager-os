@@ -34,13 +34,13 @@ export function DashboardHeader({
             {tag.label}
           </span>
           <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900">{account}</h1>
-          <p className="mt-1 text-sm text-slate-600">{market}</p>
+          <p className="mt-1 text-sm text-slate-700">{market}</p>
         </div>
         <div className="flex flex-wrap gap-6">
           {scores.map((s) => (
             <div key={s.label} className="flex flex-col items-center">
               <ScoreRing value={s.value} size={64} />
-              <span className="mt-1.5 font-mono text-xs font-medium uppercase tracking-wide text-slate-500">
+              <span className="mt-1.5 font-mono text-xs font-medium uppercase tracking-wide text-slate-600">
                 {s.label}
               </span>
             </div>

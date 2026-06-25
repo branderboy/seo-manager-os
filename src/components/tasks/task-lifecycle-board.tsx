@@ -15,14 +15,14 @@ export function TaskLifecycleBoard() {
             <div key={step} className="w-60 shrink-0">
               <div className="mb-2 flex items-center justify-between px-1">
                 <span className="text-sm font-semibold text-slate-700">{step}</span>
-                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-600">{items.length}</span>
+                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">{items.length}</span>
               </div>
               <div className="space-y-2">
                 {items.map((t) => (
                   <TaskChip key={t.id} task={t} />
                 ))}
                 {items.length === 0 && (
-                  <div className="rounded-lg border border-dashed border-[var(--border)] px-3 py-4 text-center text-xs text-slate-400">
+                  <div className="rounded-lg border border-dashed border-[var(--border)] px-3 py-4 text-center text-xs text-slate-500">
                     Nothing here
                   </div>
                 )}
@@ -43,10 +43,10 @@ function TaskChip({ task: t }: { task: WorkTask }) {
         <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${prDot[t.priority]}`} />
         <div className="min-w-0">
           <div className="text-sm font-medium leading-snug text-slate-800">{t.title}</div>
-          <div className="mt-1 text-xs text-slate-500">{t.client} · {t.owner}</div>
+          <div className="mt-1 text-xs text-slate-600">{t.client} · {t.owner}</div>
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
             {waiting && <Badge variant="warn">{t.lane.replace("Waiting on ", "⏳ ")}</Badge>}
-            <span className="text-xs text-slate-400">{t.due}</span>
+            <span className="text-xs text-slate-500">{t.due}</span>
           </div>
         </div>
       </div>

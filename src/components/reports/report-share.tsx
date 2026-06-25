@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 type Status = "draft" | "pending" | "approved";
 
 const STATUS_META: Record<Status, { label: string; cls: string }> = {
-  draft: { label: "Draft", cls: "bg-slate-100 text-slate-600 ring-slate-200" },
+  draft: { label: "Draft", cls: "bg-slate-100 text-slate-700 ring-slate-200" },
   pending: { label: "Pending approval", cls: "bg-amber-50 text-amber-700 ring-amber-200" },
   approved: { label: "Approved", cls: "bg-emerald-50 text-emerald-700 ring-emerald-200" },
 };
@@ -52,7 +52,7 @@ export function ReportShare({
           </span>
           <div className="min-w-0 flex-1">
             <div className="text-sm font-medium text-slate-800">{period} Performance Report.pdf</div>
-            <div className="text-xs text-slate-500">Rankings · Traffic · Leads · Calls · AI Visibility · Revenue</div>
+            <div className="text-xs text-slate-600">Rankings · Traffic · Leads · Calls · AI Visibility · Revenue</div>
           </div>
         </div>
 
@@ -85,7 +85,7 @@ export function ReportShare({
             )}
             {status === "pending" && (
               <div className="flex flex-wrap items-center gap-3">
-                <span className="text-sm text-slate-600">Sent to {manager} · awaiting sign-off</span>
+                <span className="text-sm text-slate-700">Sent to {manager} · awaiting sign-off</span>
                 <button
                   onClick={() => setStatus("approved")}
                   className="inline-flex items-center gap-1.5 rounded-lg border border-accent-500 px-3 py-1.5 text-sm font-medium text-accent-700 hover:bg-accent-50"
@@ -116,7 +116,7 @@ export function ReportShare({
               onClick={() => setSent((s) => ({ ...s, client: true }))}
             />
             {!approved && (
-              <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-600">
                 <Lock className="h-3 w-3" /> The client send unlocks once the report is approved.
               </p>
             )}
@@ -138,7 +138,7 @@ function StepLabel({ n, done, locked, children }: { n: number; done?: boolean; l
       >
         {done ? <Check className="h-3.5 w-3.5" /> : n}
       </span>
-      <span className={cn("text-sm font-semibold", locked ? "text-slate-500" : "text-slate-800")}>{children}</span>
+      <span className={cn("text-sm font-semibold", locked ? "text-slate-600" : "text-slate-800")}>{children}</span>
     </div>
   );
 }
@@ -178,12 +178,12 @@ function ShareTarget({
           : "border-[var(--border)] bg-white hover:border-accent-300 hover:bg-accent-50/40"
       )}
     >
-      <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", disabled ? "bg-slate-100 text-slate-500" : "bg-accent-50 text-accent-600")}>
+      <span className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-lg", disabled ? "bg-slate-100 text-slate-600" : "bg-accent-50 text-accent-600")}>
         {icon}
       </span>
       <span className="min-w-0">
         <span className="block text-sm font-medium text-slate-800">{title}</span>
-        <span className="block truncate text-xs text-slate-500">{detail}</span>
+        <span className="block truncate text-xs text-slate-600">{detail}</span>
       </span>
     </button>
   );

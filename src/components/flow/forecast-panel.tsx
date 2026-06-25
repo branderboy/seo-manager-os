@@ -67,7 +67,7 @@ export function ForecastPanel() {
           <h3 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
             <TrendingUp className="h-6 w-6 text-[#1DA1F2]" /> Forecast
           </h3>
-          <p className="mt-1 text-base font-medium text-slate-500">
+          <p className="mt-1 text-base font-medium text-slate-600">
             The system predicts this from the diagnosis first — then you can edit the improvements live.
           </p>
         </div>
@@ -78,7 +78,7 @@ export function ForecastPanel() {
                 key={h}
                 onClick={() => setHorizon(h)}
                 className={`rounded-lg px-4 py-2 text-sm font-bold transition-all ${
-                  horizon === h ? "bg-white text-[#1DA1F2] shadow" : "text-slate-500 hover:text-slate-800"
+                  horizon === h ? "bg-white text-[#1DA1F2] shadow" : "text-slate-600 hover:text-slate-800"
                 }`}
               >
                 {h} days
@@ -88,7 +88,7 @@ export function ForecastPanel() {
           <button
             onClick={() => { setLevers(DEFAULTS); setHorizon(90); }}
             disabled={!edited}
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 shadow-sm transition-all hover:border-[#1DA1F2] hover:text-[#1DA1F2] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:border-[#1DA1F2] hover:text-[#1DA1F2] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:text-slate-700"
           >
             <RotateCcw className="h-4 w-4" /> System forecast
           </button>
@@ -99,8 +99,8 @@ export function ForecastPanel() {
         {/* Improvement levers */}
         <div className="min-w-0 space-y-6">
           <div className="flex items-center justify-between">
-            <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">Improvements</h4>
-            <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+            <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-500">Improvements</h4>
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">
               {edited ? "Your scenario" : "System recommended"}
             </span>
           </div>
@@ -117,7 +117,7 @@ export function ForecastPanel() {
                 </span>
                 <span className="font-mono font-bold text-slate-900">
                   {levers[lv.key]}
-                  <span className="ml-0.5 text-slate-400">{lv.unit}</span>
+                  <span className="ml-0.5 text-slate-500">{lv.unit}</span>
                 </span>
               </div>
               <input
@@ -135,7 +135,7 @@ export function ForecastPanel() {
         {/* Projected outcomes */}
         <div className="min-w-0">
           <div className="mb-5 flex items-center justify-between">
-            <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-400">
+            <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-500">
               Projection ({horizon} days)
             </h4>
             <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${edited ? "bg-[#1DA1F2]/10 text-[#1DA1F2]" : "bg-emerald-100 text-emerald-800"}`}>
@@ -145,16 +145,16 @@ export function ForecastPanel() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {metrics.map((o) => (
               <div key={o.label} className="flex min-w-0 flex-col justify-center rounded-xl border border-slate-200 bg-slate-50 p-5">
-                <div className="mb-2 text-sm font-semibold text-slate-600">{o.label}</div>
+                <div className="mb-2 text-sm font-semibold text-slate-700">{o.label}</div>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-lg font-bold">
-                  <span className="text-slate-400 line-through decoration-slate-300">{o.from}{o.suffix}</span>
+                  <span className="text-slate-500 line-through decoration-slate-300">{o.from}{o.suffix}</span>
                   <span className="text-slate-300">→</span>
                   <span className={o.color}>{o.to}{o.suffix}</span>
                 </div>
               </div>
             ))}
           </div>
-          <p className="mt-4 text-xs font-medium leading-relaxed text-slate-400">
+          <p className="mt-4 text-xs font-medium leading-relaxed text-slate-500">
             The system generates this prediction from the diagnosis first; adjust the levers to model
             your own scenario. The active projection carries into the Project Brief as the
             engagement&apos;s expected outcomes.

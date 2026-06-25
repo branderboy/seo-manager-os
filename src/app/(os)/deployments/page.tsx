@@ -49,7 +49,7 @@ export default function DeploymentsPage() {
 function Stat({ label, value, tone }: { label: string; value: number; tone?: string }) {
   return (
     <Card className="p-5">
-      <div className="text-sm font-medium text-slate-600">{label}</div>
+      <div className="text-sm font-medium text-slate-700">{label}</div>
       <div className={`mt-1 text-3xl font-semibold tracking-tight ${tone ?? "text-slate-900"}`}>{value}</div>
     </Card>
   );
@@ -69,7 +69,7 @@ function DeploymentCard({ deployment: d }: { deployment: Deployment }) {
               </span>
             )}
           </div>
-          <div className="mt-0.5 text-sm text-slate-500">
+          <div className="mt-0.5 text-sm text-slate-600">
             {d.client} · {d.when}
           </div>
         </div>
@@ -77,7 +77,7 @@ function DeploymentCard({ deployment: d }: { deployment: Deployment }) {
           <div className="text-sm font-semibold text-slate-700">
             {passCount(d)}/{CHECK_LABELS.length}
           </div>
-          <div className="text-[11px] uppercase tracking-wide text-slate-400">checks</div>
+          <div className="text-[11px] uppercase tracking-wide text-slate-500">checks</div>
         </div>
       </div>
 
@@ -100,7 +100,7 @@ function CheckRow({ label, status }: { label: string; status: CheckStatus }) {
       ) : (
         <Clock className="h-4 w-4 shrink-0 text-slate-300" />
       )}
-      <span className={status === "fail" ? "text-rose-600" : status === "pending" ? "text-slate-400" : "text-slate-600"}>
+      <span className={status === "fail" ? "text-rose-600" : status === "pending" ? "text-slate-500" : "text-slate-700"}>
         {label}
       </span>
     </div>

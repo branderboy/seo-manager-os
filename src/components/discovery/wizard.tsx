@@ -154,7 +154,7 @@ export function DiscoveryWizard() {
 
           {step === 1 && (
             <div>
-              <p className="mb-4 text-sm text-slate-600">Which best describes the business model?</p>
+              <p className="mb-4 text-sm text-slate-700">Which best describes the business model?</p>
               <div className="grid gap-3 sm:grid-cols-3">
                 {[
                   { id: "Local", label: "Local Service Business", icon: MapPin },
@@ -172,7 +172,7 @@ export function DiscoveryWizard() {
                         active ? "border-accent-300 bg-accent-50 shadow-soft" : "border-[var(--border)] bg-white hover:border-slate-300"
                       )}
                     >
-                      <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", active ? "bg-accent-500 text-white" : "bg-slate-100 text-slate-600")}>
+                      <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", active ? "bg-accent-500 text-white" : "bg-slate-100 text-slate-700")}>
                         <Icon className="h-5 w-5" />
                       </span>
                       <span className="text-sm font-medium text-slate-800">{m.label}</span>
@@ -229,7 +229,7 @@ export function DiscoveryWizard() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
               {!canContinue && (
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-slate-600">
                   {step === 0 ? "Enter a business name to continue" : "Choose a business model to continue"}
                 </span>
               )}
@@ -246,11 +246,11 @@ export function DiscoveryWizard() {
       {/* Side rail */}
       <aside className="hidden lg:block">
         <div className="sticky top-20 rounded-2xl border border-[var(--border)] bg-white p-5 shadow-soft">
-          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Intake progress</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-slate-600">Intake progress</div>
           {data.business && (
             <div className="mt-3 rounded-lg bg-[var(--surface-2)] px-3 py-2">
               <div className="text-sm font-medium text-slate-800">{data.business}</div>
-              {data.model && <div className="text-xs text-slate-600">{data.model} · {data.market || "—"}</div>}
+              {data.model && <div className="text-xs text-slate-700">{data.model} · {data.market || "—"}</div>}
             </div>
           )}
           <ol className="mt-3 space-y-1">
@@ -260,10 +260,10 @@ export function DiscoveryWizard() {
                   onClick={() => setStep(i)}
                   className={cn(
                     "flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
-                    i === step ? "bg-accent-50 font-medium text-accent-700" : "text-slate-600 hover:bg-slate-50"
+                    i === step ? "bg-accent-50 font-medium text-accent-700" : "text-slate-700 hover:bg-slate-50"
                   )}
                 >
-                  <span className={cn("flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold", i < step ? "bg-emerald-500 text-white" : i === step ? "bg-accent-500 text-white" : "bg-slate-100 text-slate-600")}>
+                  <span className={cn("flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold", i < step ? "bg-emerald-500 text-white" : i === step ? "bg-accent-500 text-white" : "bg-slate-100 text-slate-700")}>
                     {i < step ? <Check className="h-3 w-3" /> : i + 1}
                   </span>
                   <span className="truncate">{s}</span>
@@ -292,7 +292,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-600">
+      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-slate-700">
         {label}
         {required && <span className="ml-1 text-accent-500">*</span>}
       </span>
@@ -300,7 +300,7 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="h-10 w-full rounded-lg border border-[var(--border)] bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-500 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
+        className="h-10 w-full rounded-lg border border-[var(--border)] bg-white px-3 text-sm outline-none transition-colors placeholder:text-slate-600 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
       />
     </label>
   );
@@ -313,7 +313,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       className={cn(
         "flex items-center gap-2 rounded-lg border px-3.5 py-2.5 text-sm font-medium transition-all",
-        active ? "border-accent-300 bg-accent-50 text-accent-700 shadow-soft" : "border-[var(--border)] bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+        active ? "border-accent-300 bg-accent-50 text-accent-700 shadow-soft" : "border-[var(--border)] bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
       )}
     >
       <span className={cn("flex h-4 w-4 items-center justify-center rounded-[5px] border", active ? "border-accent-500 bg-accent-500 text-white" : "border-slate-300")}>
@@ -327,7 +327,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
 function ChipGroup({ prompt, options, state, onToggle }: { prompt: string; options: string[]; state: Multi; onToggle: (k: string) => void }) {
   return (
     <div>
-      <p className="mb-4 text-sm text-slate-600">{prompt}</p>
+      <p className="mb-4 text-sm text-slate-700">{prompt}</p>
       <div className="flex flex-wrap gap-2.5">
         {options.map((o) => (
           <Chip key={o} active={!!state[o]} onClick={() => onToggle(o)}>
@@ -369,11 +369,11 @@ function Classification({ data }: { data: FormState }) {
       <h3 className="mt-4 text-lg font-semibold tracking-tight text-slate-900">
         {data.business || "This business"} → {model} SEO
       </h3>
-      <p className="mt-1 text-sm text-slate-600">Based on the interview, the OS will run the {model} playbook.</p>
+      <p className="mt-1 text-sm text-slate-700">Based on the interview, the OS will run the {model} playbook.</p>
 
       <div className="mx-auto mt-5 max-w-xs">
         <div className="flex items-center justify-between text-sm">
-          <span className="text-slate-600">Classification confidence</span>
+          <span className="text-slate-700">Classification confidence</span>
           <span className="font-semibold text-slate-800">{confidence}%</span>
         </div>
         <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-slate-100">
@@ -383,7 +383,7 @@ function Classification({ data }: { data: FormState }) {
 
       <ul className="mx-auto mt-6 max-w-sm space-y-2 text-left">
         {reasons[model].map((r) => (
-          <li key={r} className="flex items-start gap-2 text-sm text-slate-600">
+          <li key={r} className="flex items-start gap-2 text-sm text-slate-700">
             <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
             {r}
           </li>
@@ -392,7 +392,7 @@ function Classification({ data }: { data: FormState }) {
 
       {/* What we heard — reflects real input */}
       <div className="mx-auto mt-6 max-w-md rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4 text-left">
-        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">What we heard</div>
+        <div className="text-xs font-semibold uppercase tracking-wide text-slate-600">What we heard</div>
         <dl className="mt-2 space-y-1.5 text-sm">
           <Heard label="Goals" items={goals} />
           <Heard label="Problems" items={problems} />
@@ -411,16 +411,16 @@ function Classification({ data }: { data: FormState }) {
 function Heard({ label, items }: { label: string; items: string[] }) {
   return (
     <div className="flex gap-2">
-      <dt className="w-20 shrink-0 text-slate-500">{label}</dt>
+      <dt className="w-20 shrink-0 text-slate-600">{label}</dt>
       <dd className="flex flex-wrap gap-1.5">
         {items.length ? (
           items.map((i) => (
-            <span key={i} className="rounded-md bg-white px-1.5 py-0.5 text-xs text-slate-600 ring-1 ring-inset ring-[var(--border)]">
+            <span key={i} className="rounded-md bg-white px-1.5 py-0.5 text-xs text-slate-700 ring-1 ring-inset ring-[var(--border)]">
               {i}
             </span>
           ))
         ) : (
-          <span className="text-xs text-slate-500">—</span>
+          <span className="text-xs text-slate-600">—</span>
         )}
       </dd>
     </div>

@@ -99,7 +99,7 @@ export function TaskBoard() {
                           {t.done && <Check className="h-3.5 w-3.5" />}
                         </button>
                         <div className="min-w-0 flex-1">
-                          <div className={cn("flex items-center gap-2 text-sm font-medium", t.done ? "text-slate-500 line-through" : "text-slate-800")}>
+                          <div className={cn("flex items-center gap-2 text-sm font-medium", t.done ? "text-slate-600 line-through" : "text-slate-800")}>
                             <span className="truncate">{t.name}</span>
                             {isGenerated(t.id) && !t.done && (
                               <span className="shrink-0 rounded-full bg-accent-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-700">
@@ -107,11 +107,11 @@ export function TaskBoard() {
                               </span>
                             )}
                           </div>
-                          <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-500">
+                          <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-600">
                             <RoleChip role={t.role} />
                             <span>Due {t.due}</span>
                             <span>·</span>
-                            <span className="text-slate-500">{t.source}</span>
+                            <span className="text-slate-600">{t.source}</span>
                           </div>
                         </div>
                         <ImpactBadge impact={t.priority} />
@@ -143,8 +143,8 @@ export function TaskBoard() {
                     <div className="min-w-0">
                       <RoleChip role={role} />
                       <div className="mt-1.5 truncate text-sm font-semibold text-slate-800">{person}</div>
-                      <div className="truncate text-xs text-slate-500">
-                        <span className="font-semibold text-slate-600">{open} open</span> · {email}
+                      <div className="truncate text-xs text-slate-600">
+                        <span className="font-semibold text-slate-700">{open} open</span> · {email}
                       </div>
                     </div>
                     {sent ? (
@@ -155,7 +155,7 @@ export function TaskBoard() {
                       <button
                         onClick={() => setShared((s) => ({ ...s, [role]: true }))}
                         disabled={open === 0}
-                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-600"
                       >
                         <Send className="h-3.5 w-3.5" /> Send {open}
                       </button>
@@ -188,9 +188,9 @@ export function TaskBoard() {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-sm font-medium text-slate-800">{r.label}</span>
-                        <span className="text-xs text-slate-500">{r.time}</span>
+                        <span className="text-xs text-slate-600">{r.time}</span>
                       </div>
-                      <p className="text-xs text-slate-600">{r.detail}</p>
+                      <p className="text-xs text-slate-700">{r.detail}</p>
                     </div>
                   </li>
                 ))}
@@ -200,12 +200,12 @@ export function TaskBoard() {
 
           {/* Live digest preview */}
           <Card className="overflow-hidden">
-            <div className="flex items-center gap-2 border-b border-[var(--border)] bg-[var(--surface-2)] px-4 py-2.5 text-xs text-slate-500">
+            <div className="flex items-center gap-2 border-b border-[var(--border)] bg-[var(--surface-2)] px-4 py-2.5 text-xs text-slate-600">
               <Mail className="h-3.5 w-3.5" />
               Preview · Morning digest
             </div>
             <div className="p-4">
-              <div className="text-xs text-slate-500">To: {taskAlerts.recipient}</div>
+              <div className="text-xs text-slate-600">To: {taskAlerts.recipient}</div>
               <div className="mt-1 text-sm font-semibold text-slate-900">
                 ☀️ {openToday.length} task{openToday.length === 1 ? "" : "s"} on deck for Northwind today
               </div>
@@ -218,12 +218,12 @@ export function TaskBoard() {
                   openToday.map((t) => (
                     <div key={t.id} className="flex items-center justify-between gap-2 rounded-lg bg-[var(--surface-2)] px-3 py-2">
                       <span className="truncate text-sm text-slate-700">{t.name}</span>
-                      <span className="shrink-0 text-xs text-slate-500">{t.due}</span>
+                      <span className="shrink-0 text-xs text-slate-600">{t.due}</span>
                     </div>
                   ))
                 )}
               </div>
-              <div className="mt-3 border-t border-[var(--border)] pt-3 text-xs text-slate-500">
+              <div className="mt-3 border-t border-[var(--border)] pt-3 text-xs text-slate-600">
                 Keep your {taskStats.streakDays}-day streak alive — complete today&apos;s
                 tasks before 6:00 PM.
               </div>
@@ -232,7 +232,7 @@ export function TaskBoard() {
 
           <div className="px-1">
             <Progress value={(todayDone / Math.max(1, today.length)) * 100} tone="bg-accent-500" />
-            <p className="mt-2 text-center text-xs text-slate-500">
+            <p className="mt-2 text-center text-xs text-slate-600">
               {todayDone}/{today.length} of today&apos;s tasks complete
             </p>
           </div>
@@ -255,12 +255,12 @@ function StatCard({
 }) {
   return (
     <Card className="p-5">
-      <div className="flex items-center gap-2 text-sm font-medium text-slate-600">
+      <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
         {icon}
         {label}
       </div>
       <div className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">{value}</div>
-      <div className="mt-0.5 text-xs text-slate-500">{sub}</div>
+      <div className="mt-0.5 text-xs text-slate-600">{sub}</div>
     </Card>
   );
 }

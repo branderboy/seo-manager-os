@@ -43,7 +43,7 @@ export default function LocalDashboard() {
             <CardDescription>The one-paragraph read on where this business stands.</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-[15px] leading-relaxed text-slate-600">
+            <p className="text-[15px] leading-relaxed text-slate-700">
               Northwind wins within a tight 2-mile core but loses reach quickly beyond it.
               The constraint is trust, not content: review velocity trails the market 3-to-1
               and half of advertised services lack a page. AI visibility is critically low —
@@ -77,7 +77,7 @@ export default function LocalDashboard() {
               <ul className="divide-y divide-[var(--border)]">
                 {d.gbp.map((g) => (
                   <li key={g.label} className="flex items-center justify-between py-2.5">
-                    <span className="text-sm text-slate-600">{g.label}</span>
+                    <span className="text-sm text-slate-700">{g.label}</span>
                     <span className="flex items-center gap-2 text-sm font-medium text-slate-800">
                       {g.value}
                       {g.ok ? <Check className="h-4 w-4 text-emerald-500" /> : <X className="h-4 w-4 text-rose-500" />}
@@ -107,24 +107,24 @@ export default function LocalDashboard() {
               </div>
               <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4">
                 <div className="mb-2 flex items-center justify-between text-sm">
-                  <span className="text-slate-600">Velocity vs. market</span>
+                  <span className="text-slate-700">Velocity vs. market</span>
                   <span className="flex items-center gap-1 text-rose-600">
                     <TrendingDown className="h-4 w-4" /> 3.7× behind
                   </span>
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <div className="mb-1 flex justify-between text-xs text-slate-600"><span>You</span><span>{d.reviews.velocity}/mo</span></div>
+                    <div className="mb-1 flex justify-between text-xs text-slate-700"><span>You</span><span>{d.reviews.velocity}/mo</span></div>
                     <Progress value={(d.reviews.velocity / d.reviews.marketVelocity) * 100} tone="bg-rose-500" />
                   </div>
                   <div>
-                    <div className="mb-1 flex justify-between text-xs text-slate-600"><span>Market median</span><span>{d.reviews.marketVelocity}/mo</span></div>
+                    <div className="mb-1 flex justify-between text-xs text-slate-700"><span>Market median</span><span>{d.reviews.marketVelocity}/mo</span></div>
                     <Progress value={100} tone="bg-slate-400" />
                   </div>
                 </div>
               </div>
               <div>
-                <div className="mb-2 text-sm text-slate-600">Sentiment</div>
+                <div className="mb-2 text-sm text-slate-700">Sentiment</div>
                 <DonutChart data={d.reviews.sentiment} height={180} />
               </div>
             </div>
@@ -141,7 +141,7 @@ export default function LocalDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-left text-xs uppercase tracking-wide text-slate-500">
+                    <tr className="text-left text-xs uppercase tracking-wide text-slate-600">
                       <th className="py-2 font-medium">Competitor</th>
                       <th className="py-2 font-medium">Reviews</th>
                       <th className="py-2 font-medium">Vel.</th>
@@ -157,9 +157,9 @@ export default function LocalDashboard() {
                             {c.name}
                             {you && <Badge variant="accent" className="ml-2">You</Badge>}
                           </td>
-                          <td className="py-2.5 text-slate-600">{c.reviews.toLocaleString()}</td>
-                          <td className="py-2.5 text-slate-600">{c.velocity}/mo</td>
-                          <td className="py-2.5 text-slate-600">{c.authority}</td>
+                          <td className="py-2.5 text-slate-700">{c.reviews.toLocaleString()}</td>
+                          <td className="py-2.5 text-slate-700">{c.velocity}/mo</td>
+                          <td className="py-2.5 text-slate-700">{c.authority}</td>
                         </tr>
                       );
                     })}
@@ -182,7 +182,7 @@ export default function LocalDashboard() {
                 {d.authority.sources.map((s) => (
                   <li key={s.label}>
                     <div className="mb-1 flex justify-between text-sm">
-                      <span className="text-slate-600">{s.label}</span>
+                      <span className="text-slate-700">{s.label}</span>
                       <span className="font-medium text-slate-800">{s.value}</span>
                     </div>
                     <Progress value={(s.value / d.authority.marketMedian) * 100} tone="bg-accent-400" />
@@ -223,7 +223,7 @@ export default function LocalDashboard() {
 function Stat({ label, value, icon, tone }: { label: string; value: string; icon?: React.ReactNode; tone?: "bad" }) {
   return (
     <div className="rounded-xl border border-[var(--border)] bg-white p-3">
-      <div className="text-xs text-slate-500">{label}</div>
+      <div className="text-xs text-slate-600">{label}</div>
       <div className={`mt-0.5 flex items-center gap-1.5 text-xl font-semibold ${tone === "bad" ? "text-rose-600" : "text-slate-900"}`}>
         {icon}
         {value}

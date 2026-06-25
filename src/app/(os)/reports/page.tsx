@@ -31,16 +31,16 @@ export default function ReportsPage() {
       {/* Executive summary */}
       <Card className="p-6">
         <h2 className="text-lg font-semibold tracking-tight text-slate-900">Executive summary</h2>
-        <p className="mt-2 text-[15px] leading-relaxed text-slate-600">{reportSummary.executiveSummary}</p>
+        <p className="mt-2 text-[15px] leading-relaxed text-slate-700">{reportSummary.executiveSummary}</p>
       </Card>
 
       {/* KPIs */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {reportSummary.stats.map((s) => (
           <Card key={s.label} className="p-5">
-            <div className="text-sm font-medium text-slate-600">{s.label}</div>
+            <div className="text-sm font-medium text-slate-700">{s.label}</div>
             <div className="mt-1 text-3xl font-semibold tracking-tight text-slate-900">{s.value}</div>
-            <div className="mt-1.5 text-sm text-slate-500">{s.sub}</div>
+            <div className="mt-1.5 text-sm text-slate-600">{s.sub}</div>
           </Card>
         ))}
       </div>
@@ -57,9 +57,9 @@ export default function ReportsPage() {
                 <li key={w.title} className="flex items-center justify-between gap-3 py-2.5">
                   <div className="min-w-0">
                     <div className="truncate font-medium text-slate-800">{w.title}</div>
-                    <div className="text-sm text-slate-500">{w.client}</div>
+                    <div className="text-sm text-slate-600">{w.client}</div>
                   </div>
-                  <span className="shrink-0 text-sm text-slate-500">{w.when}</span>
+                  <span className="shrink-0 text-sm text-slate-600">{w.when}</span>
                 </li>
               ))}
             </ul>
@@ -75,7 +75,7 @@ export default function ReportsPage() {
               {blockers.map((b) => (
                 <li key={b.task} className="py-2.5">
                   <div className="font-medium text-slate-800">{b.task}</div>
-                  <div className="mt-0.5 flex items-center gap-2 text-sm text-slate-500">
+                  <div className="mt-0.5 flex items-center gap-2 text-sm text-slate-600">
                     <span>{b.client}</span>
                     <Badge variant="warn">Waiting on {b.waitingOn}</Badge>
                     <span>· {b.age}</span>
@@ -97,8 +97,8 @@ export default function ReportsPage() {
             <ul className="divide-y divide-[var(--border)]">
               {approvals.map((a) => (
                 <li key={a.item} className="flex items-center justify-between gap-3 py-2.5">
-                  <div><div className="font-medium text-slate-800">{a.item}</div><div className="text-sm text-slate-500">{a.client}</div></div>
-                  <span className="shrink-0 text-sm text-slate-500">{a.since}</span>
+                  <div><div className="font-medium text-slate-800">{a.item}</div><div className="text-sm text-slate-600">{a.client}</div></div>
+                  <span className="shrink-0 text-sm text-slate-600">{a.since}</span>
                 </li>
               ))}
             </ul>
@@ -113,10 +113,10 @@ export default function ReportsPage() {
             <ul className="divide-y divide-[var(--border)]">
               {deployments.map((d) => (
                 <li key={d.id} className="flex items-center justify-between gap-3 py-2.5">
-                  <div className="min-w-0"><div className="truncate font-medium text-slate-800">{d.item}</div><div className="text-sm text-slate-500">{d.client}</div></div>
+                  <div className="min-w-0"><div className="truncate font-medium text-slate-800">{d.item}</div><div className="text-sm text-slate-600">{d.client}</div></div>
                   <div className="flex shrink-0 items-center gap-2">
                     <Badge variant={deployBadge[d.status]}>{d.status}</Badge>
-                    <span className="text-sm text-slate-500">{d.when}</span>
+                    <span className="text-sm text-slate-600">{d.when}</span>
                   </div>
                 </li>
               ))}
@@ -137,9 +137,9 @@ export default function ReportsPage() {
                 <li key={`${a.agent}-${a.client}`} className="py-2.5">
                   <div className="flex items-center justify-between gap-3">
                     <span className="font-medium text-slate-800">{a.agent}</span>
-                    <span className="shrink-0 text-sm text-slate-500">{a.when}</span>
+                    <span className="shrink-0 text-sm text-slate-600">{a.when}</span>
                   </div>
-                  <div className="text-sm text-slate-500">{a.client} · {a.result}</div>
+                  <div className="text-sm text-slate-600">{a.client} · {a.result}</div>
                 </li>
               ))}
             </ul>
@@ -178,7 +178,7 @@ export default function ReportsPage() {
           <ul className="divide-y divide-[var(--border)]">
             {opportunities.map((o) => (
               <li key={o.title} className="flex items-center justify-between gap-3 py-2.5">
-                <div className="min-w-0"><div className="truncate font-medium text-slate-800">{o.title}</div><div className="text-sm text-slate-500">{o.client}</div></div>
+                <div className="min-w-0"><div className="truncate font-medium text-slate-800">{o.title}</div><div className="text-sm text-slate-600">{o.client}</div></div>
                 <span className="shrink-0 rounded-md bg-accent-50 px-2 py-1 text-sm font-semibold text-accent-700">{o.score}</span>
               </li>
             ))}
