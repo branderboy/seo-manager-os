@@ -3,176 +3,223 @@
 @tailwind utilities;
 
 /*
-  SEO Manager OS — design language: "Calm command."
-  Near-monochrome ink on paper. One signal color. Hairline structure.
-  Typography and whitespace do the work; decoration does not.
-*/
+ * SEO Manager OS — enterprise design tokens.
+ * Quiet, neutral-forward, typography-led. No grids, no glows, no glass.
+ */
 :root {
-  /* Canvas — warm paper, layered by lightness not by shadow */
-  --canvas: #fafafa;          /* app background */
+  --canvas: #f7f8fa;          /* app background */
   --surface: #ffffff;         /* cards, panels */
-  --surface-2: #f6f6f5;       /* insets, hover fills, table zebra */
-  --surface-3: #efefee;       /* pressed / deeper inset */
+  --surface-2: #f7f8fa;       /* inset / striped rows */
+  --surface-3: #f1f2f5;       /* hover wells */
 
-  /* Ink — warm neutral, high contrast so it reads without being heavy */
-  --ink: #18181b;             /* primary text, headings */
-  --ink-2: #52525b;           /* secondary text */
-  --ink-3: #8b8b94;           /* tertiary, captions, placeholders */
-  --ink-inv: #fafafa;         /* text on dark */
+  --foreground: #14181f;      /* primary text */
+  --ink-soft: #353c47;        /* secondary text */
+  --muted: #6a7283;           /* tertiary / labels */
+  --faint: #9aa1b1;           /* disabled / placeholder */
 
-  /* Structure — hairlines, never thick */
-  --line: #e7e7e6;            /* default border */
-  --line-2: #dededc;          /* slightly stronger divider */
-  --line-strong: #c9c9c6;     /* inputs, focus rest */
+  --border: #e6e8ee;          /* hairline borders */
+  --border-strong: #d6d9e2;   /* emphasized borders */
 
-  /* Signal — the single brand accent. Used for action + selection, sparingly. */
-  --signal: #5b56e0;
-  --signal-hover: #4d48d4;
-  --signal-press: #413dbd;
-  --signal-weak: #efeefc;     /* tint fill */
-  --signal-line: #d8d6f6;     /* tint border */
-  --signal-ink: #4b46c9;      /* signal-colored text on light */
+  --accent: #2f66f5;
+  --accent-ink: #1b40b0;
+  --accent-tint: #eef4ff;
 
-  /* Status — functional only, never decorative */
-  --ok: #15803d;
-  --ok-weak: #e9f6ec;
-  --warn: #b45309;
-  --warn-weak: #fbf0e2;
-  --danger: #c0322b;
-  --danger-weak: #fbeceb;
+  /* Feature surface — deep, confident blue for hero/mission-control zones. */
+  --feature: #11295a;
+  --feature-deep: #0d2049;
+  --feature-border: #23457f;
 
-  /* Elevation — exactly one resting shadow + one for popovers */
-  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.05);
-  --shadow-pop: 0 1px 1px rgba(24, 24, 27, 0.04), 0 8px 24px -8px rgba(24, 24, 27, 0.18),
-    0 2px 6px -2px rgba(24, 24, 27, 0.08);
+  /* Semantic status — used consistently for badges, dots, charts. */
+  --ok: #1f9d6b;
+  --ok-tint: #e7f6ef;
+  --warn: #c4811a;
+  --warn-tint: #fbf2df;
+  --danger: #d4493f;
+  --danger-tint: #fbecea;
+  --info: #2f66f5;
+  --info-tint: #eef4ff;
 
-  /* Motion */
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-pop: 0 16px 40px -12px rgba(16, 24, 40, 0.22);
+
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* legacy aliases still referenced by components */
-  --background: var(--canvas);
-  --foreground: var(--ink);
-  --border: var(--line);
-  --muted: var(--ink-2);
 }
 
-* {
-  border-color: var(--line);
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: var(--canvas);
-  color: var(--ink);
+  color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Tabular figures wherever numbers carry meaning */
-.nums {
+::selection {
+  background: rgba(47, 102, 245, 0.16);
+}
+
+/* Tabular figures everywhere numbers matter — metrics line up cleanly. */
+.tnum {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
-::selection {
-  background: var(--signal-weak);
-  color: var(--signal-ink);
-}
-
-/* Quiet, thin scrollbars */
+/* Thin, unobtrusive scrollbars. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d8d8d6 transparent;
+  scrollbar-color: #d2d6df transparent;
 }
 *::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #dcdcda;
-  border: 3px solid transparent;
-  background-clip: padding-box;
+  background: #d2d6df;
   border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: #c7c7c4;
-  border: 3px solid transparent;
-  background-clip: padding-box;
+  background: #b9bfcc;
+  background-clip: content-box;
 }
 
-/* ── Motion primitives ──────────────────────────────────────────────── */
+/* ── Motion — restrained, purposeful ─────────────────────────────────────── */
 @keyframes reveal {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
 }
-.reveal { animation: reveal 0.4s var(--ease) both; }
+.reveal {
+  animation: reveal 0.4s var(--ease) both;
+}
 
 @keyframes fade-in {
   from { opacity: 0; }
-  to   { opacity: 1; }
+  to { opacity: 1; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .stagger > * { animation: fade-in 0.4s var(--ease) both; }
+  .stagger > * {
+    animation: fade-in 0.4s var(--ease) both;
+  }
   .stagger > *:nth-child(1) { animation-delay: 0ms; }
   .stagger > *:nth-child(2) { animation-delay: 40ms; }
   .stagger > *:nth-child(3) { animation-delay: 80ms; }
   .stagger > *:nth-child(4) { animation-delay: 120ms; }
   .stagger > *:nth-child(5) { animation-delay: 160ms; }
   .stagger > *:nth-child(6) { animation-delay: 200ms; }
-  .stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal, .stagger > * { animation-duration: 120ms; animation-timing-function: ease; transform: none; }
+  .stagger > *:nth-child(7) { animation-delay: 240ms; }
+  .stagger > *:nth-child(n + 8) { animation-delay: 280ms; }
 }
 
+/* Score rings draw their arc in on mount. */
 @keyframes ring-draw {
   from { stroke-dashoffset: var(--ring-c); }
-  to   { stroke-dashoffset: var(--ring-offset); }
+  to { stroke-dashoffset: var(--ring-offset); }
 }
-.ring-draw { animation: ring-draw 0.7s var(--ease) both; }
+.ring-draw {
+  animation: ring-draw 0.7s var(--ease) both;
+}
 
-@keyframes shimmer {
-  100% { transform: translateX(100%); }
-}
+/* Loading skeleton shimmer. */
 .skeleton {
   position: relative;
   overflow: hidden;
-  background: var(--surface-2);
+  background: var(--surface-3);
 }
 .skeleton::after {
   content: "";
   position: absolute;
   inset: 0;
   transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
   animation: shimmer 1.4s infinite;
 }
-@media (prefers-reduced-motion: reduce) {
-  .skeleton::after { animation: none; }
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
 }
 
-/* ── Utilities ──────────────────────────────────────────────────────── */
-@layer utilities {
-  .shadow-border { box-shadow: var(--shadow-sm); }
-  .shadow-border-hover { box-shadow: var(--shadow-pop); }
-  .ring-focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--signal-line);
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .ring-draw,
+  .stagger > * {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
   }
+  .skeleton::after { animation: none; }
+  html { scroll-behavior: auto; }
 }
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-[1180px] px-6 sm:px-8;
+    @apply mx-auto w-full max-w-[1400px] px-6 lg:px-8;
   }
-  /* Quiet section eyebrow — replaces the loud colored pill */
+
+  /* Section eyebrow — small caps label used to head dense groups. */
   .eyebrow {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-3);
+    @apply text-2xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)];
   }
+
+  /* Surface — the one true card. Hairline border, faint lift, no glass. */
+  .surface {
+    @apply rounded-xl border border-[var(--border)] bg-[var(--surface)];
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Keyboard hint chip. */
+  .kbd {
+    @apply inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded border border-[var(--border)] bg-[var(--surface)] px-1.5 font-mono text-2xs text-[var(--muted)];
+  }
+}
+
+@layer utilities {
+  .border-hairline {
+    border-color: var(--border);
+  }
+  /* Back-compat shadow utilities for components not yet on the new system. */
+  .shadow-border {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-border-hover {
+    box-shadow: 0 12px 32px -8px rgba(16, 24, 40, 0.16), 0 4px 8px -4px rgba(16, 24, 40, 0.08);
+  }
+}
+
+/* ── Marketing landing page only (src/app/page.tsx) — kept out of the app ─── */
+.bg-grid-lines {
+  background-image:
+    linear-gradient(to right, #e6e8ee 1px, transparent 1px),
+    linear-gradient(to bottom, #e6e8ee 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 80%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 80%, transparent);
+}
+.bg-radial-glow {
+  background: radial-gradient(circle at top center, rgba(47, 102, 245, 0.07) 0%, rgba(248, 250, 252, 0) 70%);
+}
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(230, 232, 238, 0.8);
+}
+@keyframes pin-pulse {
+  0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(31, 157, 107, 0.5); }
+  70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(31, 157, 107, 0); }
+  100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(31, 157, 107, 0); }
+}
+.pin-pulse {
+  animation: pin-pulse 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pin-pulse { animation: none; }
 }

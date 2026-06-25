@@ -106,7 +106,7 @@ export function GuidedFlow() {
           {next ? (
             <Link
               href={`/${next.slug}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-slate-900 px-3 text-[13px] font-medium text-white hover:bg-slate-800"
+              className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-accent-600 px-3 text-[13px] font-medium text-white hover:bg-accent-700"
             >
               <span className="hidden sm:inline">Next:</span> {next.short}
               <ArrowRight className="h-3.5 w-3.5" />

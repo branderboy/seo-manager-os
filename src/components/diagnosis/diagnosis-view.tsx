@@ -1,9 +1,11 @@
 "use client";
 
-import { AlertTriangle, Clock, DollarSign, User, GitBranch } from "lucide-react";
+import { AlertTriangle, Clock, DollarSign, User, GitBranch, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { StatTile, StatRow } from "@/components/ui/metric";
 import { useEngagement } from "@/components/engagement/store";
 import { getDiagnosis, type Fix, type Impact, type FixStatus } from "@/lib/recommendations";
 
@@ -15,7 +17,13 @@ const statusVariant: Record<FixStatus, "default" | "accent" | "bad" | "good"> = 
   Blocked: "bad",
   Done: "good",
 };
-const priorityRing: Record<number, string> = { 1: "bg-rose-500", 2: "bg-amber-500", 3: "bg-slate-400" };
+
+// Priority bands read top-down: P1 is loud, P3 is quiet.
+const priorityMeta: Record<number, { dot: string; label: string; ring: string }> = {
+  1: { dot: "bg-[var(--danger)]", label: "Do now", ring: "ring-[var(--danger)]/15" },
+  2: { dot: "bg-[var(--warn)]", label: "Do next", ring: "ring-[var(--warn)]/15" },
+  3: { dot: "bg-[var(--faint)]", label: "Backlog", ring: "ring-[var(--border)]" },
+};
 
 export function DiagnosisView() {
   const { engagement } = useEngagement();
@@ -27,11 +35,11 @@ export function DiagnosisView() {
       {/* Active client */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">{engagement.business}</h2>
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600">
+          <h2 className="text-xl font-semibold tracking-tight text-[var(--foreground)]">{engagement.business}</h2>
+          <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-[var(--muted)]">
             <Badge variant="accent">{engagement.model} SEO</Badge>
             <span>{engagement.industry}</span>
-            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            <span className="h-1 w-1 rounded-full bg-[var(--border-strong)]" />
             <span>{engagement.market}</span>
           </div>
         </div>
@@ -39,23 +47,24 @@ export function DiagnosisView() {
 
       {/* Primary root cause + baseline */}
       <div className="grid gap-5 lg:grid-cols-3">
-        <Card className="border-2 border-accent-500 p-6 lg:col-span-2">
-          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide text-accent-600">
+        <Card className="relative overflow-hidden p-6 lg:col-span-2">
+          <span className="absolute inset-y-0 left-0 w-1 bg-[var(--danger)]" />
+          <div className="flex items-center gap-1.5 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--danger)]">
             <AlertTriangle className="h-3.5 w-3.5" /> Primary root cause
           </div>
-          <h3 className="mt-1.5 text-xl font-bold text-slate-900">{primary.title}</h3>
-          <p className="mt-2 text-[15px] leading-relaxed text-slate-700">{primary.summary}</p>
-          <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-            <div className="h-full rounded-full bg-accent-500" style={{ width: `${primary.confidence}%` }} />
+          <h3 className="mt-1.5 text-xl font-semibold tracking-tight text-[var(--foreground)]">{primary.title}</h3>
+          <p className="mt-2 text-base leading-relaxed text-[var(--ink-soft)]">{primary.summary}</p>
+          <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-[var(--surface-3)]">
+            <div className="h-full rounded-full bg-[var(--danger)]" style={{ width: `${primary.confidence}%` }} />
           </div>
-          <div className="mt-1.5 flex justify-between text-xs text-slate-700">
-            <span>{primary.confidence}% confidence</span>
+          <div className="mt-1.5 flex justify-between text-xs text-[var(--muted)]">
+            <span className="tnum">{primary.confidence}% confidence</span>
             <span>{primary.impact} impact</span>
           </div>
         </Card>
 
         <Card className="p-6">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Baseline</h4>
+          <h4 className="eyebrow">Baseline scores</h4>
           <div className="mt-3 space-y-3">
             <Baseline label="Visibility" value={s.visibility} />
             <Baseline label="Trust" value={s.trust} />
@@ -64,13 +73,20 @@ export function DiagnosisView() {
         </Card>
       </div>
 
+      {/* Triage summary */}
+      <StatRow cols={4}>
+        <StatTile label="Prioritized fixes" value={summary.totalFixes} />
+        <StatTile label="To do now (P1)" value={summary.p1} tone="bad" />
+        <StatTile label="Total effort" value={`${summary.totalHours}h`} sub="across all fixes" />
+        <StatTile label="Revenue upside" value={`$${summary.totalRevenue.toLocaleString()}`} sub="/ month" tone="good" />
+      </StatRow>
+
       {/* What to fix first */}
       <section className="space-y-5">
         <div>
-          <h3 className="text-2xl font-bold tracking-tight text-slate-900">What to fix first</h3>
-          <p className="mt-1 text-base text-slate-600">
-            {summary.totalFixes} prioritized fixes · {summary.p1} to do now · {summary.totalHours}h total ·{" "}
-            ${summary.totalRevenue.toLocaleString()}/mo upside
+          <h3 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">What to fix first</h3>
+          <p className="mt-0.5 text-sm text-[var(--muted)]">
+            Ranked by business impact, revenue and effort — work the top band before the next.
           </p>
         </div>
 
@@ -79,12 +95,17 @@ export function DiagnosisView() {
             g.fixes.length > 0 && (
               <div key={g.priority} className="space-y-3">
                 <div className="flex items-center gap-2.5">
-                  <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white ${priorityRing[g.priority]}`}>
+                  <span className={`flex h-6 w-6 items-center justify-center rounded-md text-xs font-bold tnum text-white ${priorityMeta[g.priority].dot}`}>
                     {g.priority}
                   </span>
-                  <h4 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
-                    Priority {g.priority} — {g.label}
+                  <h4 className="text-sm font-semibold text-[var(--foreground)]">
+                    Priority {g.priority}
+                    <span className="ml-1.5 font-normal text-[var(--muted)]">· {g.label}</span>
                   </h4>
+                  <Badge variant={g.priority === 1 ? "bad" : g.priority === 2 ? "warn" : "default"}>
+                    {priorityMeta[g.priority].label}
+                  </Badge>
+                  <span className="text-xs text-[var(--faint)]">{g.fixes.length} fixes</span>
                 </div>
                 <div className="space-y-3">
                   {g.fixes.map((f) => (
@@ -103,8 +124,8 @@ function Baseline({ label, value }: { label: string; value: number }) {
   return (
     <div>
       <div className="mb-1 flex justify-between text-sm">
-        <span className="text-slate-700">{label}</span>
-        <span className="font-semibold text-slate-800">{value}</span>
+        <span className="text-[var(--ink-soft)]">{label}</span>
+        <span className="font-semibold tnum text-[var(--foreground)]">{value}</span>
       </div>
       <Progress value={value} />
     </div>
@@ -113,50 +134,64 @@ function Baseline({ label, value }: { label: string; value: number }) {
 
 function FixCard({ fix: f }: { fix: Fix }) {
   return (
-    <Card className="p-5">
+    <Card interactive className="p-5">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <h5 className="text-[17px] font-semibold tracking-tight text-slate-900">{f.title}</h5>
+            <h5 className="text-base font-semibold tracking-tight text-[var(--foreground)]">{f.title}</h5>
             <Badge variant={statusVariant[f.status]}>{f.status}</Badge>
           </div>
-          <p className="mt-1 text-[15px] leading-relaxed text-slate-700">{f.why}</p>
+          <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">{f.why}</p>
         </div>
-        <div className="flex shrink-0 flex-col items-center rounded-lg bg-accent-50 px-3 py-1.5">
-          <span className="text-lg font-bold text-accent-700">{f.score}</span>
-          <span className="text-[11px] font-medium uppercase tracking-wide text-accent-600">priority</span>
+        <div className="flex shrink-0 flex-col items-center justify-center rounded-lg border border-accent-200 bg-[var(--accent-tint)] px-3 py-1.5">
+          <span className="tnum text-lg font-bold text-accent-700">{f.score}</span>
+          <span className="text-2xs font-semibold uppercase tracking-wide text-accent-600">priority</span>
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-[var(--border)] pt-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-[var(--border)] pt-4 sm:grid-cols-3 lg:grid-cols-6">
         <Field label="Business impact"><Badge variant={impactVariant[f.businessImpact]}>{f.businessImpact}</Badge></Field>
         <Field label="SEO impact"><Badge variant={impactVariant[f.seoImpact]}>{f.seoImpact}</Badge></Field>
         <Field label="Difficulty"><Badge variant={difficultyVariant[f.difficulty]}>{f.difficulty}</Badge></Field>
         <Field label="Est. hours">
-          <span className="inline-flex items-center gap-1 font-medium text-slate-700"><Clock className="h-4 w-4 text-slate-500" />{f.hours}h</span>
+          <span className="inline-flex items-center gap-1 font-medium tnum text-[var(--ink-soft)]"><Clock className="h-3.5 w-3.5 text-[var(--faint)]" />{f.hours}h</span>
         </Field>
         <Field label="Revenue / mo">
-          <span className="inline-flex items-center gap-1 font-medium text-emerald-600"><DollarSign className="h-4 w-4" />{f.revenuePerMonth.toLocaleString()}</span>
+          <span className="inline-flex items-center gap-1 font-semibold tnum text-[var(--ok)]"><DollarSign className="h-3.5 w-3.5" />{f.revenuePerMonth.toLocaleString()}</span>
         </Field>
         <Field label="Owner">
-          <span className="inline-flex items-center gap-1 font-medium text-slate-700"><User className="h-4 w-4 text-slate-500" />{f.owner}</span>
+          <span className="inline-flex items-center gap-1 font-medium text-[var(--ink-soft)]"><User className="h-3.5 w-3.5 text-[var(--faint)]" />{f.owner}</span>
         </Field>
-        <Field label="Dependencies">
+        <Field label="Dependencies" className="col-span-2 sm:col-span-3 lg:col-span-6">
           {f.dependencies.length === 0 ? (
-            <span className="text-slate-500">None</span>
+            <span className="text-[var(--faint)]">None — ready to start</span>
           ) : (
-            <span className="inline-flex items-center gap-1 text-slate-700"><GitBranch className="h-4 w-4 text-slate-500" />{f.dependencies.join(", ")}</span>
+            <span className="inline-flex items-center gap-1.5 text-[var(--ink-soft)]">
+              <GitBranch className="h-3.5 w-3.5 text-[var(--faint)]" />
+              {f.dependencies.map((d) => (
+                <span key={d} className="rounded border border-[var(--border)] bg-[var(--surface-2)] px-1.5 py-0.5 text-2xs">{d}</span>
+              ))}
+            </span>
           )}
         </Field>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between border-t border-[var(--border)] pt-3">
+        <span className="text-xs text-[var(--muted)]">
+          Recommended playbook: <span className="font-medium text-[var(--ink-soft)]">{f.owner} workflow</span>
+        </span>
+        <Link href="/tools" className="inline-flex items-center gap-1 text-xs font-medium text-accent-600 hover:text-accent-700">
+          Open playbook <ArrowRight className="h-3 w-3" />
+        </Link>
       </div>
     </Card>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children, className }: { label: string; children: React.ReactNode; className?: string }) {
   return (
-    <div>
-      <div className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">{label}</div>
+    <div className={className}>
+      <div className="mb-1 text-2xs font-semibold uppercase tracking-[0.05em] text-[var(--faint)]">{label}</div>
       <div className="text-sm">{children}</div>
     </div>
   );

@@ -17,16 +17,12 @@ export function SectionHeading({
   return (
     <div className={cn("flex flex-wrap items-end justify-between gap-4", className)}>
       <div className="max-w-2xl">
-        {eyebrow && (
-          <div className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent-600">
-            {eyebrow}
-          </div>
-        )}
-        <h2 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
+        {eyebrow && <div className="eyebrow mb-1.5">{eyebrow}</div>}
+        <h2 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">
           {title}
         </h2>
         {description && (
-          <p className="mt-2 text-[15px] leading-relaxed text-slate-700">
+          <p className="mt-1.5 text-sm leading-relaxed text-[var(--muted)]">
             {description}
           </p>
         )}

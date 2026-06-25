@@ -55,7 +55,7 @@ export function ProjectPlan() {
               return (
                 <div key={h.label}>
                   <div className="mb-2 flex items-center gap-2">
-                    <span className="rounded-md bg-slate-900 px-2 py-0.5 font-mono text-xs font-semibold text-white">{h.label}</span>
+                    <span className="rounded-md bg-accent-600 px-2 py-0.5 font-mono text-xs font-semibold text-white">{h.label}</span>
                     <span className="text-xs text-slate-600">{items.length} deliverables · {hours}h</span>
                   </div>
                   <ul className="divide-y divide-[var(--border)] overflow-hidden rounded-xl border border-[var(--border)]">
