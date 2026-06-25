@@ -55,7 +55,7 @@ export function AgentsView() {
   return (
     <div className="space-y-7">
       {/* ── Manager — the Orchestrator runs the floor ───────────────────────── */}
-      <section className="reveal overflow-hidden rounded-2xl border border-[#23293a] bg-[var(--foreground)] text-white shadow-lg">
+      <section className="reveal overflow-hidden rounded-2xl border border-[var(--feature-border)] bg-[var(--feature)] text-white shadow-lg">
         <div className="flex flex-wrap items-start gap-4 p-6">
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
             <orchestrator.icon className="h-6 w-6 text-white" />
@@ -102,7 +102,7 @@ export function AgentsView() {
               className={cn(
                 "rounded-md px-2.5 py-1 text-xs font-medium capitalize transition-colors",
                 filter === f
-                  ? "bg-[var(--foreground)] text-white"
+                  ? "bg-accent-600 text-white"
                   : "text-[var(--muted)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]"
               )}
             >

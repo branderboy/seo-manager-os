@@ -89,7 +89,7 @@ export default function CommandCenterPage() {
       </PageHeader>
 
       {/* ── HERO — the single read-first zone. Dark mission-control strip. ──── */}
-      <section className="reveal overflow-hidden rounded-2xl border border-[#23293a] bg-[var(--foreground)] text-white shadow-lg">
+      <section className="reveal overflow-hidden rounded-2xl border border-[var(--feature-border)] bg-[var(--feature)] text-white shadow-lg">
         <div className="grid gap-0 lg:grid-cols-[1.7fr_1fr]">
           <div className="p-6 lg:p-7">
             <div className="flex items-center gap-2 text-2xs font-semibold uppercase tracking-[0.1em] text-white/45">

@@ -14,7 +14,7 @@ const badgeVariants = cva(
         warn: "bg-[var(--warn-tint)] text-[#9a6512] ring-amber-200/70",
         bad: "bg-[var(--danger-tint)] text-[#b13a31] ring-rose-200/70",
         outline: "bg-[var(--surface)] text-[var(--ink-soft)] ring-[var(--border-strong)]",
-        solid: "bg-[var(--foreground)] text-white ring-transparent",
+        solid: "bg-accent-600 text-white ring-transparent",
       },
     },
     defaultVariants: { variant: "default" },

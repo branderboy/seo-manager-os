@@ -65,7 +65,7 @@ export function Sidebar() {
           href="/command"
           className="flex h-[57px] items-center gap-2.5 border-b border-[var(--border)] px-4"
         >
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[var(--foreground)] text-[13px] font-bold text-white">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-accent-600 text-[13px] font-bold text-white">
             S
           </span>
           <span className="min-w-0 leading-tight">

@@ -76,7 +76,7 @@ export function StageBar() {
             className="h-8 w-56 rounded-md border border-[var(--border)] bg-[var(--surface-2)] pl-8 pr-3 text-sm text-[var(--foreground)] outline-none transition-all placeholder:text-[var(--faint)] focus:w-72 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100"
           />
         </div>
-        <button className="flex h-8 items-center gap-1.5 rounded-md bg-[var(--foreground)] px-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90">
+        <button className="flex h-8 select-none items-center gap-1.5 rounded-lg bg-gradient-to-b from-accent-500 to-accent-600 px-3 text-sm font-semibold text-white shadow-[0_3px_0_0_#1b3a9e,0_5px_10px_-3px_rgba(29,78,216,0.45),inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-100 hover:from-accent-400 hover:to-accent-500 active:translate-y-[3px] active:shadow-[0_0_0_0_#1b3a9e]">
           <Plus className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">New</span>
         </button>

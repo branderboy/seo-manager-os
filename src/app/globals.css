@@ -24,6 +24,11 @@
   --accent-ink: #1b40b0;
   --accent-tint: #eef4ff;
 
+  /* Feature surface — deep, confident blue for hero/mission-control zones. */
+  --feature: #11295a;
+  --feature-deep: #0d2049;
+  --feature-border: #23457f;
+
   /* Semantic status — used consistently for badges, dots, charts. */
   --ok: #1f9d6b;
   --ok-tint: #e7f6ef;

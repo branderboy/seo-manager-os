@@ -206,7 +206,7 @@ function Workspace({ onChange }: { onChange: () => void }) {
   return (
     <Section title="Workspace" desc="How the OS identifies your agency and the active engagement.">
       <div className="flex items-center gap-4">
-        <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-900 text-lg font-bold text-white">
+        <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-600 text-lg font-bold text-white">
           MA
         </span>
         <div>
