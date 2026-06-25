@@ -7,6 +7,7 @@ import { useEngagement } from "@/components/engagement/store";
 import { MobileNav } from "@/components/layout/mobile-nav";
 
 const TITLES: Record<string, string> = {
+  command: "Command Center",
   clients: "Clients",
   integrations: "Integrations",
   settings: "Settings",

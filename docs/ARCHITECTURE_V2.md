@@ -129,17 +129,44 @@ CSV Import · PDF Export · White Label · Teams · Recurring Audits · API Acce
 | **Deployment Verification** | ❌ missing | Needs backend (crawl/verify) |
 | Integrations (PageSpeed, Lighthouse, DataForSEO, OpenAI, white-label, teams, API, webhooks) | partial (mock catalog) | Expand + make real |
 
-### Open decision — scope
-Earlier we locked **"Local SEO only"** and removed the SaaS/Enterprise dashboards. v2's vision
-(Site Migration, Programmatic SEO, Core Web Vitals, AI Search) is broader than pure local.
-**Decision needed:** is v2 *local-first* (these are advanced local plays) or *general SEO*?
-This affects Discovery, Playbooks, and the specialist roster.
+### Scope — resolved: SEO Operations Platform (not "local")
 
-### Suggested build order (UI-first on mock data, backend where noted)
-1. **Command Center** homepage — highest daily value, answers "what do I do today".
-2. **Diagnosis v2** — Priority 1/2/3 with impact/hours/revenue/owner/deps, wired to the
-   existing `scoring.ts`. High leverage, code already exists.
-3. **Daily Task lifecycle + Tracker-as-command-center** — task states, blockers, waiting-on.
-4. **Risk Center** — replace the Clients health score.
-5. **Wins Feed** + **Workflow Dependencies** visualization.
-6. **Deployment Verification** + real integrations (needs the backend from `BUILD_SPEC.md`).
+SEO Manager OS is **not a Local SEO tool** — it is an **SEO Operations Platform** that supports
+any SEO workflow an agency runs: Local, National, Ecommerce, Enterprise, AI Search, Technical,
+Programmatic, Site Migrations, Content SEO.
+
+**The engine stays the same** — Discovery → Research → Diagnosis → Strategy → Execution →
+Reporting. Only the **playbooks, specialists, and recommendations** change by client type:
+
+| Client type | Playbooks |
+|---|---|
+| Local business | GBP, citations, location pages, reviews |
+| Ecommerce | collections, products, faceted navigation |
+| SaaS | topical authority, product-led content |
+| Enterprise | governance, multiple stakeholders, workflows |
+| Migration | redirects, validation, deployment |
+| AI Search | entities, structured data, answer optimization |
+
+Don't think "local vs general." Think **one operating system with specialized playbooks.**
+(The earlier "local-only" scoping is superseded. The removed model-specific dashboards were the
+old paradigm; v2 converges on one adaptive client view + playbooks, not three dashboards.)
+
+### Build order (3 phases)
+
+**Phase 1 — make it feel like software people use every day**
+1. **Command Center** (the homepage)
+2. **Diagnosis v2** (business impact, owner, hours, dependencies — wired to `scoring.ts`)
+3. **Daily Task Engine + Tracker**
+4. **Workflow Dependencies**
+
+**Phase 2 — manager intelligence**
+5. Risk Center · 6. Wins Feed · 7. Expanded AI Workforce · 8. Morning Briefing
+
+**Phase 3 — operations**
+9. Deployment Verification · 10. Search Console · 11. Analytics · 12. Lighthouse ·
+13. DataForSEO · 14. Other integrations
+
+### Command Center — the rule
+It is **not SEO-focused.** It answers one question: **"What does the SEO Manager need to do
+today?"** Everything on it serves that — clients needing attention, AI jobs running, priority
+tasks, blockers, pending approvals, deployments, new opportunities, wins since yesterday.

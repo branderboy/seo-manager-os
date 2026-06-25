@@ -87,7 +87,9 @@ make every stage generate deliverables that auto-feed the next; Tracker becomes 
 command center; Agent Store is internally the **AI Workforce** (Orchestrator + ~15 specialists,
 each owning a stage). New surfaces to build: **Command Center** (homepage), **Workflow
 Dependencies** (visual), **Risk Center** (replaces Health Score), **Wins Feed**, **Deployment
-Verification**. Open decision recorded there: is v2 *local-first* or *general SEO*?
+Verification**. **Scope resolved: SEO Operations Platform** — one engine, playbooks vary by
+client type (Local/Ecom/SaaS/Enterprise/Migration/AI Search). The earlier "local-only" scoping
+is superseded.
 
 ## Product direction (updated 2026-06-18, from review)
 
