@@ -19,6 +19,7 @@ import {
   Rocket,
 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
+import { currentUser } from "@/lib/model";
 import { cn } from "@/lib/utils";
 
 const dashIcons = { local: MapPin, saas: Cloud, enterprise: Building2 } as const;
@@ -53,10 +54,15 @@ export function Sidebar() {
         {/* Brand */}
         <Link
           href="/command"
-          className="flex h-[72px] flex-col justify-center border-b border-white/10 px-5 hover:bg-white/5"
+          className="flex h-14 items-center gap-2.5 border-b border-white/10 px-4 hover:bg-white/5"
         >
-          <div className="truncate text-[16px] font-semibold tracking-tight text-white">SEO Manager OS</div>
-          <div className="truncate font-mono text-xs text-white/60">v1.0</div>
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-sm font-bold text-white">
+            S
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-semibold tracking-tight text-white">SEO Manager OS</span>
+            <span className="block truncate text-xs text-white/50">{currentUser.agency}</span>
+          </span>
         </Link>
 
         {/* Nav */}
@@ -95,7 +101,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
               className={cn(
                 "flex items-center border-l-4 py-2.5 pr-4 text-sm transition-colors",
                 active
-                  ? "border-[#51B34E] bg-white/10 pl-5 font-medium text-white"
+                  ? "border-accent-500 bg-white/10 pl-5 font-medium text-white"
                   : "border-transparent pl-6 text-white hover:bg-white/5 hover:text-white"
               )}
             >
@@ -105,7 +111,7 @@ function NavGroup({ items, pathname }: { items: Item[]; pathname: string }) {
                     className={cn(
                       "flex h-[22px] w-[22px] items-center justify-center rounded-full text-[11px] font-bold",
                       active
-                        ? "bg-[#51B34E] text-white"
+                        ? "bg-accent-500 text-white"
                         : "border-2 border-slate-500 text-white"
                     )}
                   >

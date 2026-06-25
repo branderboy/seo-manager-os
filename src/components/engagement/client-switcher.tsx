@@ -15,11 +15,11 @@ export function ClientSwitcher() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-2 rounded-lg bg-black/10 px-3 py-1.5 text-white transition-colors hover:bg-black/20"
+        className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-white px-2.5 py-1.5 text-slate-700 transition-colors hover:bg-slate-50"
       >
-        <span className="max-w-[180px] truncate text-sm font-semibold">{engagement.business}</span>
-        <span className="rounded bg-white/20 px-1.5 py-0.5 text-[11px] font-semibold">{engagement.model}</span>
-        <ChevronDown className="h-4 w-4 opacity-80" />
+        <span className="max-w-[160px] truncate text-sm font-medium">{engagement.business}</span>
+        <span className="rounded bg-accent-50 px-1.5 py-0.5 text-[11px] font-semibold text-accent-700">{engagement.model}</span>
+        <ChevronDown className="h-4 w-4 text-slate-400" />
       </button>
 
       {open && (
