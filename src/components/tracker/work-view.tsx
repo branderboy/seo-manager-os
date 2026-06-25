@@ -1,83 +1,77 @@
 import { CalendarClock } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Badge, StatusDot } from "@/components/ui/badge";
+import { StatTile, StatRow } from "@/components/ui/metric";
 import { tasksByLane, deadlines, workTasks, type Priority, type WorkTask } from "@/lib/work";
 
-const prDot: Record<Priority, string> = {
-  High: "bg-rose-500",
-  Medium: "bg-amber-500",
-  Low: "bg-slate-300",
+const prTone: Record<Priority, "bad" | "warn" | "default"> = {
+  High: "bad",
+  Medium: "warn",
+  Low: "default",
 };
 
-const laneAccent: Record<string, string> = {
-  Active: "text-accent-600",
-  "QA & Deploy": "text-accent-600",
-  Done: "text-emerald-600",
-};
+// Lane header tone — waiting lanes read as amber (parked), Done as green.
+function laneTone(lane: string): { dot: "good" | "accent" | "warn" | "default"; count: string } {
+  if (lane === "Done") return { dot: "good", count: "text-[var(--ok)]" };
+  if (lane.startsWith("Waiting")) return { dot: "warn", count: "text-[var(--warn)]" };
+  return { dot: "accent", count: "text-accent-600" };
+}
 
 export function WorkView() {
   const groups = tasksByLane();
   const waiting = workTasks.filter((t) => t.lane.startsWith("Waiting")).length;
-  const summary = [
-    { label: "Active", value: workTasks.filter((t) => t.lane === "Active").length },
-    { label: "Waiting on", value: waiting },
-    { label: "QA & Deploy", value: workTasks.filter((t) => t.lane === "QA & Deploy").length },
-    { label: "Done", value: workTasks.filter((t) => t.lane === "Done").length },
-  ];
 
   return (
     <div className="space-y-5">
       {/* Summary */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {summary.map((s) => (
-          <Card key={s.label} className="p-5">
-            <div className="text-sm font-medium text-slate-700">{s.label}</div>
-            <div className="mt-1 text-3xl font-semibold tracking-tight text-slate-900">{s.value}</div>
-          </Card>
-        ))}
-      </div>
+      <StatRow cols={4}>
+        <StatTile label="Active" value={workTasks.filter((t) => t.lane === "Active").length} tone="accent" />
+        <StatTile label="Waiting on" value={waiting} tone="warn" sub="client / dev / Google" />
+        <StatTile label="QA & Deploy" value={workTasks.filter((t) => t.lane === "QA & Deploy").length} />
+        <StatTile label="Done this week" value={workTasks.filter((t) => t.lane === "Done").length} tone="good" />
+      </StatRow>
 
       {/* Lanes + deadlines */}
       <div className="grid gap-5 lg:grid-cols-2">
-        {groups.map((g) => (
-          <Card key={g.lane}>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <span className={laneAccent[g.lane] ?? "text-slate-700"}>{g.lane}</span>
-                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">
-                  {g.tasks.length}
-                </span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+        {groups.map((g) => {
+          const tone = laneTone(g.lane);
+          return (
+            <Card key={g.lane} className="flex flex-col">
+              <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-2.5">
+                <div className="flex items-center gap-2">
+                  <StatusDot tone={tone.dot} />
+                  <h3 className="text-sm font-semibold text-[var(--foreground)]">{g.lane}</h3>
+                </div>
+                <span className={`text-xs font-semibold tnum ${tone.count}`}>{g.tasks.length}</span>
+              </div>
               <ul className="divide-y divide-[var(--border)]">
                 {g.tasks.map((t) => (
                   <TaskRow key={t.id} task={t} />
                 ))}
+                {g.tasks.length === 0 && (
+                  <li className="px-4 py-6 text-center text-xs text-[var(--faint)]">Nothing here</li>
+                )}
               </ul>
-            </CardContent>
-          </Card>
-        ))}
+            </Card>
+          );
+        })}
 
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CalendarClock className="h-4 w-4 text-amber-500" /> Deadlines
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="divide-y divide-[var(--border)]">
-              {deadlines.map((t) => (
-                <li key={t.id} className="flex items-center justify-between gap-3 py-2.5">
-                  <div className="min-w-0">
-                    <div className="truncate font-medium text-slate-800">{t.title}</div>
-                    <div className="text-sm text-slate-600">{t.client}</div>
-                  </div>
-                  <span className="shrink-0 text-sm font-medium text-slate-700">{t.due}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
+          <div className="flex items-center gap-2 border-b border-[var(--border)] px-4 py-2.5">
+            <CalendarClock className="h-4 w-4 text-[var(--warn)]" />
+            <h3 className="text-sm font-semibold text-[var(--foreground)]">Deadlines</h3>
+          </div>
+          <ul className="divide-y divide-[var(--border)]">
+            {deadlines.map((t) => (
+              <li key={t.id} className="flex items-center justify-between gap-3 px-4 py-2.5">
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-medium text-[var(--foreground)]">{t.title}</div>
+                  <div className="text-xs text-[var(--muted)]">{t.client}</div>
+                </div>
+                <span className="shrink-0 text-xs font-medium text-[var(--ink-soft)]">{t.due}</span>
+              </li>
+            ))}
+          </ul>
         </Card>
       </div>
     </div>
@@ -86,19 +80,19 @@ export function WorkView() {
 
 function TaskRow({ task: t }: { task: WorkTask }) {
   return (
-    <li className="flex items-center justify-between gap-3 py-2.5">
+    <li className="flex items-center justify-between gap-3 px-4 py-2.5 transition-colors hover:bg-[var(--surface-2)]">
       <div className="flex min-w-0 items-start gap-2.5">
-        <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${prDot[t.priority]}`} />
+        <StatusDot tone={prTone[t.priority]} className="mt-1.5" />
         <div className="min-w-0">
-          <div className="truncate font-medium text-slate-800">{t.title}</div>
-          <div className="text-sm text-slate-600">
+          <div className="truncate text-sm font-medium text-[var(--foreground)]">{t.title}</div>
+          <div className="text-xs text-[var(--muted)]">
             {t.client} · {t.owner}
           </div>
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <Badge variant="outline">{t.step}</Badge>
-        <span className="text-sm text-slate-600">{t.due}</span>
+        <span className="text-xs text-[var(--muted)]">{t.due}</span>
       </div>
     </li>
   );

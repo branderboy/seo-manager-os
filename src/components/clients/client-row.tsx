@@ -25,29 +25,30 @@ export function ClientRow({ client: c }: { client: Client }) {
   };
 
   return (
-    <tr
-      onClick={open}
-      className="group cursor-pointer border-b border-[var(--border)] last:border-0 hover:bg-slate-50/60"
-    >
-      <td className="px-5 py-3.5">
+    <tr onClick={open} className="group cursor-pointer transition-colors hover:bg-[var(--surface-2)]">
+      <td className="py-3 pl-4 pr-3">
         <div className="flex items-center gap-3">
           <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-xs font-bold text-white", c.color)}>
             {c.initials}
           </span>
-          <span>
-            <span className="block font-medium text-slate-800 group-hover:text-accent-600">{c.name}</span>
-            <span className="block text-xs text-slate-600">{c.industry} · {c.location}</span>
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-medium text-[var(--foreground)] group-hover:text-accent-600">
+              {c.name}
+            </span>
+            <span className="block truncate text-xs text-[var(--muted)]">
+              {c.industry} · {c.location}
+            </span>
           </span>
         </div>
       </td>
-      <td className="px-3 py-3.5">
-        <span className="inline-flex items-center gap-1.5 text-slate-700">
-          <Icon className="h-4 w-4 text-slate-600" />
+      <td className="px-3 py-3">
+        <span className="inline-flex items-center gap-1.5 text-sm text-[var(--ink-soft)]">
+          <Icon className="h-4 w-4 text-[var(--muted)]" />
           {c.model}
         </span>
       </td>
-      <td className="px-3 py-3.5 text-slate-700">{c.owner}</td>
-      <td className="px-3 py-3.5">
+      <td className="px-3 py-3 text-sm text-[var(--ink-soft)]">{c.owner}</td>
+      <td className="px-3 py-3">
         <div className="flex items-center gap-2">
           <div className="w-16">
             <Progress value={risk.overall} tone={riskTone(risk.overall)} />
@@ -55,12 +56,12 @@ export function ClientRow({ client: c }: { client: Client }) {
           <Badge variant={riskBadge(risk.level)}>{risk.overall}</Badge>
         </div>
       </td>
-      <td className="px-3 py-3.5 text-slate-700">{c.scores.ai}</td>
-      <td className="px-3 py-3.5">
+      <td className="px-3 py-3 text-right text-sm font-medium tnum text-[var(--ink-soft)]">{c.scores.ai}</td>
+      <td className="px-3 py-3">
         <Badge variant={statusVariant[c.status]}>{c.status}</Badge>
       </td>
-      <td className="px-5 py-3.5 text-right">
-        <ChevronRight className="ml-auto h-4 w-4 text-slate-300 group-hover:text-accent-500" />
+      <td className="py-3 pl-3 pr-4 text-right">
+        <ChevronRight className="ml-auto h-4 w-4 text-[var(--faint)] transition-colors group-hover:text-accent-600" />
       </td>
     </tr>
   );
