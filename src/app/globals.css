@@ -2,212 +2,177 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  SEO Manager OS — design language: "Calm command."
+  Near-monochrome ink on paper. One signal color. Hairline structure.
+  Typography and whitespace do the work; decoration does not.
+*/
 :root {
-  /* Ported from the Pro Wash design system — navy + red on white, real depth. */
-  --background: #ffffff;
-  --foreground: #0c0f14;
-  --ink-soft: #1e232b;
-  --muted: #5b6472;
-  --border: #d4dceb;
-  --surface: #ffffff;
-  --surface-2: #f4f7fc;
-  --tint: #eaf1fb;
-  --tint-line: #c9dcf0;
-  --navy: #16345f;
-  --navy-deep: #0a1e3d;
-  --brand: #ce1126;
-  --brand-deep: #a50f20;
-  --shadow: 0 10px 28px -12px rgba(10, 30, 61, 0.22), 0 2px 6px -2px rgba(10, 30, 61, 0.1);
-  --shadow-lg: 0 22px 48px -18px rgba(10, 30, 61, 0.32), 0 4px 12px -4px rgba(10, 30, 61, 0.12);
-  /* The golden curve — fast start, gentle settle. Default for entrances. */
-  --ease-golden: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Canvas — warm paper, layered by lightness not by shadow */
+  --canvas: #fafafa;          /* app background */
+  --surface: #ffffff;         /* cards, panels */
+  --surface-2: #f6f6f5;       /* insets, hover fills, table zebra */
+  --surface-3: #efefee;       /* pressed / deeper inset */
+
+  /* Ink — warm neutral, high contrast so it reads without being heavy */
+  --ink: #18181b;             /* primary text, headings */
+  --ink-2: #52525b;           /* secondary text */
+  --ink-3: #8b8b94;           /* tertiary, captions, placeholders */
+  --ink-inv: #fafafa;         /* text on dark */
+
+  /* Structure — hairlines, never thick */
+  --line: #e7e7e6;            /* default border */
+  --line-2: #dededc;          /* slightly stronger divider */
+  --line-strong: #c9c9c6;     /* inputs, focus rest */
+
+  /* Signal — the single brand accent. Used for action + selection, sparingly. */
+  --signal: #5b56e0;
+  --signal-hover: #4d48d4;
+  --signal-press: #413dbd;
+  --signal-weak: #efeefc;     /* tint fill */
+  --signal-line: #d8d6f6;     /* tint border */
+  --signal-ink: #4b46c9;      /* signal-colored text on light */
+
+  /* Status — functional only, never decorative */
+  --ok: #15803d;
+  --ok-weak: #e9f6ec;
+  --warn: #b45309;
+  --warn-weak: #fbf0e2;
+  --danger: #c0322b;
+  --danger-weak: #fbeceb;
+
+  /* Elevation — exactly one resting shadow + one for popovers */
+  --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.05);
+  --shadow-pop: 0 1px 1px rgba(24, 24, 27, 0.04), 0 8px 24px -8px rgba(24, 24, 27, 0.18),
+    0 2px 6px -2px rgba(24, 24, 27, 0.08);
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* legacy aliases still referenced by components */
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --border: var(--line);
+  --muted: var(--ink-2);
 }
 
-html {
-  scroll-behavior: smooth;
+* {
+  border-color: var(--line);
 }
 
 body {
-  background: var(--surface-2);
-  color: var(--foreground);
+  background: var(--canvas);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Tabular figures wherever numbers carry meaning */
+.nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 ::selection {
-  background: rgba(99, 91, 255, 0.16);
+  background: var(--signal-weak);
+  color: var(--signal-ink);
 }
 
-/* Thin, unobtrusive scrollbars (Linear/Notion feel). */
+/* Quiet, thin scrollbars */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #d4d8e0 transparent;
+  scrollbar-color: #d8d8d6 transparent;
 }
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background: #d4d8e0;
+  background: #dcdcda;
+  border: 3px solid transparent;
+  background-clip: padding-box;
   border-radius: 9999px;
 }
+*::-webkit-scrollbar-thumb:hover {
+  background: #c7c7c4;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
 
-/* Crafted entrance — content settles in rather than snapping (fluidity). */
+/* ── Motion primitives ──────────────────────────────────────────────── */
 @keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
 }
-.reveal {
-  animation: reveal 0.4s var(--ease-golden) both;
-}
+.reveal { animation: reveal 0.4s var(--ease) both; }
 
-/* Score rings draw their arc in on mount (delight through selective emphasis). */
-@keyframes ring-draw {
-  from {
-    stroke-dashoffset: var(--ring-c);
-  }
-  to {
-    stroke-dashoffset: var(--ring-offset);
-  }
-}
-.ring-draw {
-  animation: ring-draw 0.6s var(--ease-golden) both;
-}
-
-/* Reduced motion: still confirm the change, just fast — never remove it. */
-@media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .ring-draw {
-    animation-duration: 150ms;
-    animation-timing-function: ease;
-  }
-}
-
-/* Staggered list/card entrance — opacity only (movement looks cheap at this scale). */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .stagger > * {
-    animation: fade-in 0.45s var(--ease-golden) both;
-  }
+  .stagger > * { animation: fade-in 0.4s var(--ease) both; }
   .stagger > *:nth-child(1) { animation-delay: 0ms; }
-  .stagger > *:nth-child(2) { animation-delay: 50ms; }
-  .stagger > *:nth-child(3) { animation-delay: 100ms; }
-  .stagger > *:nth-child(4) { animation-delay: 150ms; }
-  .stagger > *:nth-child(5) { animation-delay: 200ms; }
-  .stagger > *:nth-child(6) { animation-delay: 250ms; }
-  .stagger > *:nth-child(7) { animation-delay: 300ms; }
-  .stagger > *:nth-child(n + 8) { animation-delay: 340ms; }
+  .stagger > *:nth-child(2) { animation-delay: 40ms; }
+  .stagger > *:nth-child(3) { animation-delay: 80ms; }
+  .stagger > *:nth-child(4) { animation-delay: 120ms; }
+  .stagger > *:nth-child(5) { animation-delay: 160ms; }
+  .stagger > *:nth-child(6) { animation-delay: 200ms; }
+  .stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .stagger > * {
-    animation: fade-in 150ms ease both;
-  }
+  .reveal, .stagger > * { animation-duration: 120ms; animation-timing-function: ease; transform: none; }
 }
 
+@keyframes ring-draw {
+  from { stroke-dashoffset: var(--ring-c); }
+  to   { stroke-dashoffset: var(--ring-offset); }
+}
+.ring-draw { animation: ring-draw 0.7s var(--ease) both; }
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: shimmer 1.4s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after { animation: none; }
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────── */
 @layer utilities {
-  /* Shadows-over-borders: three rgba layers create depth on any background. */
-  .shadow-border {
-    box-shadow: var(--shadow);
-  }
-  .shadow-border-hover {
-    box-shadow: var(--shadow-lg);
-  }
-}
-
-/* ── Landing page (ported from the provided design) ────────────────────────── */
-.bg-grid-lines {
-  background-image:
-    linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-    linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-  background-size: 40px 40px;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 80%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 80%, transparent);
-}
-.bg-radial-glow {
-  background: radial-gradient(circle at top center, rgba(59, 130, 246, 0.08) 0%, rgba(248, 250, 252, 0) 70%);
-}
-
-/* App content canvas — faint grid + top glow so the dashboard matches the homepage. */
-.app-canvas {
-  background-color: var(--surface-2);
-  background-image:
-    radial-gradient(circle at 50% -10%, rgba(37, 99, 235, 0.06) 0%, rgba(247, 248, 251, 0) 55%),
-    linear-gradient(to right, rgba(203, 213, 225, 0.35) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(203, 213, 225, 0.35) 1px, transparent 1px);
-  background-size: 100% 100%, 40px 40px, 40px 40px;
-}
-.glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-}
-@keyframes pin-pulse {
-  0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(29, 161, 242, 0.5); }
-  70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(29, 161, 242, 0); }
-  100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(29, 161, 242, 0); }
-}
-.pin-pulse {
-  animation: pin-pulse 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Shared sidebar design tokens — inherited by every page via the layout. */
-.pw-sidebar {
-  background-color: #2f3e4d;
-}
-.pw-nav-item {
-  color: #ffffff;
-}
-.pw-nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
-}
-.pw-nav-item.active {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border-left: 4px solid #51b34e;
-}
-@media (prefers-reduced-motion: reduce) {
-  .pin-pulse {
-    animation: none;
-  }
-}
-@media (min-width: 768px) {
-  .pipeline-card:not(:nth-child(3n))::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: -24px;
-    width: 24px;
-    height: 2px;
-    background: linear-gradient(to right, rgba(203, 213, 225, 1), transparent);
-    z-index: 0;
+  .shadow-border { box-shadow: var(--shadow-sm); }
+  .shadow-border-hover { box-shadow: var(--shadow-pop); }
+  .ring-focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--canvas), 0 0 0 4px var(--signal-line);
   }
 }
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+    @apply mx-auto w-full max-w-[1180px] px-6 sm:px-8;
   }
-  .grid-bg {
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      rgba(11, 18, 32, 0.06) 1px,
-      transparent 0
-    );
-    background-size: 28px 28px;
+  /* Quiet section eyebrow — replaces the loud colored pill */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
   }
 }

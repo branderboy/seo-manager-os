@@ -16,25 +16,27 @@ export function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="reveal pb-2">
+    <div className="reveal">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="max-w-2xl">
-          <div className="mb-2 flex items-center gap-2">
-            {typeof stage === "number" && (
-              <span className="text-xs font-extrabold uppercase tracking-[0.1em] text-accent-600">
-                Stage {String(stage).padStart(2, "0")}
-              </span>
-            )}
-            {badge && <Badge variant="accent">{badge}</Badge>}
-          </div>
-          <h1 className="text-[28px] font-extrabold leading-tight tracking-[-0.02em] text-slate-900">{title}</h1>
+          {(typeof stage === "number" || badge) && (
+            <div className="mb-1.5 flex items-center gap-2">
+              {typeof stage === "number" && (
+                <span className="eyebrow text-signal-ink">
+                  Stage {String(stage).padStart(2, "0")}
+                </span>
+              )}
+              {badge && <Badge variant="accent">{badge}</Badge>}
+            </div>
+          )}
+          <h1 className="text-2xl font-semibold tracking-tight text-ink">{title}</h1>
           {description && (
-            <p className="mt-2 max-w-[58ch] text-[15px] leading-relaxed text-slate-700">{description}</p>
+            <p className="mt-1.5 max-w-[60ch] text-base text-ink-2">{description}</p>
           )}
         </div>
         {children && <div className="flex items-center gap-2">{children}</div>}
       </div>
-      <StageAgents stage={stage} className="mt-4" />
+      <StageAgents stage={stage} className="mt-5" />
     </div>
   );
 }
