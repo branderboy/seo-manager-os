@@ -6,6 +6,7 @@ import { BriefVersions } from "@/components/flow/brief-versions";
 import { BriefShare } from "@/components/flow/brief-share";
 import { BriefApproval } from "@/components/flow/brief-approval";
 import { StrategyDoc } from "@/components/flow/strategy-doc";
+import { ProjectPlan } from "@/components/flow/project-plan";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = { title: "Project Brief" };
@@ -28,6 +29,7 @@ export default function StrategyPage() {
       <CarriedFromDiagnosis />
       <BriefVersions />
       <StrategyDoc />
+      <ProjectPlan />
       <BriefApproval />
       <BriefShare />
     </>
