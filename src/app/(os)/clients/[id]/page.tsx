@@ -117,7 +117,7 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
       </Card>
 
       {/* ── Workspace section nav ──────────────────────────────────────────── */}
-      <nav className="sticky top-[57px] z-10 -mx-1 flex gap-1 overflow-x-auto border-b border-[var(--border)] bg-[var(--canvas)]/90 px-1 py-1.5 backdrop-blur">
+      <nav className="sticky top-[60px] z-10 -mx-1 flex gap-1 overflow-x-auto border-b border-[var(--border)] bg-[var(--canvas)]/90 px-1 py-1.5 backdrop-blur">
         {NAV.map((n) => (
           <a
             key={n.id}

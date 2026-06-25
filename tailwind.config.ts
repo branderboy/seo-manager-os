@@ -13,20 +13,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Single accent — a confident, slightly cool blue. Not a glow.
+        // Single accent — a confident emerald green. The brand signal.
         accent: {
-          50: "#eef4ff",
-          100: "#dae6ff",
-          200: "#bcd2ff",
-          300: "#8eb4ff",
-          400: "#588cff",
-          500: "#2f66f5",
-          600: "#1d4ed8",
-          700: "#1b40b0",
-          800: "#1c388c",
-          900: "#1c326f",
+          50: "#ecfdf3",
+          100: "#d1fadf",
+          200: "#a6f4c5",
+          300: "#6ce9a6",
+          400: "#32d583",
+          500: "#16b364",
+          600: "#099250",
+          700: "#087443",
+          800: "#095c37",
+          900: "#084c2e",
         },
-        primary: "#2f66f5",
+        primary: "#16b364",
         // App canvas + chrome. Sidebar is a hair off-white, surfaces are white.
         canvas: "#f7f8fa",
         sidebar: "#fbfbfc",
@@ -35,18 +35,18 @@ const config: Config = {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
-      // Enterprise-dense scale — 13/14px workhorse text, not consumer-large.
+      // Readable scale — comfortable 16px workhorse text, legible labels.
       fontSize: {
-        "2xs": ["0.6875rem", { lineHeight: "1rem", letterSpacing: "0.01em" }], // 11
-        xs: ["0.75rem", { lineHeight: "1.05rem" }], // 12
-        sm: ["0.8125rem", { lineHeight: "1.25rem" }], // 13
-        base: ["0.875rem", { lineHeight: "1.45rem" }], // 14
-        md: ["0.9375rem", { lineHeight: "1.5rem" }], // 15
-        lg: ["1.0625rem", { lineHeight: "1.6rem" }], // 17
-        xl: ["1.25rem", { lineHeight: "1.7rem" }], // 20
-        "2xl": ["1.5rem", { lineHeight: "1.9rem" }], // 24
-        "3xl": ["1.875rem", { lineHeight: "2.25rem" }], // 30
-        "4xl": ["2.25rem", { lineHeight: "2.5rem" }], // 36
+        "2xs": ["0.75rem", { lineHeight: "1.05rem", letterSpacing: "0.01em" }], // 12
+        xs: ["0.8125rem", { lineHeight: "1.15rem" }], // 13
+        sm: ["0.9375rem", { lineHeight: "1.4rem" }], // 15
+        base: ["1rem", { lineHeight: "1.6rem" }], // 16
+        md: ["1.0625rem", { lineHeight: "1.65rem" }], // 17
+        lg: ["1.1875rem", { lineHeight: "1.75rem" }], // 19
+        xl: ["1.375rem", { lineHeight: "1.85rem" }], // 22
+        "2xl": ["1.625rem", { lineHeight: "2.05rem" }], // 26
+        "3xl": ["2rem", { lineHeight: "2.4rem" }], // 32
+        "4xl": ["2.5rem", { lineHeight: "2.75rem" }], // 40
       },
       borderRadius: {
         // Tight, mechanical radii — no consumer pills.

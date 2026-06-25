@@ -9,6 +9,7 @@ const nextConfig = {
   output: "export", // static HTML export -> out/
   trailingSlash: true, // GitHub Pages serves folder/index.html
   reactStrictMode: true,
+  staticPageGenerationTimeout: 180, // data-dense pages prerender slowly
   images: { unoptimized: true },
   basePath: isPages ? `/${repo}` : "",
   assetPrefix: isPages ? `/${repo}/` : "",

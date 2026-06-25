@@ -1,453 +1,437 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ListTodo,
-  Ban,
-  Clock3,
-  Bot,
-  AlertTriangle,
-  CheckCircle2,
+  ListChecks,
+  Loader,
+  Hourglass,
   Rocket,
-  TrendingUp,
+  Bot,
+  Search,
+  Bell,
+  Calendar,
+  ArrowUpRight,
+  ArrowDownRight,
   ArrowRight,
-  Sun,
-  CalendarClock,
-  Activity as ActivityIcon,
-  ShieldAlert,
-  Circle,
+  CheckCircle2,
+  Check,
+  Plus,
+  TrendingUp,
+  Users,
+  AlertCircle,
 } from "lucide-react";
-import { PageHeader } from "@/components/layout/page-header";
-import { Card } from "@/components/ui/card";
-import { Badge, StatusDot } from "@/components/ui/badge";
-import { StatTile, StatRow } from "@/components/ui/metric";
-import { Section } from "@/components/dashboard/section";
-import { morningBriefing } from "@/lib/wins";
+import { Badge } from "@/components/ui/badge";
+import { DonutChart, TrafficArea } from "@/components/command/charts";
+import { STAGES } from "@/lib/stages";
+import { featuredInvestigation as inv, currentUser } from "@/lib/model";
 import {
-  morningBrief,
-  opsStats,
   priorityTasks,
-  clientsNeedingAttention,
-  blockers,
-  approvals,
-  deployments,
-  wins,
   aiJobs,
-  riskAlerts,
-  upcomingDeadlines,
-  recentActivity,
-  type OpsStat,
-  type Severity,
-  type Activity,
+  clientsNeedingAttention,
+  deployments,
 } from "@/lib/command";
 
 export const metadata: Metadata = { title: "Command Center" };
 
-const sevBadge: Record<Severity, "bad" | "warn" | "default"> = {
-  high: "bad",
-  medium: "warn",
-  low: "default",
-};
-const sevDot: Record<Severity, "bad" | "warn" | "default"> = {
-  high: "bad",
-  medium: "warn",
-  low: "default",
-};
-const statTone: Record<OpsStat["tone"], "default" | "accent" | "warn" | "bad"> = {
-  default: "default",
-  accent: "accent",
-  warn: "warn",
-  bad: "bad",
-};
+// ── Local view data (matches the operations dashboard) ─────────────────────
+const kpis = [
+  { label: "Total Tasks", value: 127, delta: 10, up: true, icon: ListChecks },
+  { label: "In Progress", value: 32, delta: 12, up: true, icon: Loader },
+  { label: "Waiting", value: 14, delta: 8, up: false, icon: Hourglass },
+  { label: "Deploy Today", value: 8, delta: 23, up: true, icon: Rocket },
+  { label: "AI Jobs Running", value: 5, delta: null, up: true, icon: Bot },
+];
 
-const activityIcon: Record<Activity["kind"], React.ComponentType<{ className?: string }>> = {
-  deploy: Rocket,
-  approve: CheckCircle2,
-  agent: Bot,
-  win: TrendingUp,
-  comment: Circle,
-  alert: AlertTriangle,
-};
-const activityTint: Record<Activity["kind"], string> = {
-  deploy: "text-accent-600 bg-[var(--accent-tint)]",
-  approve: "text-[var(--ok)] bg-[var(--ok-tint)]",
-  agent: "text-[var(--ink-soft)] bg-[var(--surface-3)]",
-  win: "text-[var(--ok)] bg-[var(--ok-tint)]",
-  comment: "text-[var(--muted)] bg-[var(--surface-3)]",
-  alert: "text-[var(--danger)] bg-[var(--danger-tint)]",
-};
+const tasksByStatus = [
+  { name: "Backlog", value: 27, color: "#94a3b8" },
+  { name: "In Progress", value: 32, color: "#3b82f6" },
+  { name: "Waiting", value: 14, color: "#f43f5e" },
+  { name: "QA", value: 11, color: "#f59e0b" },
+  { name: "Deploying", value: 8, color: "#8b5cf6" },
+  { name: "Verified", value: 35, color: "#16b364" },
+];
+
+const trafficTrend = [
+  { label: "Apr 18", value: 4200 },
+  { label: "Apr 25", value: 6100 },
+  { label: "May 2", value: 7400 },
+  { label: "May 9", value: 9800 },
+  { label: "May 16", value: 13200 },
+];
+
+const riskBars = [
+  { label: "Traffic Risk", level: "High", value: 72, tone: "bad" },
+  { label: "Revenue Risk", level: "Medium", value: 58, tone: "warn" },
+  { label: "Technical Risk", level: "High", value: 76, tone: "bad" },
+  { label: "Content Risk", level: "Medium", value: 54, tone: "warn" },
+  { label: "Local Risk", level: "Medium", value: 62, tone: "warn" },
+  { label: "Authority Risk", level: "Low", value: 38, tone: "good" },
+] as const;
+
+const diagnosisRows = [
+  { issue: "Fix missing title tags", impact: "High", hours: 4, revenue: "$2,400/mo", owner: "PR" },
+  { issue: "Improve Core Web Vitals", impact: "High", hours: 8, revenue: "$4,800/mo", owner: "JD" },
+  { issue: "Add schema markup", impact: "High", hours: 3, revenue: "$1,100/mo", owner: "AK" },
+  { issue: "Optimize meta descriptions", impact: "Medium", hours: 2, revenue: "$900/mo", owner: "PR" },
+  { issue: "Fix thin content pages", impact: "Medium", hours: 6, revenue: "$1,300/mo", owner: "JD" },
+];
+
+const kanban = [
+  { lane: "Backlog", count: 27, tone: "default", tasks: ["Create service page brief", "Fix broken links", "Add FAQ schema", "Update sitemap"] },
+  { lane: "In Progress", count: 32, tone: "accent", tasks: ["Fix title tags", "Improve LCP", "Update robots.txt"] },
+  { lane: "QA", count: 11, tone: "warn", tasks: ["Check schema", "Cross-browser test", "Schema updates"] },
+  { lane: "Deployed", count: 8, tone: "good", tasks: ["New landing pages", "Title tags fixed", "Internal links added"] },
+];
+
+const reportsOverview = [
+  { label: "Work Completed", value: "24", delta: 20, up: true, icon: CheckCircle2 },
+  { label: "Blocked Tasks", value: "7", delta: 12, up: false, icon: AlertCircle },
+  { label: "Traffic Change", value: "+14%", delta: 14, up: true, icon: TrendingUp },
+  { label: "Leads Generated", value: "128", delta: 18, up: true, icon: Users },
+];
+
+const workforce = [
+  { name: "Orchestrator", status: "Running", color: "bg-sky-500" },
+  { name: "Tech Auditor", status: "Running", color: "bg-blue-500" },
+  { name: "Content Strategist", status: "Running", color: "bg-violet-500" },
+  { name: "Intent Mapper", status: "Running", color: "bg-teal-500" },
+  { name: "Schema Specialist", status: "Running", color: "bg-emerald-500" },
+  { name: "QA Inspector", status: "Waiting", color: "bg-orange-500" },
+  { name: "Reporting Manager", status: "Completed", color: "bg-rose-500" },
+];
+
+const morningChecklist = [
+  { text: "8 tasks due today", meta: "High priority" },
+  { text: "3 clients need your attention", meta: "Requires action" },
+  { text: "5 AI jobs running", meta: "In progress" },
+  { text: "2 deployments scheduled", meta: "Today" },
+  { text: "Traffic up 14%", meta: "vs last 30 days" },
+];
+
+const impactBadge = { High: "bad", Medium: "warn", Low: "good" } as const;
+const pBadge = ["bg-rose-500", "bg-amber-500", "bg-slate-400"];
 
 export default function CommandCenterPage() {
-  const runningJobs = aiJobs.filter((j) => j.status !== "Queued").length;
-
   return (
-    <>
-      <PageHeader title="Command Center" description="Everything that needs your attention today, in one place.">
-        <span className="hidden items-center gap-1.5 text-sm text-[var(--muted)] sm:flex">
-          <Sun className="h-4 w-4 text-[var(--warn)]" />
-          {morningBrief.date}
-        </span>
-      </PageHeader>
-
-      {/* ── HERO — the single read-first zone. Dark mission-control strip. ──── */}
-      <section className="reveal overflow-hidden rounded-2xl border border-[var(--feature-border)] bg-[var(--feature)] text-white shadow-lg">
-        <div className="grid gap-0 lg:grid-cols-[1.7fr_1fr]">
-          <div className="p-6 lg:p-7">
-            <div className="flex items-center gap-2 text-2xs font-semibold uppercase tracking-[0.1em] text-white/45">
-              <Sun className="h-3.5 w-3.5" />
-              Morning brief
-            </div>
-            <h2 className="mt-2 text-2xl font-semibold leading-snug tracking-tight text-white">
-              {morningBrief.greeting.replace("Kawani", "Josh")}.
-            </h2>
-            <p className="mt-1 text-lg font-medium leading-relaxed text-white/80">
-              {morningBriefing.headline}
-            </p>
-
-            <div className="mt-5">
-              <div className="mb-2.5 text-2xs font-semibold uppercase tracking-[0.08em] text-white/40">
-                Focus today
-              </div>
-              <ul className="space-y-2.5">
-                {morningBriefing.focus.map((f, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-white/85">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-white/10 text-2xs font-bold tnum text-white">
-                      {i + 1}
-                    </span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <div className="space-y-6">
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">
+            Good morning, {currentUser.name.split(" ")[0]} <span className="align-middle">👋</span>
+          </h1>
+          <p className="mt-1 text-base text-[var(--muted)]">Here&apos;s what&apos;s happening with your SEO operations today.</p>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <div className="relative hidden sm:block">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--faint)]" />
+            <input
+              placeholder="Search clients, tasks, reports…"
+              className="h-10 w-72 rounded-lg border border-[var(--border)] bg-[var(--surface)] pl-9 pr-3 text-sm shadow-card outline-none placeholder:text-[var(--faint)] focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
+            />
           </div>
+          <button className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] shadow-card hover:text-[var(--foreground)]">
+            <Bell className="h-5 w-5" />
+            <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--danger)] px-1 text-2xs font-bold text-white">3</span>
+          </button>
+          <button className="flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-medium text-[var(--ink-soft)] shadow-card hover:text-[var(--foreground)]">
+            <Calendar className="h-4 w-4 text-[var(--muted)]" />
+            May 12 – May 18, 2025
+          </button>
+        </div>
+      </div>
 
-          {/* Overnight rail — visually nested inside the dark zone */}
-          <div className="border-t border-white/10 bg-white/[0.03] p-6 lg:border-l lg:border-t-0 lg:p-7">
-            <div className="mb-2.5 flex items-center justify-between">
-              <span className="text-2xs font-semibold uppercase tracking-[0.08em] text-white/40">
-                Overnight
+      {/* ── KPI cards ──────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
+        {kpis.map((k) => (
+          <Panel key={k.label} className="p-5">
+            <div className="flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-tint)] text-accent-600">
+                <k.icon className="h-4 w-4" />
               </span>
-              <Link href="/wins" className="text-2xs font-medium text-white/55 hover:text-white">
-                All wins →
-              </Link>
+              <span className="text-sm font-medium text-[var(--muted)]">{k.label}</span>
             </div>
-            <ul className="space-y-2.5">
-              {morningBriefing.overnight.map((o) => (
-                <li key={o} className="flex items-start gap-2.5 text-sm text-white/80">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
-                  {o}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 grid grid-cols-3 gap-3 border-t border-white/10 pt-5">
-              {opsStats.slice(0, 3).map((s) => (
-                <div key={s.key}>
-                  <div className="tnum text-xl font-semibold text-white">{s.value}</div>
-                  <div className="mt-0.5 text-2xs leading-tight text-white/45">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── KPI band — one object, hairline-divided tiles ──────────────────── */}
-      <StatRow cols={4}>
-        {opsStats.map((s) => (
-          <StatTile
-            key={s.key}
-            label={s.label}
-            value={s.value}
-            sub={s.sub}
-            tone={statTone[s.tone]}
-          />
+            <div className="mt-3 tnum text-4xl font-bold tracking-tight text-[var(--foreground)]">{k.value}</div>
+            {k.delta != null && (
+              <div className={`mt-2 flex items-center gap-1 text-sm font-semibold ${k.up ? "text-accent-600" : "text-[var(--danger)]"}`}>
+                {k.up ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
+                {k.delta}% <span className="font-normal text-[var(--muted)]">from last week</span>
+              </div>
+            )}
+          </Panel>
         ))}
-      </StatRow>
+      </div>
 
-      {/* ── ACT NOW — primary worklist + attention rail ────────────────────── */}
-      <Section label="Act now" action={{ href: "/tracker", label: "Open tracker" }}>
-        <div className="grid gap-5 lg:grid-cols-[1.7fr_1fr]">
-          {/* Priority tasks — the main panel, given the most weight */}
-          <Card>
-            <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-3">
-              <div className="flex items-center gap-2">
-                <ListTodo className="h-4 w-4 text-accent-600" />
-                <h3 className="text-sm font-semibold text-[var(--foreground)]">Priority tasks today</h3>
-              </div>
-              <Badge variant="default">{priorityTasks.length} due</Badge>
-            </div>
-            <ul className="divide-y divide-[var(--border)]">
-              {priorityTasks.map((t) => (
-                <li
-                  key={t.name}
-                  className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-[var(--surface-2)]"
-                >
-                  <StatusDot tone={sevDot[t.priority]} pulse={t.priority === "high"} />
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-medium text-[var(--foreground)]">{t.name}</div>
-                    <div className="mt-0.5 text-xs text-[var(--muted)]">
-                      {t.client} · {t.owner}
-                    </div>
-                  </div>
-                  <Badge variant={sevBadge[t.priority]}>{t.priority}</Badge>
-                  <span className="w-20 shrink-0 text-right text-xs font-medium tnum text-[var(--ink-soft)]">
-                    {t.due}
+      {/* ── Row: Priority Tasks · AI Jobs · Tasks by Status ────────────────── */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Panel className="flex flex-col">
+          <PanelHead title="Priority Tasks" href="/tracker" />
+          <ul className="flex-1 divide-y divide-[var(--border)] px-5">
+            {priorityTasks.map((t) => (
+              <li key={t.name} className="flex items-center gap-3 py-3">
+                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-2xs font-bold text-white ${pBadge[t.priority === "high" ? 0 : t.priority === "medium" ? 1 : 2]}`}>
+                  P{t.priority === "high" ? 1 : t.priority === "medium" ? 2 : 3}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-semibold text-[var(--foreground)]">{t.name}</div>
+                  <div className="truncate text-xs text-[var(--muted)]">{t.client} · {t.due}</div>
+                </div>
+                <Badge variant={t.priority === "high" ? "bad" : t.priority === "medium" ? "warn" : "good"}>
+                  {t.priority === "high" ? "High" : t.priority === "medium" ? "Medium" : "Low"} impact
+                </Badge>
+              </li>
+            ))}
+          </ul>
+          <PanelFoot href="/tracker" label="View all tasks" />
+        </Panel>
+
+        <Panel className="flex flex-col">
+          <PanelHead title={`AI Jobs Running (${aiJobs.length})`} href="/agents" />
+          <ul className="flex-1 divide-y divide-[var(--border)] px-5">
+            {aiJobs.map((j) => (
+              <li key={`${j.agent}-${j.client}`} className="flex items-center gap-3 py-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-3)] text-[var(--ink-soft)]">
+                  <Bot className="h-4 w-4" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-semibold text-[var(--foreground)]">{j.agent}</div>
+                  <div className="truncate text-xs text-[var(--muted)]">{j.client}</div>
+                </div>
+                <Badge variant={j.status === "Queued" ? "warn" : "good"}>{j.status === "Queued" ? "Queued" : "Running"}</Badge>
+              </li>
+            ))}
+          </ul>
+          <PanelFoot href="/agents" label="View all jobs" />
+        </Panel>
+
+        <Panel className="flex flex-col">
+          <PanelHead title="Tasks by Status" href="/tracker" />
+          <div className="flex flex-1 items-center gap-4 p-5">
+            <DonutChart data={tasksByStatus} />
+            <ul className="flex-1 space-y-2">
+              {tasksByStatus.map((s) => (
+                <li key={s.name} className="flex items-center gap-2 text-sm">
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
+                  <span className="flex-1 text-[var(--ink-soft)]">{s.name}</span>
+                  <span className="tnum font-semibold text-[var(--foreground)]">{s.value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <PanelFoot href="/tracker" label="View all tasks" />
+        </Panel>
+      </div>
+
+      {/* ── Row: Traffic · Attention · Risk · Deploy Queue ─────────────────── */}
+      <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-4">
+        <Panel className="p-5">
+          <div className="text-sm font-semibold text-[var(--foreground)]">Traffic Overview</div>
+          <div className="text-xs text-[var(--muted)]">vs last 30 days</div>
+          <div className="mt-2 text-3xl font-bold text-accent-600">+14%</div>
+          <div className="text-xs text-[var(--muted)]">Total organic traffic</div>
+          <div className="mt-2"><TrafficArea data={trafficTrend} /></div>
+        </Panel>
+
+        <Panel className="flex flex-col">
+          <div className="px-5 pt-5">
+            <div className="text-sm font-semibold text-[var(--foreground)]">Clients Need Attention</div>
+            <div className="mt-1 tnum text-3xl font-bold text-[var(--foreground)]">{clientsNeedingAttention.length}</div>
+          </div>
+          <ul className="mt-1 flex-1 px-5">
+            {clientsNeedingAttention.slice(0, 3).map((c) => (
+              <li key={c.client} className="border-t border-[var(--border)] py-2.5 first:border-t-0">
+                <div className="text-sm font-medium text-[var(--foreground)]">{c.client}</div>
+                <div className={`text-xs font-medium ${c.severity === "high" ? "text-[var(--danger)]" : "text-[var(--warn)]"}`}>{c.reason.split(" — ")[0]}</div>
+              </li>
+            ))}
+          </ul>
+          <PanelFoot href="/clients" label="View all clients" />
+        </Panel>
+
+        <Panel className="p-5">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold text-[var(--foreground)]">Risk Center</span>
+            <Link href="/risk" className="text-xs font-medium text-accent-600 hover:text-accent-700">View full report</Link>
+          </div>
+          <ul className="mt-3 space-y-2.5">
+            {riskBars.map((r) => (
+              <li key={r.label} className="flex items-center gap-2 text-xs">
+                <span className="w-24 shrink-0 text-[var(--ink-soft)]">{r.label}</span>
+                <span className={`w-12 shrink-0 font-semibold ${r.tone === "bad" ? "text-[var(--danger)]" : r.tone === "warn" ? "text-[var(--warn)]" : "text-accent-600"}`}>{r.level}</span>
+                <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--surface-3)]">
+                  <span className={`block h-full rounded-full ${r.tone === "bad" ? "bg-[var(--danger)]" : r.tone === "warn" ? "bg-[var(--warn)]" : "bg-accent-500"}`} style={{ width: `${r.value}%` }} />
+                </span>
+                <span className="tnum w-12 shrink-0 text-right text-[var(--muted)]">{r.value}/100</span>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+
+        <Panel className="flex flex-col">
+          <PanelHead title="Deployment Queue" href="/deployments" />
+          <ul className="flex-1 divide-y divide-[var(--border)] px-5">
+            {deployments.map((d, i) => (
+              <li key={d.item} className="flex items-center gap-3 py-2.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-3)] text-[var(--muted)]"><Rocket className="h-4 w-4" /></span>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-medium text-[var(--foreground)]">{d.client}</div>
+                  <div className="truncate text-xs text-[var(--muted)]">{d.item}</div>
+                </div>
+                <Badge variant={i === 0 ? "good" : i === 1 ? "warn" : "default"}>{d.when}</Badge>
+              </li>
+            ))}
+          </ul>
+          <PanelFoot href="/deployments" label="View all" />
+        </Panel>
+      </div>
+
+      {/* ── SEO Pipeline stepper ──────────────────────────────────────────── */}
+      <Panel className="p-5">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold text-[var(--foreground)]">SEO Pipeline</span>
+          <Link href="/workflow" className="text-xs font-medium text-accent-600 hover:text-accent-700">View full pipeline</Link>
+        </div>
+        <div className="mt-5 flex items-start gap-1 overflow-x-auto pb-1">
+          {STAGES.map((s, i) => {
+            const done = s.n < inv.currentStage;
+            const current = s.n === inv.currentStage;
+            const Icon = s.icon;
+            return (
+              <div key={s.slug} className="flex min-w-[88px] flex-1 flex-col items-center text-center">
+                <div className="flex w-full items-center">
+                  <span className={`h-0.5 flex-1 ${i === 0 ? "opacity-0" : done || current ? "bg-accent-400" : "bg-[var(--border)]"}`} />
+                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 ${done ? "border-accent-500 bg-accent-500 text-white" : current ? "border-accent-500 bg-[var(--accent-tint)] text-accent-600" : "border-[var(--border)] bg-[var(--surface)] text-[var(--faint)]"}`}>
+                    {done ? <Check className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
                   </span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          {/* Right rail — attention + risk, two quieter stacked cards */}
-          <div className="space-y-5">
-            <Card>
-              <div className="flex items-center gap-2 border-b border-[var(--border)] px-4 py-3">
-                <AlertTriangle className="h-4 w-4 text-[var(--danger)]" />
-                <h3 className="text-sm font-semibold text-[var(--foreground)]">Clients needing attention</h3>
+                  <span className={`h-0.5 flex-1 ${i === STAGES.length - 1 ? "opacity-0" : done ? "bg-accent-400" : "bg-[var(--border)]"}`} />
+                </div>
+                <div className="mt-2 text-xs font-semibold text-[var(--foreground)]">{s.short}</div>
+                <div className={`text-2xs ${current ? "font-semibold text-accent-600" : "text-[var(--muted)]"}`}>
+                  {current ? "In Progress" : done ? "Complete" : "Upcoming"}
+                </div>
               </div>
-              <ul className="divide-y divide-[var(--border)]">
-                {clientsNeedingAttention.map((c) => (
-                  <li key={c.client} className="flex items-start gap-2.5 px-4 py-2.5">
-                    <StatusDot tone={sevDot[c.severity]} className="mt-1.5" />
-                    <div className="min-w-0">
-                      <div className="text-sm font-medium text-[var(--foreground)]">{c.client}</div>
-                      <div className="text-xs leading-snug text-[var(--muted)]">{c.reason}</div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+            );
+          })}
+        </div>
+      </Panel>
 
-            <Card>
-              <div className="flex items-center gap-2 border-b border-[var(--border)] px-4 py-3">
-                <ShieldAlert className="h-4 w-4 text-[var(--warn)]" />
-                <h3 className="text-sm font-semibold text-[var(--foreground)]">Risk alerts</h3>
-              </div>
-              <ul className="divide-y divide-[var(--border)]">
-                {riskAlerts.map((r) => (
-                  <li key={r.client} className="flex items-center gap-3 px-4 py-2.5">
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-medium text-[var(--foreground)]">{r.client}</div>
-                      <div className="truncate text-xs text-[var(--muted)]">{r.signal}</div>
-                    </div>
-                    <span
-                      className={`shrink-0 rounded-md px-1.5 py-0.5 text-2xs font-bold tnum ${
-                        r.severity === "high"
-                          ? "bg-[var(--danger-tint)] text-[#b13a31]"
-                          : "bg-[var(--warn-tint)] text-[#9a6512]"
-                      }`}
-                    >
-                      {r.metric}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+      {/* ── Row: Diagnosis · Daily Task Engine · Reports ───────────────────── */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Panel className="flex flex-col">
+          <PanelHead title="Diagnosis Priority Board" href="/diagnosis" />
+          <div className="flex gap-1.5 px-5 pb-3">
+            <span className="rounded-md bg-accent-500 px-2.5 py-1 text-xs font-semibold text-white">Priority 1 (12)</span>
+            <span className="rounded-md bg-[var(--surface-3)] px-2.5 py-1 text-xs font-medium text-[var(--muted)]">Priority 2 (18)</span>
+            <span className="rounded-md bg-[var(--surface-3)] px-2.5 py-1 text-xs font-medium text-[var(--muted)]">Priority 3 (24)</span>
           </div>
-        </div>
-      </Section>
+          <ul className="flex-1 divide-y divide-[var(--border)] px-5">
+            {diagnosisRows.map((d) => (
+              <li key={d.issue} className="flex items-center gap-2 py-2.5">
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-medium text-[var(--foreground)]">{d.issue}</div>
+                  <div className="text-xs text-[var(--muted)]">{d.hours}h · <span className="font-medium text-accent-600">{d.revenue}</span></div>
+                </div>
+                <Badge variant={impactBadge[d.impact as keyof typeof impactBadge]}>{d.impact}</Badge>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--surface-3)] text-2xs font-bold text-[var(--ink-soft)]">{d.owner}</span>
+              </li>
+            ))}
+          </ul>
+          <PanelFoot href="/diagnosis" label="View all diagnoses" />
+        </Panel>
 
-      {/* ── OPERATIONS — quieter monitor grid ──────────────────────────────── */}
-      <Section label="Operations">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <Panel icon={Ban} title="Blockers" tone="bad" count={blockers.length}>
-            <ul className="space-y-2.5">
-              {blockers.map((b) => (
-                <li key={b.task}>
-                  <div className="text-sm font-medium text-[var(--ink-soft)]">{b.task}</div>
-                  <div className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-[var(--muted)]">
-                    <span>{b.client}</span>
-                    <Badge variant="warn">Waiting on {b.waitingOn}</Badge>
-                    <span className="tnum">· {b.age}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-
-          <Panel icon={Clock3} title="Approvals waiting" tone="warn" count={approvals.length}>
-            <ul className="space-y-2.5">
-              {approvals.map((a) => (
-                <li key={a.item} className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-medium text-[var(--ink-soft)]">{a.item}</div>
-                    <div className="text-xs text-[var(--muted)]">{a.client}</div>
-                  </div>
-                  <span className="shrink-0 text-xs text-[var(--faint)]">{a.since}</span>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-
-          <Panel icon={Bot} title="AI Workforce" tone="accent" count={`${runningJobs} active`} href="/agents">
-            <ul className="space-y-2.5">
-              {aiJobs.map((j) => (
-                <li key={`${j.agent}-${j.client}`} className="flex items-center gap-2.5">
-                  <StatusDot
-                    tone={j.status === "Queued" ? "default" : "good"}
-                    pulse={j.status === "Running"}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-medium text-[var(--ink-soft)]">{j.agent}</div>
-                    <div className="truncate text-xs text-[var(--muted)]">{j.client}</div>
-                  </div>
-                  <span className="shrink-0 text-xs tnum text-[var(--faint)]">{j.eta}</span>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-
-          <Panel icon={Rocket} title="Deployments today" tone="default" count={deployments.length} href="/deployments">
-            <ul className="space-y-2.5">
-              {deployments.map((d) => (
-                <li key={d.item} className="flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-medium text-[var(--ink-soft)]">{d.item}</div>
-                    <div className="text-xs text-[var(--muted)]">{d.client}</div>
-                  </div>
-                  <Badge variant={d.status === "Live" ? "good" : d.status === "Queued" ? "default" : "accent"}>
-                    {d.status}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-        </div>
-      </Section>
-
-      {/* ── PULSE — activity feed + deadlines + wins ───────────────────────── */}
-      <Section label="Pulse">
-        <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
-          {/* Activity feed — the live operational stream */}
-          <Card>
-            <div className="flex items-center gap-2 border-b border-[var(--border)] px-4 py-3">
-              <ActivityIcon className="h-4 w-4 text-[var(--muted)]" />
-              <h3 className="text-sm font-semibold text-[var(--foreground)]">Recent activity</h3>
-            </div>
-            <ul className="px-4 py-1">
-              {recentActivity.map((a, i) => {
-                const Icon = activityIcon[a.kind];
-                return (
-                  <li key={i} className="relative flex gap-3 py-2.5">
-                    {i < recentActivity.length - 1 && (
-                      <span className="absolute left-[15px] top-9 h-[calc(100%-1rem)] w-px bg-[var(--border)]" />
-                    )}
-                    <span
-                      className={`relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${activityTint[a.kind]}`}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <div className="min-w-0 flex-1 pt-1">
-                      <div className="text-sm leading-snug text-[var(--ink-soft)]">
-                        <span className="font-semibold text-[var(--foreground)]">{a.actor}</span> {a.action}{" "}
-                        <span className="font-medium text-[var(--foreground)]">{a.target}</span>
-                      </div>
-                      <div className="mt-0.5 text-xs text-[var(--muted)]">
-                        {a.client} · {a.when}
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </Card>
-
-          <div className="space-y-5">
-            {/* Upcoming deadlines */}
-            <Card>
-              <div className="flex items-center gap-2 border-b border-[var(--border)] px-4 py-3">
-                <CalendarClock className="h-4 w-4 text-[var(--muted)]" />
-                <h3 className="text-sm font-semibold text-[var(--foreground)]">Upcoming deadlines</h3>
+        <Panel className="flex flex-col">
+          <PanelHead title="Daily Task Engine" href="/tasks" />
+          <div className="grid flex-1 grid-cols-2 gap-2 p-5 pt-0">
+            {kanban.map((col) => (
+              <div key={col.lane} className="rounded-lg border border-[var(--border)] bg-[var(--surface-2)] p-2.5">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-[var(--foreground)]">{col.lane}</span>
+                  <span className="tnum text-2xs font-bold text-[var(--muted)]">{col.count}</span>
+                </div>
+                <div className="space-y-1.5">
+                  {col.tasks.slice(0, 3).map((t) => (
+                    <div key={t} className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-1.5 text-xs text-[var(--ink-soft)]">{t}</div>
+                  ))}
+                  <div className="text-2xs text-[var(--faint)]">+ {Math.max(0, col.count - 3)} more</div>
+                </div>
               </div>
-              <ul className="divide-y divide-[var(--border)]">
-                {upcomingDeadlines.map((d) => (
-                  <li key={d.item} className="flex items-center gap-3 px-4 py-2.5">
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-medium text-[var(--foreground)]">{d.item}</div>
-                      <div className="text-xs text-[var(--muted)]">
-                        {d.client} · {d.owner}
-                      </div>
-                    </div>
-                    <span
-                      className={`shrink-0 text-xs font-medium ${
-                        d.due === "overdue"
-                          ? "text-[var(--danger)]"
-                          : d.due === "today"
-                          ? "text-[var(--warn)]"
-                          : "text-[var(--muted)]"
-                      }`}
-                    >
-                      {d.when}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
-
-            {/* Recent wins */}
-            <Card>
-              <div className="flex items-center gap-2 border-b border-[var(--border)] px-4 py-3">
-                <CheckCircle2 className="h-4 w-4 text-[var(--ok)]" />
-                <h3 className="text-sm font-semibold text-[var(--foreground)]">Recent wins</h3>
-              </div>
-              <ul className="px-4 py-2">
-                {wins.slice(0, 4).map((w) => (
-                  <li key={w.text} className="flex items-start gap-2.5 py-1.5 text-sm text-[var(--ink-soft)]">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--ok)]" />
-                    <span>
-                      {w.text} <span className="text-[var(--muted)]">· {w.client}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
+            ))}
           </div>
-        </div>
-      </Section>
-    </>
+        </Panel>
+
+        <Panel className="flex flex-col">
+          <PanelHead title="Reports Overview" href="/reports" />
+          <ul className="flex-1 divide-y divide-[var(--border)] px-5">
+            {reportsOverview.map((r) => (
+              <li key={r.label} className="flex items-center gap-3 py-3.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-tint)] text-accent-600"><r.icon className="h-4 w-4" /></span>
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs text-[var(--muted)]">{r.label}</div>
+                  <div className="tnum text-xl font-bold text-[var(--foreground)]">{r.value}</div>
+                </div>
+                <span className={`flex items-center gap-0.5 text-sm font-semibold ${r.up ? "text-accent-600" : "text-[var(--danger)]"}`}>
+                  {r.up ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}{r.delta}%
+                </span>
+              </li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+
+      {/* ── Row: AI Workforce · Morning Brief ──────────────────────────────── */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Panel className="flex flex-col">
+          <PanelHead title="AI Workforce at Work" href="/agents" />
+          <div className="grid grid-cols-3 gap-3 p-5 sm:grid-cols-4">
+            {workforce.map((w) => (
+              <div key={w.name} className="flex flex-col items-center rounded-lg border border-[var(--border)] bg-[var(--surface-2)] p-3 text-center">
+                <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-white ${w.color}`}><Bot className="h-5 w-5" /></span>
+                <span className="mt-2 line-clamp-1 text-2xs font-semibold text-[var(--foreground)]">{w.name}</span>
+                <Badge variant={w.status === "Running" ? "good" : w.status === "Waiting" ? "warn" : "default"} className="mt-1">{w.status}</Badge>
+              </div>
+            ))}
+            <Link href="/agents" className="flex flex-col items-center justify-center rounded-lg border border-dashed border-[var(--border-strong)] p-3 text-center text-[var(--muted)] hover:border-accent-400 hover:text-accent-600">
+              <Plus className="h-5 w-5" />
+              <span className="mt-1 text-2xs font-medium">Add Specialist</span>
+            </Link>
+          </div>
+        </Panel>
+
+        <Panel className="flex flex-col">
+          <PanelHead title="Morning Brief" href="/wins" />
+          <ul className="flex-1 px-5">
+            {morningChecklist.map((m, i) => (
+              <li key={i} className="flex items-center gap-3 border-t border-[var(--border)] py-3 first:border-t-0">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[var(--accent-tint)] text-accent-600"><Check className="h-3.5 w-3.5" /></span>
+                <span className="flex-1 text-sm font-medium text-[var(--foreground)]">{m.text}</span>
+                <span className="text-xs text-[var(--muted)]">{m.meta}</span>
+              </li>
+            ))}
+          </ul>
+          <PanelFoot href="/wins" label="View full brief" />
+        </Panel>
+      </div>
+    </div>
   );
 }
 
-function Panel({
-  icon: Icon,
-  title,
-  count,
-  tone = "default",
-  href,
-  children,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  count?: React.ReactNode;
-  tone?: "default" | "accent" | "warn" | "bad";
-  href?: string;
-  children: React.ReactNode;
-}) {
-  const iconTone = {
-    default: "text-[var(--muted)]",
-    accent: "text-accent-600",
-    warn: "text-[var(--warn)]",
-    bad: "text-[var(--danger)]",
-  }[tone];
+/* ── shared panel primitives ───────────────────────────────────────────── */
+function Panel({ className, children }: { className?: string; children: React.ReactNode }) {
+  return <div className={`rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-card ${className ?? ""}`}>{children}</div>;
+}
+
+function PanelHead({ title, href }: { title: string; href: string }) {
   return (
-    <Card className="flex flex-col">
-      <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-2.5">
-        <div className="flex items-center gap-2">
-          <Icon className={`h-4 w-4 ${iconTone}`} />
-          <h3 className="text-sm font-semibold text-[var(--foreground)]">{title}</h3>
-        </div>
-        {count != null && (
-          <span className="text-2xs font-medium text-[var(--muted)]">{count}</span>
-        )}
-      </div>
-      <div className="flex-1 p-4">{children}</div>
-      {href && (
-        <Link
-          href={href}
-          className="flex items-center justify-center gap-1 border-t border-[var(--border)] py-2 text-xs font-medium text-[var(--muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-accent-600"
-        >
-          View all <ArrowRight className="h-3 w-3" />
-        </Link>
-      )}
-    </Card>
+    <div className="flex items-center justify-between px-5 pt-5 pb-3">
+      <span className="text-sm font-semibold text-[var(--foreground)]">{title}</span>
+      <Link href={href} className="text-xs font-medium text-accent-600 hover:text-accent-700">View all</Link>
+    </div>
+  );
+}
+
+function PanelFoot({ href, label }: { href: string; label: string }) {
+  return (
+    <Link href={href} className="flex items-center gap-1 border-t border-[var(--border)] px-5 py-3 text-xs font-semibold text-accent-600 hover:bg-[var(--surface-2)]">
+      {label} <ArrowRight className="h-3.5 w-3.5" />
+    </Link>
   );
 }

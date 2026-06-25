@@ -43,8 +43,14 @@ export default function ReportsPage() {
 
       {/* KPIs */}
       <StatRow cols={4}>
-        {reportSummary.stats.map((s) => (
-          <StatTile key={s.label} label={s.label} value={s.value} sub={s.sub} />
+        {reportSummary.stats.map((s, i) => (
+          <StatTile
+            key={s.label}
+            label={s.label}
+            value={s.value}
+            sub={s.sub}
+            tone={(["accent", "good", "warn", "default"] as const)[i % 4]}
+          />
         ))}
       </StatRow>
 
