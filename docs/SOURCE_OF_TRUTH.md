@@ -79,6 +79,16 @@ Plus: model dashboards (`/dashboards/{local,saas,enterprise}`), `/clients`, `/wo
    the high-volume mention judge. Structured outputs to the existing TS shapes. Prompts in
    `docs/BUILD_SPEC.md` §6.
 
+## v2 direction
+
+The canonical v2 architecture lives in **`docs/ARCHITECTURE_V2.md`** — read it for the full
+vision. Headlines: keep the Clients → Workflow (9 stages) → Tracker → Agent Store foundation;
+make every stage generate deliverables that auto-feed the next; Tracker becomes the project
+command center; Agent Store is internally the **AI Workforce** (Orchestrator + ~15 specialists,
+each owning a stage). New surfaces to build: **Command Center** (homepage), **Workflow
+Dependencies** (visual), **Risk Center** (replaces Health Score), **Wins Feed**, **Deployment
+Verification**. Open decision recorded there: is v2 *local-first* or *general SEO*?
+
 ## Product direction (updated 2026-06-18, from review)
 
 These supersede earlier framing where they conflict.
