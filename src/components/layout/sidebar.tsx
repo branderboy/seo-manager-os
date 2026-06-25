@@ -2,51 +2,46 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import * as React from "react";
 import {
-  Plug,
-  Settings,
+  LayoutDashboard,
   Users,
+  GitBranch,
   LineChart,
   Bot,
-  LayoutDashboard,
-  GitBranch,
+  Stethoscope,
+  BookOpen,
   FileBarChart,
-  ChevronRight,
-  Command as CommandIcon,
+  Plug,
+  Settings,
+  Plus,
+  Leaf,
+  ArrowRight,
+  MoreVertical,
 } from "lucide-react";
-import { STAGES } from "@/lib/stages";
-import { currentUser } from "@/lib/model";
+import { currentUser, clients } from "@/lib/model";
+import { riskForClient, riskBadge } from "@/lib/risk";
 import { cn } from "@/lib/utils";
 
-type Item = {
-  href: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  step?: number;
-};
+type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }> };
 
-// Enterprise primary IA — the operations the agency runs on, in priority order.
-const PRIMARY: Item[] = [
+const NAV: Item[] = [
   { href: "/command", label: "Command Center", icon: LayoutDashboard },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/workflow", label: "SEO Pipeline", icon: GitBranch },
   { href: "/tracker", label: "Operations Tracker", icon: LineChart },
   { href: "/agents", label: "AI Workforce", icon: Bot },
+  { href: "/diagnosis", label: "Diagnosis", icon: Stethoscope },
+  { href: "/tools", label: "Playbooks", icon: BookOpen },
   { href: "/reports", label: "Reports", icon: FileBarChart },
-];
-
-const WORKSPACE: Item[] = [
   { href: "/integrations", label: "Integrations", icon: Plug },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
-const PIPELINE: Item[] = STAGES.map((s) => ({
-  href: `/${s.slug}`,
-  label: s.name,
-  icon: s.icon,
-  step: s.n,
-}));
+const riskText: Record<string, string> = {
+  High: "text-rose-300",
+  Medium: "text-amber-300",
+  Low: "text-emerald-300",
+};
 
 function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(href + "/");
@@ -54,154 +49,104 @@ function isActive(pathname: string, href: string) {
 
 export function Sidebar() {
   const pathname = usePathname();
-  const pipelineActive = PIPELINE.some((p) => isActive(pathname, p.href));
-  const [pipelineOpen, setPipelineOpen] = React.useState(true);
+  const favorites = clients.slice(0, 5).map((c) => ({ c, risk: riskForClient(c) }));
 
   return (
-    <aside className="hidden w-[272px] shrink-0 flex-col border-r border-[var(--border)] bg-[var(--sidebar)] lg:flex">
+    <aside className="hidden w-[256px] shrink-0 flex-col bg-[#0b2e1f] text-white lg:flex">
       <div className="flex h-screen flex-col">
         {/* Brand */}
-        <Link
-          href="/command"
-          className="flex h-[60px] items-center gap-3 border-b border-[var(--border)] px-4"
-        >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-base font-bold text-white">
-            S
+        <Link href="/command" className="flex h-[68px] items-center gap-2.5 px-5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-500 text-white shadow-[0_4px_12px_-2px_rgba(22,179,100,0.5)]">
+            <Leaf className="h-5 w-5" />
           </span>
-          <span className="min-w-0 leading-tight">
-            <span className="block truncate text-md font-bold tracking-tight text-[var(--foreground)]">
-              SEO Manager OS
-            </span>
-            <span className="block truncate text-xs text-[var(--muted)]">
-              {currentUser.agency}
-            </span>
+          <span className="text-[15px] font-bold leading-tight tracking-tight">
+            SEO<br />
+            <span className="text-white/90">MANAGER OS</span>
           </span>
         </Link>
 
-        {/* Command palette affordance */}
-        <div className="px-3 pt-3">
-          <button className="group flex w-full items-center gap-2 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--muted)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--ink-soft)]">
-            <CommandIcon className="h-4 w-4" />
-            <span className="flex-1 text-left">Search…</span>
-            <span className="kbd">⌘K</span>
-          </button>
-        </div>
-
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-3 py-3">
-          <ul className="space-y-0.5">
-            {PRIMARY.map((it) => (
-              <NavItem key={it.href} item={it} active={isActive(pathname, it.href)} />
-            ))}
+        <nav className="px-3 pt-2">
+          <ul className="space-y-1">
+            {NAV.map((it) => {
+              const active = isActive(pathname, it.href);
+              const Icon = it.icon;
+              return (
+                <li key={it.href}>
+                  <Link
+                    href={it.href}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                      active
+                        ? "bg-accent-500 text-white shadow-[0_4px_12px_-3px_rgba(22,179,100,0.5)]"
+                        : "text-white/65 hover:bg-white/5 hover:text-white"
+                    )}
+                  >
+                    <Icon className={cn("h-[18px] w-[18px] shrink-0", active ? "text-white" : "text-white/55")} />
+                    {it.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-
-          {/* Pipeline — collapsible, the product's spine */}
-          <div className="mt-5">
-            <button
-              onClick={() => setPipelineOpen((v) => !v)}
-              className="flex w-full items-center justify-between px-2.5 pb-1 pt-1.5"
-            >
-              <span className="eyebrow">Pipeline</span>
-              <ChevronRight
-                className={cn(
-                  "h-3.5 w-3.5 text-[var(--faint)] transition-transform",
-                  (pipelineOpen || pipelineActive) && "rotate-90"
-                )}
-              />
-            </button>
-            {(pipelineOpen || pipelineActive) && (
-              <ul className="space-y-0.5">
-                {PIPELINE.map((it) => (
-                  <NavItem
-                    key={it.href}
-                    item={it}
-                    active={isActive(pathname, it.href)}
-                    dense
-                  />
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <div className="mt-5">
-            <div className="px-2.5 pb-1 pt-1.5">
-              <span className="eyebrow">Workspace</span>
-            </div>
-            <ul className="space-y-0.5">
-              {WORKSPACE.map((it) => (
-                <NavItem key={it.href} item={it} active={isActive(pathname, it.href)} />
-              ))}
-            </ul>
-          </div>
         </nav>
 
-        {/* Account */}
-        <div className="border-t border-[var(--border)] p-3">
-          <button className="flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-[var(--surface-3)]">
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-500 text-2xs font-bold text-white">
-              {currentUser.initials}
+        {/* Favorite clients */}
+        <div className="mt-5 flex-1 overflow-y-auto px-3">
+          <div className="flex items-center justify-between px-3 pb-2">
+            <span className="text-2xs font-bold uppercase tracking-[0.1em] text-white/40">Favorite clients</span>
+            <button className="flex h-5 w-5 items-center justify-center rounded text-white/40 hover:bg-white/10 hover:text-white">
+              <Plus className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <ul className="space-y-0.5">
+            {favorites.map(({ c, risk }) => (
+              <li key={c.id}>
+                <Link
+                  href={`/clients/${c.id}`}
+                  className="flex items-center gap-2.5 rounded-lg px-3 py-2 transition-colors hover:bg-white/5"
+                >
+                  <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-2xs font-bold text-white", c.color)}>
+                    {c.initials}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium text-white/85">{c.name}</span>
+                  <span className={cn("text-2xs font-semibold", riskText[risk.level])}>{risk.level}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* AI Workforce promo */}
+        <div className="px-3 pb-3">
+          <Link
+            href="/agents"
+            className="block overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-[#0f3a28] to-[#082016] p-4"
+          >
+            <div className="flex items-center gap-2 text-sm font-bold">
+              <Bot className="h-4 w-4 text-accent-400" /> AI Workforce
+            </div>
+            <p className="mt-1 text-xs leading-relaxed text-white/55">
+              12 specialists are working for you today.
+            </p>
+            <span className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-semibold text-white shadow-[0_3px_0_0_#064e2f]">
+              View Workforce <ArrowRight className="h-3.5 w-3.5" />
             </span>
-            <span className="min-w-0 flex-1 leading-tight">
-              <span className="block truncate text-sm font-medium text-[var(--foreground)]">
-                {currentUser.name}
-              </span>
-              <span className="block truncate text-2xs text-[var(--muted)]">
-                SEO Manager
-              </span>
-            </span>
-          </button>
+          </Link>
+        </div>
+
+        {/* User */}
+        <div className="flex items-center gap-2.5 border-t border-white/10 px-4 py-3">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-500 text-2xs font-bold text-white">
+            {currentUser.initials}
+          </span>
+          <span className="min-w-0 flex-1 leading-tight">
+            <span className="block truncate text-sm font-semibold">{currentUser.name}</span>
+            <span className="block truncate text-2xs text-white/45">SEO Manager</span>
+          </span>
+          <MoreVertical className="h-4 w-4 text-white/40" />
         </div>
       </div>
     </aside>
-  );
-}
-
-function NavItem({
-  item,
-  active,
-  dense,
-}: {
-  item: Item;
-  active: boolean;
-  dense?: boolean;
-}) {
-  const Icon = item.icon;
-  return (
-    <li>
-      <Link
-        href={item.href}
-        className={cn(
-          "group relative flex items-center gap-3 rounded-md px-2.5 transition-colors",
-          dense ? "py-2 text-base" : "py-2.5 text-md font-medium",
-          active
-            ? "bg-[var(--accent-tint)] font-semibold text-[var(--accent-ink)]"
-            : "text-[var(--ink-soft)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]"
-        )}
-      >
-        {active && (
-          <span className="absolute inset-y-1 left-0 w-[3px] rounded-r-full bg-accent-500" />
-        )}
-        {typeof item.step === "number" ? (
-          <span
-            className={cn(
-              "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md text-xs font-bold tnum",
-              active
-                ? "bg-accent-500 text-white"
-                : "bg-[var(--surface-3)] text-[var(--muted)] group-hover:bg-[var(--border)]"
-            )}
-          >
-            {item.step}
-          </span>
-        ) : (
-          <Icon
-            className={cn(
-              "h-[20px] w-[20px] shrink-0",
-              active ? "text-accent-600" : "text-[var(--muted)]"
-            )}
-          />
-        )}
-        <span className="truncate">{item.label}</span>
-      </Link>
-    </li>
   );
 }

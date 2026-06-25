@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/layout/sidebar";
-import { StageBar } from "@/components/layout/stage-bar";
+import { MobileNav } from "@/components/layout/mobile-nav";
 import { EngagementProvider } from "@/components/engagement/store";
 import { TaskStoreProvider } from "@/components/tasks/task-store";
 import { HandoffProvider } from "@/components/flow/handoff-store";
@@ -12,9 +12,13 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
         <div className="flex h-screen overflow-hidden bg-[var(--canvas)]">
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
-            <StageBar />
-            <main className="flex-1 overflow-y-auto bg-[var(--canvas)] px-6 py-7 lg:px-9">
-              <div className="mx-auto w-full max-w-[1400px] space-y-7 pb-20">{children}</div>
+            {/* Mobile header — sidebar collapses to a drawer below lg */}
+            <div className="flex h-14 shrink-0 items-center gap-2 border-b border-[var(--border)] bg-[var(--surface)] px-4 lg:hidden">
+              <MobileNav />
+              <span className="text-sm font-bold tracking-tight">SEO Manager OS</span>
+            </div>
+            <main className="flex-1 overflow-y-auto bg-[var(--canvas)] px-5 py-6 lg:px-8 lg:py-8">
+              <div className="mx-auto w-full max-w-[1440px] space-y-6 pb-20">{children}</div>
             </main>
           </div>
         </div>

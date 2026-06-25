@@ -13,20 +13,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Single accent — a confident, slightly cool blue. Not a glow.
+        // Single accent — a confident emerald green. The brand signal.
         accent: {
-          50: "#eef4ff",
-          100: "#dae6ff",
-          200: "#bcd2ff",
-          300: "#8eb4ff",
-          400: "#588cff",
-          500: "#2f66f5",
-          600: "#1d4ed8",
-          700: "#1b40b0",
-          800: "#1c388c",
-          900: "#1c326f",
+          50: "#ecfdf3",
+          100: "#d1fadf",
+          200: "#a6f4c5",
+          300: "#6ce9a6",
+          400: "#32d583",
+          500: "#16b364",
+          600: "#099250",
+          700: "#087443",
+          800: "#095c37",
+          900: "#084c2e",
         },
-        primary: "#2f66f5",
+        primary: "#16b364",
         // App canvas + chrome. Sidebar is a hair off-white, surfaces are white.
         canvas: "#f7f8fa",
         sidebar: "#fbfbfc",

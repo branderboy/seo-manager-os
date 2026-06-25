@@ -20,14 +20,14 @@
   --border: #e6e8ee;          /* hairline borders */
   --border-strong: #d6d9e2;   /* emphasized borders */
 
-  --accent: #2f66f5;
-  --accent-ink: #1b40b0;
-  --accent-tint: #eef4ff;
+  --accent: #16b364;
+  --accent-ink: #087443;
+  --accent-tint: #ecfdf3;
 
-  /* Feature surface — deep, confident blue for hero/mission-control zones. */
-  --feature: #11295a;
-  --feature-deep: #0d2049;
-  --feature-border: #23457f;
+  /* Feature surface — deep forest green for hero/mission-control zones. */
+  --feature: #0c2f20;
+  --feature-deep: #082016;
+  --feature-border: #1c4d39;
 
   /* Semantic status — used consistently for badges, dots, charts. */
   --ok: #1f9d6b;
@@ -36,8 +36,8 @@
   --warn-tint: #fbf2df;
   --danger: #d4493f;
   --danger-tint: #fbecea;
-  --info: #2f66f5;
-  --info-tint: #eef4ff;
+  --info: #16b364;
+  --info-tint: #ecfdf3;
 
   --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04);
   --shadow-pop: 0 16px 40px -12px rgba(16, 24, 40, 0.22);
@@ -60,7 +60,7 @@ body {
 }
 
 ::selection {
-  background: rgba(47, 102, 245, 0.16);
+  background: rgba(22, 179, 100, 0.18);
 }
 
 /* Tabular figures everywhere numbers matter — metrics line up cleanly. */
@@ -204,7 +204,7 @@ body {
   mask-image: linear-gradient(to bottom, transparent, #000 5%, #000 80%, transparent);
 }
 .bg-radial-glow {
-  background: radial-gradient(circle at top center, rgba(47, 102, 245, 0.07) 0%, rgba(248, 250, 252, 0) 70%);
+  background: radial-gradient(circle at top center, rgba(22, 179, 100, 0.07) 0%, rgba(248, 250, 252, 0) 70%);
 }
 .glass-panel {
   background: rgba(255, 255, 255, 0.85);
