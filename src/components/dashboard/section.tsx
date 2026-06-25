@@ -5,8 +5,9 @@ import { AlertTriangle, ArrowRight } from "lucide-react";
 export function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <section>
-      <div className="mb-3 flex items-center gap-3">
-        <h2 className="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-500">{label}</h2>
+      <div className="mb-4 flex items-center gap-3">
+        <span className="h-4 w-1 rounded-full bg-accent-500" />
+        <h2 className="text-xs font-extrabold uppercase tracking-[0.12em] text-slate-700">{label}</h2>
         <div className="h-px flex-1 bg-[var(--border)]" />
       </div>
       {children}
