@@ -22,7 +22,7 @@ export const demoEngagements: Engagement[] = [
     clientId: "northwind",
   },
   {
-    business: "Acme Corp",
+    business: "Trailhead Outfitters",
     website: "trailheadoutfitters.com",
     industry: "Outdoor Gear / Ecommerce",
     market: "Denver, CO",

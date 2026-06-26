@@ -46,7 +46,7 @@ const RECENT: Record<string, string[]> = {
   diagnosis: ["Root causes · Hill Country Dental", "Confidence pass · Vantage Retail"],
   strategy: ["Roadmap · Northwind Heating & Air", "Priority sort · Hill Country Dental"],
   content: ["3 service briefs · Vantage Retail", "Comparison page · Hill Country Dental"],
-  local: ["Review responses · Northwind Heating & Air", "Citations · Hill Country"],
+  local: ["Review responses · Northwind Heating & Air", "Citations · Hill Country Dental"],
   qa: ["Deploy check · Acme Corp", "CWV re-test · Hill Country Dental"],
   reporting: ["Exec summary · Vantage Retail", "ROI model · Northwind Heating & Air"],
   schema: ["FAQ schema · Northwind Heating & Air", "Product schema · Hill Country Dental"],

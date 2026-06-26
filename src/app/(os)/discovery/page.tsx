@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/page-header";
 import { StartHereCoach } from "@/components/layout/start-here";
 import { DiscoveryWizard } from "@/components/discovery/wizard";
+import { ClientInvite } from "@/components/discovery/client-invite";
 import { DiscoveryDeliverables } from "@/components/stages/discovery-deliverables";
 
 export const metadata: Metadata = { title: "Discovery Interview" };
@@ -16,6 +17,7 @@ export default function DiscoveryPage() {
       />
       <StartHereCoach />
       <DiscoveryWizard />
+      <ClientInvite />
       <DiscoveryDeliverables />
     </>
   );
