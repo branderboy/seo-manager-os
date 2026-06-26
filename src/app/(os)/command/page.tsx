@@ -23,12 +23,15 @@ import { Badge } from "@/components/ui/badge";
 import { DonutChart, TrafficArea } from "@/components/command/charts";
 import { STAGES } from "@/lib/stages";
 import { featuredInvestigation as inv, currentUser } from "@/lib/model";
+import { workforceSummary } from "@/lib/workforce";
 import {
   priorityTasks,
   aiJobs,
   clientsNeedingAttention,
   deployments,
 } from "@/lib/command";
+
+const DEPLOY_TODAY = 8;
 
 export const metadata: Metadata = { title: "Command Center" };
 
@@ -37,8 +40,8 @@ const kpis = [
   { label: "Total Tasks", value: 127, delta: 10, up: true, icon: ListChecks },
   { label: "In Progress", value: 32, delta: 12, up: true, icon: Loader },
   { label: "Waiting", value: 14, delta: 8, up: false, icon: Hourglass },
-  { label: "Deploy Today", value: 8, delta: 23, up: true, icon: Rocket },
-  { label: "AI Jobs Running", value: 5, delta: null, up: true, icon: Bot },
+  { label: "Deploy Today", value: DEPLOY_TODAY, delta: 23, up: true, icon: Rocket },
+  { label: "AI Jobs Running", value: workforceSummary.working, delta: null, up: true, icon: Bot },
 ];
 
 const tasksByStatus = [
@@ -100,10 +103,10 @@ const workforce = [
 ];
 
 const morningChecklist = [
-  { text: "8 tasks due today", meta: "High priority" },
-  { text: "3 clients need your attention", meta: "Requires action" },
-  { text: "5 AI jobs running", meta: "In progress" },
-  { text: "2 deployments scheduled", meta: "Today" },
+  { text: `${priorityTasks.length} priority tasks today`, meta: "High priority" },
+  { text: `${clientsNeedingAttention.length} clients need your attention`, meta: "Requires action" },
+  { text: `${workforceSummary.working} AI jobs running`, meta: "In progress" },
+  { text: `${DEPLOY_TODAY} deployments scheduled`, meta: "Today" },
   { text: "Traffic up 14%", meta: "vs last 30 days" },
 ];
 
@@ -185,7 +188,7 @@ export default function CommandCenterPage() {
         </Panel>
 
         <Panel className="flex flex-col">
-          <PanelHead title={`AI Jobs Running (${aiJobs.length})`} href="/agents" />
+          <PanelHead title={`AI Jobs Running (${workforceSummary.working})`} href="/agents" />
           <ul className="flex-1 divide-y divide-[var(--border)] px-5">
             {aiJobs.map((j) => (
               <li key={`${j.agent}-${j.client}`} className="flex items-center gap-3 py-3">
@@ -237,7 +240,7 @@ export default function CommandCenterPage() {
             <div className="mt-1 tnum text-3xl font-bold text-[var(--foreground)]">{clientsNeedingAttention.length}</div>
           </div>
           <ul className="mt-1 flex-1 px-5">
-            {clientsNeedingAttention.slice(0, 3).map((c) => (
+            {clientsNeedingAttention.map((c) => (
               <li key={c.client} className="border-t border-[var(--border)] py-2.5 first:border-t-0">
                 <div className="text-sm font-medium text-[var(--foreground)]">{c.client}</div>
                 <div className={`text-xs font-medium ${c.severity === "high" ? "text-[var(--danger)]" : "text-[var(--warn)]"}`}>{c.reason.split(" — ")[0]}</div>

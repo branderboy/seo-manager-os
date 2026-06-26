@@ -5,6 +5,8 @@
 // agent id so server and client render identically (no hydration drift).
 // ──────────────────────────────────────────────────────────────────────────
 
+import { agents } from "./agents";
+
 export type WorkerStatus = "Working" | "Idle" | "Queued" | "Offline";
 
 export type WorkerState = {
@@ -99,3 +101,25 @@ export function workerState(id: string, deployed: boolean): WorkerState {
     recentWork,
   };
 }
+
+// ── Single source of truth for AI-workforce counts ────────────────────────
+// Every surface (Command Center, sidebar, AI Workforce page) reads from here so
+// the numbers always tell one story. Default deploy state = agents marked
+// `active`, which is exactly what the deploy store seeds, so the AI Workforce
+// page matches these figures on load.
+export const workforceSummary = (() => {
+  const deployedAgents = agents.filter((a) => a.active);
+  const states = deployedAgents.map((a) => workerState(a.id, true));
+  const working = states.filter((s) => s.status === "Working").length;
+  const jobsToday = states.reduce((n, s) => n + s.queue, 0) + 23;
+  const avgPerformance = Math.round(
+    states.reduce((n, s) => n + s.performance, 0) / Math.max(1, states.length)
+  );
+  return {
+    total: agents.length,
+    deployed: deployedAgents.length,
+    working,
+    jobsToday,
+    avgPerformance,
+  };
+})();

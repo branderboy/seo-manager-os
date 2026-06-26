@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { currentUser, clients } from "@/lib/model";
 import { riskForClient } from "@/lib/risk";
+import { workforceSummary } from "@/lib/workforce";
 import { cn } from "@/lib/utils";
 
 type Item = { href: string; label: string; icon: React.ComponentType<{ className?: string }> };
@@ -118,7 +119,7 @@ export function Sidebar() {
         <div className="shrink-0 px-3 pb-3 pt-2">
           <Link href="/agents" className="block overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] p-4">
             <div className="text-sm font-bold">AI Workforce</div>
-            <p className="mt-1 text-xs leading-relaxed text-white/70">12 specialists are working for you today.</p>
+            <p className="mt-1 text-xs leading-relaxed text-white/70">{workforceSummary.working} specialists are working for you today.</p>
             <span className="mt-3 inline-flex items-center rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-semibold text-white">
               View Workforce
             </span>
