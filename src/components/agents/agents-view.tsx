@@ -1,5 +1,6 @@
 "use client";
 
+import { Telescope, Wrench, Stethoscope, PenLine, ShieldCheck, type LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge, StatusDot } from "@/components/ui/badge";
@@ -21,11 +22,12 @@ const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> =
 // set of assets. No icons — color carries the identity.
 type Accent = { solid: string; tint: string; text: string; ring: string };
 
-const DEPARTMENTS: { id: string; name: string; desc: string; accent: Accent; ids: string[] }[] = [
+const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; accent: Accent; ids: string[] }[] = [
   {
     id: "research",
     name: "Research & Discovery",
     desc: "Understand the business, the market and the demand",
+    icon: Telescope,
     accent: { solid: "bg-teal-500", tint: "bg-teal-50", text: "text-teal-700", ring: "ring-teal-200" },
     ids: ["discovery", "research", "intent", "competitive"],
   },
@@ -33,6 +35,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; accent: Accent; ids
     id: "technical",
     name: "Technical SEO",
     desc: "Crawl, indexation, schema, structure and links",
+    icon: Wrench,
     accent: { solid: "bg-sky-600", tint: "bg-sky-50", text: "text-sky-700", ring: "ring-sky-200" },
     ids: ["technical-auditor", "schema", "internal-linking"],
   },
@@ -40,6 +43,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; accent: Accent; ids
     id: "strategy",
     name: "Diagnosis & Strategy",
     desc: "Decide what to fix first and chart the roadmap",
+    icon: Stethoscope,
     accent: { solid: "bg-amber-500", tint: "bg-amber-50", text: "text-amber-700", ring: "ring-amber-200" },
     ids: ["diagnosis", "strategy", "brief"],
   },
@@ -47,6 +51,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; accent: Accent; ids
     id: "content",
     name: "Content & Local",
     desc: "Produce pages, briefs and local presence",
+    icon: PenLine,
     accent: { solid: "bg-emerald-600", tint: "bg-emerald-50", text: "text-emerald-700", ring: "ring-emerald-200" },
     ids: ["content", "playbook", "local"],
   },
@@ -54,6 +59,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; accent: Accent; ids
     id: "delivery",
     name: "Quality & Delivery",
     desc: "Verify the work and report the results",
+    icon: ShieldCheck,
     accent: { solid: "bg-green-700", tint: "bg-green-50", text: "text-green-700", ring: "ring-green-200" },
     ids: ["qa", "reporting"],
   },
@@ -109,10 +115,13 @@ export function AgentsView() {
         const members = dept.ids.map((id) => agentById[id]).filter(Boolean);
         const deployedHere = members.filter((m) => deployed[m.id]).length;
         const workingHere = members.filter((m) => deployed[m.id] && workerState(m.id, true).status === "Working").length;
+        const DeptIcon = dept.icon;
         return (
           <section key={dept.id}>
             <div className="mb-3 flex flex-wrap items-center gap-3">
-              <span className={cn("h-8 w-1.5 shrink-0 rounded-full", dept.accent.solid)} />
+              <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-sm", dept.accent.solid)}>
+                <DeptIcon className="h-5 w-5" />
+              </span>
               <div className="min-w-0 flex-1">
                 <h3 className="text-base font-bold tracking-tight text-[var(--foreground)]">{dept.name}</h3>
                 <p className="text-xs text-[var(--muted)]">{dept.desc}</p>
