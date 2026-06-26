@@ -316,16 +316,29 @@ export const agentTools: Record<string, string[]> = {
  * values are team-member ids (see lib/model `team`).
  */
 export const agentSupervisor: Record<string, string> = {
-  strategy: "jordan", // SEO Lead
-  local: "priya", // Local SEO Specialist
-  content: "sam", // Content Lead
-  "technical-auditor": "marcus", // Web Developer
+  // SEO Manager / Account Lead — client-facing + the glue
+  discovery: "josh",
+  brief: "josh",
+  reporting: "josh",
+  // SEO Lead — research, analysis and strategy
+  research: "jordan",
+  intent: "jordan",
+  competitive: "jordan",
+  diagnosis: "jordan",
+  strategy: "jordan",
+  playbook: "jordan",
+  // Local SEO Specialist
+  local: "priya",
+  // Content Lead
+  content: "sam",
+  // Web Developer — technical execution
+  "technical-auditor": "marcus",
+  schema: "marcus",
+  "internal-linking": "marcus",
+  qa: "marcus",
 };
 
-/** True if the agent is a Job Assistant (supports a human team member). */
-export const isJobAssistant = (agentId: string) => agentId in agentSupervisor;
-
-/** The Job Assistant that supports a given team member (if any). */
+/** The AI assistants that perform a given team member's job role. */
 export const assistantsFor = (teamId: string) =>
   agents.filter((a) => agentSupervisor[a.id] === teamId);
 

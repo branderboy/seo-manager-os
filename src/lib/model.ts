@@ -112,7 +112,7 @@ export type TeamMember = {
 };
 
 export const team: TeamMember[] = [
-  { id: "josh", name: "Josh Williamson", role: "Account Lead", email: "josh@boringseo.agency", initials: "JW", color: "bg-accent-500", capacity: 6 },
+  { id: "josh", name: "Josh Williamson", role: "SEO Manager", email: "josh@boringseo.agency", initials: "JW", color: "bg-accent-500", capacity: 6 },
   { id: "jordan", name: "Jordan Reyes", role: "SEO Lead", email: "jordan@boringseo.agency", initials: "JR", color: "bg-emerald-600", capacity: 8 },
   { id: "priya", name: "Priya Nair", role: "Local SEO Specialist", email: "priya@boringseo.agency", initials: "PN", color: "bg-violet-600", capacity: 8 },
   { id: "sam", name: "Sam Cole", role: "Content Lead", email: "sam@boringseo.agency", initials: "SC", color: "bg-amber-600", capacity: 8 },
