@@ -4,6 +4,7 @@ export type IntegrationCategory =
   | "Local & Reviews"
   | "CRM & Leads"
   | "SEO Data"
+  | "Content Optimization"
   | "AI"
   | "Planning & Delivery"
   | "Alerts & Automation";
@@ -66,6 +67,12 @@ export const integrations: Integration[] = [
   // SEO Data
   { id: "dataforseo", name: "DataForSEO", blurb: "SERP, keyword volume and rank data via API.", category: "SEO Data", initials: "DF", color: "bg-blue-700", connected: true, account: "Pay-as-you-go", synced: "Today, 6:00 AM", metric: "SERP API on" },
 
+  // Content Optimization
+  { id: "surfer", name: "Surfer SEO", blurb: "Content scoring, terms and briefs for topical depth.", category: "Content Optimization", initials: "SR", color: "bg-orange-500", connected: true, account: "Northwind workspace", synced: "Today", metric: "Content score 74" },
+  { id: "clearscope", name: "Clearscope", blurb: "Entity and term coverage grading for every draft.", category: "Content Optimization", initials: "CS", color: "bg-indigo-600", connected: false },
+  { id: "marketmuse", name: "MarketMuse", blurb: "Topic modeling and content gap planning at scale.", category: "Content Optimization", initials: "MM", color: "bg-violet-700", connected: false },
+  { id: "gtm", name: "Google Tag Manager", blurb: "Deploy and manage tracking tags and conversion events.", category: "Search & Analytics", initials: "TM", color: "bg-blue-600", connected: true, account: "GTM-NWHVAC", synced: "Connected", metric: "Tags managed" },
+
   // AI
   { id: "openai", name: "OpenAI", blurb: "GPT models for generation and the AI-mention tracker.", category: "AI", initials: "OA", color: "bg-emerald-700", connected: true, account: "gpt-4o", synced: "Connected", metric: "Generation on" },
   { id: "claude", name: "Claude (Anthropic)", blurb: "Powers diagnosis, strategy and the mention judge.", category: "AI", initials: "CL", color: "bg-orange-600", connected: true, account: "Opus / Haiku", synced: "Connected", metric: "Reasoning on" },
@@ -85,6 +92,7 @@ export const integrationCategories: IntegrationCategory[] = [
   "Local & Reviews",
   "CRM & Leads",
   "SEO Data",
+  "Content Optimization",
   "AI",
   "Planning & Delivery",
   "Alerts & Automation",

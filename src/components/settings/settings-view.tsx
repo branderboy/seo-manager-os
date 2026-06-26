@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { team } from "@/lib/model";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -511,17 +512,11 @@ function Slider({
 }
 
 function Team() {
-  const members = [
-    { name: "Alex Morgan", email: "alex@meridianagency.com", role: "Owner", initials: "AM", color: "bg-accent-500" },
-    { name: "Jordan Reyes", email: "jordan@meridianagency.com", role: "SEO Lead", initials: "JR", color: "bg-emerald-500" },
-    { name: "Sam Cole", email: "sam@meridianagency.com", role: "Content", initials: "SC", color: "bg-amber-500" },
-    { name: "Priya Nair", email: "priya@meridianagency.com", role: "Local SEO", initials: "PN", color: "bg-rose-500" },
-  ];
   return (
     <Section title="Team" desc="People with access to this workspace.">
       <ul className="divide-y divide-[var(--border)]">
-        {members.map((m) => (
-          <li key={m.email} className="flex items-center justify-between gap-3 py-3">
+        {team.map((m) => (
+          <li key={m.id} className="flex items-center justify-between gap-3 py-3">
             <div className="flex items-center gap-3">
               <span className={cn("flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white", m.color)}>
                 {m.initials}
@@ -531,7 +526,7 @@ function Team() {
                 <div className="text-xs text-slate-600">{m.email}</div>
               </div>
             </div>
-            <Badge variant={m.role === "Owner" ? "accent" : "outline"}>{m.role}</Badge>
+            <Badge variant={m.id === "josh" ? "accent" : "outline"}>{m.role}</Badge>
           </li>
         ))}
       </ul>

@@ -100,6 +100,41 @@ export const currentUser = {
   trialDays: 14,
 };
 
+// ── Agency team — the people who do the work (distinct from client contacts) ──
+export type TeamMember = {
+  id: string;
+  name: string;
+  role: string;
+  email: string;
+  initials: string;
+  color: string;
+  capacity: number; // active tasks they can hold at once
+};
+
+export const team: TeamMember[] = [
+  { id: "josh", name: "Josh Williamson", role: "Account Lead", email: "josh@boringseo.agency", initials: "JW", color: "bg-accent-500", capacity: 6 },
+  { id: "jordan", name: "Jordan Reyes", role: "SEO Lead", email: "jordan@boringseo.agency", initials: "JR", color: "bg-emerald-600", capacity: 8 },
+  { id: "priya", name: "Priya Nair", role: "Local SEO Specialist", email: "priya@boringseo.agency", initials: "PN", color: "bg-violet-600", capacity: 8 },
+  { id: "sam", name: "Sam Cole", role: "Content Lead", email: "sam@boringseo.agency", initials: "SC", color: "bg-amber-600", capacity: 8 },
+  { id: "marcus", name: "Marcus Lee", role: "Web Developer", email: "marcus@boringseo.agency", initials: "ML", color: "bg-sky-600", capacity: 5 },
+];
+
+// Task owners are stored as a mix of names and function labels; map both to a person.
+const OWNER_TO_TEAM: Record<string, string> = {
+  you: "josh", josh: "josh", "josh williamson": "josh",
+  jordan: "jordan", "jordan reyes": "jordan", "seo lead": "jordan", strategy: "jordan",
+  priya: "priya", "priya nair": "priya", "local seo": "priya", ops: "priya",
+  sam: "sam", "sam cole": "sam", content: "sam", design: "sam",
+  marcus: "marcus", eng: "marcus", dev: "marcus", developer: "marcus",
+};
+
+export const teamMemberForOwner = (owner: string): TeamMember | undefined => {
+  const id = OWNER_TO_TEAM[owner.trim().toLowerCase()];
+  return id ? team.find((m) => m.id === id) : undefined;
+};
+
+export const teamMemberById = (id: string) => team.find((m) => m.id === id);
+
 // ── Clients ──────────────────────────────────────────────────────────────────
 export const clients: Client[] = [
   { id: "acme", name: "Acme Corp", model: "SaaS", industry: "B2B Software", location: "San Francisco, CA", owner: "Josh Williamson", status: "Active", initials: "AC", color: "bg-blue-600", scores: { visibility: 56, authority: 49, trust: 60, ai: 34, lead: 55, revenue: 61 } },
