@@ -3,7 +3,7 @@ import { ArrowUpDown, ArrowDown, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * Enterprise table primitives — sticky header, tabular figures, quiet zebra on
+ * Enterprise table primitives · sticky header, tabular figures, quiet zebra on
  * hover, hairline rules. Compose with TableShell / THead / TR / TH / TD, or use
  * these inside a Card to get a Linear/Stripe-grade data grid.
  */

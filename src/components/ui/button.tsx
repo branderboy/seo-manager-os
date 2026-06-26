@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-// Big, bold, pressable keys — tall darker bottom edge, uppercase labels, strong
+// Big, bold, pressable keys · tall darker bottom edge, uppercase labels, strong
 // ambient glow. Each button looks physically raised and slams down on click
 // (aggressive ClickFunnels depth). Ghost stays quiet for tertiary actions.
 const buttonVariants = cva(
@@ -23,7 +23,7 @@ const buttonVariants = cva(
           "text-[var(--ink-soft)] hover:bg-[var(--surface-3)] hover:text-[var(--foreground)]",
         danger:
           "bg-gradient-to-b from-[#e8675d] to-[var(--danger)] text-white shadow-[0_3px_0_0_#992f27,0_6px_14px_-4px_rgba(212,73,63,0.5),inset_0_1px_0_rgba(255,255,255,0.3)] hover:brightness-105 active:translate-y-[3px] active:shadow-[0_0_0_0_#992f27,inset_0_2px_4px_rgba(0,0,0,0.15)]",
-        // Back-compat alias — matches primary.
+        // Back-compat alias · matches primary.
         dark:
           "bg-gradient-to-b from-accent-400 to-accent-600 text-white shadow-[0_3px_0_0_#064e2f,0_6px_14px_-4px_rgba(9,146,80,0.5),inset_0_1px_0_rgba(255,255,255,0.3)] hover:from-accent-300 hover:to-accent-500 active:translate-y-[3px] active:shadow-[0_0_0_0_#064e2f]",
       },

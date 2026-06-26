@@ -11,7 +11,7 @@ export default function CompetitorsPage() {
         stage={4}
         title="Competitive Insights"
         badge="Market intelligence"
-        description="Read the field before diagnosing your own gaps — who's winning the SERP and AI answers, where share of voice sits, and which lanes are open. Adapts to the client's market."
+        description="Read the field before diagnosing your own gaps · who's winning the SERP and AI answers, where share of voice sits, and which lanes are open. Adapts to the client's market."
       />
       <CompetitiveView />
     </>

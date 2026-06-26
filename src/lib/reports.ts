@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// Reports v2 — manager reporting, not ranking charts.
+// Reports v2 · manager reporting, not ranking charts.
 // Answers: what got done, what's blocked, what's the ROI?
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -7,7 +7,7 @@ export const reportPeriod = "Last 30 days · June 2026";
 
 export const reportSummary = {
   executiveSummary:
-    "Across the portfolio, 28 tasks shipped and 11 deployments were verified this month. Northwind's review engine launched and recovered two outer ZIPs; Hill Country Dental passed Core Web Vitals on 9 templates. Three items are blocked — two waiting on clients — and two await sign-off. Estimated ROI on delivered work is 4.2×.",
+    "Across the portfolio, 28 tasks shipped and 11 deployments were verified this month. Northwind's review engine launched and recovered two outer ZIPs; Hill Country Dental passed Core Web Vitals on 9 templates. Three items are blocked · two waiting on clients · and two await sign-off. Estimated ROI on delivered work is 4.2×.",
   stats: [
     { label: "Work completed", value: "28", sub: "tasks shipped" },
     { label: "Hours spent", value: "96", sub: "across the team" },

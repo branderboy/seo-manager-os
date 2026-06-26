@@ -54,8 +54,8 @@ export default function EnterpriseDashboard() {
           <p className="mt-2 text-base leading-relaxed text-[var(--ink-soft)]">
             Vantage Retail has 1.2M URLs but Google indexes just {indexedPct}% of them. A third of the
             crawl budget is spent on filter and parameter pages that earn nothing, while {fmt(ix.crawledNotIndexed)}{" "}
-            real pages are crawled and left out of the index. Reclaiming that budget — not making more
-            pages — is what lifts revenue traffic.
+            real pages are crawled and left out of the index. Reclaiming that budget, not making more
+            pages, is what lifts revenue traffic.
           </p>
         </Card>
         <RootCause title="Crawl budget wasted on filter pages" confidence={78} impact="High impact" />
@@ -151,7 +151,7 @@ export default function EnterpriseDashboard() {
       <Section label="Internal links">
         <StatRow cols={3}>
           <StatTile label="Orphan pages" value={fmt(d.links.orphans)} tone="bad" sub="no internal links in" />
-          <StatTile label="Links to revenue pages" value={d.links.avgRevenueLinks} sub="avg per page — too few" tone="warn" />
+          <StatTile label="Links to revenue pages" value={d.links.avgRevenueLinks} sub="avg per page · too few" tone="warn" />
           <StatTile label="Hub pages" value={d.links.hubs} tone="accent" sub="distributing authority" />
         </StatRow>
       </Section>

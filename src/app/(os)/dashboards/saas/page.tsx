@@ -42,7 +42,7 @@ export default function SaasDashboard() {
           <div className="text-sm font-semibold text-[var(--foreground)]">Executive Summary</div>
           <p className="mt-2 text-base leading-relaxed text-[var(--ink-soft)]">
             Flowdesk ranks well top-of-funnel but leaks demand where it converts. The bottom-funnel
-            pages that win trials — comparisons, use cases and solutions — are thin or missing, so
+            pages that win trials (comparisons, use cases and solutions) are thin or missing, so
             high-intent “vs” searches go to competitors. Closing the comparison gap is the fastest
             path to qualified signups.
           </p>

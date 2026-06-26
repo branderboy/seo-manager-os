@@ -10,7 +10,7 @@ const prTone: Record<Priority, "bad" | "warn" | "default"> = {
   Low: "default",
 };
 
-// Lane header tone — waiting lanes read as amber (parked), Done as green.
+// Lane header tone · waiting lanes read as amber (parked), Done as green.
 function laneTone(lane: string): { dot: "good" | "accent" | "warn" | "default"; count: string } {
   if (lane === "Done") return { dot: "good", count: "text-[var(--ok)]" };
   if (lane.startsWith("Waiting")) return { dot: "warn", count: "text-[var(--warn)]" };

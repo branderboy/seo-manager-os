@@ -11,7 +11,7 @@ export default function ResearchPage() {
       <PageHeader
         stage={2}
         title="Data Collection"
-        description="From the classification, the OS assembles the research plan automatically — the exact signals to gather for this client before forming any opinion."
+        description="From the classification, the OS assembles the research plan automatically · the exact signals to gather for this client before forming any opinion."
       >
         <ModelBadge suffix="playbook active" />
       </PageHeader>

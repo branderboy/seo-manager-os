@@ -12,7 +12,7 @@ const HORIZONS: { label: string; priority: 1 | 2 | 3 }[] = [
   { label: "180-Day", priority: 3 },
 ];
 
-/** The project-management half of the brief — assembled from the active client. */
+/** The project-management half of the brief · assembled from the active client. */
 export function ProjectPlan() {
   const { engagement } = useEngagement();
   const { groups, summary } = getDiagnosis(engagement.model);

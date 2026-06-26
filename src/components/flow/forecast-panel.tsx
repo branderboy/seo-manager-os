@@ -68,7 +68,7 @@ export function ForecastPanel() {
             <TrendingUp className="h-6 w-6 text-[#1DA1F2]" /> Forecast
           </h3>
           <p className="mt-1 text-base font-medium text-slate-600">
-            The system predicts this from the diagnosis first — then you can edit the improvements live.
+            The system predicts this from the diagnosis first · then you can edit the improvements live.
           </p>
         </div>
         <div className="flex items-center gap-3">

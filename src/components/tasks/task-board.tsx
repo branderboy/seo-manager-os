@@ -126,7 +126,7 @@ export function TaskBoard() {
 
         {/* Email alerts rail */}
         <div className="space-y-6">
-          {/* Share tasks with the SEO manager's team — bold panel so it stands out */}
+          {/* Share tasks with the SEO manager's team · bold panel so it stands out */}
           <div className="overflow-hidden rounded-2xl border-2 border-accent-300 shadow-card">
             <div className="bg-accent-500 px-4 py-3.5 text-white">
               <div className="flex items-center gap-2 text-sm font-semibold">
@@ -212,7 +212,7 @@ export function TaskBoard() {
               <div className="mt-3 space-y-2">
                 {openToday.length === 0 ? (
                   <div className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-                    🎉 All caught up — nothing due today. Streak safe.
+                    🎉 All caught up · nothing due today. Streak safe.
                   </div>
                 ) : (
                   openToday.map((t) => (
@@ -224,7 +224,7 @@ export function TaskBoard() {
                 )}
               </div>
               <div className="mt-3 border-t border-[var(--border)] pt-3 text-xs text-slate-600">
-                Keep your {taskStats.streakDays}-day streak alive — complete today&apos;s
+                Keep your {taskStats.streakDays}-day streak alive · complete today&apos;s
                 tasks before 6:00 PM.
               </div>
             </div>

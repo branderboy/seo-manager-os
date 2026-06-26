@@ -16,7 +16,7 @@ export function EngModel() {
 
 export function EngMarket() {
   const { engagement } = useEngagement();
-  return <>{engagement.market || "—"}</>;
+  return <>{engagement.market || " · "}</>;
 }
 
 /** Accent badge that reflects the classified model, e.g. "Local playbook active". */

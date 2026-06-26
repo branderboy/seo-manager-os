@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// SEO Manager OS — mock data
+// SEO Manager OS · mock data
 // Everything here is illustrative. There is no backend; the prototype renders
 // a fully worked example so the experience reads like a real engagement.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -13,7 +13,7 @@ export type Status =
   | "Blocked"
   | "Queued";
 
-// ── Demo account (drives stages 1–8) ─────────────────────────────────────────
+// ── Demo account (drives stages 1 to 8) ─────────────────────────────────────────
 export const account = {
   business: "Northwind Heating & Air",
   website: "northwindhvac.com",
@@ -21,8 +21,8 @@ export const account = {
   locations: 3,
   primaryMarket: "Austin, TX",
   yearsInBusiness: 14,
-  revenueRange: "$5M–$10M",
-  teamSize: "25–50",
+  revenueRange: "$5M · $10M",
+  teamSize: "25 to 50",
   model: "Local" as SeoModel,
   revenueModel: ["Leads", "Calls"],
   goals: ["More Leads", "More Calls", "More AI Visibility"],
@@ -65,7 +65,7 @@ export const researchPlans: Record<SeoModel, ResearchItem[]> = {
     { name: "Google Business Profile", status: "Complete", detail: "Categories, services, posts, photos, Q&A, attributes.", signals: 38 },
     { name: "Geo Grid", status: "Complete", detail: "7×7 rank grid across the service radius.", signals: 49 },
     { name: "Reviews", status: "In progress", detail: "Velocity, rating, sentiment, response rate vs. market.", signals: 26 },
-    { name: "Competitors", status: "In progress", detail: "Top 3 rivals — proximity, trust and content overlap.", signals: 31 },
+    { name: "Competitors", status: "In progress", detail: "Top 3 rivals · proximity, trust and content overlap.", signals: 31 },
     { name: "Entity Signals", status: "Queued", detail: "Knowledge graph, sameAs, citations, consistency.", signals: 22 },
     { name: "Service Coverage", status: "Queued", detail: "Service-page completeness vs. demand.", signals: 18 },
     { name: "Location Coverage", status: "Not started", detail: "Location-page depth across 3 markets.", signals: 12 },
@@ -104,7 +104,7 @@ export type Audit = {
 export const investigations: Record<SeoModel, Audit[]> = {
   Local: [
     { name: "GBP Audit", score: 54, status: "Complete", finding: "Primary category correct, but 6 of 12 services missing and posts stale 40+ days." },
-    { name: "Geo Grid Audit", score: 38, status: "Complete", finding: "Strong within 2mi of HQ, collapses beyond — proximity-bound visibility." },
+    { name: "Geo Grid Audit", score: 38, status: "Complete", finding: "Strong within 2mi of HQ, collapses beyond · proximity-bound visibility." },
     { name: "Review Audit", score: 49, status: "Complete", finding: "4.6★ but velocity is 3/mo vs. market median of 11/mo. Response rate 22%." },
     { name: "Entity Audit", score: 61, status: "In progress", finding: "Inconsistent NAP on 9 citations; weak sameAs and no knowledge panel." },
     { name: "Competitor Audit", score: 44, status: "In progress", finding: "Rivals out-review 3:1 and hold 2× the location-page depth." },
@@ -114,14 +114,14 @@ export const investigations: Record<SeoModel, Audit[]> = {
   SaaS: [
     { name: "BOFU Audit", score: 52, status: "Complete", finding: "Pricing ranks but use-case and solution pages are thin or missing." },
     { name: "Competitor Gap Audit", score: 47, status: "Complete", finding: "12 comparison terms with no page; rivals own the 'vs' SERPs." },
-    { name: "Programmatic Audit", score: 58, status: "In progress", finding: "Integrations templatable — 140 demand-backed pages unbuilt." },
+    { name: "Programmatic Audit", score: 58, status: "In progress", finding: "Integrations templatable · 140 demand-backed pages unbuilt." },
     { name: "Content Audit", score: 63, status: "In progress", finding: "TOFU strong, MOFU↔BOFU links weak; clusters lack pillar hubs." },
     { name: "AEO Audit", score: 34, status: "Queued", finding: "Low citation share in AI answers for category and JTBD queries." },
     { name: "Conversion Audit", score: 55, status: "Queued", finding: "Demo CTA buried; comparison pages lack proof and pricing clarity." },
   ],
   Enterprise: [
     { name: "Crawl Audit", score: 46, status: "Complete", finding: "34% of crawl spent on faceted/parameter URLs with no index value." },
-    { name: "Indexation Audit", score: 51, status: "Complete", finding: "61k 'crawled — not indexed'; quality + duplication on key templates." },
+    { name: "Indexation Audit", score: 51, status: "Complete", finding: "61k 'crawled · not indexed'; quality + duplication on key templates." },
     { name: "Template Audit", score: 57, status: "In progress", finding: "Category template decayed 18% YoY; PLP internal links too shallow." },
     { name: "Internal Link Audit", score: 43, status: "In progress", finding: "9,200 orphan URLs; revenue pages average 1.4 internal links." },
     { name: "Entity Audit", score: 60, status: "Queued", finding: "Entity coverage solid, disambiguation weak across regions." },
@@ -130,7 +130,7 @@ export const investigations: Record<SeoModel, Audit[]> = {
 };
 
 // ── Diagnosis engine (Stage 4) ───────────────────────────────────────────────
-/** Where a piece of evidence was measured — the audit-trail source. */
+/** Where a piece of evidence was measured · the audit-trail source. */
 export type DataSource =
   | "GBP"
   | "Local Falcon"
@@ -153,7 +153,7 @@ export type Cause = {
 
 export const diagnosis = {
   summary:
-    "Northwind's visibility is proximity-bound and trust-starved. The business ranks where it is physically close, but weak review velocity and thin authority cap its radius — while near-zero AI visibility is quietly removing it from the next generation of search.",
+    "Northwind's visibility is proximity-bound and trust-starved. The business ranks where it is physically close, but weak review velocity and thin authority cap its radius · while near-zero AI visibility is quietly removing it from the next generation of search.",
   primary: {
     title: "Weak Review Velocity",
     confidence: 87,
@@ -189,10 +189,10 @@ export const diagnosis = {
 // ── Strategy brief (Stage 5) ─────────────────────────────────────────────────
 export const strategy = {
   executiveSummary:
-    "Northwind has durable demand and a trusted brand inside a 2-mile core, but its search footprint is capped by trust and coverage gaps rather than a content problem. Concentrating the next two quarters on review velocity, service/location coverage and local authority will expand the winnable radius and recover lead flow — while an AEO foundation protects the brand as search shifts to AI answers.",
+    "Northwind has durable demand and a trusted brand inside a 2-mile core, but its search footprint is capped by trust and coverage gaps rather than a content problem. Concentrating the next two quarters on review velocity, service/location coverage and local authority will expand the winnable radius and recover lead flow · while an AEO foundation protects the brand as search shifts to AI answers.",
   currentState: [
     "Visibility 48 / Trust 57 / Authority 41 / AI Visibility 29.",
-    "Rankings strong within 2mi of HQ, weak beyond — proximity-bound.",
+    "Rankings strong within 2mi of HQ, weak beyond · proximity-bound.",
     "Lead volume down ~18% QoQ, concentrated in two outer ZIPs.",
   ],
   keyFindings: [
@@ -223,12 +223,12 @@ export const strategy = {
   ],
 };
 
-// Priority matrix (Stage 5) — impact vs. effort quadrant.
+// Priority matrix (Stage 5) · impact vs. effort quadrant.
 export type Initiative = {
   id: string;
   name: string;
-  impact: number; // 0–100
-  effort: number; // 0–100
+  impact: number; // 0 to 100
+  effort: number; // 0 to 100
   model: SeoModel;
 };
 

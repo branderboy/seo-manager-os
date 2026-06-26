@@ -2,7 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-// Compact status chips — rounded, not pill. Semantic tints, low chroma.
+// Compact status chips · rounded, not pill. Semantic tints, low chroma.
 const badgeVariants = cva(
   "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-2xs font-semibold ring-1 ring-inset whitespace-nowrap",
   {
@@ -31,7 +31,7 @@ export function Badge({ className, variant, ...props }: BadgeProps) {
   );
 }
 
-/** Status dot — a quiet color signal that pairs with a label. */
+/** Status dot · a quiet color signal that pairs with a label. */
 const dotTone = {
   default: "bg-[var(--faint)]",
   accent: "bg-accent-500",

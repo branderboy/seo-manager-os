@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// Risk Center — replaces the single "health score" with a per-project business
+// Risk Center · replaces the single "health score" with a per-project business
 // risk profile across eight dimensions. Higher = more at risk. Derived from the
 // client's search scores so every number traces to its inputs.
 // ──────────────────────────────────────────────────────────────────────────

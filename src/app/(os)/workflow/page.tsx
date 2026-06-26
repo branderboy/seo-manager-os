@@ -149,7 +149,7 @@ export default function WorkflowPage() {
                         </span>
                       </div>
                     ) : (
-                      <span className="text-xs text-[var(--faint)]">—</span>
+                      <span className="text-xs text-[var(--faint)]"> · </span>
                     )}
                   </div>
                   <div className="sm:border-l sm:border-[var(--border)] sm:pl-3">

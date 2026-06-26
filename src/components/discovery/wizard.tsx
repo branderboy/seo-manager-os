@@ -59,8 +59,8 @@ const SAMPLE: FormState = {
   industry: "HVAC / Home Services",
   locations: "3",
   years: "14",
-  revenueRange: "$5M–$10M",
-  teamSize: "25–50",
+  revenueRange: "$5M · $10M",
+  teamSize: "25 to 50",
   market: "Austin, TX",
   model: "Local",
   revenue: { Leads: true, Calls: true },
@@ -146,8 +146,8 @@ export function DiscoveryWizard() {
               <Field label="Industry" value={data.industry} onChange={(v) => set("industry", v)} placeholder="e.g. HVAC / Home Services" />
               <Field label="Locations" value={data.locations} onChange={(v) => set("locations", v)} placeholder="e.g. 3" />
               <Field label="Years In Business" value={data.years} onChange={(v) => set("years", v)} placeholder="e.g. 14" />
-              <Field label="Revenue Range" value={data.revenueRange} onChange={(v) => set("revenueRange", v)} placeholder="e.g. $5M–$10M" />
-              <Field label="Team Size" value={data.teamSize} onChange={(v) => set("teamSize", v)} placeholder="e.g. 25–50" />
+              <Field label="Revenue Range" value={data.revenueRange} onChange={(v) => set("revenueRange", v)} placeholder="e.g. $5M · $10M" />
+              <Field label="Team Size" value={data.teamSize} onChange={(v) => set("teamSize", v)} placeholder="e.g. 25 to 50" />
               <Field label="Primary Market" value={data.market} onChange={(v) => set("market", v)} placeholder="e.g. Austin, TX" />
             </div>
           )}
@@ -250,7 +250,7 @@ export function DiscoveryWizard() {
           {data.business && (
             <div className="mt-3 rounded-lg bg-[var(--surface-2)] px-3 py-2">
               <div className="text-sm font-medium text-slate-800">{data.business}</div>
-              {data.model && <div className="text-xs text-slate-700">{data.model} · {data.market || "—"}</div>}
+              {data.model && <div className="text-xs text-slate-700">{data.model} · {data.market || " · "}</div>}
             </div>
           )}
           <ol className="mt-3 space-y-1">
@@ -346,7 +346,7 @@ function Classification({ data }: { data: FormState }) {
   const problems = selected(data.problems);
   const assets = selected(data.assets);
 
-  // Confidence rises with how complete the intake is — feels responsive.
+  // Confidence rises with how complete the intake is · feels responsive.
   const infoFilled = [data.business, data.website, data.industry, data.locations, data.years, data.revenueRange, data.teamSize, data.market].filter(Boolean).length;
   const signalCount = goals.length + problems.length + assets.length + selected(data.revenue).length;
   const confidence = Math.min(97, 58 + infoFilled * 3 + Math.min(signalCount, 12));
@@ -390,7 +390,7 @@ function Classification({ data }: { data: FormState }) {
         ))}
       </ul>
 
-      {/* What we heard — reflects real input */}
+      {/* What we heard · reflects real input */}
       <div className="mx-auto mt-6 max-w-md rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-4 text-left">
         <div className="text-xs font-semibold uppercase tracking-wide text-slate-600">What we heard</div>
         <dl className="mt-2 space-y-1.5 text-sm">
@@ -420,7 +420,7 @@ function Heard({ label, items }: { label: string; items: string[] }) {
             </span>
           ))
         ) : (
-          <span className="text-xs text-slate-600">—</span>
+          <span className="text-xs text-slate-600"> · </span>
         )}
       </dd>
     </div>

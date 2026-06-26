@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// SEO Manager OS — Command Center (operations homepage) mock data.
+// SEO Manager OS · Command Center (operations homepage) mock data.
 // Answers one question: "What does the SEO Manager need to do today?"
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -50,9 +50,9 @@ export type ClientAttention = {
 };
 
 export const clientsNeedingAttention: ClientAttention[] = [
-  { client: "Northwind Heating & Air", reason: "Traffic down 14% WoW — diagnosis flagged review velocity", severity: "high" },
+  { client: "Northwind Heating & Air", reason: "Traffic down 14% WoW · diagnosis flagged review velocity", severity: "high" },
   { client: "Hill Country Dental", reason: "Deployment waiting on developer for 3 days", severity: "high" },
-  { client: "Vantage Retail", reason: "Content brief approved — work unassigned", severity: "medium" },
+  { client: "Vantage Retail", reason: "Content brief approved · work unassigned", severity: "medium" },
   { client: "Flowdesk", reason: "Monthly report due to client tomorrow", severity: "low" },
 ];
 
@@ -125,7 +125,7 @@ export const aiJobs: AiJob[] = [
   { agent: "Reporting Specialist", client: "Flowdesk", status: "Queued", eta: "next" },
 ];
 
-// ── Risk alerts — portfolio-level warnings that need a manager's eyes ───────
+// ── Risk alerts · portfolio-level warnings that need a manager's eyes ───────
 export type RiskAlert = {
   client: string;
   signal: string;
@@ -135,11 +135,11 @@ export type RiskAlert = {
 
 export const riskAlerts: RiskAlert[] = [
   { client: "Northwind Heating & Air", signal: "Organic traffic down 14% WoW", metric: "−14%", severity: "high" },
-  { client: "Hill Country Dental", signal: "Schema deploy blocked 3 days — SLA risk", metric: "3d", severity: "high" },
+  { client: "Hill Country Dental", signal: "Schema deploy blocked 3 days · SLA risk", metric: "3d", severity: "high" },
   { client: "Acme Corp", signal: "Migration batch 2 awaiting Google indexation", metric: "5d", severity: "medium" },
 ];
 
-// ── Upcoming deadlines — what's due, in order ──────────────────────────────
+// ── Upcoming deadlines · what's due, in order ──────────────────────────────
 export type Deadline = {
   item: string;
   client: string;
@@ -155,7 +155,7 @@ export const upcomingDeadlines: Deadline[] = [
   { item: "Q3 strategy sign-off", client: "Vantage Retail", when: "Jun 27", owner: "You", due: "soon" },
 ];
 
-// ── Recent activity — the live operational feed ────────────────────────────
+// ── Recent activity · the live operational feed ────────────────────────────
 export type Activity = {
   actor: string;
   action: string;

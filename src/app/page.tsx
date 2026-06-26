@@ -25,9 +25,9 @@ const CONTACT = "kawani@digiwaxx.com";
 
 const PIPELINE = [
   { slug: "discovery", label: "01. Interview", name: "Discovery", desc: "Understand the business, goals, and baseline metrics before touching a tool.", tone: "text-blue-600" },
-  { slug: "research", label: "02. Data", name: "Data Collection", desc: "Sync the client's own data — Search Console, Analytics, GBP and the site crawl.", tone: "text-blue-600" },
+  { slug: "research", label: "02. Data", name: "Data Collection", desc: "Sync the client's own data · Search Console, Analytics, GBP and the site crawl.", tone: "text-blue-600" },
   { slug: "intent", label: "03. Intent", name: "Intent Mapping", desc: "Nail down search intent across the funnel (TOF / MOF / BOF) and align it to the goals.", tone: "text-blue-600" },
-  { slug: "competitors", label: "04. Field", name: "Competitive Insights", desc: "Size up the rivals and read the SERP — who's winning, and where the open lanes are.", tone: "text-blue-600" },
+  { slug: "competitors", label: "04. Field", name: "Competitive Insights", desc: "Size up the rivals and read the SERP · who's winning, and where the open lanes are.", tone: "text-blue-600" },
   { slug: "diagnosis", label: "05. Root Cause", name: "Diagnosis", desc: "Surface the gaps and resolve every symptom to a ranked root cause.", tone: "text-amber-600" },
   { slug: "tools", label: "06. Action", name: "Playbooks", desc: "Select the outcome playbooks that resolve the diagnosis, sequenced into owned work.", tone: "text-amber-600" },
   { slug: "strategy", label: "07. Plan", name: "Project Brief", desc: "Compile the selected playbooks into an executive-ready brief for sign-off.", tone: "text-emerald-600" },

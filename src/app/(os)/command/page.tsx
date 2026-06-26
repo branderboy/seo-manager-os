@@ -153,7 +153,7 @@ export default function CommandCenterPage() {
           </button>
           <button className="flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-medium text-[var(--ink-soft)] shadow-card hover:text-[var(--foreground)]">
             <Calendar className="h-4 w-4 text-[var(--muted)]" />
-            May 12 – May 18, 2025
+            May 12 to May 18, 2025
           </button>
         </div>
       </div>
@@ -261,7 +261,7 @@ export default function CommandCenterPage() {
             {clientsNeedingAttention.map((c) => (
               <li key={c.client} className="border-t border-[var(--border)] py-2.5 first:border-t-0">
                 <div className="text-sm font-medium text-[var(--foreground)]"><ClientLink name={c.client} /></div>
-                <div className={`text-xs font-medium ${c.severity === "high" ? "text-[var(--danger)]" : "text-[var(--warn)]"}`}>{c.reason.split(" — ")[0]}</div>
+                <div className={`text-xs font-medium ${c.severity === "high" ? "text-[var(--danger)]" : "text-[var(--warn)]"}`}>{c.reason.split(" · ")[0]}</div>
               </li>
             ))}
           </ul>

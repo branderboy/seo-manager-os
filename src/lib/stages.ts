@@ -19,7 +19,7 @@ export type Stage = {
   /** One-line description of what this stage *does* in the pipeline. */
   does: string;
   blurb: string;
-  /** The concrete artifacts this stage produces — they become the next stage's inputs. */
+  /** The concrete artifacts this stage produces · they become the next stage's inputs. */
   outputs: string[];
   /** Integration ids (see lib/integrations) this stage uses to generate its data/plans/insights. */
   apps: string[];
@@ -28,7 +28,7 @@ export type Stage = {
 
 /**
  * The 9-stage operating flow. Each stage consumes the prior stage's outputs and
- * produces its own — Discovery → Research → Investigation → Diagnosis → Strategy
+ * produces its own · Discovery → Research → Investigation → Diagnosis → Strategy
  * → Execution Planner → Playbooks → Daily Tasks → Reports.
  */
 export const STAGES: Stage[] = [
@@ -49,7 +49,7 @@ export const STAGES: Stage[] = [
     name: "Data Collection",
     short: "Data",
     does: "Sync the client's own data.",
-    blurb: "Connect the client's internal data sources — Search Console, Analytics, GBP and the site crawl.",
+    blurb: "Connect the client's internal data sources · Search Console, Analytics, GBP and the site crawl.",
     outputs: ["Search Console", "Analytics", "Google Business Profile", "Website crawl", "Rankings", "CRM"],
     apps: ["gsc", "ga4", "gbp", "screamingfrog"],
     icon: Telescope,
@@ -71,7 +71,7 @@ export const STAGES: Stage[] = [
     name: "Competitive Insights",
     short: "Competitors",
     does: "Size up rivals and the SERP.",
-    blurb: "Benchmark the competitors and read the search landscape — who's ranking, what's winning the SERP and AI answers, and where the open lanes are — before diagnosing your own gaps.",
+    blurb: "Benchmark the competitors and read the search landscape · who's ranking, what's winning the SERP and AI answers, and where the open lanes are · before diagnosing your own gaps.",
     outputs: ["Competitor set", "Share of search", "Search result features", "Content gaps vs rivals", "Backlink gaps", "AI answer coverage"],
     apps: ["semrush", "ahrefs", "localfalcon"],
     icon: Radar,
@@ -93,7 +93,7 @@ export const STAGES: Stage[] = [
     name: "Playbooks",
     short: "Playbooks",
     does: "Plan and run the work.",
-    blurb: "The action center — outcome playbooks (Traffic, CTR, Leads, Revenue, Local, GEO, AEO) that turn the diagnosis into sequenced, owned work.",
+    blurb: "The action center · outcome playbooks (Traffic, CTR, Leads, Revenue, Local, GEO, AEO) that turn the diagnosis into sequenced, owned work.",
     outputs: [
       "Traffic",
       "CTR",

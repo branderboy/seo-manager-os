@@ -12,7 +12,7 @@ const TITLES: Record<string, string> = {
   risk: "Risk Center",
   wins: "Wins",
   workflow: "SEO Pipeline",
-  tracker: "Operations Tracker",
+  tracker: "Performance",
   agents: "AI Workforce",
   deployments: "Deployments",
   reports: "Reports",
@@ -36,7 +36,7 @@ function crumbsFor(pathname: string): string[] {
   return [TITLES[parts[0]] ?? "SEO Manager OS"];
 }
 
-/** Light, structural top bar — breadcrumb context, search, quick actions, account. */
+/** Light, structural top bar · breadcrumb context, search, quick actions, account. */
 export function StageBar() {
   const pathname = usePathname();
   const crumbs = crumbsFor(pathname);

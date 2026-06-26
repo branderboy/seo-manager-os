@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/** Map a 0–100 score to a semantic tone. */
+/** Map a 0 to 100 score to a semantic tone. */
 export function scoreTone(score: number): "good" | "warn" | "bad" {
   if (score >= 75) return "good";
   if (score >= 50) return "warn";

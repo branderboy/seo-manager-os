@@ -11,7 +11,7 @@ export default function DiagnosisPage() {
       <PageHeader
         stage={5}
         title="Diagnosis"
-        description="Root cause and the prioritized fixes — what to do first for this client. The diagnosis adapts to the client's SEO type."
+        description="Root cause and the prioritized fixes · what to do first for this client. The diagnosis adapts to the client's SEO type."
       />
       <DiagnosisView />
       <ForecastPanel />

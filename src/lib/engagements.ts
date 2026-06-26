@@ -1,6 +1,6 @@
 // ──────────────────────────────────────────────────────────────────────────
 // Demo engagements across every SEO type. Powers the top-bar client switcher
-// so the whole app can operate as a multi-type SEO Operations Platform —
+// so the whole app can operate as a multi-type SEO Operations Platform · 
 // one engine, the playbooks/specialists/recommendations change per client.
 // ──────────────────────────────────────────────────────────────────────────
 

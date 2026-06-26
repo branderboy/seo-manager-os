@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// Playbooks by client type — the operations-platform idea made concrete.
+// Playbooks by client type · the operations-platform idea made concrete.
 // The engine never changes (Discovery → … → Reporting); the PLAYBOOKS do.
 // Each client type gets its own specialized plays.
 // ──────────────────────────────────────────────────────────────────────────

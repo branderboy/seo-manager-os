@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// Work model — the task lifecycle and the project command-center board.
+// Work model · the task lifecycle and the project command-center board.
 // Every recommendation becomes work that moves through a lifecycle:
 //   Fix → Assign → Complete → QA → Deploy → Verify → Close
 // The Tracker groups the same tasks into operational lanes.
@@ -36,7 +36,7 @@ export const workTasks: WorkTask[] = [
   { id: "w3", title: "Approve 6 location-page briefs", client: "Northwind Heating & Air", owner: "Client", due: "Today", priority: "High", step: "Assign", lane: "Waiting on Client" },
   { id: "w4", title: "Deploy FAQ schema to 8 pages", client: "Northwind Heating & Air", owner: "Dev team", due: "Tomorrow", priority: "Medium", step: "Deploy", lane: "Waiting on Developer" },
   { id: "w5", title: "Write 3 collection descriptions", client: "Acme Corp", owner: "Sam", due: "Thu", priority: "Medium", step: "Complete", lane: "Active" },
-  { id: "w6", title: "Index new collection pages", client: "Acme Corp", owner: "—", due: "—", priority: "Medium", step: "Verify", lane: "Waiting on Google" },
+  { id: "w6", title: "Index new collection pages", client: "Acme Corp", owner: " · ", due: " · ", priority: "Medium", step: "Verify", lane: "Waiting on Google" },
   { id: "w7", title: "Build internal-link plan", client: "Vantage Retail", owner: "Mia", due: "Fri", priority: "Low", step: "Fix", lane: "Active" },
   { id: "w8", title: "QA homepage meta + H1 changes", client: "Vantage Retail", owner: "Priya", due: "Today", priority: "Medium", step: "QA", lane: "QA & Deploy" },
   { id: "w9", title: "Client to supply 4 project photos", client: "Flowdesk", owner: "Client", due: "Wed", priority: "Low", step: "Assign", lane: "Waiting on Client" },
@@ -69,5 +69,5 @@ export function countByStep(): { step: Step; count: number }[] {
 
 /** Upcoming deadlines (named days only), highest priority first. */
 export const deadlines = workTasks
-  .filter((t) => !["Done", "—"].includes(t.due))
+  .filter((t) => !["Done", " · "].includes(t.due))
   .slice(0, 6);

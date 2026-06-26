@@ -19,7 +19,7 @@ export default function ClientsPage() {
       <PageHeader
         title="Clients"
         badge={`${clients.length} accounts`}
-        description="Every account in one operations view — model, owner, live risk and AI visibility. Open one to enter its workspace."
+        description="Every account in one operations view · model, owner, live risk and AI visibility. Open one to enter its workspace."
       >
         <Button variant="secondary" size="sm">
           <SlidersHorizontal className="h-4 w-4" />

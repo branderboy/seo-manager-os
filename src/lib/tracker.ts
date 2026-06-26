@@ -1,8 +1,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// SEO Manager OS — Tracker mock data
+// SEO Manager OS · Tracker mock data
 // Continuous monitoring surface: search-ranking tracking + LLM/AI-mention
 // tracking for the active engagement (Northwind Heating & Air, Austin TX).
-// Illustrative only — no backend; numbers are worked to read like a real account.
+// Illustrative only · no backend; numbers are worked to read like a real account.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type Trend = "up" | "down" | "flat";
@@ -27,7 +27,7 @@ export type TrackerStat = {
 export const trackerStats: TrackerStat[] = [
   { key: "keywords", label: "Tracked Keywords", value: "184", delta: +12, blurb: "Across 3 locations · desktop + mobile, daily scans." },
   { key: "avgpos", label: "Avg. Position", value: "14.2", delta: +1.6, blurb: "Mean rank across all tracked terms (lower is better)." },
-  { key: "top3", label: "Top-3 Keywords", value: "29", delta: +4, blurb: "Terms ranking in positions 1–3 this period." },
+  { key: "top3", label: "Top-3 Keywords", value: "29", delta: +4, blurb: "Terms ranking in positions 1 to 3 this period." },
   { key: "aimentions", label: "AI Mention Rate", value: "31%", delta: -6, blurb: "Share of tracked prompts that cite or mention the brand." },
 ];
 
@@ -59,13 +59,13 @@ export const rankedKeywords: RankedKeyword[] = [
   { keyword: "how much does ac repair cost", position: 14, previous: 13, best: 11, volume: 3600, intent: "Informational", url: "/blog/ac-repair-cost", features: ["Featured Snippet", "People Also Ask", "AI Overview"], location: "Austin, TX" },
 ];
 
-/** Position distribution buckets — the shape of the whole tracked set. */
+/** Position distribution buckets · the shape of the whole tracked set. */
 export const positionBuckets: { label: string; value: number; tone: string }[] = [
-  { label: "1–3", value: 29, tone: "#10b981" },
-  { label: "4–10", value: 47, tone: "#635bff" },
-  { label: "11–20", value: 41, tone: "#0ea5e9" },
-  { label: "21–50", value: 38, tone: "#f59e0b" },
-  { label: "51–100", value: 17, tone: "#94a3b8" },
+  { label: "1 to 3", value: 29, tone: "#10b981" },
+  { label: "4 to 10", value: 47, tone: "#635bff" },
+  { label: "11 to 20", value: 41, tone: "#0ea5e9" },
+  { label: "21 to 50", value: 38, tone: "#f59e0b" },
+  { label: "51 to 100", value: 17, tone: "#94a3b8" },
   { label: "Not ranking", value: 12, tone: "#f43f5e" },
 ];
 
@@ -111,7 +111,7 @@ export const aiAssistants: AiAssistant[] = [
   { id: "claude", name: "Claude", initials: "CL", color: "bg-orange-500", mentionRate: 27, delta: +6, sentiment: "Positive", cited: false, prompts: 64 },
 ];
 
-/** Share of voice in AI answers — brand vs. tracked competitors. */
+/** Share of voice in AI answers · brand vs. tracked competitors. */
 export const aiShareOfVoice: { label: string; value: number }[] = [
   { label: "Northwind", value: 23 },
   { label: "ATX Comfort Pros", value: 31 },

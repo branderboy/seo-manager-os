@@ -24,7 +24,7 @@ export const winsFeed: WinItem[] = [
   { id: "7", text: "Developer deployed title-tag fixes (12 pages)", client: "Hill Country Dental", kind: "Deploy", when: "Yesterday, 1:40 PM", group: "Yesterday" },
   { id: "8", text: "3 new 5-star Google reviews", client: "Northwind Heating & Air", kind: "Review", when: "Yesterday", group: "Yesterday" },
   { id: "9", text: "Recovered rankings on 2 outer ZIPs", client: "Northwind Heating & Air", kind: "Rank", when: "Mon", group: "This week" },
-  { id: "10", text: "Migration batch 1 verified — 0 broken redirects", client: "Acme Corp", kind: "Deploy", when: "Mon", group: "This week" },
+  { id: "10", text: "Migration batch 1 verified · 0 broken redirects", client: "Acme Corp", kind: "Deploy", when: "Mon", group: "This week" },
 ];
 
 export const winGroups: { group: WinItem["group"]; items: WinItem[] }[] = [
@@ -33,13 +33,13 @@ export const winGroups: { group: WinItem["group"]; items: WinItem[] }[] = [
   { group: "This week", items: winsFeed.filter((w) => w.group === "This week") },
 ];
 
-// ── Morning Briefing — the daily narrative for the Command Center ────────────
+// ── Morning Briefing · the daily narrative for the Command Center ────────────
 export const morningBriefing = {
   headline: "5 wins overnight, 9 tasks due today, 3 blockers.",
   focus: [
-    "Northwind Heating & Air is the top-risk account — traffic down and review velocity stalled. Approve the 6 location-page briefs to unblock content.",
-    "Hill Country Dental's schema deploy has been waiting on the developer for 3 days — nudge or escalate.",
-    "Vantage Retail jumped to #2 for 'emergency plumber' overnight — worth a quick client note.",
+    "Northwind Heating & Air is the top-risk account · traffic down and review velocity stalled. Approve the 6 location-page briefs to unblock content.",
+    "Hill Country Dental's schema deploy has been waiting on the developer for 3 days · nudge or escalate.",
+    "Vantage Retail jumped to #2 for 'emergency plumber' overnight · worth a quick client note.",
   ],
   overnight: [
     "12 pages indexed (Acme Corp)",
