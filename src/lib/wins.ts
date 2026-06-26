@@ -42,8 +42,8 @@ export const morningBriefing = {
     "Vantage Retail jumped to #2 for 'emergency plumber' overnight — worth a quick client note.",
   ],
   overnight: [
-    "12 pages indexed (Trailhead)",
-    "CWV passed on 9 templates (Beacon)",
+    "12 pages indexed (Acme Corp)",
+    "CWV passed on 9 templates (Hill Country Dental)",
     "Traffic +18% WoW (Hill Country)",
   ],
 };
