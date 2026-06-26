@@ -338,7 +338,7 @@ export default function CommandCenterPage() {
       {/* ── Row: Diagnosis · Daily Task Engine · Reports ───────────────────── */}
       <div className="grid gap-4 lg:grid-cols-3">
         <Panel className="flex flex-col">
-          <PanelHead title="Diagnosis Priority Board" href="/diagnosis" />
+          <PanelHead title="Insights Priority Board" href="/diagnosis" />
           <div className="flex gap-1.5 px-5 pb-3">
             <span className="rounded-md bg-accent-500 px-2.5 py-1 text-xs font-semibold text-white">Priority 1 (12)</span>
             <span className="rounded-md bg-[var(--surface-3)] px-2.5 py-1 text-xs font-medium text-[var(--muted)]">Priority 2 (18)</span>

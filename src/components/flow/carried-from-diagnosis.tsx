@@ -12,7 +12,7 @@ export function CarriedFromDiagnosis() {
     <div className="rounded-xl border-2 border-accent-200 bg-accent-50/50 p-4">
       <div className="mb-2 flex items-center justify-between">
         <span className="font-mono text-xs font-semibold uppercase tracking-wider text-accent-700">
-          Carried from Diagnosis
+          Carried from Insights
         </span>
         <Link href="/diagnosis" className="inline-flex items-center gap-1 text-xs font-medium text-accent-600 hover:text-accent-700">
           <ArrowLeft className="h-3.5 w-3.5" /> Change selection

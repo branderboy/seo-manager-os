@@ -79,8 +79,8 @@ export const STAGES: Stage[] = [
   {
     n: 5,
     slug: "diagnosis",
-    name: "Diagnosis",
-    short: "Diagnosis",
+    name: "Insights",
+    short: "Insights",
     does: "Find the gaps and root causes.",
     blurb: "Surface the gaps (content, technical, GEO, AEO, authority) and resolve every symptom to a ranked root cause with confidence and impact.",
     outputs: ["Content Gaps", "Technical Gaps", "GEO Gaps", "AEO Gaps", "Authority Gaps", "Root Causes"],

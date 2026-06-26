@@ -28,7 +28,7 @@ const NAV: Item[] = [
   { href: "/workflow", label: "SEO Pipeline", icon: GitBranch },
   { href: "/tracker", label: "Performance", icon: LineChart },
   { href: "/agents", label: "AI Workforce", icon: Bot },
-  { href: "/diagnosis", label: "Diagnosis", icon: Stethoscope },
+  { href: "/diagnosis", label: "Insights", icon: Stethoscope },
   { href: "/tools", label: "Playbooks", icon: BookOpen },
   { href: "/reports", label: "Reports", icon: FileBarChart },
   { href: "/integrations", label: "Integrations", icon: Plug },
