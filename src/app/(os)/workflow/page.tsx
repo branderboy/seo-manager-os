@@ -6,7 +6,6 @@ import { Badge, StatusDot } from "@/components/ui/badge";
 import { StatTile, StatRow } from "@/components/ui/metric";
 import { STAGES } from "@/lib/stages";
 import { agents, stageAgents } from "@/lib/agents";
-import { workforceSummary } from "@/lib/workforce";
 import { featuredInvestigation as inv } from "@/lib/model";
 import { cn } from "@/lib/utils";
 
@@ -43,8 +42,8 @@ export default function WorkflowPage() {
         <StatTile label="Stages complete" value={done} tone="good" />
         <StatTile
           label="AI workers on this stage"
-          value={`${(stageAgents[STAGES[inv.currentStage - 1]?.slug] ?? []).length} / ${workforceSummary.deployed}`}
-          sub={`of ${workforceSummary.deployed} deployed`}
+          value={(stageAgents[STAGES[inv.currentStage - 1]?.slug] ?? []).length}
+          sub={`assigned to ${STAGES[inv.currentStage - 1]?.short}`}
         />
       </StatRow>
 
