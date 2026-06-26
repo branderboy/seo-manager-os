@@ -9,6 +9,8 @@ const config: Config = {
   content: [
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
+    // Data files define avatar/status color classes as string literals.
+    "./src/lib/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {
