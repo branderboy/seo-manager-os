@@ -6,8 +6,9 @@ import { Switch } from "@/components/ui/switch";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { StatTile, StatRow } from "@/components/ui/metric";
 import { cn } from "@/lib/utils";
-import { agents, orchestrator, workflow, type Agent } from "@/lib/agents";
+import { agents, orchestrator, workflow, agentTools, type Agent } from "@/lib/agents";
 import { workerState, type WorkerStatus } from "@/lib/workforce";
+import { getIntegration } from "@/lib/integrations";
 import { useDeployState, toggleAgent } from "@/components/agents/deploy-store";
 
 const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> = {
@@ -98,6 +99,9 @@ export function AgentsView() {
           </span>
         </div>
         <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-[var(--muted)]">{orchestrator.role}</p>
+        <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-[var(--muted)]">
+          Turn a specialist on to deploy its skills and tool access. The Orchestrator routes each piece of the project brief to the worker whose <span className="font-medium text-[var(--ink-soft)]">skills and access</span> fit.
+        </p>
         <div className="mt-4 flex flex-wrap items-center gap-x-1 gap-y-2">
           {workflow.map((step, i) => (
             <span key={step} className="flex items-center gap-1">
@@ -194,7 +198,7 @@ function AgentCard({
         <span className="truncate text-xs text-[var(--muted)]">{state.availability}</span>
       </div>
 
-      {/* Current task */}
+      {/* Current task — the brief work it accepted */}
       <div className="border-t border-[var(--border)] bg-[var(--surface-2)] px-4 py-3">
         <div className="mb-1 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">Current task</div>
         {state.currentTask ? (
@@ -204,9 +208,35 @@ function AgentCard({
           </div>
         ) : (
           <div className="text-sm text-[var(--muted)]">
-            {deployed ? "Idle · ready for assignment" : "Offline · deploy to assign work"}
+            {deployed ? "On · ready to accept brief work that fits its skills" : "Off · brief work for this skill is uncovered"}
           </div>
         )}
+      </div>
+
+      {/* Tool access — its toolbelt; connected tools (green) are live */}
+      <div className="border-t border-[var(--border)] px-4 py-3">
+        <div className="mb-1.5 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--faint)]">Access</div>
+        <div className="flex flex-wrap gap-1">
+          {(agentTools[agent.id] ?? []).map((tid) => {
+            const tool = getIntegration(tid);
+            if (!tool) return null;
+            return (
+              <span
+                key={tid}
+                title={tool.connected ? `${tool.name} · connected` : `${tool.name} · not connected`}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-2xs font-medium",
+                  tool.connected
+                    ? "border-[var(--border)] bg-[var(--surface-2)] text-[var(--ink-soft)]"
+                    : "border-dashed border-[var(--border)] text-[var(--faint)]"
+                )}
+              >
+                <span className={cn("h-1.5 w-1.5 rounded-full", tool.connected ? "bg-accent-500" : "bg-[var(--faint)]")} />
+                {tool.name}
+              </span>
+            );
+          })}
+        </div>
       </div>
 
       {/* Stats footer */}

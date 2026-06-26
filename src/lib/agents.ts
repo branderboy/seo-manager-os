@@ -285,6 +285,30 @@ export const workflow = [
   "Reporting",
 ];
 
+/**
+ * Each specialist's toolbelt — the integrations it can access to do its work.
+ * Connecting a tool in Integrations is what lights up the workers that depend
+ * on it; the Orchestrator routes brief work to the worker whose skills AND
+ * access fit. Ids reference lib/integrations.
+ */
+export const agentTools: Record<string, string[]> = {
+  discovery: ["hubspot", "gcal"],
+  research: ["gsc", "ga4", "gbp", "semrush", "gtrends"],
+  "technical-auditor": ["screamingfrog", "gsc", "lighthouse", "pagespeed"],
+  intent: ["semrush", "gsc", "gtrends"],
+  competitive: ["semrush", "ahrefs", "dataforseo", "localfalcon"],
+  diagnosis: ["screamingfrog", "gsc", "ahrefs"],
+  strategy: ["gdocs"],
+  playbook: ["trello", "semrush"],
+  brief: ["gdocs", "slack"],
+  content: ["surfer", "clearscope", "marketmuse"],
+  local: ["gbp", "localfalcon", "greviews"],
+  schema: ["screamingfrog"],
+  "internal-linking": ["screamingfrog"],
+  qa: ["screamingfrog", "lighthouse", "pagespeed"],
+  reporting: ["looker", "ga4", "slack"],
+};
+
 /** Which agents deploy from each pipeline stage (by route slug). */
 export const stageAgents: Record<string, string[]> = {
   discovery: ["discovery"],
