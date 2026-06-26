@@ -81,22 +81,22 @@ export function AgentsView() {
   return (
     <div className="space-y-7">
       {/* ── Manager — the Orchestrator runs the floor ───────────────────────── */}
-      <section className="reveal overflow-hidden rounded-2xl border border-[var(--feature-border)] bg-[var(--feature)] p-6 text-white shadow-lg">
+      <section className="reveal overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-card">
         <div className="flex flex-wrap items-center gap-2">
-          <h2 className="text-lg font-semibold tracking-tight text-white">{orchestrator.name}</h2>
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2 py-0.5 text-2xs font-semibold text-white/85">
+          <h2 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">{orchestrator.name}</h2>
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--ok-tint)] px-2 py-0.5 text-2xs font-semibold text-[#157552]">
             <StatusDot tone="good" pulse /> Running
           </span>
-          <span className="rounded-md bg-white/10 px-2 py-0.5 text-2xs font-semibold text-white/85">
+          <span className="rounded-md bg-[var(--surface-3)] px-2 py-0.5 text-2xs font-semibold text-[var(--ink-soft)]">
             {deployedCount} of {agents.length} deployed
           </span>
         </div>
-        <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-white/65">{orchestrator.role}</p>
+        <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-[var(--muted)]">{orchestrator.role}</p>
         <div className="mt-4 flex flex-wrap items-center gap-x-1 gap-y-2">
           {workflow.map((step, i) => (
             <span key={step} className="flex items-center gap-1">
-              <span className="rounded-md bg-white/[0.07] px-2 py-1 text-2xs font-medium text-white/75">{step}</span>
-              {i < workflow.length - 1 && <span className="text-white/25">›</span>}
+              <span className="rounded-md bg-[var(--surface-3)] px-2 py-1 text-2xs font-medium text-[var(--ink-soft)]">{step}</span>
+              {i < workflow.length - 1 && <span className="text-[var(--faint)]">›</span>}
             </span>
           ))}
         </div>
@@ -165,12 +165,6 @@ function AgentCard({
   state: ReturnType<typeof workerState>;
   onToggle: (v: boolean) => void;
 }) {
-  const initials = agent.name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
   return (
     <Card interactive className={cn("flex flex-col overflow-hidden", !deployed && "opacity-[0.92]")}>
       {/* Department identity bar */}
@@ -178,14 +172,6 @@ function AgentCard({
 
       {/* Header — identity + deploy toggle */}
       <div className="flex items-start gap-3 p-4 pb-3">
-        <span
-          className={cn(
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold shadow-sm",
-            deployed ? cn(accent.solid, "text-white") : "bg-[var(--surface-3)] text-[var(--muted)]"
-          )}
-        >
-          {initials}
-        </span>
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-[var(--foreground)]">{agent.name}</div>
           <div className="truncate text-xs text-[var(--muted)]">{agent.role}</div>
