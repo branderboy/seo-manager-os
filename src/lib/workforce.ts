@@ -38,19 +38,19 @@ const CURRENT: Record<string, { task: string; client: string }> = {
 const RECENT: Record<string, string[]> = {
   discovery: ["Discovery — Acme Corp", "Goal map — Hill Country Dental"],
   research: ["Keyword pack — Flowdesk", "SERP pull — Northwind Heating & Air"],
-  "technical-auditor": ["Schema audit — Vantage Retail", "Redirect map — Trailhead"],
+  "technical-auditor": ["Schema audit — Vantage Retail", "Redirect map — Acme Corp"],
   intent: ["Intent map — Hill Country Dental", "Page match — Vantage Retail"],
-  competitive: ["Backlink gap — Northwind Heating & Air", "AI-answer coverage — Beacon"],
+  competitive: ["Backlink gap — Northwind Heating & Air", "AI-answer coverage — Hill Country Dental"],
   diagnosis: ["Root causes — Hill Country Dental", "Confidence pass — Vantage Retail"],
   strategy: ["Roadmap — Northwind Heating & Air", "Priority sort — Hill Country Dental"],
-  content: ["3 service briefs — Vantage Retail", "Comparison page — Beacon"],
+  content: ["3 service briefs — Vantage Retail", "Comparison page — Hill Country Dental"],
   local: ["Review responses — Northwind Heating & Air", "Citations — Hill Country"],
-  qa: ["Deploy check — Trailhead", "CWV re-test — Hill Country Dental"],
+  qa: ["Deploy check — Acme Corp", "CWV re-test — Hill Country Dental"],
   reporting: ["Exec summary — Vantage Retail", "ROI model — Northwind Heating & Air"],
-  schema: ["FAQ schema — Northwind Heating & Air", "Product schema — Beacon"],
+  schema: ["FAQ schema — Northwind Heating & Air", "Product schema — Hill Country Dental"],
   "internal-linking": ["Link plan — Vantage Retail", "Silo map — Hill Country Dental"],
   brief: ["Project brief — Northwind Heating & Air", "KPI sheet — Flowdesk"],
-  playbook: ["Local playbook — Flowdesk", "Tasks generated — Beacon"],
+  playbook: ["Local playbook — Flowdesk", "Tasks generated — Hill Country Dental"],
 };
 
 // Stable hash → small integers, so derived metrics are consistent per id.

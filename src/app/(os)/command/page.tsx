@@ -217,6 +217,9 @@ export default function CommandCenterPage() {
                 <Badge variant={j.status === "Queued" ? "warn" : "good"}>{j.status === "Queued" ? "Queued" : "Running"}</Badge>
               </li>
             ))}
+            {workforceSummary.working > aiJobs.length && (
+              <li className="py-2.5 text-xs text-[var(--muted)]">+{workforceSummary.working - aiJobs.length} more running</li>
+            )}
           </ul>
           <PanelFoot href="/agents" label="View all jobs" />
         </Panel>
