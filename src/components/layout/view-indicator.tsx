@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEngagement } from "@/components/engagement/store";
+import { StatusDot } from "@/components/ui/badge";
 import { clientById } from "@/lib/model";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,7 @@ export function ViewIndicator() {
           onClient ? "bg-[var(--surface)] shadow-sm" : "text-[var(--muted)] hover:text-[var(--foreground)]"
         )}
       >
+        <StatusDot tone="good" pulse />
         <span className={cn("flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white", client?.color ?? "bg-accent-500")}>
           {initials}
         </span>
