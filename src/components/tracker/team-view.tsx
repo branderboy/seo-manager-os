@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { team, allTasks, teamMemberForOwner, clientById } from "@/lib/model";
+import { assistantsFor } from "@/lib/agents";
 import { cn } from "@/lib/utils";
 
 /**
@@ -56,6 +57,12 @@ export function TeamView() {
                 <div className="min-w-0">
                   <div className="truncate text-sm font-semibold text-[var(--foreground)]">{m.name}</div>
                   <div className="truncate text-xs text-[var(--muted)]">{m.role}</div>
+                  <div
+                    className="truncate text-2xs font-medium text-accent-700"
+                    title={assistantsFor(m.id).map((a) => a.name).join(", ")}
+                  >
+                    {assistantsFor(m.id).length} AI {assistantsFor(m.id).length === 1 ? "assistant" : "assistants"}
+                  </div>
                 </div>
               </div>
 

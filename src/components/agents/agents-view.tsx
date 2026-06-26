@@ -6,9 +6,10 @@ import { Switch } from "@/components/ui/switch";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { StatTile, StatRow } from "@/components/ui/metric";
 import { cn } from "@/lib/utils";
-import { agents, orchestrator, workflow, agentTools, type Agent } from "@/lib/agents";
+import { agents, orchestrator, workflow, agentTools, agentSupervisor, type Agent } from "@/lib/agents";
 import { workerState, type WorkerStatus } from "@/lib/workforce";
 import { getIntegration } from "@/lib/integrations";
+import { teamMemberById } from "@/lib/model";
 import { useDeployState, toggleAgent } from "@/components/agents/deploy-store";
 
 const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> = {
@@ -185,6 +186,11 @@ function AgentCard({
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-[var(--foreground)]">{agent.name}</div>
           <div className="truncate text-xs text-[var(--muted)]">{agent.role}</div>
+          {teamMemberById(agentSupervisor[agent.id]) && (
+            <div className="mt-1 truncate text-2xs text-[var(--muted)]">
+              Assists <span className="font-medium text-[var(--ink-soft)]">{teamMemberById(agentSupervisor[agent.id])!.name}</span>
+            </div>
+          )}
         </div>
         <Switch checked={deployed} onChange={onToggle} label={`Deploy ${agent.name}`} />
       </div>
