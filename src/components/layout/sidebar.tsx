@@ -52,7 +52,7 @@ export function Sidebar() {
   const favorites = clients.slice(0, 5).map((c) => ({ c, risk: riskForClient(c) }));
 
   return (
-    <aside className="hidden w-[256px] shrink-0 flex-col bg-[#0b2e1f] text-white lg:flex">
+    <aside className="hidden w-[256px] shrink-0 flex-col bg-[#15181e] text-white lg:flex">
       <div className="flex h-screen flex-col">
         {/* Brand */}
         <Link href="/command" className="flex shrink-0 items-center gap-3 px-5 pb-4 pt-6">
@@ -123,7 +123,7 @@ export function Sidebar() {
         <div className="shrink-0 px-3 pb-3 pt-2">
           <Link
             href="/agents"
-            className="block overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-[#0f3a28] to-[#082016] p-4"
+            className="block overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] p-4"
           >
             <div className="flex items-center gap-2 text-sm font-bold">
               <Bot className="h-4 w-4 text-accent-400" /> AI Workforce
