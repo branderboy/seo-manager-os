@@ -133,9 +133,6 @@ export default function CommandCenterPage() {
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-md bg-[var(--surface-3)] px-2 py-0.5 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
-            Agency overview · all {clients.length} clients
-          </div>
           <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">
             Good morning, {currentUser.name.split(" ")[0]} <span className="align-middle">👋</span>
           </h1>
