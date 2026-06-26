@@ -35,6 +35,12 @@ const NAV: Item[] = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
+const DASHBOARDS: { href: string; account: string; tag: string }[] = [
+  { href: "/dashboards/local", account: "Northwind H&A", tag: "Local" },
+  { href: "/dashboards/saas", account: "Flowdesk", tag: "SaaS" },
+  { href: "/dashboards/enterprise", account: "Vantage Retail", tag: "Enterprise" },
+];
+
 const riskText: Record<string, string> = {
   High: "text-rose-300",
   Medium: "text-amber-300",
@@ -90,6 +96,33 @@ export function Sidebar() {
               })}
             </ul>
           </nav>
+
+          {/* Client dashboards */}
+          <div className="mt-5">
+            <div className="flex items-center justify-between px-3 pb-2">
+              <span className="text-2xs font-bold uppercase tracking-[0.1em] text-white/55">Client dashboards</span>
+            </div>
+            <ul className="space-y-0.5">
+              {DASHBOARDS.map((db) => {
+                const active = isActive(pathname, db.href);
+                return (
+                  <li key={db.href}>
+                    <Link
+                      href={db.href}
+                      className={cn(
+                        "relative flex items-center gap-2.5 rounded-lg px-3 py-2 transition-colors",
+                        active ? "bg-white/15" : "hover:bg-white/5"
+                      )}
+                    >
+                      {active && <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-r-full bg-accent-500" />}
+                      <span className="min-w-0 flex-1 truncate text-sm font-medium text-white/85">{db.account}</span>
+                      <span className="rounded bg-white/10 px-1.5 py-0.5 text-2xs font-semibold text-white/60">{db.tag}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
 
           {/* Favorite clients */}
           <div className="mt-5">
