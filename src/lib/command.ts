@@ -9,7 +9,7 @@ export type WaitingOn = "Client" | "Developer" | "Content" | "Google";
 export const morningBrief = {
   greeting: "Good morning, Kawani",
   date: "Wednesday, June 25",
-  line: "9 tasks due today across 6 clients. 3 are blocked, 2 need client sign-off, and 4 AI jobs are running. Northwind and Beacon Dental need your attention first.",
+  line: "9 tasks due today across 6 clients. 3 are blocked, 2 need client sign-off, and 4 AI jobs are running. Northwind and Hill Country Dental need your attention first.",
 };
 
 export type OpsStat = {
@@ -36,11 +36,11 @@ export type PriorityTask = {
 };
 
 export const priorityTasks: PriorityTask[] = [
-  { name: "Approve 6 location-page briefs", client: "Northwind HVAC", owner: "You", due: "10:00 AM", priority: "high" },
-  { name: "Ship title-tag fixes to dev (12 pages)", client: "Beacon Dental", owner: "Priya", due: "11:30 AM", priority: "high" },
-  { name: "Review competitor gap analysis", client: "Summit Roofing", owner: "You", due: "1:00 PM", priority: "high" },
-  { name: "Publish 'AC Repair Austin' service page", client: "Northwind HVAC", owner: "Jordan", due: "2:00 PM", priority: "medium" },
-  { name: "Send monthly report draft for sign-off", client: "Lakeside Spa", owner: "You", due: "4:00 PM", priority: "medium" },
+  { name: "Approve 6 location-page briefs", client: "Northwind Heating & Air", owner: "You", due: "10:00 AM", priority: "high" },
+  { name: "Ship title-tag fixes to dev (12 pages)", client: "Hill Country Dental", owner: "Priya", due: "11:30 AM", priority: "high" },
+  { name: "Review competitor gap analysis", client: "Vantage Retail", owner: "You", due: "1:00 PM", priority: "high" },
+  { name: "Publish 'AC Repair Austin' service page", client: "Northwind Heating & Air", owner: "Jordan", due: "2:00 PM", priority: "medium" },
+  { name: "Send monthly report draft for sign-off", client: "Flowdesk", owner: "You", due: "4:00 PM", priority: "medium" },
 ];
 
 export type ClientAttention = {
@@ -50,10 +50,10 @@ export type ClientAttention = {
 };
 
 export const clientsNeedingAttention: ClientAttention[] = [
-  { client: "Northwind HVAC", reason: "Traffic down 14% WoW — diagnosis flagged review velocity", severity: "high" },
-  { client: "Beacon Dental", reason: "Deployment waiting on developer for 3 days", severity: "high" },
-  { client: "Summit Roofing", reason: "Content brief approved — work unassigned", severity: "medium" },
-  { client: "Lakeside Spa", reason: "Monthly report due to client tomorrow", severity: "low" },
+  { client: "Northwind Heating & Air", reason: "Traffic down 14% WoW — diagnosis flagged review velocity", severity: "high" },
+  { client: "Hill Country Dental", reason: "Deployment waiting on developer for 3 days", severity: "high" },
+  { client: "Vantage Retail", reason: "Content brief approved — work unassigned", severity: "medium" },
+  { client: "Flowdesk", reason: "Monthly report due to client tomorrow", severity: "low" },
 ];
 
 export type Blocker = {
@@ -64,16 +64,16 @@ export type Blocker = {
 };
 
 export const blockers: Blocker[] = [
-  { task: "Publish 6 location pages", client: "Northwind HVAC", waitingOn: "Client", age: "2 days" },
-  { task: "Deploy schema markup", client: "Beacon Dental", waitingOn: "Developer", age: "3 days" },
-  { task: "Index new collection pages", client: "Trailhead Outfitters", waitingOn: "Google", age: "5 days" },
+  { task: "Publish 6 location pages", client: "Northwind Heating & Air", waitingOn: "Client", age: "2 days" },
+  { task: "Deploy schema markup", client: "Hill Country Dental", waitingOn: "Developer", age: "3 days" },
+  { task: "Index new collection pages", client: "Acme Corp", waitingOn: "Google", age: "5 days" },
 ];
 
 export type Approval = { item: string; client: string; since: string };
 
 export const approvals: Approval[] = [
-  { item: "6 location-page content briefs", client: "Northwind HVAC", since: "Yesterday" },
-  { item: "Homepage meta + H1 changes", client: "Summit Roofing", since: "2 days ago" },
+  { item: "6 location-page content briefs", client: "Northwind Heating & Air", since: "Yesterday" },
+  { item: "Homepage meta + H1 changes", client: "Vantage Retail", since: "2 days ago" },
 ];
 
 export type Deployment = {
@@ -84,9 +84,9 @@ export type Deployment = {
 };
 
 export const deployments: Deployment[] = [
-  { item: "Title-tag fixes · 12 pages", client: "Beacon Dental", status: "Verifying", when: "10 min ago" },
-  { item: "Redirect map · migration batch 2", client: "Trailhead Outfitters", status: "Queued", when: "Today" },
-  { item: "FAQ schema · 8 pages", client: "Northwind HVAC", status: "Live", when: "Yesterday" },
+  { item: "Title-tag fixes · 12 pages", client: "Hill Country Dental", status: "Verifying", when: "10 min ago" },
+  { item: "Redirect map · migration batch 2", client: "Acme Corp", status: "Queued", when: "Today" },
+  { item: "FAQ schema · 8 pages", client: "Northwind Heating & Air", status: "Live", when: "Yesterday" },
 ];
 
 export type Opportunity = {
@@ -96,19 +96,19 @@ export type Opportunity = {
 };
 
 export const opportunities: Opportunity[] = [
-  { title: "Rank top-3 for 'ac repair austin' (now #6)", client: "Northwind HVAC", score: 72 },
-  { title: "Build 'invisalign cost' comparison page", client: "Beacon Dental", score: 64 },
-  { title: "Capture 'metal roof vs shingle' featured snippet", client: "Summit Roofing", score: 58 },
+  { title: "Rank top-3 for 'ac repair austin' (now #6)", client: "Northwind Heating & Air", score: 72 },
+  { title: "Build 'invisalign cost' comparison page", client: "Hill Country Dental", score: 64 },
+  { title: "Capture 'metal roof vs shingle' featured snippet", client: "Vantage Retail", score: 58 },
 ];
 
 export type Win = { text: string; client: string; when: string };
 
 export const wins: Win[] = [
-  { text: "Google indexed 12 new pages", client: "Trailhead Outfitters", when: "6:10 AM" },
-  { text: "Moved to #2 for 'emergency plumber'", client: "Summit Roofing", when: "Overnight" },
-  { text: "Core Web Vitals passed on 9 templates", client: "Beacon Dental", when: "Yesterday" },
-  { text: "Client approved 6 content briefs", client: "Lakeside Spa", when: "Yesterday" },
-  { text: "Schema validated on all service pages", client: "Northwind HVAC", when: "Yesterday" },
+  { text: "Google indexed 12 new pages", client: "Acme Corp", when: "6:10 AM" },
+  { text: "Moved to #2 for 'emergency plumber'", client: "Vantage Retail", when: "Overnight" },
+  { text: "Core Web Vitals passed on 9 templates", client: "Hill Country Dental", when: "Yesterday" },
+  { text: "Client approved 6 content briefs", client: "Flowdesk", when: "Yesterday" },
+  { text: "Schema validated on all service pages", client: "Northwind Heating & Air", when: "Yesterday" },
 ];
 
 export type AiJob = {
@@ -119,10 +119,10 @@ export type AiJob = {
 };
 
 export const aiJobs: AiJob[] = [
-  { agent: "Technical Auditor", client: "Beacon Dental", status: "Running", eta: "~8 min" },
-  { agent: "Competitive Analyst", client: "Summit Roofing", status: "Finishing", eta: "~2 min" },
-  { agent: "Content Strategist", client: "Northwind HVAC", status: "Running", eta: "~15 min" },
-  { agent: "Reporting Specialist", client: "Lakeside Spa", status: "Queued", eta: "next" },
+  { agent: "Technical Auditor", client: "Hill Country Dental", status: "Running", eta: "~8 min" },
+  { agent: "Competitive Analyst", client: "Vantage Retail", status: "Finishing", eta: "~2 min" },
+  { agent: "Content Strategist", client: "Northwind Heating & Air", status: "Running", eta: "~15 min" },
+  { agent: "Reporting Specialist", client: "Flowdesk", status: "Queued", eta: "next" },
 ];
 
 // ── Risk alerts — portfolio-level warnings that need a manager's eyes ───────
@@ -134,9 +134,9 @@ export type RiskAlert = {
 };
 
 export const riskAlerts: RiskAlert[] = [
-  { client: "Northwind HVAC", signal: "Organic traffic down 14% WoW", metric: "−14%", severity: "high" },
-  { client: "Beacon Dental", signal: "Schema deploy blocked 3 days — SLA risk", metric: "3d", severity: "high" },
-  { client: "Trailhead Outfitters", signal: "Migration batch 2 awaiting Google indexation", metric: "5d", severity: "medium" },
+  { client: "Northwind Heating & Air", signal: "Organic traffic down 14% WoW", metric: "−14%", severity: "high" },
+  { client: "Hill Country Dental", signal: "Schema deploy blocked 3 days — SLA risk", metric: "3d", severity: "high" },
+  { client: "Acme Corp", signal: "Migration batch 2 awaiting Google indexation", metric: "5d", severity: "medium" },
 ];
 
 // ── Upcoming deadlines — what's due, in order ──────────────────────────────
@@ -149,10 +149,10 @@ export type Deadline = {
 };
 
 export const upcomingDeadlines: Deadline[] = [
-  { item: "Approve 6 location-page briefs", client: "Northwind HVAC", when: "Today, 10:00 AM", owner: "You", due: "today" },
-  { item: "Ship title-tag fixes to dev", client: "Beacon Dental", when: "Today, 11:30 AM", owner: "Priya", due: "today" },
-  { item: "Monthly report to client", client: "Lakeside Spa", when: "Tomorrow", owner: "You", due: "soon" },
-  { item: "Q3 strategy sign-off", client: "Summit Roofing", when: "Jun 27", owner: "You", due: "soon" },
+  { item: "Approve 6 location-page briefs", client: "Northwind Heating & Air", when: "Today, 10:00 AM", owner: "You", due: "today" },
+  { item: "Ship title-tag fixes to dev", client: "Hill Country Dental", when: "Today, 11:30 AM", owner: "Priya", due: "today" },
+  { item: "Monthly report to client", client: "Flowdesk", when: "Tomorrow", owner: "You", due: "soon" },
+  { item: "Q3 strategy sign-off", client: "Vantage Retail", when: "Jun 27", owner: "You", due: "soon" },
 ];
 
 // ── Recent activity — the live operational feed ────────────────────────────
@@ -166,10 +166,10 @@ export type Activity = {
 };
 
 export const recentActivity: Activity[] = [
-  { actor: "Competitive Analyst", action: "completed", target: "SERP gap analysis", client: "Summit Roofing", when: "2m ago", kind: "agent" },
-  { actor: "Priya", action: "deployed", target: "title-tag fixes · 12 pages", client: "Beacon Dental", when: "18m ago", kind: "deploy" },
-  { actor: "System", action: "indexed", target: "12 new collection pages", client: "Trailhead Outfitters", when: "1h ago", kind: "win" },
-  { actor: "Jordan", action: "approved", target: "homepage meta + H1", client: "Summit Roofing", when: "2h ago", kind: "approve" },
-  { actor: "Technical Auditor", action: "flagged", target: "review velocity stalled", client: "Northwind HVAC", when: "3h ago", kind: "alert" },
-  { actor: "You", action: "commented on", target: "Q3 roadmap brief", client: "Lakeside Spa", when: "4h ago", kind: "comment" },
+  { actor: "Competitive Analyst", action: "completed", target: "SERP gap analysis", client: "Vantage Retail", when: "2m ago", kind: "agent" },
+  { actor: "Priya", action: "deployed", target: "title-tag fixes · 12 pages", client: "Hill Country Dental", when: "18m ago", kind: "deploy" },
+  { actor: "System", action: "indexed", target: "12 new collection pages", client: "Acme Corp", when: "1h ago", kind: "win" },
+  { actor: "Jordan", action: "approved", target: "homepage meta + H1", client: "Vantage Retail", when: "2h ago", kind: "approve" },
+  { actor: "Technical Auditor", action: "flagged", target: "review velocity stalled", client: "Northwind Heating & Air", when: "3h ago", kind: "alert" },
+  { actor: "You", action: "commented on", target: "Q3 roadmap brief", client: "Flowdesk", when: "4h ago", kind: "comment" },
 ];
