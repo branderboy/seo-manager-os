@@ -7,6 +7,7 @@ import {
   Ban,
   Rocket,
   CheckCircle2,
+  Check,
   ArrowUpRight,
   ArrowRight,
   TrendingUp,
@@ -39,12 +40,6 @@ export const metadata: Metadata = { title: "Command Center" };
 // Reconciled portfolio numbers (single source of truth).
 const openCampaigns = investigations.filter((i) => i.status === "Open").length;
 const aiRunning = workforceSummary.working;
-
-// The process spine: where each client project currently sits in the 9 stages.
-const pipeline = STAGES.map((s) => ({
-  stage: s,
-  projects: investigations.filter((i) => i.currentStage === s.n),
-}));
 
 const clientIdByName: Record<string, string> = Object.fromEntries(clients.map((c) => [c.name, c.id]));
 
@@ -119,54 +114,60 @@ export default function CommandCenterPage() {
       </div>
 
       {/* ══ THE PROCESS ═════════════════════════════════════════════════ */}
-      <SectionLabel>Where every client is in the workflow</SectionLabel>
+      <SectionLabel>Every client&apos;s progress through the workflow</SectionLabel>
       <Panel className="p-5">
-        <div className="flex items-start gap-1 overflow-x-auto pb-1">
-          {pipeline.map((p, i) => {
-            const Icon = p.stage.icon;
-            const has = p.projects.length > 0;
+        <p className="mb-4 text-xs text-[var(--muted)]">
+          Each client runs the same 9-stage process. The bar shows how far along their campaign is — done, current and upcoming.
+        </p>
+        <div className="space-y-1">
+          {investigations.map((inv) => {
+            const c = clientById(inv.clientId);
+            const cur = inv.currentStage;
+            const stage = STAGES[cur - 1];
             return (
-              <div key={p.stage.slug} className="flex min-w-[112px] flex-1 flex-col items-center text-center">
-                <div className="flex w-full items-center">
-                  <span className={cn("h-0.5 flex-1", i === 0 ? "opacity-0" : "bg-[var(--border)]")} />
-                  <Link
-                    href={`/${p.stage.slug}`}
-                    title={p.stage.name}
-                    className={cn(
-                      "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-                      has
-                        ? "border-accent-500 bg-[var(--accent-tint)] text-accent-600 hover:bg-accent-100"
-                        : "border-[var(--border)] bg-[var(--surface)] text-[var(--faint)] hover:border-[var(--border-strong)]"
-                    )}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </Link>
-                  <span className={cn("h-0.5 flex-1", i === STAGES.length - 1 ? "opacity-0" : "bg-[var(--border)]")} />
-                </div>
-                <div className="mt-2 text-2xs font-semibold uppercase tracking-[0.04em] text-[var(--faint)]">
-                  Stage {p.stage.n}
-                </div>
-                <div className="text-xs font-semibold text-[var(--foreground)]">{p.stage.short}</div>
-                <div className="mt-2 w-full space-y-1">
-                  {p.projects.length > 0 ? (
-                    p.projects.map((pr) => {
-                      const c = clientById(pr.clientId);
-                      return (
+              <div key={inv.id} className="flex items-center gap-4 rounded-lg px-2 py-2.5 hover:bg-[var(--surface-2)]">
+                {/* Client */}
+                <Link href={`/clients/${inv.clientId}`} className="flex w-44 shrink-0 items-center gap-2.5">
+                  <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-2xs font-bold text-white", c?.color ?? "bg-accent-500")}>
+                    {c?.initials}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-semibold text-[var(--foreground)]">{c?.name}</span>
+                    <span className="block text-2xs font-medium uppercase tracking-[0.04em] text-[var(--muted)]">{inv.model} SEO</span>
+                  </span>
+                </Link>
+
+                {/* 9-stage progress */}
+                <div className="flex flex-1 items-center">
+                  {STAGES.map((s, i) => {
+                    const done = s.n < cur;
+                    const current = s.n === cur;
+                    return (
+                      <div key={s.slug} className="flex items-center last:flex-none flex-1">
                         <Link
-                          key={pr.id}
-                          href={`/clients/${pr.clientId}`}
-                          className="flex items-center gap-1.5 rounded-md bg-[var(--surface-2)] px-1.5 py-1 text-left transition-colors hover:bg-[var(--surface-3)]"
+                          href={`/${s.slug}`}
+                          title={`Stage ${s.n} · ${s.name}`}
+                          className={cn(
+                            "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold tnum transition-colors",
+                            done && "border-accent-500 bg-accent-500 text-white",
+                            current && "border-accent-500 bg-[var(--accent-tint)] text-accent-700 ring-2 ring-accent-200",
+                            !done && !current && "border-[var(--border-strong)] bg-[var(--surface)] text-[var(--faint)]"
+                          )}
                         >
-                          <span className={cn("flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[8px] font-bold text-white", c?.color ?? "bg-accent-500")}>
-                            {c?.initials}
-                          </span>
-                          <span className="min-w-0 flex-1 truncate text-2xs font-medium text-[var(--ink-soft)]">{c?.name}</span>
+                          {done ? <Check className="h-3 w-3" /> : s.n}
                         </Link>
-                      );
-                    })
-                  ) : (
-                    <div className="py-1 text-2xs text-[var(--faint)]">None</div>
-                  )}
+                        {i < STAGES.length - 1 && (
+                          <span className={cn("h-0.5 flex-1", done ? "bg-accent-500" : "bg-[var(--border)]")} />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Current stage */}
+                <div className="w-36 shrink-0 text-right">
+                  <div className="text-2xs font-medium text-[var(--muted)]">Stage {cur} of {STAGES.length}</div>
+                  <div className="truncate text-sm font-semibold text-[var(--foreground)]">{stage?.name}</div>
                 </div>
               </div>
             );
