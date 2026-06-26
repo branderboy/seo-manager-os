@@ -24,7 +24,7 @@ export const opsStats: OpsStat[] = [
   { key: "tasks", label: "Tasks today", value: 9, sub: "3 high priority", tone: "default" },
   { key: "blockers", label: "Blockers", value: 3, sub: "2 waiting on client", tone: "bad" },
   { key: "approvals", label: "Pending approvals", value: 2, sub: "client sign-off", tone: "warn" },
-  { key: "aijobs", label: "AI jobs running", value: 4, sub: "2 finishing soon", tone: "accent" },
+  { key: "aijobs", label: "AI jobs running", value: 13, sub: "2 finishing soon", tone: "accent" },
 ];
 
 export type PriorityTask = {

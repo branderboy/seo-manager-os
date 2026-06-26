@@ -13,12 +13,14 @@ import {
   Users,
   FolderOpen,
   ExternalLink,
+  ArrowRight,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { clients, clientById, peopleForClient, investigationsForClient, money } from "@/lib/model";
+import { STAGES } from "@/lib/stages";
 import { clientProfiles } from "@/lib/client-profiles";
 import { riskForClient, riskTone, riskBadge } from "@/lib/risk";
 
@@ -199,18 +201,27 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
 
         <Panel title="Engagements" icon={FileText}>
           <ul className="divide-y divide-[var(--border)]">
-            {records.map((r) => (
-              <li key={r.id} className="px-4 py-2.5">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-medium text-[var(--foreground)]">{r.name}</div>
-                    <div className="text-xs text-[var(--muted)]">{r.stageLabel} · {r.progress}% complete</div>
-                  </div>
-                  <span className="shrink-0 text-sm font-medium tnum text-[var(--ink-soft)]">{money(r.value)}</span>
-                </div>
-                <div className="mt-2"><Progress value={r.progress} /></div>
-              </li>
-            ))}
+            {records.map((r) => {
+              const stageSlug = STAGES[r.currentStage - 1]?.slug ?? "workflow";
+              return (
+                <li key={r.id}>
+                  <Link href={`/${stageSlug}`} className="group block px-4 py-2.5 transition-colors hover:bg-[var(--surface-2)]">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate text-sm font-medium text-[var(--foreground)]">{r.name}</div>
+                        <div className="text-xs text-[var(--muted)]">Stage {r.currentStage} · {r.stageLabel} · {r.progress}% complete</div>
+                      </div>
+                      <span className="flex shrink-0 items-center gap-1.5">
+                        <span className="text-sm font-medium tnum text-[var(--ink-soft)]">{money(r.value)}</span>
+                        <ArrowRight className="h-3.5 w-3.5 text-[var(--faint)] transition-colors group-hover:text-accent-600" />
+                      </span>
+                    </div>
+                    <div className="mt-2"><Progress value={r.progress} /></div>
+                    <div className="mt-1.5 text-2xs font-medium text-accent-600 opacity-0 transition-opacity group-hover:opacity-100">Resume at {r.stageLabel} →</div>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </Panel>
       </div>

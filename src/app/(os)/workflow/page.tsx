@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check, ArrowRight, Lock } from "lucide-react";
+import { Check, ArrowRight, Lock, RotateCw } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { StatTile, StatRow } from "@/components/ui/metric";
@@ -176,6 +176,21 @@ export default function WorkflowPage() {
           );
         })}
       </ol>
+
+      {/* The loop closes — Reports feeds the next round of Insights */}
+      <Link
+        href="/diagnosis"
+        className="group flex items-center gap-3 rounded-xl border border-accent-200 bg-[var(--accent-tint)] px-4 py-3.5 transition-colors hover:border-accent-300"
+      >
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-white">
+          <RotateCw className="h-4 w-4" />
+        </span>
+        <span className="min-w-0 flex-1 text-sm text-[var(--ink-soft)]">
+          <span className="font-semibold text-[var(--foreground)]">The cycle repeats.</span> After Reports, this round&apos;s
+          wins and gaps feed the next round of Insights — a continuous 360° loop.
+        </span>
+        <ArrowRight className="h-4 w-4 shrink-0 text-accent-600 transition-transform group-hover:translate-x-0.5" />
+      </Link>
     </>
   );
 }

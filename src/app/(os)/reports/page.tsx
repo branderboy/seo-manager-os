@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   CheckCircle2,
   Ban,
@@ -9,6 +10,8 @@ import {
   TrendingDown,
   Sparkles,
   FileText,
+  RotateCw,
+  ArrowRight,
 } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card } from "@/components/ui/card";
@@ -170,6 +173,29 @@ export default function ReportsPage() {
           ))}
         </ul>
       </Panel>
+
+      {/* Close the loop — this cycle's findings feed the next ───────────────── */}
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-accent-200 bg-[var(--accent-tint)] p-6">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-white">
+            <RotateCw className="h-4 w-4" />
+          </span>
+          <div>
+            <div className="text-sm font-semibold text-[var(--foreground)]">Close the loop</div>
+            <p className="mt-1 max-w-2xl text-sm text-[var(--ink-soft)]">
+              The wins above and the gaps still open feed the next round. Take the new revenue
+              opportunities and unresolved risks back into Insights to set the next sprint — the cycle
+              repeats: Insights → Playbooks → Tasks → Reports.
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/diagnosis"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-accent-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-accent-700"
+        >
+          Start the next cycle <ArrowRight className="h-4 w-4" />
+        </Link>
+      </div>
 
       <ReportShare />
     </>
