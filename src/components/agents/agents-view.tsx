@@ -1,18 +1,6 @@
 "use client";
 
-import * as React from "react";
-import {
-  Gauge,
-  ListChecks,
-  CheckCircle2,
-  History,
-  Telescope,
-  Wrench,
-  Stethoscope,
-  PenLine,
-  ShieldCheck,
-  type LucideIcon,
-} from "lucide-react";
+import { Telescope, Wrench, Stethoscope, PenLine, ShieldCheck, type LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge, StatusDot } from "@/components/ui/badge";
@@ -31,17 +19,10 @@ const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> =
 
 // ── Departments — specialists grouped by function. Each department owns one
 // color from a green-complementary palette, so the roster reads as an organized
-// set of assets, not a clashing pile of icons.
+// set of assets. No icons — color carries the identity.
 type Accent = { solid: string; tint: string; text: string; ring: string };
 
-const DEPARTMENTS: {
-  id: string;
-  name: string;
-  desc: string;
-  icon: LucideIcon;
-  accent: Accent;
-  ids: string[];
-}[] = [
+const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; accent: Accent; ids: string[] }[] = [
   {
     id: "research",
     name: "Research & Discovery",
@@ -100,40 +81,33 @@ export function AgentsView() {
   return (
     <div className="space-y-7">
       {/* ── Manager — the Orchestrator runs the floor ───────────────────────── */}
-      <section className="reveal overflow-hidden rounded-2xl border border-[var(--feature-border)] bg-[var(--feature)] text-white shadow-lg">
-        <div className="flex flex-wrap items-start gap-4 p-6">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10">
-            <orchestrator.icon className="h-6 w-6 text-white" />
+      <section className="reveal overflow-hidden rounded-2xl border border-[var(--feature-border)] bg-[var(--feature)] p-6 text-white shadow-lg">
+        <div className="flex flex-wrap items-center gap-2">
+          <h2 className="text-lg font-semibold tracking-tight text-white">{orchestrator.name}</h2>
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2 py-0.5 text-2xs font-semibold text-white/85">
+            <StatusDot tone="good" pulse /> Running
           </span>
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-lg font-semibold tracking-tight text-white">{orchestrator.name}</h2>
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-1.5 py-0.5 text-2xs font-semibold text-white/80">
-                <StatusDot tone="good" pulse /> Running
-              </span>
-              <span className="rounded-md bg-white/10 px-1.5 py-0.5 text-2xs font-semibold text-white/80">
-                {deployedCount} of {agents.length} deployed
-              </span>
-            </div>
-            <p className="mt-1 max-w-3xl text-sm leading-relaxed text-white/65">{orchestrator.role}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-x-1 gap-y-2">
-              {workflow.map((step, i) => (
-                <span key={step} className="flex items-center gap-1">
-                  <span className="rounded-md bg-white/[0.07] px-2 py-1 text-2xs font-medium text-white/75">{step}</span>
-                  {i < workflow.length - 1 && <span className="text-white/25">›</span>}
-                </span>
-              ))}
-            </div>
-          </div>
+          <span className="rounded-md bg-white/10 px-2 py-0.5 text-2xs font-semibold text-white/85">
+            {deployedCount} of {agents.length} deployed
+          </span>
+        </div>
+        <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-white/65">{orchestrator.role}</p>
+        <div className="mt-4 flex flex-wrap items-center gap-x-1 gap-y-2">
+          {workflow.map((step, i) => (
+            <span key={step} className="flex items-center gap-1">
+              <span className="rounded-md bg-white/[0.07] px-2 py-1 text-2xs font-medium text-white/75">{step}</span>
+              {i < workflow.length - 1 && <span className="text-white/25">›</span>}
+            </span>
+          ))}
         </div>
       </section>
 
       {/* ── Workforce KPIs ──────────────────────────────────────────────────── */}
       <StatRow cols={4}>
-        <StatTile label="Specialists deployed" value={`${deployedCount}/${agents.length}`} sub="of the full roster" icon={ListChecks} />
+        <StatTile label="Specialists deployed" value={`${deployedCount}/${agents.length}`} sub="of the full roster" />
         <StatTile label="Working now" value={workingCount} tone="good" sub="active assignments" />
-        <StatTile label="Jobs completed today" value={jobsToday} tone="accent" icon={CheckCircle2} />
-        <StatTile label="Avg. performance" value={`${avgPerf}%`} sub="QA pass rate" icon={Gauge} />
+        <StatTile label="Jobs completed today" value={jobsToday} tone="accent" />
+        <StatTile label="Avg. performance" value={`${avgPerf}%`} sub="QA pass rate" />
       </StatRow>
 
       {/* ── Departments ─────────────────────────────────────────────────────── */}
