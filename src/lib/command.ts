@@ -9,7 +9,7 @@ export type WaitingOn = "Client" | "Developer" | "Content" | "Google";
 export const morningBrief = {
   greeting: "Good morning, Kawani",
   date: "Wednesday, June 25",
-  line: "9 tasks due today across 6 clients. 3 are blocked, 2 need client sign-off, and 4 AI jobs are running. Northwind and Hill Country Dental need your attention first.",
+  line: "9 tasks due today across 5 clients. 3 are blocked, 2 need client sign-off, and 13 AI specialists are working. Northwind and Hill Country Dental need your attention first.",
 };
 
 export type OpsStat = {
@@ -123,6 +123,20 @@ export const aiJobs: AiJob[] = [
   { agent: "Competitive Analyst", client: "Vantage Retail", status: "Finishing", eta: "~2 min" },
   { agent: "Content Strategist", client: "Northwind Heating & Air", status: "Running", eta: "~15 min" },
   { agent: "Reporting Specialist", client: "Flowdesk", status: "Queued", eta: "next" },
+];
+
+// ── Indexing queue · pages submitted to Google, by indexation state ─────────
+export type IndexItem = {
+  pages: number;
+  client: string;
+  state: "Submitted" | "Crawled" | "Indexed";
+  when: string;
+};
+
+export const indexingQueue: IndexItem[] = [
+  { pages: 12, client: "Acme Corp", state: "Indexed", when: "1h ago" },
+  { pages: 8, client: "Northwind Heating & Air", state: "Crawled", when: "Today" },
+  { pages: 6, client: "Vantage Retail", state: "Submitted", when: "Today" },
 ];
 
 // ── Risk alerts · portfolio-level warnings that need a manager's eyes ───────
