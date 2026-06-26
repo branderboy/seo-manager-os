@@ -17,10 +17,16 @@ const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> =
   Offline: "default",
 };
 
-// ── Departments — specialists grouped by function. Each department owns one
-// color from a green-complementary palette, so the roster reads as an organized
-// set of assets. No icons — color carries the identity.
+// ── Departments — specialists grouped by function. Every department uses the
+// one brand green; the category icon carries the identity, not a clashing color.
 type Accent = { solid: string; tint: string; text: string; ring: string };
+
+const GREEN: Accent = {
+  solid: "bg-accent-500",
+  tint: "bg-[var(--accent-tint)]",
+  text: "text-accent-700",
+  ring: "ring-accent-200",
+};
 
 const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; accent: Accent; ids: string[] }[] = [
   {
@@ -28,7 +34,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; a
     name: "Research & Discovery",
     desc: "Understand the business, the market and the demand",
     icon: Telescope,
-    accent: { solid: "bg-teal-500", tint: "bg-teal-50", text: "text-teal-700", ring: "ring-teal-200" },
+    accent: GREEN,
     ids: ["discovery", "research", "intent", "competitive"],
   },
   {
@@ -36,7 +42,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; a
     name: "Technical SEO",
     desc: "Crawl, indexation, schema, structure and links",
     icon: Wrench,
-    accent: { solid: "bg-sky-600", tint: "bg-sky-50", text: "text-sky-700", ring: "ring-sky-200" },
+    accent: GREEN,
     ids: ["technical-auditor", "schema", "internal-linking"],
   },
   {
@@ -44,7 +50,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; a
     name: "Diagnosis & Strategy",
     desc: "Decide what to fix first and chart the roadmap",
     icon: Stethoscope,
-    accent: { solid: "bg-amber-500", tint: "bg-amber-50", text: "text-amber-700", ring: "ring-amber-200" },
+    accent: GREEN,
     ids: ["diagnosis", "strategy", "brief"],
   },
   {
@@ -52,7 +58,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; a
     name: "Content & Local",
     desc: "Produce pages, briefs and local presence",
     icon: PenLine,
-    accent: { solid: "bg-emerald-600", tint: "bg-emerald-50", text: "text-emerald-700", ring: "ring-emerald-200" },
+    accent: GREEN,
     ids: ["content", "playbook", "local"],
   },
   {
@@ -60,7 +66,7 @@ const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; a
     name: "Quality & Delivery",
     desc: "Verify the work and report the results",
     icon: ShieldCheck,
-    accent: { solid: "bg-green-700", tint: "bg-green-50", text: "text-green-700", ring: "ring-green-200" },
+    accent: GREEN,
     ids: ["qa", "reporting"],
   },
 ];
