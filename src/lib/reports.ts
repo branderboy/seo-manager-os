@@ -17,24 +17,24 @@ export const reportSummary = {
 };
 
 export const completedWork = [
-  { title: "Launched review-request automation", client: "Northwind HVAC", when: "Jun 22" },
-  { title: "Shipped title-tag fixes · 12 pages", client: "Beacon Dental", when: "Jun 21" },
-  { title: "Passed Core Web Vitals · 9 templates", client: "Beacon Dental", when: "Jun 20" },
-  { title: "Published 2 service pages", client: "Northwind HVAC", when: "Jun 19" },
-  { title: "Validated schema on service pages", client: "Northwind HVAC", when: "Jun 18" },
-  { title: "Migrated redirect batch 1 · 0 broken", client: "Trailhead Outfitters", when: "Jun 16" },
+  { title: "Launched review-request automation", client: "Northwind Heating & Air", when: "Jun 22" },
+  { title: "Shipped title-tag fixes · 12 pages", client: "Hill Country Dental", when: "Jun 21" },
+  { title: "Passed Core Web Vitals · 9 templates", client: "Hill Country Dental", when: "Jun 20" },
+  { title: "Published 2 service pages", client: "Northwind Heating & Air", when: "Jun 19" },
+  { title: "Validated schema on service pages", client: "Northwind Heating & Air", when: "Jun 18" },
+  { title: "Migrated redirect batch 1 · 0 broken", client: "Acme Corp", when: "Jun 16" },
 ];
 
 export const trafficChanges = [
   { client: "Hill Country Dental", delta: 18, dir: "up" as const },
-  { client: "Summit Roofing", delta: 11, dir: "up" as const },
-  { client: "Trailhead Outfitters", delta: 9, dir: "up" as const },
-  { client: "Northwind HVAC", delta: -6, dir: "down" as const },
+  { client: "Vantage Retail", delta: 11, dir: "up" as const },
+  { client: "Acme Corp", delta: 9, dir: "up" as const },
+  { client: "Northwind Heating & Air", delta: -6, dir: "down" as const },
 ];
 
 export const aiWorkCompleted = [
-  { agent: "Technical Auditor", client: "Beacon Dental", result: "Audited 1,930 URLs · 42 fixes proposed", when: "Jun 20" },
-  { agent: "Content Strategist", client: "Northwind HVAC", result: "6 location-page briefs drafted", when: "Jun 21" },
-  { agent: "Competitive Analyst", client: "Summit Roofing", result: "Gap analysis · 14 opportunities", when: "Jun 23" },
-  { agent: "Reporting Specialist", client: "Lakeside Spa", result: "Monthly report assembled", when: "Jun 24" },
+  { agent: "Technical Auditor", client: "Hill Country Dental", result: "Audited 1,930 URLs · 42 fixes proposed", when: "Jun 20" },
+  { agent: "Content Strategist", client: "Northwind Heating & Air", result: "6 location-page briefs drafted", when: "Jun 21" },
+  { agent: "Competitive Analyst", client: "Vantage Retail", result: "Gap analysis · 14 opportunities", when: "Jun 23" },
+  { agent: "Reporting Specialist", client: "Flowdesk", result: "Monthly report assembled", when: "Jun 24" },
 ];

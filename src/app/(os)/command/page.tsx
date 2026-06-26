@@ -22,7 +22,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DonutChart, TrafficArea } from "@/components/command/charts";
 import { STAGES } from "@/lib/stages";
-import { featuredInvestigation as inv, currentUser } from "@/lib/model";
+import { featuredInvestigation as inv, currentUser, clients } from "@/lib/model";
 import { workforceSummary } from "@/lib/workforce";
 import {
   priorityTasks,
@@ -32,6 +32,19 @@ import {
 } from "@/lib/command";
 
 const DEPLOY_TODAY = 8;
+
+// Map a client name back to its profile so dashboard data links to a real record.
+const clientIdByName: Record<string, string> = Object.fromEntries(clients.map((c) => [c.name, c.id]));
+
+function ClientLink({ name, className }: { name: string; className?: string }) {
+  const id = clientIdByName[name];
+  if (!id) return <span className={className}>{name}</span>;
+  return (
+    <Link href={`/clients/${id}`} className={`transition-colors hover:text-accent-600 hover:underline ${className ?? ""}`}>
+      {name}
+    </Link>
+  );
+}
 
 export const metadata: Metadata = { title: "Command Center" };
 
@@ -119,10 +132,13 @@ export default function CommandCenterPage() {
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
+          <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-md bg-[var(--surface-3)] px-2 py-0.5 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
+            Agency overview · all {clients.length} clients
+          </div>
           <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">
             Good morning, {currentUser.name.split(" ")[0]} <span className="align-middle">👋</span>
           </h1>
-          <p className="mt-1 text-base text-[var(--muted)]">Here&apos;s what&apos;s happening with your SEO operations today.</p>
+          <p className="mt-1 text-base text-[var(--muted)]">Portfolio-wide view across every client. Open a client to drill into its workspace.</p>
         </div>
         <div className="flex items-center gap-2.5">
           <div className="relative hidden sm:block">
@@ -176,7 +192,7 @@ export default function CommandCenterPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold text-[var(--foreground)]">{t.name}</div>
-                  <div className="truncate text-xs text-[var(--muted)]">{t.client} · {t.due}</div>
+                  <div className="truncate text-xs text-[var(--muted)]"><ClientLink name={t.client} /> · {t.due}</div>
                 </div>
                 <Badge variant={t.priority === "high" ? "bad" : t.priority === "medium" ? "warn" : "good"}>
                   {t.priority === "high" ? "High" : t.priority === "medium" ? "Medium" : "Low"} impact
@@ -197,7 +213,7 @@ export default function CommandCenterPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold text-[var(--foreground)]">{j.agent}</div>
-                  <div className="truncate text-xs text-[var(--muted)]">{j.client}</div>
+                  <div className="truncate text-xs text-[var(--muted)]"><ClientLink name={j.client} /></div>
                 </div>
                 <Badge variant={j.status === "Queued" ? "warn" : "good"}>{j.status === "Queued" ? "Queued" : "Running"}</Badge>
               </li>
@@ -242,7 +258,7 @@ export default function CommandCenterPage() {
           <ul className="mt-1 flex-1 px-5">
             {clientsNeedingAttention.map((c) => (
               <li key={c.client} className="border-t border-[var(--border)] py-2.5 first:border-t-0">
-                <div className="text-sm font-medium text-[var(--foreground)]">{c.client}</div>
+                <div className="text-sm font-medium text-[var(--foreground)]"><ClientLink name={c.client} /></div>
                 <div className={`text-xs font-medium ${c.severity === "high" ? "text-[var(--danger)]" : "text-[var(--warn)]"}`}>{c.reason.split(" — ")[0]}</div>
               </li>
             ))}
@@ -276,7 +292,7 @@ export default function CommandCenterPage() {
               <li key={d.item} className="flex items-center gap-3 py-2.5">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-3)] text-[var(--muted)]"><Rocket className="h-4 w-4" /></span>
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm font-medium text-[var(--foreground)]">{d.client}</div>
+                  <div className="truncate text-sm font-medium text-[var(--foreground)]"><ClientLink name={d.client} /></div>
                   <div className="truncate text-xs text-[var(--muted)]">{d.item}</div>
                 </div>
                 <Badge variant={i === 0 ? "good" : i === 1 ? "warn" : "default"}>{d.when}</Badge>

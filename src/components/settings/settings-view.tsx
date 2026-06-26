@@ -354,7 +354,7 @@ function DataSources() {
   const [conns, setConns] = React.useState<DataConn[]>([
     { id: "gsc", name: "Google Search Console", desc: "Queries, clicks, impressions, indexation.", initials: "SC", color: "bg-emerald-500", connected: true, account: "sc-domain:northwindhvac.com" },
     { id: "ga4", name: "Google Analytics 4", desc: "Sessions, conversions, channels.", initials: "GA", color: "bg-amber-500", connected: true, account: "GA4 · 312,480 sessions / 90d" },
-    { id: "semrush", name: "Semrush", desc: "Keyword, backlink and competitor data.", initials: "SE", color: "bg-orange-600", connected: true, account: "Project: Northwind HVAC" },
+    { id: "semrush", name: "Semrush", desc: "Keyword, backlink and competitor data.", initials: "SE", color: "bg-orange-600", connected: true, account: "Project: Northwind Heating & Air" },
     { id: "psi", name: "PageSpeed Insights", desc: "Core Web Vitals and Lighthouse audits.", initials: "PS", color: "bg-blue-500", connected: false },
     { id: "ahrefs", name: "Ahrefs", desc: "Backlinks, referring domains, rank tracking.", initials: "AH", color: "bg-blue-600", connected: false },
     { id: "sf", name: "Screaming Frog", desc: "Technical crawl data via manual export.", initials: "SF", color: "bg-green-600", connected: false, uploadOnly: true },

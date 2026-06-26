@@ -41,7 +41,7 @@ export const deployments: Deployment[] = [
   {
     id: "d1",
     item: "Title-tag fixes · 12 pages",
-    client: "Beacon Dental",
+    client: "Hill Country Dental",
     when: "10 min ago",
     status: "Verified",
     checks: checks({}, "pass"),
@@ -50,7 +50,7 @@ export const deployments: Deployment[] = [
   {
     id: "d2",
     item: "FAQ schema · 8 service pages",
-    client: "Northwind HVAC",
+    client: "Northwind Heating & Air",
     when: "1 hour ago",
     status: "Verifying",
     checks: checks(
@@ -62,7 +62,7 @@ export const deployments: Deployment[] = [
   {
     id: "d3",
     item: "Redirect map · migration batch 2",
-    client: "Trailhead Outfitters",
+    client: "Acme Corp",
     when: "Today, 8:00 AM",
     status: "Failed",
     checks: checks({ Redirects: "fail", Canonical: "fail", Indexation: "pending", Screenshots: "pending" }, "pass"),
@@ -71,7 +71,7 @@ export const deployments: Deployment[] = [
   {
     id: "d4",
     item: "Internal-link pass · money pages",
-    client: "Summit Roofing",
+    client: "Vantage Retail",
     when: "Queued",
     status: "Queued",
     checks: checks({}, "pending"),
