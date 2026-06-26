@@ -191,7 +191,12 @@ function AgentCard({
   state: ReturnType<typeof workerState>;
   onToggle: (v: boolean) => void;
 }) {
-  const Icon = agent.icon;
+  const initials = agent.name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase();
   return (
     <Card interactive className={cn("flex flex-col overflow-hidden", !deployed && "opacity-[0.92]")}>
       {/* Department identity bar */}
@@ -201,11 +206,11 @@ function AgentCard({
       <div className="flex items-start gap-3 p-4 pb-3">
         <span
           className={cn(
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl shadow-sm",
+            "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-bold shadow-sm",
             deployed ? cn(accent.solid, "text-white") : "bg-[var(--surface-3)] text-[var(--muted)]"
           )}
         >
-          <Icon className="h-5 w-5" />
+          {initials}
         </span>
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-[var(--foreground)]">{agent.name}</div>
