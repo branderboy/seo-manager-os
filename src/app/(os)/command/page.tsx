@@ -14,17 +14,16 @@ import {
   ArrowRight,
   CheckCircle2,
   Check,
-  Plus,
   TrendingUp,
   Users,
   AlertCircle,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge, StatusDot } from "@/components/ui/badge";
 import { DonutChart, TrafficArea } from "@/components/command/charts";
 import { STAGES } from "@/lib/stages";
 import { featuredInvestigation as inv, currentUser, clients } from "@/lib/model";
-import { workforceSummary } from "@/lib/workforce";
-import { ProfileSwitcher } from "@/components/layout/profile-switcher";
+import { agents, orchestrator } from "@/lib/agents";
+import { workforceSummary, workerState } from "@/lib/workforce";
 import {
   priorityTasks,
   aiJobs,
@@ -106,14 +105,16 @@ const reportsOverview = [
   { label: "Leads Generated", value: "128", delta: 18, up: true, icon: Users },
 ];
 
-const workforce = [
-  { name: "Orchestrator", status: "Running", color: "bg-sky-500" },
-  { name: "Tech Auditor", status: "Running", color: "bg-blue-500" },
-  { name: "Content Strategist", status: "Running", color: "bg-violet-500" },
-  { name: "Intent Mapper", status: "Running", color: "bg-teal-500" },
-  { name: "Schema Specialist", status: "Running", color: "bg-emerald-500" },
-  { name: "QA Inspector", status: "Waiting", color: "bg-orange-500" },
-  { name: "Reporting Manager", status: "Completed", color: "bg-rose-500" },
+// Derived from the real roster so it always matches the workforce counts:
+// the Orchestrator plus every deployed specialist and its live status.
+const workforceRoster = [
+  { name: orchestrator.name, status: "Coordinating", working: true, icon: orchestrator.icon },
+  ...agents
+    .filter((a) => a.active)
+    .map((a) => {
+      const s = workerState(a.id, true);
+      return { name: a.name, status: s.status === "Working" ? "Working" : s.status, working: s.status === "Working", icon: a.icon };
+    }),
 ];
 
 const morningChecklist = [
@@ -139,7 +140,6 @@ export default function CommandCenterPage() {
           <p className="mt-1 text-base text-[var(--muted)]">Portfolio-wide view across every client. Open a client to drill into its workspace.</p>
         </div>
         <div className="flex items-center gap-2.5">
-          <ProfileSwitcher />
           <div className="relative hidden sm:block">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--faint)]" />
             <input
@@ -401,19 +401,20 @@ export default function CommandCenterPage() {
       {/* ── Row: AI Workforce · Morning Brief ──────────────────────────────── */}
       <div className="grid gap-4 lg:grid-cols-2">
         <Panel className="flex flex-col">
-          <PanelHead title="AI Workforce at Work" href="/agents" />
-          <div className="grid grid-cols-3 gap-3 p-5 sm:grid-cols-4">
-            {workforce.map((w) => (
-              <div key={w.name} className="flex flex-col items-center rounded-lg border border-[var(--border)] bg-[var(--surface-2)] p-3 text-center">
-                <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-white ${w.color}`}><Bot className="h-5 w-5" /></span>
-                <span className="mt-2 line-clamp-1 text-2xs font-semibold text-[var(--foreground)]">{w.name}</span>
-                <Badge variant={w.status === "Running" ? "good" : w.status === "Waiting" ? "warn" : "default"} className="mt-1">{w.status}</Badge>
-              </div>
-            ))}
-            <Link href="/agents" className="flex flex-col items-center justify-center rounded-lg border border-dashed border-[var(--border-strong)] p-3 text-center text-[var(--muted)] hover:border-accent-400 hover:text-accent-600">
-              <Plus className="h-5 w-5" />
-              <span className="mt-1 text-2xs font-medium">Add Specialist</span>
-            </Link>
+          <PanelHead title={`AI Workforce at Work (${workforceSummary.working})`} href="/agents" />
+          <div className="grid grid-cols-1 gap-2 p-5 pt-0 sm:grid-cols-2">
+            {workforceRoster.map((w) => {
+              const Icon = w.icon;
+              return (
+                <div key={w.name} className="flex items-center gap-2.5 rounded-lg border border-[var(--border)] bg-[var(--surface-2)] px-3 py-2.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--accent-tint)] text-accent-600">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium text-[var(--foreground)]">{w.name}</span>
+                  <StatusDot tone={w.working ? "good" : w.status === "Queued" ? "warn" : "default"} pulse={w.working} />
+                </div>
+              );
+            })}
           </div>
         </Panel>
 

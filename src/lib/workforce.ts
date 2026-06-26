@@ -29,6 +29,8 @@ const CURRENT: Record<string, { task: string; client: string }> = {
   competitive: { task: "SERP gap + share-of-voice analysis", client: "Vantage Retail" },
   diagnosis: { task: "Root-cause ranking", client: "Northwind Heating & Air" },
   strategy: { task: "Q3 strategy + roadmap", client: "Flowdesk" },
+  playbook: { task: "Local playbook + task generation", client: "Hill Country Dental" },
+  brief: { task: "Executive project-brief assembly", client: "Acme Corp" },
   content: { task: "6 location-page content briefs", client: "Northwind Heating & Air" },
   local: { task: "GBP categories + citation build", client: "Flowdesk" },
   qa: { task: "Post-deploy verification", client: "Hill Country Dental" },
