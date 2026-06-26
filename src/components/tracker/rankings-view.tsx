@@ -107,18 +107,18 @@ function KeywordRow({ k }: { k: RankedKeyword }) {
         {ranking ? (
           <span className="font-semibold text-slate-900">{k.position}</span>
         ) : (
-          <span className="text-xs text-slate-500">—</span>
+          <span className="text-xs text-slate-500"> · </span>
         )}
       </td>
       <td className="py-2.5">
         <ChangeCell change={change} ranking={ranking} />
       </td>
-      <td className="py-2.5 text-slate-700">{k.best > 0 ? k.best : "—"}</td>
+      <td className="py-2.5 text-slate-700">{k.best > 0 ? k.best : " · "}</td>
       <td className="py-2.5 text-slate-700">{k.volume.toLocaleString()}</td>
       <td className="py-2.5">
         <div className="flex flex-wrap gap-1">
           {k.features.length === 0 ? (
-            <span className="text-xs text-slate-500">—</span>
+            <span className="text-xs text-slate-500"> · </span>
           ) : (
             k.features.map((f) => (
               <Badge key={f} variant={f === "AI Overview" ? "accent" : "outline"}>

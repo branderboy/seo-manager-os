@@ -24,7 +24,7 @@ const PRIMARY: Item[] = [
   { href: "/command", label: "Command Center", icon: LayoutDashboard },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/workflow", label: "SEO Pipeline", icon: GitBranch },
-  { href: "/tracker", label: "Operations Tracker", icon: LineChart },
+  { href: "/tracker", label: "Performance", icon: LineChart },
   { href: "/agents", label: "AI Workforce", icon: Bot },
   { href: "/reports", label: "Reports", icon: FileBarChart },
 ];

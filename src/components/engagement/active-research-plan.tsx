@@ -19,7 +19,7 @@ const RESEARCH_MODEL: Record<string, SeoModel> = {
 
 /**
  * The Data Collection plan for the *active* client only. The engagement is one
- * company in one SEO category — so this stays focused on that category instead
+ * company in one SEO category · so this stays focused on that category instead
  * of offering cross-model tabs that don't belong to this workspace.
  */
 export function ActiveResearchPlan() {

@@ -13,7 +13,7 @@ export default function TasksPage() {
         stage={8}
         title="Daily Task Engine"
         badge="Stay on task"
-        description="The plan, broken into a daily worklist. Automated email alerts keep every owner on task and on time — so the strategy actually ships."
+        description="The plan, broken into a daily worklist. Automated email alerts keep every owner on task and on time · so the strategy actually ships."
       />
       <TaskLifecycle />
       <TaskLifecycleBoard />

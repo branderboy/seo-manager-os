@@ -4,7 +4,7 @@ import * as React from "react";
 import type { Client, Scores } from "@/lib/model";
 import type { PlaybookType } from "@/lib/playbooks";
 
-/** The active SEO type — drives playbooks, specialists and recommendations. */
+/** The active SEO type · drives playbooks, specialists and recommendations. */
 export type Model = PlaybookType;
 
 export type Engagement = {

@@ -6,7 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { useDeployState, toggleAgent } from "@/components/agents/deploy-store";
 
-/** Deployable agent chips for a pipeline stage — rendered in each stage's header. */
+/** Deployable agent chips for a pipeline stage · rendered in each stage's header. */
 export function StageAgents({ stage, className }: { stage?: number; className?: string }) {
   const deployed = useDeployState();
   if (typeof stage !== "number") return null;

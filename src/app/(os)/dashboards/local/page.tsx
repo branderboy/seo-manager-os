@@ -46,13 +46,13 @@ export default function LocalDashboard() {
             <p className="text-[15px] leading-relaxed text-slate-700">
               Northwind wins within a tight 2-mile core but loses reach quickly beyond it.
               The constraint is trust, not content: review velocity trails the market 3-to-1
-              and half of advertised services lack a page. AI visibility is critically low —
+              and half of advertised services lack a page. AI visibility is critically low · 
               the brand is largely absent from AI answers for core service terms.
             </p>
           </CardContent>
         </Card>
 
-        {/* Root cause — high contrast, impossible to miss */}
+        {/* Root cause · high contrast, impossible to miss */}
         <RootCause title={diagnosis.primary.title} confidence={diagnosis.primary.confidence} />
       </div>
 

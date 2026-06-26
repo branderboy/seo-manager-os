@@ -10,7 +10,7 @@ export default function IntegrationsPage() {
       <PageHeader
         title="Integrations"
         badge="Connections"
-        description="Connect the data sources that power every stage — search, analytics, reviews, CRM and the channels that deliver your daily alerts."
+        description="Connect the data sources that power every stage · search, analytics, reviews, CRM and the channels that deliver your daily alerts."
       />
       <IntegrationsView />
     </>

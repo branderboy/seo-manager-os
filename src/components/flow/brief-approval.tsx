@@ -106,7 +106,7 @@ export function BriefApproval() {
               <div>
                 <div className="text-sm font-semibold text-slate-900">{launched ? "Project launched" : "Launch project"}</div>
                 <div className="text-xs text-slate-600">
-                  {launched ? "Approved and live — scheduled into daily tasks via Google Calendar & Trello." : `Approved by ${MANAGER}. Flip to launch.`}
+                  {launched ? "Approved and live · scheduled into daily tasks via Google Calendar & Trello." : `Approved by ${MANAGER}. Flip to launch.`}
                 </div>
               </div>
             </div>

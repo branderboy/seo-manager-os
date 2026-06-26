@@ -153,7 +153,7 @@ export default function CommandCenterPage() {
           </button>
           <button className="flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-medium text-[var(--ink-soft)] shadow-card hover:text-[var(--foreground)]">
             <Calendar className="h-4 w-4 text-[var(--muted)]" />
-            May 12 – May 18, 2025
+            May 12 to May 18, 2025
           </button>
         </div>
       </div>
@@ -261,7 +261,7 @@ export default function CommandCenterPage() {
             {clientsNeedingAttention.map((c) => (
               <li key={c.client} className="border-t border-[var(--border)] py-2.5 first:border-t-0">
                 <div className="text-sm font-medium text-[var(--foreground)]"><ClientLink name={c.client} /></div>
-                <div className={`text-xs font-medium ${c.severity === "high" ? "text-[var(--danger)]" : "text-[var(--warn)]"}`}>{c.reason.split(" — ")[0]}</div>
+                <div className={`text-xs font-medium ${c.severity === "high" ? "text-[var(--danger)]" : "text-[var(--warn)]"}`}>{c.reason.split(" · ")[0]}</div>
               </li>
             ))}
           </ul>
@@ -338,7 +338,7 @@ export default function CommandCenterPage() {
       {/* ── Row: Diagnosis · Daily Task Engine · Reports ───────────────────── */}
       <div className="grid gap-4 lg:grid-cols-3">
         <Panel className="flex flex-col">
-          <PanelHead title="Diagnosis Priority Board" href="/diagnosis" />
+          <PanelHead title="Insights Priority Board" href="/diagnosis" />
           <div className="flex gap-1.5 px-5 pb-3">
             <span className="rounded-md bg-accent-500 px-2.5 py-1 text-xs font-semibold text-white">Priority 1 (12)</span>
             <span className="rounded-md bg-[var(--surface-3)] px-2.5 py-1 text-xs font-medium text-[var(--muted)]">Priority 2 (18)</span>

@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// Deployment Verification — after every deploy, auto-verify the change and
+// Deployment Verification · after every deploy, auto-verify the change and
 // close the task only when it passes. Closes the execution loop.
 // ──────────────────────────────────────────────────────────────────────────
 

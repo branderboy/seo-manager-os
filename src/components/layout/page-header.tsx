@@ -2,7 +2,7 @@ import * as React from "react";
 import { StageAgents } from "@/components/agents/stage-agents";
 
 /**
- * Page header — the screen's anchor. A small stage eyebrow, one strong title,
+ * Page header · the screen's anchor. A small stage eyebrow, one strong title,
  * a tight supporting line, and a right-aligned action cluster. Optional
  * `meta` row carries quick facts so the eye gets context before scrolling.
  */

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /*
- * SEO Manager OS — enterprise design tokens.
+ * SEO Manager OS · enterprise design tokens.
  * Quiet, neutral-forward, typography-led. No grids, no glows, no glass.
  */
 :root {
@@ -24,12 +24,12 @@
   --accent-ink: #087443;
   --accent-tint: #ecfdf3;
 
-  /* Feature surface — deep forest green for hero/mission-control zones. */
+  /* Feature surface · deep forest green for hero/mission-control zones. */
   --feature: #0c2f20;
   --feature-deep: #082016;
   --feature-border: #1c4d39;
 
-  /* Semantic status — used consistently for badges, dots, charts. */
+  /* Semantic status · used consistently for badges, dots, charts. */
   --ok: #1f9d6b;
   --ok-tint: #e7f6ef;
   --warn: #c4811a;
@@ -63,7 +63,7 @@ body {
   background: rgba(22, 179, 100, 0.18);
 }
 
-/* Tabular figures everywhere numbers matter — metrics line up cleanly. */
+/* Tabular figures everywhere numbers matter · metrics line up cleanly. */
 .tnum {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
@@ -89,7 +89,7 @@ body {
   background-clip: content-box;
 }
 
-/* ── Motion — restrained, purposeful ─────────────────────────────────────── */
+/* ── Motion · restrained, purposeful ─────────────────────────────────────── */
 @keyframes reveal {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: none; }
@@ -164,12 +164,12 @@ body {
     @apply mx-auto w-full max-w-[1400px] px-6 lg:px-8;
   }
 
-  /* Section eyebrow — small caps label used to head dense groups. */
+  /* Section eyebrow · small caps label used to head dense groups. */
   .eyebrow {
     @apply text-2xs font-semibold uppercase tracking-[0.08em] text-[var(--muted)];
   }
 
-  /* Surface — the one true card. Hairline border, faint lift, no glass. */
+  /* Surface · the one true card. Hairline border, faint lift, no glass. */
   .surface {
     @apply rounded-xl border border-[var(--border)] bg-[var(--surface)];
     box-shadow: var(--shadow-card);
@@ -194,7 +194,7 @@ body {
   }
 }
 
-/* ── Marketing landing page only (src/app/page.tsx) — kept out of the app ─── */
+/* ── Marketing landing page only (src/app/page.tsx) · kept out of the app ─── */
 .bg-grid-lines {
   background-image:
     linear-gradient(to right, #e6e8ee 1px, transparent 1px),

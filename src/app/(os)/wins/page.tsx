@@ -28,7 +28,7 @@ const kindIcon: Record<WinKind, typeof Search> = {
 export default function WinsPage() {
   return (
     <>
-      <PageHeader title="Wins" description="Momentum across the portfolio — what moved, indexed, ranked, passed and shipped." />
+      <PageHeader title="Wins" description="Momentum across the portfolio · what moved, indexed, ranked, passed and shipped." />
 
       <div className="space-y-6">
         {winGroups.map(

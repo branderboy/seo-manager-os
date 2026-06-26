@@ -2,7 +2,7 @@
 
 // Shared deploy state for the agent fleet. Persists to localStorage and syncs across
 // every component (the Agent Store page + the per-stage deploy chips) via
-// useSyncExternalStore — no provider needed.
+// useSyncExternalStore · no provider needed.
 
 import { useSyncExternalStore } from "react";
 import { agents } from "@/lib/agents";

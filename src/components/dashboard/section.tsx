@@ -63,7 +63,7 @@ export function RootCause({
         href={href}
         className="mt-4 inline-flex w-max items-center gap-1 rounded-md border border-accent-300 bg-white px-3 py-1.5 text-sm font-medium text-accent-700 hover:bg-accent-50"
       >
-        Full diagnosis <ArrowRight className="h-4 w-4" />
+        View insights <ArrowRight className="h-4 w-4" />
       </Link>
     </div>
   );

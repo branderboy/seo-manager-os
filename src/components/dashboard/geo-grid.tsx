@@ -33,7 +33,7 @@ export function GeoGrid({ grid }: { grid: number[][] }) {
           <span className="h-3 w-3 rounded bg-emerald-500" /> Top 3
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded bg-amber-300" /> 7–10
+          <span className="h-3 w-3 rounded bg-amber-300" /> 7 to 10
         </span>
         <span className="flex items-center gap-1.5">
           <span className="h-3 w-3 rounded bg-rose-500" /> 15+

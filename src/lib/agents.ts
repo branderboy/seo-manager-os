@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// SEO Manager OS — AI Workforce
+// SEO Manager OS · AI Workforce
 //
 // An Orchestrator coordinates the run; fifteen specialists do the work and
 // report back. They map onto the pipeline:
@@ -7,7 +7,7 @@
 //   → Prioritized Opportunities → Execution → Reporting
 //
 // `effectiveness` = real ROI for the agency. `shine` = demo "wow" / shiny-object
-// pull. No agent auto-publishes — every output is a draft, plan, or recommendation.
+// pull. No agent auto-publishes · every output is a draft, plan, or recommendation.
 // ──────────────────────────────────────────────────────────────────────────
 
 import {
@@ -51,7 +51,7 @@ export type Agent = {
   icon: LucideIcon;
 };
 
-/** The control agent — runs the workflow and delegates to the specialists. */
+/** The control agent · runs the workflow and delegates to the specialists. */
 export const orchestrator = {
   id: "orchestrator",
   name: "Orchestrator",
@@ -134,7 +134,7 @@ export const agents: Agent[] = [
   {
     id: "diagnosis",
     name: "Diagnosis Specialist",
-    role: "Resolves findings to ranked root causes — what to fix first.",
+    role: "Resolves findings to ranked root causes · what to fix first.",
     stage: "Diagnosis",
     href: "/diagnosis",
     inputs: ["Audit", "Research pack", "Competitive opportunities"],
@@ -246,7 +246,7 @@ export const agents: Agent[] = [
   {
     id: "qa",
     name: "QA Inspector",
-    role: "Verifies work before and after deploy — re-crawl, schema, links, CWV.",
+    role: "Verifies work before and after deploy · re-crawl, schema, links, CWV.",
     stage: "Execution",
     href: "/tasks",
     inputs: ["Deployed changes", "Crawl", "Lighthouse"],

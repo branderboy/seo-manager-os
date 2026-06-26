@@ -84,7 +84,7 @@ export function EvidencePanel() {
             Evidence &amp; data sources
           </h3>
           <p className="text-sm text-slate-700">
-            Upload exports or connect live sources — the audits run on whatever you provide.
+            Upload exports or connect live sources · the audits run on whatever you provide.
           </p>
         </div>
         <Badge variant={ready >= 3 ? "good" : "warn"}>{ready}/{SOURCES.length} sources ready</Badge>

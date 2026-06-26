@@ -5,7 +5,7 @@ import { ScoreRing } from "@/components/ui/score-ring";
 import { Progress } from "@/components/ui/progress";
 import { aeo } from "@/lib/data";
 
-/** AEO (Answer Engine Optimization) module — shown in every dashboard. */
+/** AEO (Answer Engine Optimization) module · shown in every dashboard. */
 export function AeoPanel() {
   return (
     <Card>

@@ -13,7 +13,7 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
         <div className="flex h-screen overflow-hidden bg-[var(--canvas)]">
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
-            {/* Top bar — view indicator (and the mobile menu trigger below lg) */}
+            {/* Top bar · view indicator (and the mobile menu trigger below lg) */}
             <div className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-[var(--border)] bg-[var(--surface)] px-4 lg:px-8">
               <div className="flex items-center gap-2 lg:hidden">
                 <MobileNav />

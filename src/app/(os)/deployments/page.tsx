@@ -27,7 +27,7 @@ export default function DeploymentsPage() {
     <>
       <PageHeader
         title="Deployment Verification"
-        description="Every deploy is automatically verified — re-crawl, indexation, schema, links, Core Web Vitals and more. Tasks auto-close only when verification passes."
+        description="Every deploy is automatically verified · re-crawl, indexation, schema, links, Core Web Vitals and more. Tasks auto-close only when verification passes."
       />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

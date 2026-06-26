@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { useEngagement } from "@/components/engagement/store";
 import { strategyByType } from "@/lib/recommendations";
 
-/** The project brief, generated for the active client — adapts to its SEO type. */
+/** The project brief, generated for the active client · adapts to its SEO type. */
 export function StrategyDoc() {
   const { engagement } = useEngagement();
   const st = strategyByType[engagement.model];

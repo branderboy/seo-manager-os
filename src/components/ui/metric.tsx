@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 type Tone = "default" | "accent" | "good" | "warn" | "bad";
 
-// Soft color-filled panels — warmth + instant differentiation (BrightLocal-style).
+// Soft color-filled panels · warmth + instant differentiation (BrightLocal-style).
 const toneSurface: Record<Tone, string> = {
   default: "border-[var(--border)] bg-[var(--surface)]",
   accent: "border-accent-100 bg-[var(--accent-tint)]",
@@ -35,7 +35,7 @@ const toneIcon: Record<Tone, string> = {
 };
 
 /**
- * KPI tile — a soft color-filled panel with a big, bold figure. Tone drives the
+ * KPI tile · a soft color-filled panel with a big, bold figure. Tone drives the
  * fill so a band of metrics reads as distinct, colorful objects, not lookalikes.
  */
 export function StatTile({

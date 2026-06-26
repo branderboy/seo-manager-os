@@ -1,19 +1,19 @@
 // ──────────────────────────────────────────────────────────────────────────
-// SEO Manager OS — Scoring model (Local SEO)
+// SEO Manager OS · Scoring model (Local SEO)
 //
-// Grounded scores: every number traces to its inputs — NO invented values.
+// Grounded scores: every number traces to its inputs · NO invented values.
 //   Results     = current performance vs. the client's own baseline AND the market
 //   Opportunity = winnable upside (demand × the click gap at current vs. target rank)
 //   Difficulty  = effort/competitiveness to close it
 //   Priority    ≈ (Opportunity ÷ Difficulty), weighted by the Results trend
 //
-// All component scores normalize to 0–100 (higher = better, except Difficulty where
+// All component scores normalize to 0 to 100 (higher = better, except Difficulty where
 // higher = harder). Each function returns a `Traceable` carrying the inputs and the
 // intermediate terms, so any score can be audited back to its source numbers.
 // See docs/SCORING.md for the rationale and worked example.
 // ──────────────────────────────────────────────────────────────────────────
 
-export type Score = number; // normalized 0–100
+export type Score = number; // normalized 0 to 100
 
 /** A score plus the inputs and intermediate terms that produced it. */
 export type Traceable<I> = {
@@ -28,7 +28,7 @@ const round = (n: number, dp = 2) => {
   return Math.round(n * f) / f;
 };
 
-/** Average SERP/local rank → 0–100 (rank 1 = 100, rank 21+ ≈ 0). 5 pts per position. */
+/** Average SERP/local rank → 0 to 100 (rank 1 = 100, rank 21+ ≈ 0). 5 pts per position. */
 export function rankToScore(avgRank: number): Score {
   if (avgRank <= 0) return 0; // 0 = not ranking
   return clamp(round(100 - (avgRank - 1) * 5));
@@ -59,7 +59,7 @@ export function ctrAt(rank: number): number {
 export type ResultsInputs = {
   avgRank: number; // current avg rank across tracked terms (lower is better)
   marketAvgRank: number; // median competitor rank in the market
-  localPackShare: number; // 0–100, share of tracked local-pack appearances
+  localPackShare: number; // 0 to 100, share of tracked local-pack appearances
   gbpActions: number; // calls + directions + website clicks this period
   baselineGbpActions: number;
   leads: number;
@@ -68,8 +68,8 @@ export type ResultsInputs = {
 
 /**
  * Results: how the business is actually performing now, normalized vs. its own baseline
- * and the local market. Blend — rank-vs-market 40%, local-pack share 25%, GBP actions 20%,
- * leads 15% — with GBP/leads expressed through their period-over-period trend.
+ * and the local market. Blend · rank-vs-market 40%, local-pack share 25%, GBP actions 20%,
+ * leads 15% · with GBP/leads expressed through their period-over-period trend.
  */
 export function resultsScore(i: ResultsInputs): Traceable<ResultsInputs> {
   const rank = rankToScore(i.avgRank);
@@ -99,7 +99,7 @@ export type OpportunityInputs = {
 
 /**
  * Opportunity = demand × the click gap between current and a reachable target rank,
- * expressed as winnable monthly clicks and normalized to 0–100 on a log scale
+ * expressed as winnable monthly clicks and normalized to 0 to 100 on a log scale
  * (≈1,000 winnable clicks/mo → 100).
  */
 export function opportunityScore(i: OpportunityInputs): Traceable<OpportunityInputs> {
@@ -117,14 +117,14 @@ export function opportunityScore(i: OpportunityInputs): Traceable<OpportunityInp
 
 // ── Difficulty ────────────────────────────────────────────────────────────────
 export type DifficultyInputs = {
-  competitorStrength: number; // 0–100, median competitor authority/trust in market
+  competitorStrength: number; // 0 to 100, median competitor authority/trust in market
   reviewGap: number; // competitor reviews ÷ our reviews (≥1; 5× = maxed)
   contentNeeded: number; // pages/assets to build (capped at 20)
   linksNeeded: number; // referring domains to close the gap (capped at 50)
 };
 
 /**
- * Difficulty: how hard the opportunity is to close. Blend — competitor strength 40%,
+ * Difficulty: how hard the opportunity is to close. Blend · competitor strength 40%,
  * review gap 25%, content needed 20%, links needed 15%. Floored at 1 to stay valid as a
  * divisor. Higher = harder.
  */
@@ -139,14 +139,14 @@ export function difficultyScore(i: DifficultyInputs): Traceable<DifficultyInputs
 
 // ── Priority ──────────────────────────────────────────────────────────────────
 export type PriorityInputs = {
-  opportunity: Score; // 0–100
-  difficulty: Score; // 1–100
-  resultsTrend: number; // results trend multiplier (~0.5–1.5); decline raises urgency
+  opportunity: Score; // 0 to 100
+  difficulty: Score; // 1 to 100
+  resultsTrend: number; // results trend multiplier (~0.5 to 1.5); decline raises urgency
 };
 
 /**
- * Priority ≈ (Opportunity ÷ Difficulty), weighted by the Results trend, mapped to 0–100.
- * The ratio is passed through a saturating curve r/(r+1) so it lands in 0–100 without
+ * Priority ≈ (Opportunity ÷ Difficulty), weighted by the Results trend, mapped to 0 to 100.
+ * The ratio is passed through a saturating curve r/(r+1) so it lands in 0 to 100 without
  * blowing up when difficulty is small. Declining results raise urgency: a trend of 0.8
  * weights ×1.2, a trend of 1.2 weights ×0.8 (urgency = 2 − trend).
  */
@@ -172,7 +172,7 @@ export const example = (() => {
     baselineLeads: 173,
   });
 
-  // Opportunity: "ac repair austin" type term — 4,400/mo, currently rank 6, target top-3.
+  // Opportunity: "ac repair austin" type term · 4,400/mo, currently rank 6, target top-3.
   const opportunity = opportunityScore({ monthlyDemand: 4400, currentRank: 6, targetRank: 3 });
 
   // Difficulty: strong rivals, 3× review gap, ~6 pages + ~20 links to close.

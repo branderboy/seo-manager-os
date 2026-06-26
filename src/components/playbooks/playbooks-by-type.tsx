@@ -36,7 +36,7 @@ export function PlaybooksByType() {
           ))}
         </div>
         <p className="mt-3 text-sm text-slate-600">
-          Same engine, specialized plays — {list.length} playbooks · {plays} plays for{" "}
+          Same engine, specialized plays · {list.length} playbooks · {plays} plays for{" "}
           <span className="font-medium text-slate-700">{type}</span> SEO.
         </p>
       </div>

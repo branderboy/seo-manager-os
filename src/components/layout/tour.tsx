@@ -7,7 +7,7 @@ const SEEN_KEY = "smos.tour.seen";
 
 /**
  * Lightweight tour memory persisted in localStorage:
- *  - `furthest`: the highest stage number (1–9) the viewer has reached.
+ *  - `furthest`: the highest stage number (1 to 9) the viewer has reached.
  *  - `seen`: whether the one-time "Start here" tip has been dismissed.
  */
 export function useTour() {

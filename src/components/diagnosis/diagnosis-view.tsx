@@ -86,7 +86,7 @@ export function DiagnosisView() {
         <div>
           <h3 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">What to fix first</h3>
           <p className="mt-0.5 text-sm text-[var(--muted)]">
-            Ranked by business impact, revenue and effort — work the top band before the next.
+            Ranked by business impact, revenue and effort · work the top band before the next.
           </p>
         </div>
 
@@ -164,7 +164,7 @@ function FixCard({ fix: f }: { fix: Fix }) {
         </Field>
         <Field label="Dependencies" className="col-span-2 sm:col-span-3 lg:col-span-6">
           {f.dependencies.length === 0 ? (
-            <span className="text-[var(--faint)]">None — ready to start</span>
+            <span className="text-[var(--faint)]">None · ready to start</span>
           ) : (
             <span className="inline-flex items-center gap-1.5 text-[var(--ink-soft)]">
               <GitBranch className="h-3.5 w-3.5 text-[var(--faint)]" />

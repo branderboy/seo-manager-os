@@ -11,7 +11,7 @@ export default function IntentPage() {
         stage={3}
         title="Intent Mapping"
         badge="Funnel alignment"
-        description="Nail down what searchers actually want — mapped across the funnel and aligned to the client's goals. The map adapts to the client's SEO type."
+        description="Nail down what searchers actually want · mapped across the funnel and aligned to the client's goals. The map adapts to the client's SEO type."
       />
       <IntentView />
     </>

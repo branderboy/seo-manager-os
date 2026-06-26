@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// Client profiles — the rich record behind each client (the "client database").
+// Client profiles · the rich record behind each client (the "client database").
 // Composed with model.ts (client, contacts, investigations) on the record page.
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -78,7 +78,7 @@ export const clientProfiles: Record<string, ClientProfile> = {
     locations: ["Seattle, WA (HQ)"],
     competitors: ["Zapier", "Make", "Workato"],
     documents: [],
-    notes: [{ text: "Onboarding — discovery interview scheduled.", when: "This week", by: "Jordan R." }],
+    notes: [{ text: "Onboarding · discovery interview scheduled.", when: "This week", by: "Jordan R." }],
   },
   hillcountry: {
     website: "hillcountrydental.com",
@@ -90,6 +90,6 @@ export const clientProfiles: Record<string, ClientProfile> = {
     locations: ["Austin, TX (HQ)"],
     competitors: ["Austin Dental Works", "Bright Smiles ATX", "Lakeway Dental"],
     documents: [{ name: "monthly-report-dec.pdf", kind: "PDF", date: "Jan 2" }],
-    notes: [{ text: "Engagement paused — pending budget renewal.", when: "Jan", by: "Josh W." }],
+    notes: [{ text: "Engagement paused · pending budget renewal.", when: "Jan", by: "Josh W." }],
   },
 };

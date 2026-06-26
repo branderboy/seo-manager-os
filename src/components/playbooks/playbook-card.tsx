@@ -58,14 +58,14 @@ export function PlaybookCard({ pb }: { pb: Playbook }) {
         ))}
       </ul>
 
-      {/* Action — turns the plays into Daily Tasks */}
+      {/* Action · turns the plays into Daily Tasks */}
       <div className="mt-4 border-t border-[var(--border)] pt-4">
         {added ? (
           <Link
             href="/tasks"
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700"
           >
-            <Check className="h-4 w-4" /> {pb.plays.length} tasks added — view in Daily Tasks
+            <Check className="h-4 w-4" /> {pb.plays.length} tasks added · view in Daily Tasks
             <ArrowRight className="h-4 w-4" />
           </Link>
         ) : (

@@ -56,7 +56,7 @@ export function ReportShare({
           </div>
         </div>
 
-        {/* Step 1 — share internally with the SEO / marketing team */}
+        {/* Step 1 · share internally with the SEO / marketing team */}
         <div className="mt-5">
           <StepLabel n={1} done={sent.slack}>Share with the team</StepLabel>
           <div className="mt-2 pl-8">
@@ -71,7 +71,7 @@ export function ReportShare({
           </div>
         </div>
 
-        {/* Step 2 — manager approval */}
+        {/* Step 2 · manager approval */}
         <div className="mt-5">
           <StepLabel n={2} done={approved}>Manager approval</StepLabel>
           <div className="mt-2 pl-8">
@@ -102,7 +102,7 @@ export function ReportShare({
           </div>
         </div>
 
-        {/* Step 3 — send to client, gated on approval */}
+        {/* Step 3 · send to client, gated on approval */}
         <div className="mt-5">
           <StepLabel n={3} done={sent.client} locked={!approved}>Send to client</StepLabel>
           <div className="mt-2 pl-8">

@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// Workflow dependencies — how a piece of work flows through the system.
+// Workflow dependencies · how a piece of work flows through the system.
 // Managers need to see work moving, and where it's stuck.
 // ──────────────────────────────────────────────────────────────────────────
 

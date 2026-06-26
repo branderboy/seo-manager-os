@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────────────────
-// AI Workforce — operational state for the specialist roster.
+// AI Workforce · operational state for the specialist roster.
 // Treats each agent like an employee: status, current task, queue, throughput,
 // performance, availability. Metrics are derived *deterministically* from the
 // agent id so server and client render identically (no hydration drift).
@@ -38,21 +38,21 @@ const CURRENT: Record<string, { task: string; client: string }> = {
 };
 
 const RECENT: Record<string, string[]> = {
-  discovery: ["Discovery — Acme Corp", "Goal map — Hill Country Dental"],
-  research: ["Keyword pack — Flowdesk", "SERP pull — Northwind Heating & Air"],
-  "technical-auditor": ["Schema audit — Vantage Retail", "Redirect map — Acme Corp"],
-  intent: ["Intent map — Hill Country Dental", "Page match — Vantage Retail"],
-  competitive: ["Backlink gap — Northwind Heating & Air", "AI-answer coverage — Hill Country Dental"],
-  diagnosis: ["Root causes — Hill Country Dental", "Confidence pass — Vantage Retail"],
-  strategy: ["Roadmap — Northwind Heating & Air", "Priority sort — Hill Country Dental"],
-  content: ["3 service briefs — Vantage Retail", "Comparison page — Hill Country Dental"],
-  local: ["Review responses — Northwind Heating & Air", "Citations — Hill Country"],
-  qa: ["Deploy check — Acme Corp", "CWV re-test — Hill Country Dental"],
-  reporting: ["Exec summary — Vantage Retail", "ROI model — Northwind Heating & Air"],
-  schema: ["FAQ schema — Northwind Heating & Air", "Product schema — Hill Country Dental"],
-  "internal-linking": ["Link plan — Vantage Retail", "Silo map — Hill Country Dental"],
-  brief: ["Project brief — Northwind Heating & Air", "KPI sheet — Flowdesk"],
-  playbook: ["Local playbook — Flowdesk", "Tasks generated — Hill Country Dental"],
+  discovery: ["Discovery · Acme Corp", "Goal map · Hill Country Dental"],
+  research: ["Keyword pack · Flowdesk", "SERP pull · Northwind Heating & Air"],
+  "technical-auditor": ["Schema audit · Vantage Retail", "Redirect map · Acme Corp"],
+  intent: ["Intent map · Hill Country Dental", "Page match · Vantage Retail"],
+  competitive: ["Backlink gap · Northwind Heating & Air", "AI-answer coverage · Hill Country Dental"],
+  diagnosis: ["Root causes · Hill Country Dental", "Confidence pass · Vantage Retail"],
+  strategy: ["Roadmap · Northwind Heating & Air", "Priority sort · Hill Country Dental"],
+  content: ["3 service briefs · Vantage Retail", "Comparison page · Hill Country Dental"],
+  local: ["Review responses · Northwind Heating & Air", "Citations · Hill Country"],
+  qa: ["Deploy check · Acme Corp", "CWV re-test · Hill Country Dental"],
+  reporting: ["Exec summary · Vantage Retail", "ROI model · Northwind Heating & Air"],
+  schema: ["FAQ schema · Northwind Heating & Air", "Product schema · Hill Country Dental"],
+  "internal-linking": ["Link plan · Vantage Retail", "Silo map · Hill Country Dental"],
+  brief: ["Project brief · Northwind Heating & Air", "KPI sheet · Flowdesk"],
+  playbook: ["Local playbook · Flowdesk", "Tasks generated · Hill Country Dental"],
 };
 
 // Stable hash → small integers, so derived metrics are consistent per id.
@@ -78,7 +78,7 @@ export function workerState(id: string, deployed: boolean): WorkerState {
     };
   }
   const cur = CURRENT[id];
-  const queued = h % 5; // 0–4
+  const queued = h % 5; // 0 to 4
   if (cur) {
     return {
       status: "Working",

@@ -276,7 +276,7 @@ function Skills({ onChange }: { onChange: () => void }) {
   return (
     <Section
       title="Skills"
-      desc="The top-level benefits this workspace delivers — what the business actually buys. Each benefit is powered by a playbook; the related skills underneath are how it gets done. Select these in Playbooks before the Project Brief."
+      desc="The top-level benefits this workspace delivers · what the business actually buys. Each benefit is powered by a playbook; the related skills underneath are how it gets done. Select these in Playbooks before the Project Brief."
     >
       <div className="flex items-center justify-between">
         <Badge variant="good">{active} of {playbooks.length} benefits active</Badge>
@@ -471,7 +471,7 @@ function Scoring({ onChange }: { onChange: () => void }) {
       />
       <div className="flex items-center gap-2 rounded-lg bg-[var(--surface-2)] p-3 text-xs text-slate-700">
         <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-rose-500" /> Below {warn}</span>
-        <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500" /> {warn}–{good - 1}</span>
+        <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500" /> {warn} · {good - 1}</span>
         <span className="inline-flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> {good}+</span>
       </div>
     </Section>

@@ -9,7 +9,7 @@ const TAG = {
 
 /**
  * A client dashboard is a single company in a single SEO category. It shows that
- * company with its own category tag only — no cross-category switcher.
+ * company with its own category tag only · no cross-category switcher.
  */
 export function DashboardHeader({
   active,

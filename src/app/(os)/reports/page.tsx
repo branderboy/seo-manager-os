@@ -26,11 +26,11 @@ const deployBadge = { Verified: "good", Verifying: "accent", Failed: "bad", Queu
 export default function ReportsPage() {
   return (
     <>
-      <PageHeader stage={9} title="Reports" description="Manager reporting — completed work, ROI, productivity and the risks worth flagging to the client.">
+      <PageHeader stage={9} title="Reports" description="Manager reporting · completed work, ROI, productivity and the risks worth flagging to the client.">
         <Badge variant="outline">{reportPeriod}</Badge>
       </PageHeader>
 
-      {/* Executive summary — the read-first narrative */}
+      {/* Executive summary · the read-first narrative */}
       <Card className="relative overflow-hidden p-6">
         <span className="absolute inset-y-0 left-0 w-1 bg-accent-500" />
         <div className="flex items-center gap-2 text-2xs font-semibold uppercase tracking-[0.06em] text-accent-600">

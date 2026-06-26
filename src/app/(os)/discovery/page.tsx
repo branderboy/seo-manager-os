@@ -12,7 +12,7 @@ export default function DiscoveryPage() {
       <PageHeader
         stage={1}
         title="Discovery Interview"
-        description="A consultant-style intake. Before any audit, the OS learns the business, its model, goals and constraints — then classifies the engagement."
+        description="A consultant-style intake. Before any audit, the OS learns the business, its model, goals and constraints · then classifies the engagement."
       />
       <StartHereCoach />
       <DiscoveryWizard />

@@ -18,7 +18,7 @@ export default function StrategyPage() {
         stage={7}
         title="Project Brief"
         badge="Executive-ready"
-        description="A board-ready strategy document, generated for the active client. Everything traces back to a root cause and forward to an expected outcome — and adapts to the client's SEO type."
+        description="A board-ready strategy document, generated for the active client. Everything traces back to a root cause and forward to an expected outcome · and adapts to the client's SEO type."
       >
         <Button variant="secondary" size="sm">
           <Download className="h-4 w-4" />

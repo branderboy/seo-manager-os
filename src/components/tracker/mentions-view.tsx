@@ -53,7 +53,7 @@ export function MentionsView() {
         <CardHeader>
           <CardTitle>Tracked Prompts</CardTitle>
           <CardDescription>
-            Sample of the prompts run against each engine — whether the brand is cited, mentioned or absent.
+            Sample of the prompts run against each engine · whether the brand is cited, mentioned or absent.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -138,7 +138,7 @@ function PromptRow({ p }: { p: AiPromptResult }) {
         )}
       </td>
       <td className="py-2.5 text-slate-700">
-        {p.competitorCited ?? <span className="text-slate-500">—</span>}
+        {p.competitorCited ?? <span className="text-slate-500"> · </span>}
       </td>
     </tr>
   );

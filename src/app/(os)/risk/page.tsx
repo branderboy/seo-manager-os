@@ -19,7 +19,7 @@ export default function RiskCenterPage() {
     <>
       <PageHeader
         title="Risk Center"
-        description="Business risk per client across eight dimensions — where revenue, traffic and visibility are exposed. Higher is more at risk."
+        description="Business risk per client across eight dimensions · where revenue, traffic and visibility are exposed. Higher is more at risk."
       />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">

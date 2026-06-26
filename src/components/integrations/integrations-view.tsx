@@ -130,13 +130,13 @@ function IntegrationCard({
 
       {i.connected ? (
         <div className="mt-4 space-y-2 rounded-lg bg-[var(--surface-2)] p-3 text-xs">
-          <Row label="Account" value={i.account ?? "—"} />
-          <Row label="Last sync" value={i.synced ?? "—"} icon={<RefreshCw className="h-3 w-3" />} />
+          <Row label="Account" value={i.account ?? " · "} />
+          <Row label="Last sync" value={i.synced ?? " · "} icon={<RefreshCw className="h-3 w-3" />} />
           {i.metric && <Row label="Status" value={i.metric} />}
         </div>
       ) : (
         <div className="mt-4 rounded-lg border border-dashed border-[var(--border)] p-3 text-xs text-slate-600">
-          Not connected — link your account to start syncing data.
+          Not connected · link your account to start syncing data.
         </div>
       )}
 

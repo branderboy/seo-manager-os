@@ -10,14 +10,14 @@ import { RankingsView } from "@/components/tracker/rankings-view";
 import { MentionsView } from "@/components/tracker/mentions-view";
 import { trackerStats, lastScan } from "@/lib/tracker";
 
-export const metadata: Metadata = { title: "Operations Tracker" };
+export const metadata: Metadata = { title: "Performance" };
 
 export default function TrackerPage() {
   return (
     <>
       <PageHeader
-        title="Operations Tracker"
-        description="The agency's live operations center — project work, rankings and AI-answer visibility. Daily rank scans across every market plus LLM-mention tracking across ChatGPT, Perplexity, Gemini, Claude and Google AI Overviews."
+        title="Performance"
+        description="See how every client is doing: the work in flight, daily search rankings across every market, and where your clients show up in AI answers on ChatGPT, Perplexity, Gemini, Claude and Google AI Overviews."
       >
         <Badge variant="accent">
           <EngName />

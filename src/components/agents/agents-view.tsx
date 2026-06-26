@@ -17,7 +17,7 @@ const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> =
   Offline: "default",
 };
 
-// ── Departments — specialists grouped by function. Every department uses the
+// ── Departments · specialists grouped by function. Every department uses the
 // one brand green; the category icon carries the identity, not a clashing color.
 type Accent = { solid: string; tint: string; text: string; ring: string };
 
@@ -86,7 +86,7 @@ export function AgentsView() {
 
   return (
     <div className="space-y-7">
-      {/* ── Manager — the Orchestrator runs the floor ───────────────────────── */}
+      {/* ── Manager · the Orchestrator runs the floor ───────────────────────── */}
       <section className="reveal overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-card">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">{orchestrator.name}</h2>
@@ -176,7 +176,7 @@ function AgentCard({
       {/* Department identity bar */}
       <div className={cn("h-1 w-full", deployed ? accent.solid : "bg-[var(--border)]")} />
 
-      {/* Header — identity + deploy toggle */}
+      {/* Header · identity + deploy toggle */}
       <div className="flex items-start gap-3 p-4 pb-3">
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm font-semibold text-[var(--foreground)]">{agent.name}</div>
@@ -204,7 +204,7 @@ function AgentCard({
           </div>
         ) : (
           <div className="text-sm text-[var(--muted)]">
-            {deployed ? "Idle — ready for assignment" : "Offline — deploy to assign work"}
+            {deployed ? "Idle · ready for assignment" : "Offline · deploy to assign work"}
           </div>
         )}
       </div>

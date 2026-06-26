@@ -11,10 +11,10 @@ export default function PlaybooksPage() {
       <PageHeader
         stage={6}
         title="Playbooks"
-        description="The action center. The engine stays the same — the playbooks adapt to the client type. Pick a playbook and its plays become tasks in the Daily Task Engine."
+        description="The action center. The engine stays the same · the playbooks adapt to the client type. Pick a playbook and its plays become tasks in the Daily Task Engine."
       />
 
-      {/* How it fits the pipeline — removes the "what is this stage?" confusion */}
+      {/* How it fits the pipeline · removes the "what is this stage?" confusion */}
       <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] px-4 py-3 text-sm text-slate-700">
         <span className="font-medium text-slate-700">How it works</span>
         <span className="text-slate-300">·</span>
