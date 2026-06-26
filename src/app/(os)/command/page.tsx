@@ -1,44 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  ListChecks,
-  Loader,
-  Hourglass,
-  Rocket,
-  Bot,
-  Search,
-  Bell,
-  Calendar,
-  ArrowUpRight,
-  ArrowDownRight,
-  ArrowRight,
-  CheckCircle2,
-  Check,
-  Plus,
-  TrendingUp,
-  Users,
-  AlertCircle,
-} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DonutChart, TrafficArea } from "@/components/command/charts";
 import { STAGES } from "@/lib/stages";
 import { featuredInvestigation as inv, currentUser } from "@/lib/model";
-import {
-  priorityTasks,
-  aiJobs,
-  clientsNeedingAttention,
-  deployments,
-} from "@/lib/command";
+import { priorityTasks, aiJobs, clientsNeedingAttention, deployments } from "@/lib/command";
 
 export const metadata: Metadata = { title: "Command Center" };
 
-// ── Local view data (matches the operations dashboard) ─────────────────────
 const kpis = [
-  { label: "Total Tasks", value: 127, delta: 10, up: true, icon: ListChecks },
-  { label: "In Progress", value: 32, delta: 12, up: true, icon: Loader },
-  { label: "Waiting", value: 14, delta: 8, up: false, icon: Hourglass },
-  { label: "Deploy Today", value: 8, delta: 23, up: true, icon: Rocket },
-  { label: "AI Jobs Running", value: 5, delta: null, up: true, icon: Bot },
+  { label: "Total Tasks", value: 127, delta: 10, up: true },
+  { label: "In Progress", value: 32, delta: 12, up: true },
+  { label: "Waiting", value: 14, delta: 8, up: false },
+  { label: "Deploy Today", value: 8, delta: 23, up: true },
+  { label: "AI Jobs Running", value: 5, delta: null, up: true },
 ];
 
 const tasksByStatus = [
@@ -76,27 +51,27 @@ const diagnosisRows = [
 ];
 
 const kanban = [
-  { lane: "Backlog", count: 27, tone: "default", tasks: ["Create service page brief", "Fix broken links", "Add FAQ schema", "Update sitemap"] },
-  { lane: "In Progress", count: 32, tone: "accent", tasks: ["Fix title tags", "Improve LCP", "Update robots.txt"] },
-  { lane: "QA", count: 11, tone: "warn", tasks: ["Check schema", "Cross-browser test", "Schema updates"] },
-  { lane: "Deployed", count: 8, tone: "good", tasks: ["New landing pages", "Title tags fixed", "Internal links added"] },
+  { lane: "Backlog", count: 27, tasks: ["Create service page brief", "Fix broken links", "Add FAQ schema", "Update sitemap"] },
+  { lane: "In Progress", count: 32, tasks: ["Fix title tags", "Improve LCP", "Update robots.txt"] },
+  { lane: "QA", count: 11, tasks: ["Check schema", "Cross-browser test", "Schema updates"] },
+  { lane: "Deployed", count: 8, tasks: ["New landing pages", "Title tags fixed", "Internal links added"] },
 ];
 
 const reportsOverview = [
-  { label: "Work Completed", value: "24", delta: 20, up: true, icon: CheckCircle2 },
-  { label: "Blocked Tasks", value: "7", delta: 12, up: false, icon: AlertCircle },
-  { label: "Traffic Change", value: "+14%", delta: 14, up: true, icon: TrendingUp },
-  { label: "Leads Generated", value: "128", delta: 18, up: true, icon: Users },
+  { label: "Work Completed", value: "24", delta: 20, up: true },
+  { label: "Blocked Tasks", value: "7", delta: 12, up: false },
+  { label: "Traffic Change", value: "+14%", delta: 14, up: true },
+  { label: "Leads Generated", value: "128", delta: 18, up: true },
 ];
 
 const workforce = [
-  { name: "Orchestrator", status: "Running", color: "bg-sky-500" },
-  { name: "Tech Auditor", status: "Running", color: "bg-blue-500" },
-  { name: "Content Strategist", status: "Running", color: "bg-violet-500" },
-  { name: "Intent Mapper", status: "Running", color: "bg-teal-500" },
-  { name: "Schema Specialist", status: "Running", color: "bg-emerald-500" },
-  { name: "QA Inspector", status: "Waiting", color: "bg-orange-500" },
-  { name: "Reporting Manager", status: "Completed", color: "bg-rose-500" },
+  { name: "Orchestrator", status: "Running" },
+  { name: "Tech Auditor", status: "Running" },
+  { name: "Content Strategist", status: "Running" },
+  { name: "Intent Mapper", status: "Running" },
+  { name: "Schema Specialist", status: "Running" },
+  { name: "QA Inspector", status: "Waiting" },
+  { name: "Reporting Manager", status: "Completed" },
 ];
 
 const morningChecklist = [
@@ -110,6 +85,18 @@ const morningChecklist = [
 const impactBadge = { High: "bad", Medium: "warn", Low: "good" } as const;
 const pBadge = ["bg-rose-500", "bg-amber-500", "bg-slate-400"];
 
+function Delta({ delta, up }: { delta: number; up: boolean }) {
+  return (
+    <span className={`text-sm font-semibold tnum ${up ? "text-accent-600" : "text-[var(--danger)]"}`}>
+      {up ? "+" : "−"}{delta}%
+    </span>
+  );
+}
+
+function initials(name: string) {
+  return name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+}
+
 export default function CommandCenterPage() {
   return (
     <div className="space-y-6">
@@ -117,26 +104,18 @@ export default function CommandCenterPage() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">
-            Good morning, {currentUser.name.split(" ")[0]} <span className="align-middle">👋</span>
+            Good morning, {currentUser.name.split(" ")[0]}
           </h1>
           <p className="mt-1 text-base text-[var(--muted)]">Here&apos;s what&apos;s happening with your SEO operations today.</p>
         </div>
         <div className="flex items-center gap-2.5">
-          <div className="relative hidden sm:block">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--faint)]" />
-            <input
-              placeholder="Search clients, tasks, reports…"
-              className="h-10 w-72 rounded-lg border border-[var(--border)] bg-[var(--surface)] pl-9 pr-3 text-sm shadow-card outline-none placeholder:text-[var(--faint)] focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
-            />
-          </div>
-          <button className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] shadow-card hover:text-[var(--foreground)]">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--danger)] px-1 text-2xs font-bold text-white">3</span>
-          </button>
-          <button className="flex h-10 items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-medium text-[var(--ink-soft)] shadow-card hover:text-[var(--foreground)]">
-            <Calendar className="h-4 w-4 text-[var(--muted)]" />
+          <input
+            placeholder="Search clients, tasks, reports…"
+            className="h-10 w-72 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3.5 text-sm shadow-card outline-none placeholder:text-[var(--faint)] focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
+          />
+          <span className="flex h-10 items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3.5 text-sm font-medium text-[var(--ink-soft)] shadow-card">
             May 12 – May 18, 2025
-          </button>
+          </span>
         </div>
       </div>
 
@@ -144,17 +123,12 @@ export default function CommandCenterPage() {
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
         {kpis.map((k) => (
           <Panel key={k.label} className="p-5">
-            <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-tint)] text-accent-600">
-                <k.icon className="h-4 w-4" />
-              </span>
-              <span className="text-sm font-medium text-[var(--muted)]">{k.label}</span>
-            </div>
-            <div className="mt-3 tnum text-4xl font-bold tracking-tight text-[var(--foreground)]">{k.value}</div>
+            <span className="text-sm font-medium text-[var(--muted)]">{k.label}</span>
+            <div className="mt-2 tnum text-4xl font-bold tracking-tight text-[var(--foreground)]">{k.value}</div>
             {k.delta != null && (
-              <div className={`mt-2 flex items-center gap-1 text-sm font-semibold ${k.up ? "text-accent-600" : "text-[var(--danger)]"}`}>
-                {k.up ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}
-                {k.delta}% <span className="font-normal text-[var(--muted)]">from last week</span>
+              <div className="mt-2 flex items-center gap-1.5">
+                <Delta delta={k.delta} up={k.up} />
+                <span className="text-xs text-[var(--muted)]">from last week</span>
               </div>
             )}
           </Panel>
@@ -189,9 +163,6 @@ export default function CommandCenterPage() {
           <ul className="flex-1 divide-y divide-[var(--border)] px-5">
             {aiJobs.map((j) => (
               <li key={`${j.agent}-${j.client}`} className="flex items-center gap-3 py-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-3)] text-[var(--ink-soft)]">
-                  <Bot className="h-4 w-4" />
-                </span>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold text-[var(--foreground)]">{j.agent}</div>
                   <div className="truncate text-xs text-[var(--muted)]">{j.client}</div>
@@ -271,7 +242,6 @@ export default function CommandCenterPage() {
           <ul className="flex-1 divide-y divide-[var(--border)] px-5">
             {deployments.map((d, i) => (
               <li key={d.item} className="flex items-center gap-3 py-2.5">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-3)] text-[var(--muted)]"><Rocket className="h-4 w-4" /></span>
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium text-[var(--foreground)]">{d.client}</div>
                   <div className="truncate text-xs text-[var(--muted)]">{d.item}</div>
@@ -294,13 +264,12 @@ export default function CommandCenterPage() {
           {STAGES.map((s, i) => {
             const done = s.n < inv.currentStage;
             const current = s.n === inv.currentStage;
-            const Icon = s.icon;
             return (
               <div key={s.slug} className="flex min-w-[88px] flex-1 flex-col items-center text-center">
                 <div className="flex w-full items-center">
                   <span className={`h-0.5 flex-1 ${i === 0 ? "opacity-0" : done || current ? "bg-accent-400" : "bg-[var(--border)]"}`} />
-                  <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 ${done ? "border-accent-500 bg-accent-500 text-white" : current ? "border-accent-500 bg-[var(--accent-tint)] text-accent-600" : "border-[var(--border)] bg-[var(--surface)] text-[var(--faint)]"}`}>
-                    {done ? <Check className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold tnum ${done ? "border-accent-500 bg-accent-500 text-white" : current ? "border-accent-500 bg-[var(--accent-tint)] text-accent-700" : "border-[var(--border)] bg-[var(--surface)] text-[var(--faint)]"}`}>
+                    {s.n}
                   </span>
                   <span className={`h-0.5 flex-1 ${i === STAGES.length - 1 ? "opacity-0" : done ? "bg-accent-400" : "bg-[var(--border)]"}`} />
                 </div>
@@ -363,14 +332,11 @@ export default function CommandCenterPage() {
           <ul className="flex-1 divide-y divide-[var(--border)] px-5">
             {reportsOverview.map((r) => (
               <li key={r.label} className="flex items-center gap-3 py-3.5">
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-tint)] text-accent-600"><r.icon className="h-4 w-4" /></span>
                 <div className="min-w-0 flex-1">
                   <div className="text-xs text-[var(--muted)]">{r.label}</div>
                   <div className="tnum text-xl font-bold text-[var(--foreground)]">{r.value}</div>
                 </div>
-                <span className={`flex items-center gap-0.5 text-sm font-semibold ${r.up ? "text-accent-600" : "text-[var(--danger)]"}`}>
-                  {r.up ? <ArrowUpRight className="h-4 w-4" /> : <ArrowDownRight className="h-4 w-4" />}{r.delta}%
-                </span>
+                <Delta delta={r.delta} up={r.up} />
               </li>
             ))}
           </ul>
@@ -384,14 +350,13 @@ export default function CommandCenterPage() {
           <div className="grid grid-cols-3 gap-3 p-5 sm:grid-cols-4">
             {workforce.map((w) => (
               <div key={w.name} className="flex flex-col items-center rounded-lg border border-[var(--border)] bg-[var(--surface-2)] p-3 text-center">
-                <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-white ${w.color}`}><Bot className="h-5 w-5" /></span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-tint)] text-sm font-bold text-accent-700">{initials(w.name)}</span>
                 <span className="mt-2 line-clamp-1 text-2xs font-semibold text-[var(--foreground)]">{w.name}</span>
                 <Badge variant={w.status === "Running" ? "good" : w.status === "Waiting" ? "warn" : "default"} className="mt-1">{w.status}</Badge>
               </div>
             ))}
-            <Link href="/agents" className="flex flex-col items-center justify-center rounded-lg border border-dashed border-[var(--border-strong)] p-3 text-center text-[var(--muted)] hover:border-accent-400 hover:text-accent-600">
-              <Plus className="h-5 w-5" />
-              <span className="mt-1 text-2xs font-medium">Add Specialist</span>
+            <Link href="/agents" className="flex flex-col items-center justify-center rounded-lg border border-dashed border-[var(--border-strong)] p-3 text-center text-sm font-medium text-[var(--muted)] hover:border-accent-400 hover:text-accent-600">
+              + Add
             </Link>
           </div>
         </Panel>
@@ -401,7 +366,7 @@ export default function CommandCenterPage() {
           <ul className="flex-1 px-5">
             {morningChecklist.map((m, i) => (
               <li key={i} className="flex items-center gap-3 border-t border-[var(--border)] py-3 first:border-t-0">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[var(--accent-tint)] text-accent-600"><Check className="h-3.5 w-3.5" /></span>
+                <span className="h-2 w-2 shrink-0 rounded-full bg-accent-500" />
                 <span className="flex-1 text-sm font-medium text-[var(--foreground)]">{m.text}</span>
                 <span className="text-xs text-[var(--muted)]">{m.meta}</span>
               </li>
@@ -430,8 +395,8 @@ function PanelHead({ title, href }: { title: string; href: string }) {
 
 function PanelFoot({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className="flex items-center gap-1 border-t border-[var(--border)] px-5 py-3 text-xs font-semibold text-accent-600 hover:bg-[var(--surface-2)]">
-      {label} <ArrowRight className="h-3.5 w-3.5" />
+    <Link href={href} className="border-t border-[var(--border)] px-5 py-3 text-xs font-semibold text-accent-600 hover:bg-[var(--surface-2)]">
+      {label}
     </Link>
   );
 }
