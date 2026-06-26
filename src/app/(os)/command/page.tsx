@@ -7,7 +7,6 @@ import {
   Ban,
   Rocket,
   CheckCircle2,
-  Check,
   ArrowUpRight,
   ArrowRight,
   TrendingUp,
@@ -114,68 +113,49 @@ export default function CommandCenterPage() {
       </div>
 
       {/* ══ THE PROCESS ═════════════════════════════════════════════════ */}
-      <SectionLabel>Every client&apos;s progress through the workflow</SectionLabel>
+      <SectionLabel>Where every client is in the workflow</SectionLabel>
       <Panel className="p-5">
-        <p className="mb-4 text-xs text-[var(--muted)]">
-          Each client runs the same 9-stage process. The bar shows how far along their campaign is — done, current and upcoming.
-        </p>
-        <div className="space-y-1">
-          {investigations.map((inv) => {
-            const c = clientById(inv.clientId);
-            const cur = inv.currentStage;
-            const stage = STAGES[cur - 1];
+        <div className="flex items-start overflow-x-auto pb-1">
+          {STAGES.map((s, i) => {
+            const proj = investigations.find((inv) => inv.currentStage === s.n);
+            const c = proj ? clientById(proj.clientId) : undefined;
             return (
-              <div key={inv.id} className="flex items-center gap-4 rounded-lg px-2 py-2.5 hover:bg-[var(--surface-2)]">
-                {/* Client */}
-                <Link href={`/clients/${inv.clientId}`} className="flex w-44 shrink-0 items-center gap-2.5">
-                  <span className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-2xs font-bold text-white", c?.color ?? "bg-accent-500")}>
-                    {c?.initials}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm font-semibold text-[var(--foreground)]">{c?.name}</span>
-                    <span className="block text-2xs font-medium uppercase tracking-[0.04em] text-[var(--muted)]">{inv.model} SEO</span>
-                  </span>
-                </Link>
-
-                {/* 9-stage progress */}
-                <div className="flex flex-1 items-center">
-                  {STAGES.map((s, i) => {
-                    const done = s.n < cur;
-                    const current = s.n === cur;
-                    return (
-                      <div key={s.slug} className="flex items-center last:flex-none flex-1">
-                        <Link
-                          href={`/${s.slug}`}
-                          title={`Stage ${s.n} · ${s.name}`}
-                          className={cn(
-                            "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold tnum transition-colors",
-                            done && "border-accent-500 bg-accent-500 text-white",
-                            current && "border-accent-500 bg-[var(--accent-tint)] text-accent-700 ring-2 ring-accent-200",
-                            !done && !current && "border-[var(--border-strong)] bg-[var(--surface)] text-[var(--faint)]"
-                          )}
-                        >
-                          {done ? <Check className="h-3 w-3" /> : s.n}
-                        </Link>
-                        {i < STAGES.length - 1 && (
-                          <span className={cn("h-0.5 flex-1", done ? "bg-accent-500" : "bg-[var(--border)]")} />
-                        )}
-                      </div>
-                    );
-                  })}
+              <div key={s.slug} className="flex min-w-[104px] flex-1 flex-col items-center text-center">
+                <div className="flex w-full items-center">
+                  <span className={cn("h-0.5 flex-1", i === 0 ? "opacity-0" : "bg-[var(--border)]")} />
+                  <Link
+                    href={`/${s.slug}`}
+                    title={s.name}
+                    className={cn(
+                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold tnum transition-colors",
+                      c
+                        ? "border-accent-500 bg-accent-500 text-white"
+                        : "border-[var(--border-strong)] bg-[var(--surface)] text-[var(--faint)]"
+                    )}
+                  >
+                    {s.n}
+                  </Link>
+                  <span className={cn("h-0.5 flex-1", i === STAGES.length - 1 ? "opacity-0" : "bg-[var(--border)]")} />
                 </div>
-
-                {/* Current stage */}
-                <div className="w-36 shrink-0 text-right">
-                  <div className="text-2xs font-medium text-[var(--muted)]">Stage {cur} of {STAGES.length}</div>
-                  <div className="truncate text-sm font-semibold text-[var(--foreground)]">{stage?.name}</div>
+                <div className="mt-2 text-xs font-semibold text-[var(--foreground)]">{s.short}</div>
+                <div className="mt-2 h-7">
+                  {c && proj && (
+                    <Link
+                      href={`/clients/${proj.clientId}`}
+                      title={c.name}
+                      className="flex items-center gap-1.5 rounded-full bg-[var(--surface-2)] px-2 py-1 transition-colors hover:bg-[var(--surface-3)]"
+                    >
+                      <span className={cn("flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[8px] font-bold text-white", c.color)}>
+                        {c.initials}
+                      </span>
+                      <span className="max-w-[64px] truncate text-2xs font-medium text-[var(--ink-soft)]">{c.name}</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             );
           })}
         </div>
-        <Link href="/workflow" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-accent-600 hover:text-accent-700">
-          Open the full SEO Pipeline <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
       </Panel>
 
       {/* ══ NEEDS ACTION ════════════════════════════════════════════════ */}
