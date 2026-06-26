@@ -38,10 +38,6 @@ export function ViewIndicator() {
   const client = pageClient ?? (engagement.clientId ? clientById(engagement.clientId) : undefined);
   const name = client?.name ?? engagement.business;
   const model = client?.model ?? engagement.model;
-  const color = client?.color ?? "bg-accent-500";
-  const initials =
-    client?.initials ??
-    engagement.business.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
   const clientHref = client ? `/clients/${client.id}` : "/clients";
 
   return (
@@ -49,14 +45,11 @@ export function ViewIndicator() {
       <Link
         href={clientHref}
         className={cn(
-          "flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-3 text-sm transition-colors",
+          "flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-colors",
           onClient ? "bg-[var(--surface)] shadow-sm" : "text-[var(--muted)] hover:text-[var(--foreground)]"
         )}
       >
         <StatusDot tone="good" pulse />
-        <span className={cn("flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white", color)}>
-          {initials}
-        </span>
         <span className={cn("font-semibold", onClient ? "text-[var(--foreground)]" : "")}>{name}</span>
         <span className={cn(
           "rounded px-1.5 py-0.5 text-2xs font-bold uppercase tracking-[0.04em]",
