@@ -309,6 +309,39 @@ export const agentTools: Record<string, string[]> = {
   reporting: ["looker", "ga4", "slack"],
 };
 
+/**
+ * Job Assistants — the AI that support the human team. Exactly one per team
+ * specialist (the supporters around the SEO Manager). The rest of the roster is
+ * the core AI Workforce that runs the manager's process. Keys are agent ids,
+ * values are team-member ids (see lib/model `team`).
+ */
+export const agentSupervisor: Record<string, string> = {
+  // SEO Manager / Account Lead — client-facing + the glue
+  discovery: "josh",
+  brief: "josh",
+  reporting: "josh",
+  // SEO Lead — research, analysis and strategy
+  research: "jordan",
+  intent: "jordan",
+  competitive: "jordan",
+  diagnosis: "jordan",
+  strategy: "jordan",
+  playbook: "jordan",
+  // Local SEO Specialist
+  local: "priya",
+  // Content Lead
+  content: "sam",
+  // Web Developer — technical execution
+  "technical-auditor": "marcus",
+  schema: "marcus",
+  "internal-linking": "marcus",
+  qa: "marcus",
+};
+
+/** The AI assistants that perform a given team member's job role. */
+export const assistantsFor = (teamId: string) =>
+  agents.filter((a) => agentSupervisor[a.id] === teamId);
+
 /** Which agents deploy from each pipeline stage (by route slug). */
 export const stageAgents: Record<string, string[]> = {
   discovery: ["discovery"],

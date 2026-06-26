@@ -1,14 +1,14 @@
 "use client";
 
-import { Telescope, Wrench, Stethoscope, PenLine, ShieldCheck, type LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge, StatusDot } from "@/components/ui/badge";
 import { StatTile, StatRow } from "@/components/ui/metric";
 import { cn } from "@/lib/utils";
-import { agents, orchestrator, workflow, agentTools, type Agent } from "@/lib/agents";
+import { agents, orchestrator, workflow, agentTools, assistantsFor, type Agent } from "@/lib/agents";
 import { workerState, type WorkerStatus } from "@/lib/workforce";
 import { getIntegration } from "@/lib/integrations";
+import { team } from "@/lib/model";
 import { useDeployState, toggleAgent } from "@/components/agents/deploy-store";
 
 const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> = {
@@ -17,62 +17,6 @@ const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> =
   Idle: "warn",
   Offline: "default",
 };
-
-// ── Departments · specialists grouped by function. Every department uses the
-// one brand green; the category icon carries the identity, not a clashing color.
-type Accent = { solid: string; tint: string; text: string; ring: string };
-
-const GREEN: Accent = {
-  solid: "bg-accent-500",
-  tint: "bg-[var(--accent-tint)]",
-  text: "text-accent-700",
-  ring: "ring-accent-200",
-};
-
-const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; accent: Accent; ids: string[] }[] = [
-  {
-    id: "research",
-    name: "Research & Discovery",
-    desc: "Understand the business, the market and the demand",
-    icon: Telescope,
-    accent: GREEN,
-    ids: ["discovery", "research", "intent", "competitive"],
-  },
-  {
-    id: "technical",
-    name: "Technical SEO",
-    desc: "Crawl, indexation, schema, structure and links",
-    icon: Wrench,
-    accent: GREEN,
-    ids: ["technical-auditor", "schema", "internal-linking"],
-  },
-  {
-    id: "strategy",
-    name: "Diagnosis & Strategy",
-    desc: "Decide what to fix first and chart the roadmap",
-    icon: Stethoscope,
-    accent: GREEN,
-    ids: ["diagnosis", "strategy", "brief"],
-  },
-  {
-    id: "content",
-    name: "Content & Local",
-    desc: "Produce pages, briefs and local presence",
-    icon: PenLine,
-    accent: GREEN,
-    ids: ["content", "playbook", "local"],
-  },
-  {
-    id: "delivery",
-    name: "Quality & Delivery",
-    desc: "Verify the work and report the results",
-    icon: ShieldCheck,
-    accent: GREEN,
-    ids: ["qa", "reporting"],
-  },
-];
-
-const agentById = Object.fromEntries(agents.map((a) => [a.id, a]));
 
 export function AgentsView() {
   const deployed = useDeployState();
@@ -100,7 +44,7 @@ export function AgentsView() {
         </div>
         <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-[var(--muted)]">{orchestrator.role}</p>
         <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-[var(--muted)]">
-          Turn a specialist on to deploy its skills and tool access. The Orchestrator routes each piece of the project brief to the worker whose <span className="font-medium text-[var(--ink-soft)]">skills and access</span> fit.
+          The roster is organized by job role. Each role&apos;s AI assistants do its work; turn one on to deploy its skills and tool access, and the Orchestrator routes the matching brief work to it.
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-x-1 gap-y-2">
           {workflow.map((step, i) => (
@@ -114,29 +58,31 @@ export function AgentsView() {
 
       {/* ── Workforce KPIs ──────────────────────────────────────────────────── */}
       <StatRow cols={4}>
-        <StatTile label="Specialists deployed" value={`${deployedCount}/${agents.length}`} sub="of the full roster" />
+        <StatTile label="AI assistants deployed" value={`${deployedCount}/${agents.length}`} sub="of the full roster" />
         <StatTile label="Working now" value={workingCount} tone="good" sub="active assignments" />
         <StatTile label="Jobs completed today" value={jobsToday} tone="accent" />
         <StatTile label="Avg. performance" value={`${avgPerf}%`} sub="QA pass rate" />
       </StatRow>
 
-      {/* ── Departments ─────────────────────────────────────────────────────── */}
-      {DEPARTMENTS.map((dept) => {
-        const members = dept.ids.map((id) => agentById[id]).filter(Boolean);
-        const deployedHere = members.filter((m) => deployed[m.id]).length;
-        const workingHere = members.filter((m) => deployed[m.id] && workerState(m.id, true).status === "Working").length;
-        const DeptIcon = dept.icon;
+      {/* ── By job role — SEO Manager first, then the team ──────────────────── */}
+      {team.map((member) => {
+        const members = assistantsFor(member.id);
+        if (members.length === 0) return null;
+        const deployedHere = members.filter((a) => deployed[a.id]).length;
+        const workingHere = members.filter((a) => deployed[a.id] && workerState(a.id, true).status === "Working").length;
         return (
-          <section key={dept.id}>
+          <section key={member.id}>
             <div className="mb-3 flex flex-wrap items-center gap-3">
-              <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-sm", dept.accent.solid)}>
-                <DeptIcon className="h-5 w-5" />
+              <span className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold text-white shadow-sm", member.color)}>
+                {member.initials}
               </span>
               <div className="min-w-0 flex-1">
-                <h3 className="text-base font-bold tracking-tight text-[var(--foreground)]">{dept.name}</h3>
-                <p className="text-xs text-[var(--muted)]">{dept.desc}</p>
+                <h3 className="text-base font-bold tracking-tight text-[var(--foreground)]">{member.role}</h3>
+                <p className="text-xs text-[var(--muted)]">
+                  {member.name} · {members.length} AI assistant{members.length > 1 ? "s" : ""}
+                </p>
               </div>
-              <span className={cn("rounded-md px-2 py-1 text-2xs font-bold ring-1 ring-inset", dept.accent.tint, dept.accent.text, dept.accent.ring)}>
+              <span className="rounded-md bg-[var(--accent-tint)] px-2 py-1 text-2xs font-bold text-accent-700 ring-1 ring-inset ring-accent-200">
                 {deployedHere}/{members.length} deployed
               </span>
               <span className="rounded-md bg-[var(--ok-tint)] px-2 py-1 text-2xs font-bold text-[#157552]">
@@ -148,7 +94,6 @@ export function AgentsView() {
                 <AgentCard
                   key={agent.id}
                   agent={agent}
-                  accent={dept.accent}
                   deployed={!!deployed[agent.id]}
                   state={workerState(agent.id, !!deployed[agent.id])}
                   onToggle={(v) => toggleAgent(agent.id, v)}
@@ -164,21 +109,19 @@ export function AgentsView() {
 
 function AgentCard({
   agent,
-  accent,
   deployed,
   state,
   onToggle,
 }: {
   agent: Agent;
-  accent: Accent;
   deployed: boolean;
   state: ReturnType<typeof workerState>;
   onToggle: (v: boolean) => void;
 }) {
   return (
     <Card interactive className={cn("flex flex-col overflow-hidden", !deployed && "opacity-[0.92]")}>
-      {/* Department identity bar */}
-      <div className={cn("h-1 w-full", deployed ? accent.solid : "bg-[var(--border)]")} />
+      {/* Identity bar */}
+      <div className={cn("h-1 w-full", deployed ? "bg-accent-500" : "bg-[var(--border)]")} />
 
       {/* Header · identity + deploy toggle */}
       <div className="flex items-start gap-3 p-4 pb-3">
