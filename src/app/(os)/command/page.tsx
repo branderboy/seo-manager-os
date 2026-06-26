@@ -24,7 +24,6 @@ import { DonutChart, TrafficArea } from "@/components/command/charts";
 import { STAGES } from "@/lib/stages";
 import { featuredInvestigation as inv, currentUser, clients } from "@/lib/model";
 import { workforceSummary } from "@/lib/workforce";
-import { ProfileSwitcher } from "@/components/layout/profile-switcher";
 import {
   priorityTasks,
   aiJobs,
@@ -133,16 +132,12 @@ export default function CommandCenterPage() {
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-md bg-[var(--surface-3)] px-2 py-0.5 text-2xs font-semibold uppercase tracking-[0.06em] text-[var(--muted)]">
-            Agency overview · all {clients.length} clients
-          </div>
           <h1 className="text-3xl font-bold tracking-tight text-[var(--foreground)]">
             Good morning, {currentUser.name.split(" ")[0]} <span className="align-middle">👋</span>
           </h1>
           <p className="mt-1 text-base text-[var(--muted)]">Portfolio-wide view across every client. Open a client to drill into its workspace.</p>
         </div>
         <div className="flex items-center gap-2.5">
-          <ProfileSwitcher />
           <div className="relative hidden sm:block">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--faint)]" />
             <input
