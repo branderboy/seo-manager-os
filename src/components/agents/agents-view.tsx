@@ -1,6 +1,6 @@
 "use client";
 
-import { Telescope, Wrench, Stethoscope, PenLine, ShieldCheck, type LucideIcon } from "lucide-react";
+import { Telescope, Wrench, Stethoscope, ShieldCheck, Users, type LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge, StatusDot } from "@/components/ui/badge";
@@ -30,7 +30,11 @@ const GREEN: Accent = {
   ring: "ring-accent-200",
 };
 
-const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; accent: Accent; ids: string[] }[] = [
+// Job Assistants — one AI per human team specialist (supports the team).
+const JOB_ASSISTANT_IDS = ["strategy", "local", "content", "technical-auditor"];
+
+// Core AI Workforce — runs the SEO Manager's process end to end.
+const CORE_DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; accent: Accent; ids: string[] }[] = [
   {
     id: "research",
     name: "Research & Discovery",
@@ -40,28 +44,20 @@ const DEPARTMENTS: { id: string; name: string; desc: string; icon: LucideIcon; a
     ids: ["discovery", "research", "intent", "competitive"],
   },
   {
-    id: "technical",
-    name: "Technical SEO",
-    desc: "Crawl, indexation, schema, structure and links",
-    icon: Wrench,
-    accent: GREEN,
-    ids: ["technical-auditor", "schema", "internal-linking"],
-  },
-  {
-    id: "strategy",
-    name: "Diagnosis & Strategy",
-    desc: "Decide what to fix first and chart the roadmap",
+    id: "planning",
+    name: "Diagnosis & Planning",
+    desc: "Decide what to fix first and assemble the plan",
     icon: Stethoscope,
     accent: GREEN,
-    ids: ["diagnosis", "strategy", "brief"],
+    ids: ["diagnosis", "brief", "playbook"],
   },
   {
-    id: "content",
-    name: "Content & Local",
-    desc: "Produce pages, briefs and local presence",
-    icon: PenLine,
+    id: "technical",
+    name: "Technical Build",
+    desc: "Structured data and internal-link structure",
+    icon: Wrench,
     accent: GREEN,
-    ids: ["content", "playbook", "local"],
+    ids: ["schema", "internal-linking"],
   },
   {
     id: "delivery",
@@ -121,8 +117,40 @@ export function AgentsView() {
         <StatTile label="Avg. performance" value={`${avgPerf}%`} sub="QA pass rate" />
       </StatRow>
 
-      {/* ── Departments ─────────────────────────────────────────────────────── */}
-      {DEPARTMENTS.map((dept) => {
+      {/* ── Job Assistants — support the human team ─────────────────────────── */}
+      <section>
+        <div className="mb-3 flex flex-wrap items-center gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-500 text-white shadow-sm">
+            <Users className="h-5 w-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-base font-bold tracking-tight text-[var(--foreground)]">Job Assistants</h3>
+            <p className="text-xs text-[var(--muted)]">One AI assistant per team specialist — they support your team&apos;s day-to-day work.</p>
+          </div>
+          <span className="rounded-md bg-[var(--accent-tint)] px-2 py-1 text-2xs font-bold text-accent-700 ring-1 ring-inset ring-accent-200">
+            {JOB_ASSISTANT_IDS.filter((id) => deployed[id]).length}/{JOB_ASSISTANT_IDS.length} deployed
+          </span>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {JOB_ASSISTANT_IDS.map((id) => agentById[id]).filter(Boolean).map((agent) => (
+            <AgentCard
+              key={agent.id}
+              agent={agent}
+              accent={GREEN}
+              deployed={!!deployed[agent.id]}
+              state={workerState(agent.id, !!deployed[agent.id])}
+              onToggle={(v) => toggleAgent(agent.id, v)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* ── Core AI Workforce — runs the SEO Manager's process ──────────────── */}
+      <div className="flex items-center gap-3 pt-1">
+        <span className="text-2xs font-bold uppercase tracking-[0.1em] text-[var(--faint)]">Core AI Workforce · runs the SEO Manager&apos;s process</span>
+        <div className="h-px flex-1 bg-[var(--border)]" />
+      </div>
+      {CORE_DEPARTMENTS.map((dept) => {
         const members = dept.ids.map((id) => agentById[id]).filter(Boolean);
         const deployedHere = members.filter((m) => deployed[m.id]).length;
         const workingHere = members.filter((m) => deployed[m.id] && workerState(m.id, true).status === "Working").length;
@@ -187,8 +215,9 @@ function AgentCard({
           <div className="truncate text-sm font-semibold text-[var(--foreground)]">{agent.name}</div>
           <div className="truncate text-xs text-[var(--muted)]">{agent.role}</div>
           {teamMemberById(agentSupervisor[agent.id]) && (
-            <div className="mt-1 truncate text-2xs text-[var(--muted)]">
-              Assists <span className="font-medium text-[var(--ink-soft)]">{teamMemberById(agentSupervisor[agent.id])!.name}</span>
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <span className="rounded bg-[var(--accent-tint)] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.04em] text-accent-700">Job assistant</span>
+              <span className="truncate text-2xs text-[var(--muted)]">Assists {teamMemberById(agentSupervisor[agent.id])!.name}</span>
             </div>
           )}
         </div>

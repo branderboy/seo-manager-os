@@ -57,12 +57,11 @@ export function TeamView() {
                 <div className="min-w-0">
                   <div className="truncate text-sm font-semibold text-[var(--foreground)]">{m.name}</div>
                   <div className="truncate text-xs text-[var(--muted)]">{m.role}</div>
-                  <div
-                    className="truncate text-2xs font-medium text-accent-700"
-                    title={assistantsFor(m.id).map((a) => a.name).join(", ")}
-                  >
-                    {assistantsFor(m.id).length} AI {assistantsFor(m.id).length === 1 ? "assistant" : "assistants"}
-                  </div>
+                  {assistantsFor(m.id).length > 0 && (
+                    <div className="truncate text-2xs font-medium text-accent-700">
+                      Job assistant: {assistantsFor(m.id).map((a) => a.name).join(", ")}
+                    </div>
+                  )}
                 </div>
               </div>
 

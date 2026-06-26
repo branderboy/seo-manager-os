@@ -310,34 +310,22 @@ export const agentTools: Record<string, string[]> = {
 };
 
 /**
- * Each specialist is the AI assistant for a human job function. The team member
- * who owns that function supervises the AI: it executes, they review and ship.
- * Keys are agent ids, values are team-member ids (see lib/model `team`).
+ * Job Assistants — the AI that support the human team. Exactly one per team
+ * specialist (the supporters around the SEO Manager). The rest of the roster is
+ * the core AI Workforce that runs the manager's process. Keys are agent ids,
+ * values are team-member ids (see lib/model `team`).
  */
 export const agentSupervisor: Record<string, string> = {
-  // Account Lead — client-facing + the glue
-  discovery: "josh",
-  brief: "josh",
-  reporting: "josh",
-  // SEO Lead — research, analysis and strategy
-  research: "jordan",
-  intent: "jordan",
-  competitive: "jordan",
-  diagnosis: "jordan",
-  strategy: "jordan",
-  playbook: "jordan",
-  // Local SEO Specialist
-  local: "priya",
-  // Content Lead
-  content: "sam",
-  // Web Developer — technical execution
-  "technical-auditor": "marcus",
-  schema: "marcus",
-  "internal-linking": "marcus",
-  qa: "marcus",
+  strategy: "jordan", // SEO Lead
+  local: "priya", // Local SEO Specialist
+  content: "sam", // Content Lead
+  "technical-auditor": "marcus", // Web Developer
 };
 
-/** The AI specialists that assist a given team member (their job function). */
+/** True if the agent is a Job Assistant (supports a human team member). */
+export const isJobAssistant = (agentId: string) => agentId in agentSupervisor;
+
+/** The Job Assistant that supports a given team member (if any). */
 export const assistantsFor = (teamId: string) =>
   agents.filter((a) => agentSupervisor[a.id] === teamId);
 
