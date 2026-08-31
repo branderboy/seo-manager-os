@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - claude/app-identification-repo-64akmz
+      - chatgpt/local-growth-os-foundation
   pull_request:
     branches:
       - claude/app-identification-repo-64akmz
@@ -38,12 +39,12 @@ jobs:
           GITHUB_PAGES: "true"
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/claude/app-identification-repo-64akmz' && github.event_name != 'pull_request'
         with:
           path: out
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/claude/app-identification-repo-64akmz' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
