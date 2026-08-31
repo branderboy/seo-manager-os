@@ -1,7 +1,10 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy GitHub Pages
 
 on:
   push:
+    branches:
+      - claude/app-identification-repo-64akmz
+  pull_request:
     branches:
       - claude/app-identification-repo-64akmz
   workflow_dispatch:
@@ -12,8 +15,8 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -25,16 +28,22 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Build static export
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Lint
+        run: npm run lint
+      - name: Build static demo
         run: npm run build
         env:
           GITHUB_PAGES: "true"
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
         with:
           path: out
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
