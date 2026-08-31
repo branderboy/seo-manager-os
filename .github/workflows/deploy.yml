@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - claude/app-identification-repo-64akmz
-      - chatgpt/local-growth-os-foundation
   pull_request:
     branches:
       - claude/app-identification-repo-64akmz
