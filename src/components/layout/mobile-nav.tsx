@@ -14,6 +14,7 @@ import {
   FileBarChart,
   Plug,
   Settings,
+  MapPinned,
 } from "lucide-react";
 import { STAGES } from "@/lib/stages";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ type Item = { href: string; label: string; icon: React.ComponentType<{ className
 
 const PRIMARY: Item[] = [
   { href: "/command", label: "Command Center", icon: LayoutDashboard },
+  { href: "/growth", label: "Local Growth OS", icon: MapPinned },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/workflow", label: "SEO Pipeline", icon: GitBranch },
   { href: "/tracker", label: "Performance", icon: LineChart },
