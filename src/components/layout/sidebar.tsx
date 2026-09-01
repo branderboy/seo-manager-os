@@ -14,6 +14,7 @@ import {
   Plug,
   Settings,
   Leaf,
+  MapPinned,
 } from "lucide-react";
 import { currentUser } from "@/lib/model";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ type Item = { href: string; label: string; icon: React.ComponentType<{ className
 
 const NAV: Item[] = [
   { href: "/command", label: "Command Center", icon: LayoutDashboard },
+  { href: "/growth", label: "Local Growth OS", icon: MapPinned },
   { href: "/clients", label: "Clients", icon: Users },
   { href: "/workflow", label: "SEO Pipeline", icon: GitBranch },
   { href: "/tracker", label: "Performance", icon: LineChart },
@@ -49,7 +51,6 @@ export function Sidebar() {
   return (
     <aside className="hidden w-[256px] shrink-0 flex-col bg-[#15181e] text-white lg:flex">
       <div className="flex h-screen flex-col">
-        {/* Brand */}
         <Link href="/command" className="flex shrink-0 items-center gap-3 px-5 pb-4 pt-6">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-500 text-white shadow-[0_4px_12px_-2px_rgba(22,179,100,0.5)]">
             <Leaf className="h-5 w-5" />
@@ -60,7 +61,6 @@ export function Sidebar() {
           </span>
         </Link>
 
-        {/* Scrollable: nav + dashboards */}
         <div className="flex-1 overflow-y-auto px-3">
           <nav>
             <ul className="space-y-0.5">
@@ -73,9 +73,7 @@ export function Sidebar() {
                       href={it.href}
                       className={cn(
                         "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                        active
-                          ? "bg-white/15 text-white"
-                          : "text-white/80 hover:bg-white/10 hover:text-white"
+                        active ? "bg-white/15 text-white" : "text-white/80 hover:bg-white/10 hover:text-white"
                       )}
                     >
                       {active && <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-r-full bg-accent-500" />}
@@ -88,7 +86,6 @@ export function Sidebar() {
             </ul>
           </nav>
 
-          {/* Client dashboards */}
           <div className="mt-5">
             <div className="flex items-center justify-between px-3 pb-2">
               <span className="text-2xs font-bold uppercase tracking-[0.1em] text-white/55">Client dashboards</span>
@@ -116,7 +113,6 @@ export function Sidebar() {
           </div>
         </div>
 
-        {/* User */}
         <div className="flex shrink-0 items-center gap-2.5 border-t border-white/10 px-4 py-3">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-500 text-2xs font-bold text-white">
             {currentUser.initials}
