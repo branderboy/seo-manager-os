@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MapPin, Cloud, Building2, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +26,8 @@ export function ClientRow({ client: c }: { client: Client }) {
   };
 
   return (
+    // The row is a mouse convenience. The client name is the real link, so the record is
+    // reachable by keyboard and by screen reader, and can be opened in a new tab.
     <tr onClick={open} className="group cursor-pointer transition-colors hover:bg-[var(--surface-2)]">
       <td className="py-3 pl-4 pr-3">
         <div className="flex items-center gap-3">
@@ -32,9 +35,16 @@ export function ClientRow({ client: c }: { client: Client }) {
             {c.initials}
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-sm font-medium text-[var(--foreground)] group-hover:text-accent-600">
+            <Link
+              href={`/clients/${c.id}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setEngagement(engagementFromClient(c));
+              }}
+              className="block truncate text-sm font-medium text-[var(--foreground)] group-hover:text-accent-600"
+            >
               {c.name}
-            </span>
+            </Link>
             <span className="block truncate text-xs text-[var(--muted)]">
               {c.industry} · {c.location}
             </span>

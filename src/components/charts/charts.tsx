@@ -145,9 +145,18 @@ export function DonutChart({
   data: { label: string; value: number }[];
   height?: number;
 }) {
+  const total = data.reduce((sum, d) => sum + d.value, 0);
+  const description = data
+    .map((d) => `${d.label} ${total > 0 ? Math.round((d.value / total) * 100) : 0}%`)
+    .join(", ");
+
   return (
+    // Recharts gives every sector role="img" with no accessible name. One name on the
+    // chart, internals hidden: the same numbers are read out in the text beside it.
+    <div role="img" aria-label={`Donut chart. ${description}.`} style={{ width: "100%" }}>
+    <div aria-hidden="true">
     <ResponsiveContainer width="100%" height={height}>
-      <PieChart>
+      <PieChart tabIndex={-1}>
         <Pie
           data={data}
           dataKey="value"
@@ -156,6 +165,7 @@ export function DonutChart({
           outerRadius={84}
           paddingAngle={2}
           stroke="none"
+          rootTabIndex={-1}
         >
           {data.map((_, i) => (
             <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
@@ -164,6 +174,8 @@ export function DonutChart({
         <Tooltip contentStyle={tooltipStyle} />
       </PieChart>
     </ResponsiveContainer>
+    </div>
+    </div>
   );
 }
 

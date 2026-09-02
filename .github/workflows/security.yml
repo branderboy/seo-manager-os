@@ -1,0 +1,60 @@
+# Dependency, secret, and client bundle checks. Section 6 of WORLD_CLASS_APP_THESIS.md.
+# Automated hygiene only. This does not replace docs/audits/security-audit.md.
+name: Security
+
+on:
+  pull_request:
+  push:
+    branches: [claude/app-identification-repo-64akmz, main]
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  dependencies:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks
+        run: |
+          curl -sSL -o gitleaks.tar.gz \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz
+          tar -xzf gitleaks.tar.gz gitleaks
+          sudo mv gitleaks /usr/local/bin/
+      - name: Scan history for secrets
+        run: gitleaks detect --redact --no-banner --exit-code 1
+
+  client-bundle:
+    name: Client bundle check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Check the client bundle for server only values
+        # Guardrail from the thesis: server credentials must never reach the browser.
+        # Edit .github/scripts/server-only-vars.txt to list this project's variables.
+        run: bash .github/scripts/check-client-bundle.sh out

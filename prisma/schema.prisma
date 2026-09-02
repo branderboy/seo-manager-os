@@ -1,0 +1,93 @@
+// Starter schema for the default stack. It exists so ORG-001 and CORE-001 have something
+// concrete to enforce against, and so the seed and the tenant isolation tests run on day one.
+// Replace Campaign with your real core object. Keep the tenant key on every tenant owned model.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum CampaignStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Organization {
+  id          String       @id @default(cuid())
+  name        String
+  slug        String       @unique
+  createdAt   DateTime     @default(now())
+  memberships Membership[]
+  campaigns   Campaign[]
+  auditLogs   AuditLog[]
+}
+
+model User {
+  id            String       @id @default(cuid())
+  email         String       @unique
+  passwordHash  String
+  name          String?
+  emailVerified DateTime?
+  status        UserStatus   @default(ACTIVE)
+  createdAt     DateTime     @default(now())
+  memberships   Membership[]
+}
+
+// The join model is where tenant scope is resolved. Every server side query starts here.
+model Membership {
+  id             String       @id @default(cuid())
+  userId         String
+  organizationId String
+  role           Role         @default(MEMBER)
+  createdAt      DateTime     @default(now())
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+}
+
+// The core object. Rename it. Note the tenant key leads the composite index, because every
+// list query is scoped by organization first. PERF-001 checks this.
+model Campaign {
+  id             String         @id @default(cuid())
+  organizationId String
+  title          String
+  status         CampaignStatus @default(DRAFT)
+  createdById    String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, status, createdAt])
+}
+
+// Append only in practice. ADMIN-001 requires actor, target, action, and timestamp.
+model AuditLog {
+  id             String       @id @default(cuid())
+  organizationId String
+  actorUserId    String
+  action         String
+  targetType     String
+  targetId       String
+  createdAt      DateTime     @default(now())
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId, createdAt])
+}

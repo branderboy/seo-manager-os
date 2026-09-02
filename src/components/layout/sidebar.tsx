@@ -47,7 +47,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-[256px] shrink-0 flex-col bg-[#15181e] text-white lg:flex">
+    <aside className="on-feature hidden w-[256px] shrink-0 flex-col bg-[#15181e] text-white lg:flex">
       <div className="flex h-screen flex-col">
         {/* Brand */}
         <Link href="/command" className="flex shrink-0 items-center gap-3 px-5 pb-4 pt-6">

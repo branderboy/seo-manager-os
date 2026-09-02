@@ -61,6 +61,7 @@ export function IntegrationsView() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            aria-label="Search integrations"
             placeholder="Search integrations…"
             className="h-9 w-64 rounded-lg border border-[var(--border)] bg-white pl-9 pr-3 text-sm outline-none placeholder:text-slate-600 focus:border-accent-400 focus:ring-2 focus:ring-accent-100"
           />

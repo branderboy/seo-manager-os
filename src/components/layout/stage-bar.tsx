@@ -72,6 +72,7 @@ export function StageBar() {
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--faint)]" />
           <input
             type="text"
+            aria-label="Search clients, tasks and keywords"
             placeholder="Search clients, tasks, keywords…"
             className="h-8 w-56 rounded-md border border-[var(--border)] bg-[var(--surface-2)] pl-8 pr-3 text-sm text-[var(--foreground)] outline-none transition-all placeholder:text-[var(--faint)] focus:w-72 focus:border-accent-400 focus:bg-white focus:ring-2 focus:ring-accent-100"
           />

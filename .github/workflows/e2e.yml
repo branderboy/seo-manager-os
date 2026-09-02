@@ -1,0 +1,48 @@
+# End to end workflows against the built application. Section 6 of WORLD_CLASS_APP_THESIS.md.
+#
+# next.config.mjs sets output: "export", so the suites run against the static export in
+# out/, served by scripts/serve-export.mjs. Playwright starts it itself, see webServer in
+# playwright.config.ts.
+name: E2E
+
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 7 * * *"
+
+jobs:
+  e2e:
+    name: Critical user workflows
+    runs-on: ubuntu-latest
+    env:
+      TEST_BASE_URL: http://localhost:3000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Install browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build
+        run: npm run build
+      - name: Critical workflows
+        # Every route renders on desktop and mobile with no client side error, every
+        # navigation link resolves, and a manager can walk the whole pipeline.
+        run: npm run test:e2e
+      - name: Accessibility checks on key screens
+        # Automated checks catch a minority of issues. The keyboard and screen reader
+        # passes in docs/audits/accessibility-audit.md are still required.
+        run: npm run test:a11y
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-artifacts
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14

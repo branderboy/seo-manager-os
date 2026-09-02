@@ -49,8 +49,8 @@ export function DiscoveryDeliverables() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-3 border-b border-[var(--border)] py-1.5 last:border-0">
-      <span className="text-slate-600">{label}</span>
-      <span className="font-medium text-slate-800">{value}</span>
+      <dt className="text-slate-600">{label}</dt>
+      <dd className="m-0 font-medium text-slate-800">{value}</dd>
     </div>
   );
 }

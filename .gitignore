@@ -32,3 +32,9 @@ yarn-error.log*
 
 # drizzle
 /drizzle/meta
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

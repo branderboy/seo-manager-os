@@ -150,6 +150,7 @@ export function EvidencePanel() {
                             inputs.current[src.id] = el;
                           }}
                           type="file"
+                          aria-label={`Upload ${src.name}`}
                           accept={src.accept}
                           className="hidden"
                           onChange={(e) => onFile(src.id, e.target.files?.[0])}

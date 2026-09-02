@@ -19,5 +19,8 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  // tests/integration and tests/fixtures hold the delivery standard's database and
+  // tenancy scaffolding. This application has no backend yet, so they do not compile
+  // and are not run or counted as coverage. See tests/integration/README.md.
+  "exclude": ["node_modules", "tests/integration", "tests/fixtures"]
 }

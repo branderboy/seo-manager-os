@@ -11,6 +11,9 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
       <TaskStoreProvider>
         <HandoffProvider>
         <div className="flex h-screen overflow-hidden bg-[var(--canvas)]">
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             {/* Top bar · view indicator (and the mobile menu trigger below lg) */}
@@ -22,7 +25,11 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
               <div className="hidden lg:block" />
               <ViewIndicator />
             </div>
-            <main className="flex-1 overflow-y-auto bg-[var(--canvas)] px-5 py-6 lg:px-8 lg:py-8">
+            <main
+              id="main-content"
+              tabIndex={-1}
+              className="flex-1 overflow-y-auto bg-[var(--canvas)] px-5 py-6 lg:px-8 lg:py-8"
+            >
               <div className="mx-auto w-full max-w-[1440px] space-y-6 pb-20">{children}</div>
             </main>
           </div>

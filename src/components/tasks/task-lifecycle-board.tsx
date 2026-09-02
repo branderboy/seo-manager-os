@@ -7,7 +7,12 @@ const prDot: Record<Priority, string> = { High: "bg-rose-500", Medium: "bg-amber
 /** Every task on its lifecycle step: Fix → Assign → Complete → QA → Deploy → Verify → Close. */
 export function TaskLifecycleBoard() {
   return (
-    <div className="overflow-x-auto pb-2">
+    <div
+      className="overflow-x-auto pb-2"
+      role="region"
+      aria-label="Task lifecycle board, scrolls horizontally"
+      tabIndex={0}
+    >
       <div className="flex min-w-max gap-3">
         {lifecycle.map((step) => {
           const items = workTasks.filter((t) => t.step === step);

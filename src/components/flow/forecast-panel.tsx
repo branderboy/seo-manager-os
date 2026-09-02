@@ -122,6 +122,7 @@ export function ForecastPanel() {
               </div>
               <input
                 type="range"
+                aria-label={lv.label}
                 min={lv.min}
                 max={lv.max}
                 value={levers[lv.key]}

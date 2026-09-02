@@ -1,0 +1,38 @@
+# Continuous integration. Section 6 of WORLD_CLASS_APP_THESIS.md.
+#
+# Adapted from the delivery standard's ci.yml to the stack this repository actually runs:
+# a Next.js static export with no server, no database, and no authentication
+# (docs/production/INVENTORY.md). The standard's integration, migration, and authorization
+# jobs are deliberately absent rather than present and skipping, because a job that cannot
+# run is not a passing job. docs/production/WORKFLOW-RISK-REGISTER.md records the rule:
+# the commit that adds a backend adds those jobs back, blocking, before it merges.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [claude/app-identification-repo-64akmz, main]
+
+jobs:
+  checks:
+    name: Lint, types, build, unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Type check
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Unit tests
+        run: npm run test:unit
+      - name: Check the client bundle for server only values
+        # The static export in out/ is the entire client bundle. Every byte reaches the
+        # browser, so this is the only boundary this application has.
+        run: bash .github/scripts/check-client-bundle.sh out

@@ -141,10 +141,10 @@ export default function ClientRecordPage({ params }: { params: { id: string } })
               <Row icon={Server} label="Hosting" value={profile.hosting} />
               <Row icon={Users} label="Owner" value={client.owner} />
               <div className="sm:col-span-2">
-                <div className="mb-1 flex items-center gap-1.5 text-2xs font-semibold uppercase tracking-[0.05em] text-[var(--faint)]">
+                <dt className="mb-1 flex items-center gap-1.5 text-2xs font-semibold uppercase tracking-[0.05em] text-[var(--faint)]">
                   <Mic className="h-3.5 w-3.5" /> Brand voice
-                </div>
-                <p className="text-sm leading-relaxed text-[var(--ink-soft)]">{profile.brandVoice}</p>
+                </dt>
+                <dd className="m-0 text-sm leading-relaxed text-[var(--ink-soft)]">{profile.brandVoice}</dd>
               </div>
             </dl>
           </div>
@@ -286,10 +286,10 @@ function Panel({
 function Row({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
   return (
     <div>
-      <div className="mb-0.5 flex items-center gap-1.5 text-2xs font-semibold uppercase tracking-[0.05em] text-[var(--faint)]">
+      <dt className="mb-0.5 flex items-center gap-1.5 text-2xs font-semibold uppercase tracking-[0.05em] text-[var(--faint)]">
         <Icon className="h-3.5 w-3.5" /> {label}
-      </div>
-      <div className="text-sm font-medium text-[var(--ink-soft)]">{value}</div>
+      </dt>
+      <dd className="m-0 text-sm font-medium text-[var(--ink-soft)]">{value}</dd>
     </div>
   );
 }

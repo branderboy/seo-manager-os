@@ -73,6 +73,7 @@ export function BriefVersions() {
             value={note}
             onChange={(e) => setNote(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && save()}
+            aria-label={`What changed in v${nextNum}?`}
             autoFocus
             placeholder="e.g. Reprioritized roadmap after client feedback"
             className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-transparent focus:ring-2 focus:ring-[#1DA1F2]"

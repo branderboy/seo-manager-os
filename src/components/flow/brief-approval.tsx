@@ -65,6 +65,7 @@ export function BriefApproval() {
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
+                aria-label="Feedback notes"
                 placeholder="What needs to change before this can be approved?"
                 className="w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition-all focus:border-transparent focus:bg-white focus:ring-2 focus:ring-rose-400"
               />
