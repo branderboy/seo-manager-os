@@ -23,8 +23,8 @@ does not exist yet: customers' client data.
 
 | What | Where | Frequency | Retention | Encrypted | Verified |
 |---|---|---|---|---|---|
-| Database | Not applicable — none exists | — | — | — | — |
-| File storage | Not applicable — none exists | — | — | — | — |
+| Database | Not applicable — none is running. The schema for one exists in `supabase/migrations/`; this row becomes mandatory the day it is applied to anything holding real data. | — | — | — | — |
+| File storage | Not applicable — none is running. The `client-assets` bucket and its policies are defined in the same migration. | — | — | — | — |
 | Configuration and secrets | The web app has none. `RAPIDAPI_KEY` lives in the operator's local, git-ignored `scripts/prospect-scanner/.env` and is **not backed up anywhere**. | — | — | No | No |
 | Source code and history | GitHub, plus every developer clone | On every push | Indefinite | In transit and at rest by GitHub | Implicitly, by every clone |
 | Deployed artifact | Rebuilt deterministically from any commit | On demand | — | — | Yes — `npm run build` reproduces it |

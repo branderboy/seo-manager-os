@@ -34,9 +34,11 @@ plainly is more useful than a checklist of steps that do not apply.
 - Environment: production — GitHub Pages, `github-pages` environment.
 - Strategy: all at once. Static files behind a CDN; there is no meaningful canary for a page
   set this size, and no server state to drain.
-- Steps the workflow runs: `npm ci` → `npm run build` with `GITHUB_PAGES=true` (which selects
-  the `/seo-manager-os` basePath and assetPrefix) → `touch out/.nojekyll` →
-  `actions/upload-pages-artifact` → `actions/deploy-pages`.
+- Steps the workflow runs: `npm ci` → `npm run typecheck` → `npm run lint` → `npm run build`
+  with `GITHUB_PAGES=true` (which selects the static export plus the `/seo-manager-os`
+  basePath and assetPrefix) → `touch out/.nojekyll` → `actions/upload-pages-artifact` →
+  `actions/deploy-pages`. Pull requests run the build but stop before the upload and deploy
+  steps.
 - Migration step: none.
 - Expected duration: 2–4 minutes, plus up to a few minutes for the Pages CDN to serve the new
   version.
@@ -66,21 +68,23 @@ deployment:
 TEST_BASE_URL=<the deployed Pages URL> npm run test:e2e
 ```
 
-That checks all 29 routes render with no client-side error on desktop and mobile, every
-navigation link resolves, and the pipeline walks. If Playwright is not to hand, do it by
-hand in five minutes:
+That checks all 62 routes render with no client-side error on desktop and mobile, every
+navigation link resolves in both the SEO Manager OS shell and Local Growth OS, and the
+pipeline walks. If Playwright is not to hand, do it by hand in five minutes:
 
 1. Open the site root. The Command Center renders with data.
 2. Click through the sidebar: Clients, SEO Pipeline, Performance, AI Workforce, Insights,
    Playbooks, Reports, Integrations, Settings. No blank screens.
 3. Open a client record from the `/clients` table.
 4. Walk `/discovery` → `/research` → `/diagnosis` → `/strategy` → `/tasks` → `/reports`.
-5. Open devtools and confirm the console is clean and no asset 404s.
-6. Repeat step 1 at a phone width.
+5. Open `/growth`, then a campaign dashboard, the roadmap and a client report.
+6. Open devtools and confirm the console is clean and no asset 404s.
+7. Repeat step 1 at a phone width.
 
-**Caveat that matters:** the `GITHUB_PAGES=true` basePath build has never been exercised by
-the test suites, only by the deploy itself. Step 5 is the step that catches a basePath
-regression.
+**Caveat that matters:** the Playwright suites run against the standard Next.js build, not
+the `GITHUB_PAGES=true` export. The export has been built and served locally through
+`npm run start:export -- --base-path /seo-manager-os`, but only the deploy itself exercises
+the real Pages basePath. Step 6 is the step that catches a basePath regression.
 
 ## Record
 

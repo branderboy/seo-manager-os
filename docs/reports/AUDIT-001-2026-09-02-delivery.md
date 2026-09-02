@@ -6,10 +6,15 @@
   applicable contract rather than under no contract at all.
 - Feature or workflow: install the delivery standard on this repository, verify that the
   application functions as it should, and fix what does not.
-- Branch and commit SHA: `claude/seo-manager-app-verify-ptc4e6`, from `a7dbb93`.
-- Environment tested: **local only.** The production build (`npm run build`) served from
-  `out/` by `scripts/serve-export.mjs`, driven in Chromium at 1440×900 and 412×915. No
-  staging, no deployed environment, no CI run.
+- Branch and commit SHA: `claude/seo-manager-app-verify-ptc4e6`, started from `a7dbb93` and
+  merged with `claude/app-identification-repo-64akmz` at `7b10301` (the Local Growth OS
+  foundation, PR #52) part-way through. The merge landed 50 files, 33 new routes and 1,359
+  lines of Supabase SQL, so the verification was re-run and the documents corrected against
+  the merged state rather than shipped stale.
+- Environment tested: **local only.** The production build (`npm run build`) served by
+  `next start`, plus a `GITHUB_PAGES=true` export served through
+  `scripts/serve-export.mjs --base-path /seo-manager-os`, both driven in Chromium at
+  1440×900 and 412×915. No staging, no deployed environment, no CI run.
 - Date and time tested: 2026-09-02.
 
 ## Current result
@@ -22,12 +27,14 @@
 **Defects fixed**
 
 - File: `package.json`, `scripts/serve-export.mjs`
-  Change: `npm run start` now serves the static export instead of calling `next start`.
-  Reason: `next start` refuses to run against `output: "export"`. The command the README
-  documented could not work. The replacement is a zero-dependency Node server that mirrors
-  the GitHub Pages behaviour — trailing-slash directory resolution and `out/404.html` — so
-  the e2e suites exercise what production actually serves.
-  Inside approved plan: Yes. Risk: none; it replaces a command that did not run.
+  Change: `npm run start` is `next start`; `npm run start:export` serves the Pages artifact.
+  Reason: at `a7dbb93` the config forced `output: "export"` everywhere, so the documented
+  `npm run start` could not run at all — `next start` refuses against an export build. The
+  merge then narrowed the export to `GITHUB_PAGES=true` only, which makes `next start`
+  correct again for the default build and leaves the export needing its own command. Both
+  now exist, and the export server takes a `--base-path` so it reproduces how Pages serves
+  the `/seo-manager-os` prefix. Verified against a real `GITHUB_PAGES=true` build.
+  Inside approved plan: Yes.
 
 - File: `src/components/clients/client-row.tsx`
   Change: the client name is now a real `<Link>`; the row click remains a mouse convenience.
@@ -69,6 +76,27 @@
   structure. Reason: it documented `/investigation`, `/execution` and `/measurement`, none of
   which exist, and told the reader to run `npm run start`, which was broken.
 
+- Files: `roadmap-board.tsx`, `module-screens.tsx` (×3), `audit-workflow.tsx`,
+  `onboarding-wizard.tsx`
+  Change: `aria-label` on six Local Growth OS `<select>` elements that had no accessible
+  name. axe rates `select-name` critical.
+  Inside approved plan: Yes.
+
+- Files: all 26 `src/app/(os)/growth/**/page.tsx`
+  Change: a per-page `metadata.title`, and `generateMetadata` on the three dynamic routes.
+  Reason: every Local Growth OS route rendered the same title, "Local Growth OS · SEO
+  Manager OS". A screen reader user, or anyone reading a tab strip or browser history, could
+  not tell 26 screens apart (WCAG 2.4.2).
+  Inside approved plan: Yes.
+
+- File: `src/components/local-growth/campaign-dashboard.tsx`
+  Change: memoised the `kpis` fallback array.
+  Reason: `campaignKpis[campaign.id] ?? []` created a new array every render, invalidating
+  the `csv` memo below it. It also failed `next lint --max-warnings 0`, so it would have
+  turned the lint job red on the first CI run — including the repository's own `deploy.yml`,
+  which calls `npm run lint`.
+  Inside approved plan: Yes — driving the merged branch to green.
+
 **Dependencies**
 
 - `package.json`: added `@playwright/test`, `@axe-core/playwright` and `vitest@^4`; ran
@@ -102,7 +130,7 @@
 - **Criterion: the application builds, type checks and lints clean.**
   Result: Pass. Evidence: `npm run verify`.
 - **Criterion: every route renders without a client-side error, on desktop and on mobile.**
-  Result: Pass. Evidence: 64 Playwright checks over all 29 routes at two viewports.
+  Result: Pass. Evidence: 120 Playwright checks over all 62 routes at two viewports.
 - **Criterion: every internal link resolves.**
   Result: Pass. Evidence: `tests/unit/routes.spec.ts` statically, `critical-workflows.spec.ts`
   over live HTTP. Proved to fail by introducing a dead nav link.
@@ -113,8 +141,9 @@
   Result: Pass with known gaps. Client records are now reachable, focus is visible, a skip
   link exists. Gaps A5 and A6 in `docs/audits/accessibility-audit.md` remain.
 - **Criterion: no automatically detectable accessibility violations.**
-  Result: **Fail** on colour contrast, Pass on everything else. 82 WCAG 1.4.3 failures remain
-  and are ratcheted. See finding A1.
+  Result: **Fail** on colour contrast, Pass on everything else — zero violations of any other
+  rule across 16 screens at two viewports. 184 WCAG 1.4.3 failures remain and are ratcheted.
+  See finding A1.
 - **Criterion: the documented commands work.**
   Result: Pass, after fixing `npm run start` and the README.
 
@@ -122,10 +151,11 @@
 
 - `npm run lint` → clean at `--max-warnings 0`.
 - `npm run typecheck` → clean.
-- `npm run build` → 29 routes exported, no warnings.
+- `npm run build` → 62 routes, no warnings. `GITHUB_PAGES=true npm run build` → same, as a
+  static export, served and spot-checked under the `/seo-manager-os` base path.
 - `npm run test:unit` → 30 passed.
-- `npm run test:e2e` → 64 passed (chromium + mobile).
-- `npm run test:a11y` → 54 passed, 2 skipped by viewport.
+- `npm run test:e2e` → 120 passed (chromium + mobile).
+- `npm run test:a11y` → 74 passed, 2 skipped by viewport.
 - `bash .github/scripts/check-client-bundle.sh out` → passed.
 - `npm audit` → 5 high remaining, all requiring Next.js 16.
 - **Not run, and why:** the three CI workflows, because they have never executed on GitHub;
@@ -137,16 +167,21 @@
 - Artifact: Playwright suites and their assertions. Location: `tests/e2e/`. Proves the routes
   render, the links resolve and the pipeline walks. Environment: local static export.
 - Artifact: the colour-contrast baseline in `tests/e2e/accessibility.spec.ts`. Proves the
-  current count per screen and prevents regression. Environment: local.
+  current count per screen and prevents regression. Environment: local. Re-measured after
+  the merge; the numbers went up because there are five more key screens, not because
+  anything regressed.
 - Artifact: `docs/production/INVENTORY.md`. Proves what exists, with file paths.
 - Sensitive data redacted: not applicable. No real data exists anywhere in this repository.
 
 ## Security and data review
 - Authentication impact: none. There is no authentication to affect.
 - Authorization impact: none, for the same reason.
-- Organization and tenant isolation impact: none. `ARCHITECTURE_DECISIONS.md` now states
-  explicitly that the client switcher is a view filter and not a boundary, so that a future
-  backend does not inherit it as one.
+- Organization and tenant isolation impact: none from this change, but the merge brought a
+  designed one. `ARCHITECTURE_DECISIONS.md` was rewritten around it: the RLS design is
+  correct in shape and has never been executed, and the documents now say in three places
+  that an unrun policy is a hypothesis, not a control. `ARCHITECTURE_DECISIONS.md` also
+  still states explicitly that the client and campaign switchers are view filters, so a
+  future backend does not inherit either as a boundary.
 - Data validation: unchanged. No input crosses a trust boundary.
 - Sensitive data handling: unchanged. No real data exists.
 - Secrets and configuration impact: `RAPIDAPI_KEY` added to
@@ -200,10 +235,13 @@
   command, `npm run start`, replaces a command that did not work at all.
 
 ## Known limitations
-- Unverified behavior: the CI workflows have never run; the `GITHUB_PAGES=true` basePath build
-  was never exercised; nothing was tested against a deployed environment; no screen reader.
-- Assumptions: that the local static server faithfully mirrors GitHub Pages' trailing-slash
-  and 404 behaviour. It is written to, but it is not Pages.
+- Unverified behavior: the CI workflows have never run; nothing was tested against a
+  deployed environment; no screen reader; **and no Supabase migration was executed**, so
+  every statement in these documents about the RLS policies is a reading of SQL rather than
+  a test of behaviour.
+- Assumptions: that the local export server faithfully mirrors GitHub Pages' trailing-slash,
+  base-path and 404 behaviour. It is written to, and the `GITHUB_PAGES=true` build was built
+  and served through it, but it is not Pages.
 - Technical debt created: the colour-contrast baseline is debt by design — it holds the line
   while the owner decides, and it should shrink to zero. `PLAYWRIGHT_CHROMIUM_EXECUTABLE` in
   `playwright.config.ts` is an environment escape hatch for sandboxes that cannot download
@@ -228,7 +266,9 @@
   8. Independently re-count the colour-contrast failures and confirm the baseline in
      `tests/e2e/accessibility.spec.ts` is not inflated.
   9. Spot-check `docs/production/INVENTORY.md` against the source. It is the document
-     everything else rests on; if it is wrong, so is everything downstream.
+     everything else rests on; if it is wrong, so is everything downstream. Pay particular
+     attention to the Supabase rows: the claim is that the schema exists and nothing runs it
+     (`grep -rl supabase src` returns nothing), not that there is no schema.
   10. Confirm that no test was weakened: read the two viewport skips and the single console
       filter in `tests/e2e/` and judge them.
 - Expected result: steps 1–5 green; step 6 green except the `Dependency audit` job, which
@@ -237,6 +277,8 @@
   listed in `PRODUCTION_READINESS.md` — a named owner, the palette, and Next.js 16.
 - Release recommendation: **approved with limitations for the public demo; not approved for
   any release holding customer data.** The application does what it claims to do as a
-  prototype, and now proves it on every commit. It is not a product that can hold a
-  customer's data, and nothing in this change moved it closer to being one — that is what the
-  contracts are for.
+  prototype, across both surfaces, and now proves it on every commit. It is not a product
+  that can hold a customer's data. The Local Growth OS merge makes that a closer call than it
+  was — there is now a real tenant design, a real connector boundary and real AI guardrails —
+  and the answer is still no, because none of it has been executed. Designing a control and
+  running it are different milestones, and only the first has happened.

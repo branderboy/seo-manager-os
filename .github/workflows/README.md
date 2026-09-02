@@ -21,8 +21,11 @@ rather than present and skipping, because a job that cannot run is not a passing
 | `test:a11y` | axe on the key screens, plus the keyboard and landmark checks | e2e.yml |
 | `start` | Serve `out/` the way GitHub Pages does, via `scripts/serve-export.mjs` | playwright.config.ts |
 
-`next start` does not work against `output: "export"`, which is why `start` runs
-`scripts/serve-export.mjs` instead.
+`next.config.mjs` builds in Next.js server mode by default and only produces a static export
+when `GITHUB_PAGES=true`. `npm run start` (`next start`) is therefore the right command for
+the default build, and `npm run start:export` serves the Pages artifact — `next start`
+refuses to run against an export. The export server takes `--base-path /seo-manager-os` so it
+reproduces how Pages serves the site.
 
 ## Not present, and why
 
@@ -31,7 +34,7 @@ rather than present and skipping, because a job that cannot run is not a passing
 | `format:check` | Absent. ESLint is the enforced style gate. Adopting Prettier now would reformat the whole codebase inside a verification change. | Someone adopts Prettier deliberately, in its own commit. |
 | `test:integration` | Absent. There are no routes, jobs, or webhooks to integrate against. | The first API route or server action lands. |
 | `test:authz` | Absent. There is no authentication and no tenancy to isolate. | AUTH-001 or ORG-001 is contracted. Then it is its own job, blocking, and never `continue-on-error`. |
-| `db:migrate`, `db:verify`, `db:seed:test` | Absent. There is no database. | The first migration lands. |
+| `db:migrate`, `db:verify`, `db:seed:test` | Absent. No migration has ever been executed here. | **Sooner than the others.** `supabase/migrations/` already holds the schema, the RLS policies and a seed; what is missing is a job that runs them. A `supabase db reset` in CI plus a two-organization isolation suite would turn 1,152 lines of unproven SQL into a tested boundary. |
 
 ## Why `test:authz` gets its own job when it exists
 
@@ -56,5 +59,8 @@ it cannot find a build directory.
 
 ## Deployment
 
-`deploy.yml` builds with `GITHUB_PAGES=true` and publishes `out/` to GitHub Pages on every
-push to the repository default branch. See `docs/runbooks/deployment.md`.
+`deploy.yml` typechecks, lints and builds with `GITHUB_PAGES=true` on pull requests, and
+additionally publishes `out/` to GitHub Pages on pushes to the repository default branch. It
+overlaps `ci.yml` on lint and typecheck; that duplication is deliberate for now, because
+`deploy.yml` is the job that gates what actually reaches production. See
+`docs/runbooks/deployment.md`.

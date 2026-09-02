@@ -20,20 +20,29 @@ that proves the work moved something. See `PRODUCT_BRIEF.md`.
 
 ## Current shape, in one paragraph
 
-A Next.js 14 App Router application compiled to a **static export** and published to GitHub
-Pages. 29 prerendered routes, no server process, no database, no authentication, no API
-route and no server action. All data is mock data in `src/lib/*.ts`; per-visitor state lives
-in that visitor's `localStorage`. The entire application is client-side, which means every
-byte of it is public. `docs/production/INVENTORY.md` is the file-by-file account.
+One Next.js 14 App Router codebase holding **two products**: SEO Manager OS, the original
+nine-stage investigation pipeline, and Local Growth OS (`/growth`), a multi-tenant local
+campaign-management and client-reporting layer. 62 prerendered routes. No server process, no
+live database, no authentication, no API route and no server action. All data is mock data
+in `src/lib/*.ts` and `src/lib/local-growth/demo-data.ts`; per-visitor state lives in that
+visitor's `localStorage`. The entire application is client-side, which means every byte of
+it is public. `docs/production/INVENTORY.md` is the file-by-file account.
+
+**The one qualification, and it matters:** `next.config.mjs` no longer forces
+`output: "export"` everywhere. `GITHUB_PAGES=true` builds the static Pages demo; every other
+build is a standard Next.js server build. And 1,359 lines of Supabase SQL — schema, RLS
+policies, storage policies and a seed — now sit in `supabase/`. The framework and the schema
+are both ready for a backend. **Neither is connected to anything**: `grep -rl supabase src`
+returns nothing, and `@supabase/supabase-js` is not a dependency.
 
 ## Major components
 
 | Component | Choice | Why | Alternative rejected |
 |---|---|---|---|
 | Frontend | Next.js 14 App Router, React 18, TypeScript strict, Tailwind CSS, shadcn-style primitives in `src/components/ui`, Recharts, lucide-react | Server components keep the data-dense screens cheap to render, and the App Router gives the stage routes a natural shape. Tailwind plus local primitives keeps the design system in the repository rather than in a vendor's. | A component library with its own opinions (MUI, Chakra) — the design in `design/` and `src/app/globals.css` is deliberate and would have been fought at every step. |
-| Backend or API | **None.** `output: "export"` in `next.config.mjs` | The product is at the stage of proving the operating loop reads correctly to an SEO lead. A backend built before that is a backend built for the wrong loop. | Building the API first. |
-| Database | **None.** `prisma/schema.prisma` is the delivery standard's starter schema, unused and unwired. | As above. | — |
-| Authentication provider | **None.** | Nothing is private yet. | — |
+| Backend or API | **None in code.** `next.config.mjs` builds in server mode by default and only exports for GitHub Pages, so Server Actions and Route Handlers are now *available* — nothing uses them. | The product is at the stage of proving the operating loop reads correctly to an SEO lead. A backend built before that is a backend built for the wrong loop. Removing the global `output: "export"` constraint is the right preparation without being the commitment. | Building the API first. |
+| Database | **Supabase Postgres, decided and schemad, not connected.** ~50 tables plus RLS and storage policies in `supabase/migrations/`. `prisma/schema.prisma` is the delivery standard's starter schema, superseded and unwired. | Supabase gives Postgres, Auth, Storage and row-level policies in one place, and RLS puts the tenant boundary in the database rather than in application code — which is the right place for the control this product most depends on. | Prisma plus a hand-rolled auth layer, which would have left tenant scoping in application code. |
+| Authentication provider | **Supabase Auth, intended. Nothing implemented.** `/growth/login` is a role picker with published demo credentials and no authentication behind it. | Same reason as the database: one provider, and sessions that RLS can read. | — |
 | File storage | **None.** The upload affordances in `src/components/investigation/evidence-panel.tsx` do not upload. | — | — |
 | Email provider | **None.** The invite form in `src/components/discovery/client-invite.tsx` sends nothing. | — | — |
 | Payment provider | **None.** Pricing and packaging are recorded as undecided in `docs/SOURCE_OF_TRUTH.md`. | — | — |
@@ -58,42 +67,63 @@ useful part: they are what a schema would be derived from.
 | Task | Belongs to an Engagement, moves through the lifecycle Fix → Assign → Complete → QA → Deploy → Verify → Close | `src/lib/work.ts`, `src/components/tasks/*` |
 | Agent (AI Workforce) | Orchestrator plus specialists, each owning a stage | `src/lib/agents.ts`, `src/lib/workforce.ts`, `docs/AGENTS.md`. Deploy state persists under `smos.agents.deployed`. |
 | Integration | Catalogue entry with a mock connection state | `src/lib/integrations.ts`, 41 entries |
-| Organization, User, Membership, Role, Audit log | **Do not exist.** | They are the first thing AUTH-001 and ORG-001 must add. |
+| Organization, User, Membership, Role, Audit log | **Exist in SQL, not in code.** `organizations`, `users`, `user_roles`, `activity_logs` in `supabase/migrations/202608300001_local_growth_os.sql`. | Six roles: `agency_admin`, `lead_seo`, `seo_strategist`, `content_outreach`, `client_viewer`, `client_editor`, the last two scoped to a `client_id`. AUTH-001 and ORG-001 now have a schema to contract against rather than a blank page. |
+| Campaign (Local Growth OS) | Belongs to a Client and an Organization; has audits, roadmap initiatives, tasks, keywords, rank snapshots, citations, content, reviews, leads and monthly reports | `src/lib/local-growth/types.ts`, demo data in `demo-data.ts`. **This is a second client model alongside Client/Engagement above.** Nothing reconciles the two, and something eventually must. |
+| Audit finding → Roadmap initiative → Task | A finding can create an initiative or a task while keeping the finding id as the relational source | The strongest idea in the Local Growth OS work: the chain from evidence to work is a foreign key, not a convention. Ranking is Impact × Confidence ÷ Effort. |
 
 ## Data ownership
 
 | Entity | Owning org or user | Who creates | Who reads | Who edits | Who deletes | Who exports | Sensitive |
 |---|---|---|---|---|---|---|---|
-| Every entity above | **Nobody.** There is no owner concept. | The build, as mock data | Anyone who can open the public URL | Anyone, in their own browser only | Anyone, by clearing their own browser storage | Nobody — export is unbuilt | No — all demo data, no real party's information |
+| Every entity above, in the running application | **Nobody.** There is no owner concept in code. | The build, as mock data | Anyone who can open the public URL | Anyone, in their own browser only | Anyone, by clearing their own browser storage | Client-side CSV only, from the campaign dashboard | No — all demo data, no real party's information |
+| Every Local Growth OS entity, in the schema | The `organization_id` on the row | An agency member with a write role | Agency members of that organization; `client_viewer`/`client_editor` only for their own `client_id` | Agency members; client editors only on client-facing business, contact, request and file surfaces | Agency roles | Not yet designed | Will be, once real client data lands |
 
-This table is the clearest statement of where the product is. It becomes a real table the
-moment ORG-001 lands, and the register in `docs/production/WORKFLOW-RISK-REGISTER.md` says
-it must.
+The first row is the clearest statement of where the product actually is. The second is what
+the SQL says will be true. Nothing has closed the distance between them, and the register in
+`docs/production/WORKFLOW-RISK-REGISTER.md` says ORG-001 must.
 
 ## Tenant model
 
-- **How the current organization is resolved on the server:** it is not. There is no server
-  and no organization.
-- **How every server side query is scoped to the tenant:** there are no server-side queries.
-- **How tenant switching works:** the *client* switcher (`src/components/engagement/store.tsx`)
-  changes which mock engagement the UI renders. It is a view filter, not a security
-  boundary, and must never be mistaken for one when a backend arrives.
-- **Which records are global versus tenant owned:** everything is global and public.
-- **Whether row level security or an equivalent policy control exists:** no.
-- **How jobs, files, exports, analytics, and integrations preserve tenant boundaries:** none
-  of those exist.
+**This section changed materially with the Local Growth OS merge, and it is the most
+important change in it.** A tenant model has now been *designed*. It has not been *run*.
 
-**The decision this section actually records:** the tenant model is *undecided*, and it is
-the single decision that most determines whether this application survives customers. It
-must be made in ORG-001 before the first line of backend code, not after. A shared database
-with an `organizationId` column and no row-level policy is the failure mode to avoid.
+- **The design:** a shared Postgres database, every tenant-owned table carrying an
+  `organization_id`, and Supabase Row Level Security policies enforcing scope **in the
+  database** rather than in application code. Client-facing roles (`client_viewer`,
+  `client_editor`) are additionally scoped to a single `client_id`. Storage follows the
+  same shape: `client-assets/<organization_id>/<client_id>/<uuid>-<filename>`, with read and
+  upload policies on the same scope. `supabase/migrations/202608300001_local_growth_os.sql`,
+  with a preflight/finalize pair around the `clients` table's own policies.
+- **This is the right shape.** RLS in the database is exactly what the earlier version of
+  this section said to reach for and named the failure mode of not having: "a shared
+  database with an `organizationId` column and no row-level policy".
+- **How the current organization is resolved on the server:** it is not. There is no server
+  and no session. The design assumes Supabase Auth; nothing implements it.
+- **How every server side query is scoped to the tenant:** there are no server-side queries.
+- **How tenant switching works today:** the client switcher
+  (`src/components/engagement/store.tsx`) and the Local Growth OS campaign selectors change
+  which mock record the UI renders. They are view filters, not security boundaries, and must
+  never be mistaken for one.
+- **Which records are global versus tenant owned:** in the schema, everything under an
+  organization is tenant owned. In the running application, everything is global and public.
+- **Whether row level security or an equivalent policy control exists:** **written, never
+  executed.** No migration has been run in this repository, no seed applied, and no test
+  exercises a single policy.
+
+**The decision this section now records:** the tenant model is *decided in SQL and unproven
+in fact*. That is a better position than undecided and a worse one than it looks, because a
+policy nobody has run is a hypothesis that reads like a control. ORG-001 must therefore not
+be a design exercise any more — it must be the contract that **executes** these migrations,
+seeds two organizations, and proves with tests that organization A cannot read organization
+B by altered id, by altered request body, or through storage. Until those tests exist and
+run in CI, treat the tenant boundary as absent.
 
 ## Trust boundaries
 
 | Boundary | What crosses it | Validation and authorization applied |
 |---|---|---|
-| Client to server | Nothing. There is no server. | n/a |
-| Server to database | Nothing. | n/a |
+| Client to server | Nothing. There is no server, although the build no longer prevents one. | n/a |
+| Server to database | Nothing yet. When it exists, the intended boundary is Supabase RLS: the database refuses cross-tenant reads rather than trusting the query. | Policies written in `supabase/migrations/`, **never executed or tested.** |
 | Server to external provider | Nothing from the web app. From the CLI scanner: a search query and a RapidAPI bearer key. | Key read from a git-ignored `.env`; never bundled. |
 | Webhook provider to server | Nothing. | n/a |
 | Admin actions | None exist. | n/a |
@@ -182,7 +212,8 @@ they are recorded here rather than left implicit.
 
 | Decision | Reason |
 |---|---|
-| `npm run start` serves `out/` via `scripts/serve-export.mjs` instead of `next start` | `next start` refuses to run against `output: "export"`. The documented command was broken. A 90-line zero-dependency server also mirrors GitHub Pages' trailing-slash and 404 behaviour, so the e2e suites test what production serves. |
+| `npm run start` is `next start`; `npm run start:export` serves `out/` via `scripts/serve-export.mjs` | Both builds now exist and each needs its own command. `next start` cannot run against an export build, which is what the export server is for — and it takes a `--base-path` so it reproduces how Pages serves the `/seo-manager-os` prefix. |
+| The Playwright suites run against the **server** build, not the Pages export | It is the build a normal deployment serves, and it needs no basePath juggling. The Pages artifact is verified separately by pointing `TEST_BASE_URL` at the deployed URL, which is the only way to catch a basePath regression anyway. |
 | The delivery standard's integration, migration and authorization CI jobs are **absent**, not present and skipping | A job that cannot run is not a passing job. `.github/workflows/README.md` records what each one is waiting for. |
 | `tests/integration/tenant-isolation.spec.ts` and `tests/fixtures/seed.ts` are kept but excluded from `tsconfig.json` and every CI job | They are the standard's originals, held for the backend. They are not coverage and are labelled as such in `tests/integration/README.md`. |
 | Prettier and `format:check` are **not** adopted | Adopting a formatter mid-verification would reformat the whole codebase inside a change whose job was to prove the application works. ESLint is the enforced style gate. Adopt Prettier deliberately, in its own commit. |
@@ -201,5 +232,10 @@ they are recorded here rather than left implicit.
 | 2026-06-18 | Scrape-first for gated data; free official APIs for owned client data | Holds third-party data cost down | Product | — |
 | 2026-06-18 | AI generation is Claude; Opus for diagnosis and strategy, Haiku for the mention judge | Quality where it is read, cost control where it is high volume | Product | — |
 | 2026-06-18 | The Orchestrator is the central engineering risk and where the effort goes | Handoff quality between specialists is what makes the output read as one senior team | Engineering | — |
-| 2026-09-02 | Install the delivery standard and adapt its CI to a static export | The application had no tests and no CI | Engineering | — |
-| 2026-09-02 | The tenant model must be decided in ORG-001 before the first backend commit | It is the decision that most determines whether the app survives customers | Engineering | — |
+| 2026-08-30 | Local Growth OS added as a second product surface at `/growth` — multi-tenant local campaign management and client reporting for U.S. home-service businesses | The local-services scope decision, built out as an operating layer rather than more investigation screens | Product | — |
+| 2026-08-30 | Supabase Postgres with Row Level Security chosen as the data layer; schema, policies, storage model and seed written | Puts the tenant boundary in the database rather than in application code | Engineering | — |
+| 2026-08-30 | `output: "export"` narrowed to `GITHUB_PAGES=true` only; every other build is a Next.js server build | Unblocks Server Actions, Route Handlers, OAuth callbacks and Supabase sessions without giving up the credential-free Pages demo | Engineering | — |
+| 2026-08-30 | AI output is draft-only, must retain source data, must label assumptions, and must never fabricate credentials, service areas, pricing, reviews, rankings or results | Extends the earlier no-auto-publishing decision into a checkable rule (`src/lib/local-growth/ai-guardrails.ts`) | Product | — |
+| 2026-08-30 | Data providers sit behind a typed `Connector<T>` adapter with an explicit `mock` / `live` mode; an unavailable source is shown as unavailable rather than filled in | "Never hide an unavailable source by manufacturing data" — grounded scoring, applied to ingestion | Engineering | — |
+| 2026-09-02 | Install the delivery standard and adapt its CI to this stack | The application had no tests and no CI | Engineering | — |
+| 2026-09-02 | ORG-001 must **execute and test** the existing RLS policies, not design them | The design landed on 2026-08-30. What is missing is proof, and an unrun policy reads like a control. | Engineering | — |

@@ -1,8 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// next.config.mjs sets `output: "export"`, so the suites run against the built static
-// export in out/, served by scripts/serve-export.mjs the way GitHub Pages serves it.
-// Build first: `npm run build && npm run test:e2e`.
+// The suites run against the standard Next.js build, which is what a normal deployment
+// serves. Build first: `npm run build && npm run test:e2e`.
+//
+// The GitHub Pages artifact is a different build (GITHUB_PAGES=true, output: "export",
+// basePath /seo-manager-os). To exercise that one, build it, serve it with
+// `npm run start:export -- --base-path /seo-manager-os`, and point TEST_BASE_URL at it.
 const baseURL = process.env.TEST_BASE_URL ?? "http://localhost:3000";
 
 // Sandboxes and offline machines cannot run `npx playwright install`. Point
@@ -33,7 +36,7 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["Pixel 7"], launchOptions } },
   ],
   webServer: {
-    command: `node scripts/serve-export.mjs --port ${new URL(baseURL).port || "3000"}`,
+    command: `npx next start --port ${new URL(baseURL).port || "3000"}`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

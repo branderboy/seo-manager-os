@@ -2,7 +2,8 @@
 
 ## Audit scope
 - Repository, branch, commit: `branderboy/seo-manager-os`, branch
-  `claude/seo-manager-app-verify-ptc4e6`, from `a7dbb93` plus the verification changes on it.
+  `claude/seo-manager-app-verify-ptc4e6`, merging the Local Growth OS foundation (`7b10301`,
+  PR #52) into the verification work started from `a7dbb93`.
 - Environment available: local only. The built static export in `out/`, served by
   `scripts/serve-export.mjs`, exercised in Chromium at 1440×900 and 412×915. **No deployed
   environment, no staging, and no CI run were available.** Nothing below is a claim about
@@ -17,12 +18,13 @@
 - **Status: Not ready** as a product holding customer data. **Conditionally ready** as the
   public, data-free GitHub Pages demo it currently is.
 - **Critical findings:** none in the code that exists. The critical gap is what does not
-  exist: no authentication, no authorization, no tenancy, no server, no persistence beyond
-  the visitor's own browser. That is a stated project position, not a defect, but it is the
-  reason the product cannot hold a customer's data.
-- **High findings:** two. Five unresolved high-severity dependency advisories requiring the
-  Next.js 14 → 16 upgrade (`docs/audits/security-audit.md`), and 82 WCAG 1.4.3 colour
-  contrast failures across the key screens (`docs/audits/accessibility-audit.md`).
+  run: no authentication, no authorization, no live database, no server, no persistence
+  beyond the visitor's own browser. That is a stated project position, not a defect, but it
+  is the reason the product cannot hold a customer's data.
+- **High findings:** three. Five unresolved high-severity dependency advisories requiring the
+  Next.js 14 → 16 upgrade (`docs/audits/security-audit.md`); 184 WCAG 1.4.3 colour contrast
+  failures across the key screens (`docs/audits/accessibility-audit.md`); and a multi-tenant
+  schema with Row Level Security policies that has never been executed, seeded or tested.
 - **Critical workflows not independently verified:** all of them. Every Critical row in
   `docs/production/WORKFLOW-RISK-REGISTER.md` shows contract status None.
 - **Main release blockers:** the nine listed in `PRODUCTION_READINESS.md`, headed by naming
@@ -30,11 +32,29 @@
 
 ## Confirmed strengths
 
-- **Strength:** the operating loop actually works end to end.
-  **Evidence:** 64 Playwright checks green across desktop and mobile — all 29 routes render
-  with no client-side error, every navigation link resolves, the nine-stage pipeline walks,
-  discovery accepts input, a client record opens from the list.
-  **Affected workflow:** every pipeline stage.
+- **Strength:** the operating loop actually works end to end, across both product surfaces.
+  **Evidence:** 120 Playwright checks green across desktop and mobile — all 62 routes render
+  with no client-side error, every navigation link resolves in both shells, the nine-stage
+  pipeline walks, discovery accepts input, a client record opens from the list.
+  **Affected workflow:** every pipeline stage and every Local Growth OS module.
+
+- **Strength:** the Local Growth OS design gets the two hardest things right on paper.
+  Tenant isolation is Row Level Security in Postgres rather than a `WHERE organization_id`
+  the application must remember, and the audit → roadmap → task chain keeps the finding id
+  as a foreign key so evidence and work stay attached. Both are the choices a team usually
+  makes only after being burned.
+  **Evidence:** `supabase/migrations/202608300001_local_growth_os.sql`,
+  `src/lib/local-growth/types.ts`.
+  **Affected workflow:** tenant isolation, and the audit-to-work chain.
+
+- **Strength:** the honesty rules are written down as code, not aspiration.
+  **Evidence:** `src/lib/local-growth/ai-guardrails.ts` makes AI output draft-only and bars
+  fabricating credentials, service areas, pricing, reviews, rankings and results;
+  `connectors.ts` carries an explicit `mock` / `live` mode with the rule "never hide an
+  unavailable source by manufacturing data"; revenue is left unavailable when the source
+  does not supply it. This is the same principle as the grounded scoring model, applied to
+  ingestion and to generation.
+  **Affected workflow:** every generated artifact.
 
 - **Strength:** the scoring model is real engineering, not a mock.
   **Evidence:** `src/lib/scoring.ts` returns a `Traceable` carrying the inputs and the
@@ -73,11 +93,27 @@
 - Required verification: full e2e, accessibility and a visual design pass after any upgrade.
 - Owner: Human.
 
-### [High] Colour contrast fails WCAG AA in 82 places
+### [High] A tenant model that has never been executed
+- Affected workflow: tenant isolation — the control the whole product depends on.
+- Expected behavior: a policy that has been run, seeded and tested against two organizations.
+- Observed behavior: 1,152 lines of correct-looking RLS SQL that no migration run, no seed,
+  no test and no CI job has ever touched. No code loads it; `@supabase/supabase-js` is not
+  even a dependency.
+- Evidence: `supabase/migrations/`; `grep -rl supabase src` returns nothing.
+- Impact: the danger is not that the SQL is wrong. It is that a team reads it and stops
+  treating tenant isolation as open. An unrun policy reads like a control.
+- Recommended remediation: ORG-001 runs the migrations, seeds two organizations, and proves
+  isolation by altered id, altered request body and storage path, blocking in CI.
+- Required verification: those tests, green, in a CI run.
+- Owner: Human.
+
+### [High] Colour contrast fails WCAG AA in 184 places
 - Affected workflow: every screen.
 - Expected behavior: 4.5:1 for normal text at AA.
-- Observed behavior: 82 distinct failing elements across the 11 key screens, tracing to about
-  five token decisions.
+- Observed behavior: 184 distinct failing elements across the 16 key screens. The two product
+  surfaces fail differently: SEO Manager OS traces to about five design-token decisions,
+  while the Local Growth OS screens use `slate-500`/`slate-600` on white and `slate-50`. Two
+  sets of decisions, not one palette failing on more pages.
 - Evidence: axe-core, both viewports. Detail and remediation in
   `docs/audits/accessibility-audit.md` finding A1.
 - Impact: users with low vision cannot reliably read labels, secondary text and several
@@ -114,13 +150,29 @@
   is a demo that does not save.
 - Owner: Shared.
 
+### [Medium] Two product surfaces in one shell, unreconciled
+- Affected workflow: all of them.
+- Expected behavior: one product with one client model.
+- Observed behavior: SEO Manager OS (Client + Engagement, nine stages, `/tasks`, `/reports`)
+  and Local Growth OS (Campaign, modules, `/growth/tasks`, `/growth/reports`) ship side by
+  side with two navigation systems, two client models and two sets of task and report
+  screens. Nothing maps one to the other.
+- Evidence: `src/lib/model.ts` and `src/lib/engagements.ts` against
+  `src/lib/local-growth/types.ts`.
+- Impact: acceptable while both are demos and being compared. Untenable with a customer in
+  front of them, and every week of parallel building raises the cost of choosing.
+- Recommended remediation: decide which is the product, or how they compose, before either
+  gets a backend. This is a product decision, not a refactor.
+- Owner: Human.
+
 ### [Medium] The product presents capabilities it does not have
 - Affected workflow: `/integrations`, `/strategy`, `/reports`, `/research`, `/agents`.
 - Expected behavior: a control that looks like it connects, shares or deploys does so, or
   says it does not.
 - Observed behavior: 41 integrations offer a Connect toggle that changes local UI state only;
   brief and report "Share" produce a link that opens nothing; file pickers accept a file and
-  read nothing; deploying an agent runs nothing.
+  read nothing; deploying an agent runs nothing; `/growth/login` renders a sign-in that
+  authenticates nothing, with the demo password printed beside it.
 - Evidence: `src/lib/integrations.ts`, `src/components/flow/brief-share.tsx`,
   `src/components/reports/report-share.tsx`, `src/components/investigation/evidence-panel.tsx`,
   `src/components/agents/deploy-store.ts`.
@@ -162,6 +214,13 @@
   and maintained.
   **Evidence needed:** a decision to remove them or to un-park them. **Owner:** Product.
 
+- **Risk:** the RLS policies do not do what reading them suggests.
+  **Why suspected:** no policy has ever been executed. The `clients` preflight/finalize pair
+  exists because the first attempt applied a generic child-table policy loop to the `clients`
+  table itself, which is evidence that this schema is subtle enough to get wrong.
+  **Evidence needed:** `supabase db reset` against a real instance, then a two-organization
+  isolation test suite. **Owner:** Engineering.
+
 ## Claims not independently verified
 
 - **Claimed behavior:** the CI workflows pass.
@@ -198,6 +257,8 @@
 1. Name the accountable human in `PRODUCT_BRIEF.md`, `ARCHITECTURE_DECISIONS.md`,
    `PRODUCTION_READINESS.md` and `docs/runbooks/incident-response.md`. Nothing else can be
    accepted until someone can accept it.
+1b. Decide whether SEO Manager OS or Local Growth OS is the product, or how they compose.
+   Several items below cost twice as much while both surfaces are live.
 2. Add error tracking, a health check and an alert on the deployed demo. Cheapest item on the
    list, and it applies to what is live today.
 3. Decide the palette question (A1) and the target sizes (A2), then lower the contrast
@@ -205,8 +266,9 @@
 4. Decide the Next.js 16 upgrade, or accept the advisories in writing with an expiry date.
 5. Run a human keyboard and screen reader pass; fix A5 and A6.
 6. Fix the silent task-state loss, or label the demo honestly.
-7. Decide the tenant model, then draft and approve AUTH-001 and ORG-001 before any backend
-   code, restoring `test:authz` as a blocking CI job with them.
+7. Draft and approve AUTH-001 and ORG-001 before any backend code. The tenant model is
+   already designed in `supabase/migrations/`; ORG-001's job is to execute it, seed two
+   organizations and prove isolation, restoring `test:authz` as a blocking CI job.
 8. Stand up staging and rehearse a rollback there.
 9. Set the metric targets in `PRODUCT_BRIEF.md` and instrument them.
 10. Add pagination and bounded queries before the first real portfolio.

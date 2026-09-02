@@ -35,6 +35,11 @@ const CONTRAST_BASELINE: Record<string, number> = {
   "/tracker": 13,
   "/settings": 4,
   "/dashboards/local": 7,
+  "/growth": 17,
+  "/growth/campaigns/capital-comfort": 17,
+  "/growth/tasks": 7,
+  "/growth/roadmap": 11,
+  "/growth/reports/client/report-capital-aug-2026": 4,
 };
 
 for (const route of KEY_ROUTES) {

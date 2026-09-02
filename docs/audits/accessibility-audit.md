@@ -9,13 +9,14 @@ The rows below marked with a criterion number map to the nine criteria WCAG 2.2 
 - Auditor: Claude Code. **Note on independence:** this session also made the accessibility
   fixes recorded below, so this is **evidence for a verifier, not a verification**.
 - Date: 2026-09-02
-- Commit and environment: `a7dbb93` plus the verification changes on
-  `claude/seo-manager-app-verify-ptc4e6`. Run against the built static export in `out/`,
-  served by `scripts/serve-export.mjs`, in Chromium.
-- Screens and workflows reviewed: the 11 key screens in `tests/e2e/routes.ts` — `/`,
+- Commit and environment: `claude/seo-manager-app-verify-ptc4e6`, merging the Local Growth
+  OS foundation (`7b10301`). Run against the standard Next.js build in Chromium.
+- Screens and workflows reviewed: the 16 key screens in `tests/e2e/routes.ts` — `/`,
   `/command`, `/clients`, `/discovery`, `/diagnosis`, `/strategy`, `/tasks`, `/reports`,
-  `/tracker`, `/settings`, `/dashboards/local` — at 1440×900 and 412×915, plus all 29 routes
-  for render and overflow.
+  `/tracker`, `/settings`, `/dashboards/local`, `/growth`,
+  `/growth/campaigns/capital-comfort`, `/growth/tasks`, `/growth/roadmap`,
+  `/growth/reports/client/report-capital-aug-2026` — at 1440×900 and 412×915, plus all 62
+  routes for render and overflow.
 - Assistive technology used: **none.** No screen reader was run. That is the single largest
   gap in this audit and is why the decision below is not a pass.
 
@@ -46,7 +47,7 @@ pass by someone who uses one.
 
 | # | Check | Result | Notes |
 |---|---|---|---|
-| 6 | Headings describe structure and are not chosen for size | Pass | Exactly one `<h1>` and one `<main>` on every one of the 11 key screens, asserted on every run. Section headings are `<h2>`/`<h3>` through `src/components/ui/section.tsx` and `card.tsx`. |
+| 6 | Headings describe structure and are not chosen for size | Pass | Exactly one `<h1>` and one `<main>` on every one of the 16 key screens, asserted on every run. Section headings are `<h2>`/`<h3>` through `src/components/ui/section.tsx` and `card.tsx`. |
 | 7 | Every control has an accessible name that says what it does | Pass | axe reports no `button-name` or `link-name` violations. Nine controls that had no accessible name were labelled in this pass: the three search fields, the client invite email, the brief version note, the brief feedback textarea, the forecast levers, the evidence file inputs and the settings sliders. |
 | 8 | Images and icons have appropriate alternatives, decorative ones are hidden | **Fixed in this pass** | Was failing `svg-img-alt`: Recharts gives every pie sector `role="img"` with no name. The donut chart now carries one `role="img"` with a generated data summary and hides its internals; `rootTabIndex={-1}` keeps nothing focusable inside the hidden subtree. `src/components/charts/charts.tsx`. There are no `<img>` elements in the application. |
 | 9 | Form fields have persistent labels, not placeholder only | **Partial** | Every control now has an accessible name, but several search fields carry it as `aria-label` with a placeholder as the only *visible* label. That satisfies 4.1.2 and fails the spirit of 3.3.2 for a sighted user with cognitive load once text is entered. Recorded as finding A4. |
@@ -58,7 +59,7 @@ pass by someone who uses one.
 
 | # | Check | Result | Notes |
 |---|---|---|---|
-| 11 | Text contrast meets AA | **Fail** | 82 distinct WCAG 1.4.3 failures across the 11 key screens. This is finding A1 below and is the reason this audit does not pass. |
+| 11 | Text contrast meets AA | **Fail** | 184 distinct WCAG 1.4.3 failures across the 16 key screens. This is finding A1 below and is the reason this audit does not pass. |
 | 12 | Meaning is never carried by color alone | Insufficient evidence | Status badges pair colour with a text label (Active, Paused, Onboarding), and the risk column pairs a coloured bar with a numeric badge, both of which are fine. The geo grid (`src/components/dashboard/geo-grid.tsx`) and the chart series were not individually assessed for colour-only encoding. Needs a human pass. |
 | 13 | Usable at 200 percent zoom without loss of content | Pass | Measured at 640×512 CSS px, equivalent to 200% at 1280×1024, on all 11 key screens: zero horizontal overflow on every one. |
 | 14 | Usable at a narrow mobile width without horizontal scrolling | Pass | Zero horizontal overflow at 360 px and 412 px on every key screen; asserted on every run in `tests/e2e/critical-workflows.spec.ts`. The one horizontally scrolling region, the task lifecycle board, is deliberate and is now a labelled, keyboard-reachable region. |
@@ -80,7 +81,7 @@ pass by someone who uses one.
 
 | # | Severity | Screen or workflow | WCAG reference | Observed | Remediation | Owner |
 |---|---|---|---|---|---|---|
-| A1 | High | All 11 key screens | 1.4.3 Contrast (Minimum), AA | 82 distinct elements below 4.5:1. Concentrated in four token decisions rather than 82 separate mistakes: `--muted #6a7283` on `--surface-3 #f1f2f5` and on `--border #e6e8ee` (4.31:1 and 3.94:1); `--faint #9aa1b1` used as label text on the light canvas (2.31:1–2.43:1); `accent-600 #099250` as small text on light surfaces (3.58:1–3.77:1); white on `accent-500 #16b364` and on `amber-600`/`emerald-600` avatar and badge chips (2.73:1–3.76:1); and `text-white/45` on the `#15181e` sidebar (4.48:1). Worst offenders by page: `/reports` 22, `/clients` 16, `/command`, `/diagnosis`, `/tasks` and `/tracker` 13 each. | Darken `--muted` and `--faint`, stop using `--faint` for text that carries meaning, use `--accent-ink #087443` rather than `accent-600` for small text, and darken the chip backgrounds behind white text. Most of these are one- or two-step token changes rather than a redesign, and several are within 0.2 of passing. **Not done in this pass:** the palette in `src/app/globals.css` is approved product design and changing 82 colour decisions is a design change, not a verification fix. Ratcheted meanwhile in `tests/e2e/accessibility.spec.ts` so the count can fall and never rise. | Human product owner |
+| A1 | High | All 16 key screens | 1.4.3 Contrast (Minimum), AA | 184 distinct elements below 4.5:1. Concentrated in four token decisions rather than 82 separate mistakes: `--muted #6a7283` on `--surface-3 #f1f2f5` and on `--border #e6e8ee` (4.31:1 and 3.94:1); `--faint #9aa1b1` used as label text on the light canvas (2.31:1–2.43:1); `accent-600 #099250` as small text on light surfaces (3.58:1–3.77:1); white on `accent-500 #16b364` and on `amber-600`/`emerald-600` avatar and badge chips (2.73:1–3.76:1); and `text-white/45` on the `#15181e` sidebar (4.48:1). Worst offenders by page: `/reports` 22, `/growth` and `/growth/campaigns/capital-comfort` 17 each, `/clients` 16, `/command`, `/diagnosis`, `/tasks` and `/tracker` 13 each. The Local Growth OS screens use a different palette again — `slate-500`/`slate-600` on white and on `slate-50` — so they are a second set of decisions, not the same tokens failing on more pages. | Darken `--muted` and `--faint`, stop using `--faint` for text that carries meaning, use `--accent-ink #087443` rather than `accent-600` for small text, and darken the chip backgrounds behind white text. Most of these are one- or two-step token changes rather than a redesign, and several are within 0.2 of passing. **Not done in this pass:** the palette in `src/app/globals.css` is approved product design and changing 82 colour decisions is a design change, not a verification fix. Ratcheted meanwhile in `tests/e2e/accessibility.spec.ts` so the count can fall and never rise. | Human product owner |
 | A2 | Medium | Mobile shell, `/tasks`, every stage header | 2.5.8 Target Size (Minimum), AA | At 412 px: menu button 23×36, task complete toggle 20×20, inline agent deploy chips 36×20. | Bring each to at least 24×24 CSS px, or give them 24 px of spacing. Small padding changes; deliberately left to the owner alongside A1 so the design is touched once. | Human product owner |
 | A3 | Low | Global | 2.3.3 Animation from Interactions, AAA (and the spirit of 2.2.2) | `html { scroll-behavior: smooth }` in `src/app/globals.css` is not gated by `prefers-reduced-motion`, although every other animation in the file is. | Move it inside `@media (prefers-reduced-motion: no-preference)`. One-line change, held with A1/A2 rather than touching the stylesheet piecemeal. | Engineering |
 | A4 | Low | `/clients`, `/integrations`, top bar | 3.3.2 Labels or Instructions, A | The three search fields have an `aria-label` but only a placeholder as a visible label, which disappears once the user types. | Add a persistent visible label or a floating label. | Product |
@@ -89,8 +90,14 @@ pass by someone who uses one.
 
 Fixed in this pass, listed so they are not re-audited as open: keyboard access to client
 records; the missing skip link; the invisible focus indicator on the dark sidebar; nine
-unlabelled form controls; the unnamed chart sectors; the malformed definition lists; and the
-horizontally scrolling task board that no keyboard could reach.
+unlabelled form controls in SEO Manager OS and six unlabelled `<select>` elements in Local
+Growth OS (axe rates `select-name` critical); the unnamed chart sectors; the malformed
+definition lists; the horizontally scrolling task board that no keyboard could reach; and
+**all 26 Local Growth OS routes sharing the single page title "Local Growth OS"** (WCAG
+2.4.2), now given per-page titles including `generateMetadata` on the three dynamic routes.
+
+After those fixes the automated suite reports **zero** violations of any rule other than
+colour contrast, across 16 screens at two viewports.
 
 ## Decision
 

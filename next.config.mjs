@@ -1,18 +1,26 @@
 /** @type {import('next').NextConfig} */
 
-// When building for GitHub Pages the site is served from /<repo>, so we set a
-// basePath. Local dev (and other hosts) serve from root, so it's left empty.
+// GitHub Pages remains a zero-credential static demo. Normal local/Vercel
+// builds stay in standard Next.js server mode so Supabase Auth, Server Actions,
+// Route Handlers and secure connector callbacks can be wired without fighting
+// a global `output: export` constraint.
 const isPages = process.env.GITHUB_PAGES === "true";
 const repo = "seo-manager-os";
 
 const nextConfig = {
-  output: "export", // static HTML export -> out/
-  trailingSlash: true, // GitHub Pages serves folder/index.html
+  ...(isPages
+    ? {
+        output: "export",
+        trailingSlash: true,
+        basePath: `/${repo}`,
+        assetPrefix: `/${repo}/`,
+      }
+    : {
+        trailingSlash: false,
+      }),
   reactStrictMode: true,
-  staticPageGenerationTimeout: 180, // data-dense pages prerender slowly
-  images: { unoptimized: true },
-  basePath: isPages ? `/${repo}` : "",
-  assetPrefix: isPages ? `/${repo}/` : "",
+  staticPageGenerationTimeout: 180,
+  images: { unoptimized: isPages },
 };
 
 export default nextConfig;

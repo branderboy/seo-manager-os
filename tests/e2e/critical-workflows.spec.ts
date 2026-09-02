@@ -11,7 +11,7 @@
  * moment a backend is added.
  */
 import { test, expect, type Page } from "@playwright/test";
-import { ALL_ROUTES, PIPELINE_ROUTES, KEY_ROUTES } from "./routes";
+import { ALL_ROUTES, PIPELINE_ROUTES, KEY_ROUTES, GROWTH_ROUTES } from "./routes";
 
 /**
  * Fails the test if the page logged an error or threw while rendering.
@@ -143,5 +143,33 @@ test("no key screen scrolls horizontally on a narrow viewport", async ({ page })
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
     expect(overflow, `${route} overflows horizontally by ${overflow}px`).toBeLessThanOrEqual(0);
+  }
+});
+
+test("the Local Growth OS layer reaches every screen its navigation advertises", async ({
+  page,
+}) => {
+  const errors = trackPageErrors(page);
+  await page.goto("/growth", { waitUntil: "networkidle" });
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+
+  const hrefs = await page.locator("a[href^='/growth']").evaluateAll((nodes) =>
+    Array.from(new Set(nodes.map((node) => node.getAttribute("href") ?? ""))),
+  );
+  expect(hrefs.length, "found no Local Growth OS navigation links").toBeGreaterThan(5);
+
+  for (const href of hrefs) {
+    const response = await page.request.get(href);
+    expect(response.status(), `growth link ${href}`).toBe(200);
+  }
+  expect(errors).toEqual([]);
+});
+
+test("every Local Growth OS route renders a usable screen", async ({ page }) => {
+  for (const route of GROWTH_ROUTES) {
+    await page.goto(route, { waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    const body = (await page.locator("body").innerText()).trim();
+    expect(body.length, `${route} rendered almost no content`).toBeGreaterThan(200);
   }
 });

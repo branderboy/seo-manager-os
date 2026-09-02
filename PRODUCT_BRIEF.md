@@ -14,6 +14,16 @@ Sources: `docs/SOURCE_OF_TRUTH.md` (the confirmed project decisions, dated 2026-
 `docs/SOURCE_OF_TRUTH.md` disagree about a product decision, that file wins and this one is
 wrong and should be corrected.
 
+**One open question this brief cannot resolve.** Since 2026-08-30 the repository has held
+two product surfaces: SEO Manager OS (the nine-stage investigation pipeline) and Local
+Growth OS (`/growth`, 33 routes — multi-tenant local campaign management and client
+reporting for U.S. home-service businesses). Local Growth OS is the 2026-06-18 local-services
+scope decision built out as an operating layer, and it is the closer fit to the target user
+described below. But the two have different client models, different task boards and
+different report flows, and nothing reconciles them. **Which one is the product, or how they
+compose, is undecided and needs deciding before either gets a backend.** Everything below
+describes the product both are trying to be.
+
 ## Target user
 
 The **SEO lead at a small local-services marketing agency** — the person who has to answer
@@ -77,7 +87,7 @@ The smallest set of workflows that creates the core value. Local clients only.
 | Project brief (`/strategy`) | An executive-ready plan the agency can put in front of the client | It is what the agency sells. |
 | Daily task engine (`/tasks`) | Today's owned worklist, derived from the plan | It converts a plan into work that actually happens. |
 | Reports (`/reports`) | Rankings, traffic and leads against goals, tied back to the work that was done | Closing the measurement loop is what makes the retainer defensible. |
-| Client-facing sharing | The agency shares the brief, the stages and the results read-only with the end client | A confirmed decision, and the moment the product is visible to the agency's customer. |
+| Client-facing sharing | The agency shares the brief, the stages and the results read-only with the end client | A confirmed decision, and the moment the product is visible to the agency's customer. Local Growth OS builds this as a plain-English client report portal on a frozen monthly snapshot, which is the right shape: a report a client opens later must not silently change. |
 | Data export (CSV/PDF) | Briefs, tasks and results leave the product in a form a client will accept | A confirmed priority, explicitly ahead of team management. |
 
 ## Explicit non goals

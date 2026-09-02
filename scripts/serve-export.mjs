@@ -2,11 +2,15 @@
 /**
  * Serves the static export in out/ the way GitHub Pages does.
  *
- * next.config.mjs sets `output: "export"`, and `next start` refuses to run against an
- * exported build. This is the local equivalent: trailing-slash directory resolution,
- * out/404.html for anything that does not exist, and no dependencies to install.
+ * A GITHUB_PAGES=true build sets `output: "export"` plus a basePath, and `next start`
+ * refuses to run against an exported build. This is the local equivalent: trailing-slash
+ * directory resolution, out/404.html for anything that does not exist, an optional base
+ * path so the Pages URLs resolve, and no dependencies to install.
  *
- * Usage: node scripts/serve-export.mjs [--port 3000] [--dir out]
+ * A normal build stays in Next.js server mode, and `npm run start` (next start) is the
+ * right command for that one. This script is only for the Pages artifact.
+ *
+ * Usage: node scripts/serve-export.mjs [--port 3000] [--dir out] [--base-path /seo-manager-os]
  */
 import http from "node:http";
 import fs from "node:fs";
@@ -20,6 +24,8 @@ const readArg = (name, fallback) => {
 
 const port = Number(readArg("--port", process.env.PORT ?? 3000));
 const root = path.resolve(readArg("--dir", "out"));
+// Matches next.config.mjs when GITHUB_PAGES=true. Empty for an export built without it.
+const basePath = readArg("--base-path", process.env.EXPORT_BASE_PATH ?? "").replace(/\/$/, "");
 
 const CONTENT_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -46,7 +52,12 @@ if (!fs.existsSync(root)) {
 
 /** Resolve a request path to a file inside root, or null. Never escapes root. */
 function resolveFile(urlPath) {
-  const decoded = decodeURIComponent(urlPath.split("?")[0].split("#")[0]);
+  let decoded = decodeURIComponent(urlPath.split("?")[0].split("#")[0]);
+  if (basePath) {
+    if (decoded === basePath) decoded = "/";
+    else if (decoded.startsWith(`${basePath}/`)) decoded = decoded.slice(basePath.length);
+    else return null; // outside the base path, same as Pages
+  }
   const candidate = path.resolve(root, `.${path.posix.normalize(decoded)}`);
   if (candidate !== root && !candidate.startsWith(root + path.sep)) return null;
 
@@ -86,5 +97,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(port, () => {
-  console.log(`Serving ${root} on http://localhost:${port}`);
+  console.log(`Serving ${root} on http://localhost:${port}${basePath}`);
 });

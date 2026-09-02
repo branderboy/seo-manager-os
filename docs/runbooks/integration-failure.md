@@ -4,10 +4,15 @@ Owner: **Open — no named human is recorded in this repository.**
 Providers covered: **one.** JSearch on RapidAPI, called by `scripts/prospect-scanner/scan.mjs`.
 
 > The web application integrates with nothing. The 41 entries in `src/lib/integrations.ts`
-> are catalogue rows with mock connection states: no OAuth, no token, no request
-> (`docs/production/INVENTORY.md`). The one live external call in this repository is a local
-> CLI, so an "integration failure" today means a command that errors on the operator's own
-> machine, not a production incident.
+> and the 12 providers in `src/lib/local-growth/connectors.ts` are catalogue rows and mock
+> adapters: no OAuth, no token, no request (`docs/production/INVENTORY.md`). The one live
+> external call in this repository is a local CLI, so an "integration failure" today means a
+> command that errors on the operator's own machine, not a production incident.
+>
+> `connectors.ts` is worth reading before writing the first real adapter. It already defines
+> the boundary — `connect`, `sync`, `freshness`, an optional `importCsv`, and an explicit
+> `mode: "mock" | "live"` — and the rule that an unavailable source is surfaced as
+> unavailable rather than filled in. That rule is what makes this runbook enforceable.
 >
 > Everything below the scanner row is kept because it is the procedure to adopt under
 > INTEGRATION-001, when the Google, data-provider and LLM connections become real. That is
