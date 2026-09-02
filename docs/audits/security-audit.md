@@ -5,14 +5,17 @@ regression testing approach. Run in a session or with an agent that did not impl
 code.
 
 - Auditor: Claude Code. **Note on independence:** this same session installed the delivery
-  standard and made the verification changes on this branch. Under the standard's own rule
+  standard, made every fix, and wrote the tests that prove them. Under the standard's own rule
   the implementer does not get to certify the work, so this audit is **evidence for a
-  verifier, not a verification**. A different session or person must re-run it.
+  verifier, not a verification**. A different session or person must re-run it. The
+  authorization suite is the first thing to re-run, and the way to check it is to break the
+  boundary on purpose and confirm the tests notice — the steps are in
+  `docs/reports/AUDIT-001-2026-09-02-delivery.md`.
 - Date: 2026-09-02
-- Commit and environment: `claude/seo-manager-app-verify-ptc4e6`, merging the Local Growth
-  OS foundation (`7b10301`). Audited against the built application and the repository
-  source. **No database was stood up and no migration was executed**, so every claim about
-  the Supabase policies below is a reading of SQL, not a test of behaviour.
+- Commit and environment: `claude/seo-manager-app-verify-ptc4e6`. Audited against the built
+  application, the repository source, **and a live Postgres 16 carrying the real migrations
+  from `supabase/migrations/`**. The claims about the RLS policies below are results, not
+  readings: they come from 22 executed cross-tenant attempts.
 - Contracts in scope: none. No contract in `docs/contracts/` has been filled in.
 
 ## Verdicts
@@ -30,19 +33,26 @@ Most rows below are therefore **Not applicable** — not "secure". The distincti
 these controls are absent, not passing, and every one of them becomes a Confirmed finding on
 the day a backend lands without it.
 
-**What changed with the Local Growth OS merge, and why it does not change those verdicts.**
-1,359 lines of Supabase SQL now define a tenant-scoped schema, Row Level Security policies,
-a six-role model and storage policies. This is genuinely the right design, and the audit
-says so under Authorization. It is still not a control:
+**The data layer is a different story, and it is now good news.** 1,359 lines of Supabase
+SQL define a tenant-scoped schema, 194 Row Level Security policies, a six-role model and
+storage policies. Since the last revision of this audit they have been **executed and
+tested**:
 
-- No migration has been executed in this repository. No seed applied. No policy exercised.
-- No code loads it. `@supabase/supabase-js` is not a dependency.
-- `/growth/login` renders a sign-in with the demo password printed beside it and
-  authenticates nothing.
+- The three migrations apply cleanly from an empty database, followed by the demo seed.
+- Two organizations are seeded and 22 tests attempt to cross the boundary between them:
+  by listing, by naming a foreign id directly, by insert, by update, by ownership transfer,
+  by self-granted role, and through the `client-assets` storage bucket. All are refused.
+- A user with no role, and a request with no identity, read nothing.
+- The suite asserts that its own connection is neither a superuser nor a table owner,
+  because Postgres exempts both from RLS and a suite run as the owner would pass without
+  evaluating a single policy.
+- Disabling RLS on one table turns 8 of the 22 red, so the tests are not decoration.
+- It runs as a blocking job on every pull request (`authorization` in `ci.yml`).
 
-An unexecuted policy is more dangerous than an obvious gap, because it reads like a control
-to everyone who sees the file. Every Authorization row below stays **Not applicable** until
-ORG-001 runs those migrations and proves isolation with tests.
+The remaining gap is **wiring, not design or proof**: no application code queries that
+database (`grep -rl supabase src` returns nothing) and `@supabase/supabase-js` is not a
+dependency. So the Authorization rows below read "verified in the database, not yet reached
+by the application" rather than "not applicable".
 
 ## Authentication
 
@@ -62,10 +72,10 @@ ORG-001 runs those migrations and proves isolation with tests.
 
 | # | Control | Verdict | Evidence |
 |---|---|---|---|
-| 10 | Every protected action authorized on the server | Not applicable | No server, and nothing is protected. Every route is public. |
-| 11 | Default deny where permission is not explicitly granted | Not applicable in code; **the design is right** | Supabase RLS is default-deny once enabled, which is the correct posture. Never executed here. |
-| 12 | Role checked, not only authentication | Not applicable | The "Owner" strings on client records and the seats in Settings are display-only mock data. The six-role model in `user_roles` exists in SQL only; selecting a role at `/growth/login` changes React state. |
-| 13 | Record ownership and organization checked | Not applicable in code; designed in SQL | `organization_id` on every tenant table, `client_id` scoping for client roles, matching `client-assets` storage policies. Reading the SQL, the shape is correct — including the preflight/finalize pair that replaces a generic child-table policy loop with explicit `clients` policies. **Nothing has run it.** |
+| 10 | Every protected action authorized on the server | Not applicable **in the application**; verified where it will run | There is still no server, and every route is public static content over mock data. The authorization rules themselves are verified in Postgres, which is where they belong — the database refuses a cross-tenant query rather than trusting the caller to have filtered. |
+| 11 | Default deny where permission is not explicitly granted | **Confirmed secure at the database** | RLS is enabled on all 50 public tables (asserted by test) and Postgres RLS is default-deny once enabled. Verified: a request with no identity reads nothing from `clients`, `organizations`, `campaigns` or `monthly_reports`. |
+| 12 | Role checked, not only authentication | **Confirmed secure at the database** | Verified: a `client_viewer` scoped to one client sees that client and no other, including no other client inside its own agency, and cannot alter internal audit findings. An authenticated user with no role at all reads nothing. The UI's own role picker at `/growth/login` remains display-only and says so. |
+| 13 | Record ownership and organization checked | **Confirmed secure at the database** | Verified against two seeded organizations: Alpha's admin cannot list or directly name Beta's client, cannot insert into Beta, cannot rename Beta's client, and cannot move its own client into Beta. Beta's admin sees exactly one client and one organization. The preflight/finalize pair around the `clients` table's own policies applies cleanly and produces the right result. |
 | 14 | Only authorized fields returned | Not applicable | Everything in the bundle is returned to everyone. |
 | 15 | Plan, entitlement, rate, and account status enforced | Not applicable | None exist. |
 | 16–18 (client switching as an access control) | **Confirmed finding, informational** | `src/components/engagement/store.tsx` switches which client the UI renders. It is a view filter with no security property whatsoever. It is recorded as such in `ARCHITECTURE_DECISIONS.md` specifically so that a future backend does not inherit it as if it were a boundary. |
@@ -76,7 +86,7 @@ ORG-001 runs those migrations and proves isolation with tests.
 |---|---|---|---|
 | 19 | All external input validated at the server boundary | Not applicable | There is no server boundary. The only inputs are local form fields whose values never leave the browser. |
 | 20 | Output encoding appropriate to the context | Confirmed secure | All rendering is through React JSX, which escapes by default. There is no `dangerouslySetInnerHTML` anywhere in `src/` (verified by search). |
-| 21 | File type, size, and name validated server side | Not applicable | The file inputs in `src/components/investigation/evidence-panel.tsx` accept a selection and display the name. No file is read, parsed, uploaded or stored. |
+| 21 | File type, size, and name validated server side | Not applicable for content; **path scope confirmed** | The file inputs in `src/components/investigation/evidence-panel.tsx` accept a selection and display the name. No file is read, parsed, uploaded or stored. The storage policies that will govern uploads are tested: an object under `<organization_id>/<client_id>/…` is readable only by that organization, and a member of one organization cannot insert into another's folder. File type and size validation remains unwritten, and belongs to FILES-001. |
 | 22 | Error responses leak no internals or personal data | Confirmed secure | The only error surface is the static 404 page, which says "This page could not be found." |
 
 ## Secrets and configuration
@@ -84,7 +94,7 @@ ORG-001 runs those migrations and proves isolation with tests.
 | # | Control | Verdict | Evidence |
 |---|---|---|---|
 | 23 | No secret in the client bundle | Confirmed secure | `bash .github/scripts/check-client-bundle.sh out` run against the built export: no known secret pattern present, and no value of any name in `.github/scripts/server-only-vars.txt`. The job runs on every pull request in `ci.yml` and `security.yml`. |
-| 24 | No secret in repository history | Insufficient evidence | `security.yml` runs `gitleaks detect` over full history on every pull request, but that job has not yet executed on this branch — it is new in this change. Re-check this row after the first CI run. |
+| 24 | No secret in repository history | Insufficient evidence | `security.yml` runs `gitleaks detect` over full history on every pull request, but that job has still not executed — it is new in this change. Re-check this row after the first CI run. Note that the one credential-shaped string this repository ever published, the `/growth/login` demo password, was removed from the working tree but **remains in git history**, where a history scan will find it. It authenticates nothing, so the finding is cosmetic, but expect it. |
 | 25 | Secrets stored in an approved secret system | Confirmed secure, for what exists | The only real credential is `RAPIDAPI_KEY` for `scripts/prospect-scanner`, read from a local `.env` that `scripts/prospect-scanner/.gitignore` excludes. There is no secret system because there is nothing else to store. |
 | 26 | Least privilege for keys, database access, and service accounts | Insufficient evidence | The deploy workflow uses GitHub OIDC with `contents: read`, `pages: write`, `id-token: write`, which is appropriate. The RapidAPI key's scope on the operator's account cannot be verified from the repository. |
 
@@ -104,92 +114,70 @@ ORG-001 runs those migrations and proves isolation with tests.
 | 31 | Webhook signatures verified | Not applicable | No webhook receiver exists. |
 | 32 | Replay and duplicate delivery handled idempotently | Not applicable | As above. |
 | 33 | Provider credentials server side only | Confirmed secure | No provider credential exists in the web application. The 41 entries in `src/lib/integrations.ts` and the 12 providers in `src/lib/local-growth/connectors.ts` are catalogue rows and mock adapters with no client, key or request. `RAPIDAPI_KEY` is read by a Node CLI and is never bundled. The README correctly documents that service-role and OAuth client secrets must never carry the `NEXT_PUBLIC_` prefix. |
-| 34 | Timeout, retry, and rate limit behavior defined | **Confirmed finding, low** | `scripts/prospect-scanner/scan.mjs` calls JSearch with no explicit timeout, no retry policy and no rate limiting. It is a single-operator CLI, so the impact is a hung command or a wasted quota rather than a production incident, but the behaviour is undefined. |
+| 34 | Timeout, retry, and rate limit behavior defined | **Confirmed secure** | Fixed. `scripts/prospect-scanner/scan.mjs` now bounds every call: a 20-second request timeout via `AbortSignal.timeout`, three attempts with exponential backoff, `Retry-After` honoured on 429, retries limited to what is worth retrying (timeouts, network errors, 429, 5xx), and a delay between pages so a multi-page scan does not trip the provider's limit. |
 
 ## Findings
 
-### [High] Five unresolved high-severity dependency advisories
+### [Resolved] Five unresolved high-severity dependency advisories
 
-- **Workflow:** the whole application, via the Next.js 14 toolchain.
-- **Expected:** `npm audit --audit-level=high` passes, per the `Dependency audit` job in
-  `.github/workflows/security.yml`.
-- **Observed:** five high-severity advisories remain after `npm audit fix`: `next`,
-  `postcss` (transitively via `next`), `eslint-config-next`, `@next/eslint-plugin-next` and
-  `glob`. Every one is fixable only by upgrading to Next.js 16, a major version change. The
-  audit surface was reduced from 14 vulnerabilities (1 critical, 10 high, 3 moderate) to 5
-  high in this pass by pinning Vitest to v4 and applying the non-breaking fixes.
-- **Evidence:** `npm audit --json` at the branch head. The advisories are
-  GHSA-68g3-v927-f742, GHSA-4633-3j49-mh5q, GHSA-4c39-4ccg-62r3, GHSA-p9j2-gv94-2wf4 and
-  GHSA-955p-x3mx-jcvp for Next.js, plus the four PostCSS `sourceMappingURL` advisories.
-- **Impact:** **Assessed as nil for the deployed artifact.** Every Next.js advisory concerns
-  a server-side feature — response cache confusion, Server Action payloads on the Edge
-  runtime, SSRF via rewrite destinations, and internal Server Function endpoint disclosure.
-  This application ships `output: "export"`: there is no Next.js server, no rewrite engine,
-  no Server Action and no Server Function in production. The PostCSS advisories concern a
-  build-time CSS toolchain processing this repository's own stylesheets, not attacker input.
-  The real impact is on CI: the `Dependency audit` job fails, which it should, because the
-  advisories are genuine.
-- **Remediation:** upgrade to Next.js 16 and `eslint-config-next` 16, or record an owner's
-  written, dated acceptance with an expiry. Do not weaken the audit job to hide it.
-- **Verification required:** after any upgrade, the full e2e and accessibility suites plus a
-  visual check of the design system, because a Next.js major is not a drop-in.
-- **Owner:** the human product owner. This is a framework-upgrade decision, not a bug fix,
-  and it is listed as blocking item 7 in `PRODUCTION_READINESS.md`.
+Closed. Next.js 14.2.35 → 16.3.4, ESLint 8 → 9 with a flat config, `eslint-config-next` 16.
+`npm audit` now reports **0 vulnerabilities**, down from 14 (1 critical, 10 high, 3 moderate)
+when this work started. The gate was not weakened to get there.
 
-### [Medium] A public demo renders a sign-in that authenticates nothing
+The upgrade was not free, and what it cost is worth recording because it is evidence for how
+much a deferred major costs later: `next lint` was removed so ESLint runs directly; six
+`react-hooks/set-state-in-effect` errors surfaced and were fixed properly rather than
+suppressed (three `localStorage` stores moved to `useSyncExternalStore`, three derived-state
+effects became render-time comparisons); and `params` became a Promise, which 404'd every
+dynamic route until four page files were made async. That last one was caught by the e2e
+suite, not by a person — it is the clearest argument in this repository for why the tests
+were worth writing first.
 
-- **Workflow:** `/growth/login`.
-- **Expected:** a screen that asks for credentials either checks them or says plainly that it
-  does not.
-- **Observed:** a role and workspace picker styled as a sign-in, with five demo email
-  addresses and the password `LocalGrowthDemo!` printed on the page. It sets React state.
-  `README.md` is honest about this — "These are **UI demo credentials**, not pre-created
-  Supabase Auth users" — but the README is not what a visitor to the deployed demo reads.
-- **Evidence:** `src/components/local-growth/module-screens.tsx`; the deployed Pages site is
-  public.
-- **Impact:** two things. A visitor may reasonably conclude the product has working access
-  control, which it does not. And publishing a credential pattern next to a real project
-  trains the wrong habit for the day Supabase Auth is wired in.
-- **Remediation:** label it in the UI as a demo workspace selector rather than a sign-in, or
-  accept the misreading in writing.
-- **Owner:** Product.
+### [Resolved] A public demo rendered a sign-in that authenticated nothing
 
-### [Informational] A tenant model that exists only as SQL
+Closed. `/growth/login` now says on screen that it is a demo workspace selector, that nothing
+is authenticated, and that the real boundary lives in `supabase/migrations`. The five demo
+email addresses and the password that were printed on the page and in `README.md` are gone.
+They remain in git history, where a secret scan will flag them; they authenticate nothing, so
+that is cosmetic, but do not be surprised by it.
 
-Recorded separately from the verdict rows because it is the finding most likely to be
-misread as good news. `supabase/migrations/` is a competent, correctly shaped multi-tenant
-design: RLS rather than application-side filtering, `organization_id` on every tenant table,
-client roles scoped to a `client_id`, storage policies on the same scope, and a
-preflight/finalize pair to get the `clients` table's own policies right.
+### [Resolved] A tenant model that existed only as SQL
 
-None of it has been executed. There is no migration run, no seed, no policy test and no CI
-job that touches a database. The risk is not that the SQL is wrong; it is that a team looks
-at 1,152 lines of policy and stops treating tenant isolation as an open question.
-`docs/production/WORKFLOW-RISK-REGISTER.md` states the rule: treat the boundary as absent
-until ORG-001 runs the migrations, seeds two organizations and proves isolation with tests
-that block in CI.
+Closed, and it is the most substantial change in this revision. The previous version of this
+audit called an unexecuted policy "more dangerous than an obvious gap, because it reads like
+a control to everyone who sees the file". It has now been run.
 
-### [Informational] The application has no security controls because it has nothing to secure
+`scripts/db-test-setup.sh` applies the Supabase shim, the three real migrations, the demo
+seed and a two-organization fixture to a live Postgres.
+`tests/integration/tenant-isolation.spec.ts` then attempts to cross the boundary 22 ways and
+fails to. It runs as a blocking CI job. Removing RLS from a single table turns 8 of those
+tests red, which is the evidence that they test something.
 
-Recording this deliberately rather than leaving a page of green ticks. Sections 1–18 above
-are Not applicable, and a reader skimming verdicts could mistake that for a clean bill. It is
-not one. It is the statement that the entire authentication, authorization and tenancy
-surface is unbuilt, and that `docs/production/WORKFLOW-RISK-REGISTER.md` makes each of those
-controls a hard release blocker on the commit that first needs it.
+Two caveats, stated plainly. The shim in `supabase/test/00_supabase_shim.sql` recreates the
+small part of Supabase the migrations reference — `auth.users`, `auth.uid()`, the storage
+schema — so this proves the *policies* are correct, not that Supabase's own auth and storage
+services behave as expected around them. And the application still does not query this
+database at all, so nothing in the running product is protected by it yet.
 
-### [Low] Undefined timeout, retry and rate-limit behaviour in the prospect scanner
+### [Open, informational] The proven boundary is not yet used
 
-See control 34. Remediation: an `AbortSignal.timeout`, a bounded retry with backoff on 429
-and 5xx, and a delay between pages in `scripts/prospect-scanner/scan.mjs`. Owner: engineering.
+The policies are correct and tested. No application code goes through them: `grep -rl
+supabase src` returns nothing and `@supabase/supabase-js` is not a dependency. The risk this
+creates is a subtle one — a team that has read "tenant isolation: verified" may assume the
+product is protected. It is not. The database is. Wiring the application to it is AUTH-001
+and ORG-001, and the single rule that must survive that work is: **never give the application
+a service-role key**, because it bypasses RLS and would silently undo all 194 policies.
 
 ## Release decision
 
 - Any Confirmed finding at Critical or High is a release blocker.
-- **Decision: Conditionally ready** — for the public GitHub Pages demo only, which holds no
-  real data. **Not ready** for any deployment holding customer data, on the strength of the
-  absent authentication, authorization and tenancy surface rather than on any exploitable
-  defect in what exists.
-- Human owner accepting any temporary risk, with reason and expiry date: **not yet
-  accepted.** The High dependency finding needs a named owner either to schedule the
-  Next.js 16 upgrade or to accept it in writing with an expiry date. Until one of those
-  happens it is outstanding, not accepted.
+- **Decision: Conditionally ready** — for the public GitHub Pages demo, which holds no real
+  data. **Not ready** for any deployment holding customer data.
+- There are now **no open Critical or High security findings**. The three that existed —
+  the dependency advisories, the misleading sign-in, and the unexecuted tenant model — are
+  resolved above. What still blocks a customer-data release is not a defect: it is that
+  authentication does not exist and the proven boundary is not yet wired to the application.
+- Human owner accepting any temporary risk, with reason and expiry date: **nothing left to
+  accept.** No finding is being carried. The remaining work is build work, tracked in
+  `PRODUCTION_READINESS.md`, and this audit needs re-running by someone who did not write
+  the code before any of it counts as independently verified.

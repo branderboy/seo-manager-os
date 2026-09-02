@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PlaybookCard } from "@/components/playbooks/playbook-card";
 import { playbookTypes, playbooksByType, type PlaybookType } from "@/lib/playbooks";
 import { useEngagement } from "@/components/engagement/store";
@@ -9,10 +9,13 @@ import { cn } from "@/lib/utils";
 export function PlaybooksByType() {
   const { engagement } = useEngagement();
   const [type, setType] = useState<PlaybookType>(engagement.model);
-  // Follow the active client type when it changes (top-bar switcher).
-  useEffect(() => {
+  // Follow the active client type when the top-bar switcher changes it. Compared during
+  // render rather than synced by an effect, which would cost an extra render pass.
+  const [lastModel, setLastModel] = useState(engagement.model);
+  if (lastModel !== engagement.model) {
+    setLastModel(engagement.model);
     setType(engagement.model);
-  }, [engagement.model]);
+  }
   const list = playbooksByType[type];
   const plays = list.reduce((n, p) => n + p.plays.length, 0);
 

@@ -7,12 +7,18 @@ export function generateStaticParams() {
   return contentItems.map((item) => ({ id: item.id }));
 }
 
-export function generateMetadata({ params }: { params: { id: string } }): Metadata {
-  const match = contentItems.find((item) => item.id === params.id);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const match = contentItems.find((item) => item.id === id);
   return { title: match ? match.title : "Content Brief" };
 }
 
-export default function ContentBriefPage({ params }: { params: { id: string } }) {
-  if (!contentItems.some((item) => item.id === params.id)) notFound();
-  return <ContentBriefDetail itemId={params.id} />;
+export default async function ContentBriefPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  if (!contentItems.some((item) => item.id === id)) notFound();
+  return <ContentBriefDetail itemId={id} />;
 }

@@ -71,7 +71,7 @@ export function PlaybookCard({ pb }: { pb: Playbook }) {
         ) : (
           <button
             onClick={() => addPlaybook(pb)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-accent-500 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-600"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-accent-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-600"
           >
             <Sparkles className="h-4 w-4" /> Generate {pb.plays.length} tasks
           </button>

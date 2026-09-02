@@ -10,6 +10,7 @@ import { workerState, type WorkerStatus } from "@/lib/workforce";
 import { getIntegration } from "@/lib/integrations";
 import { team } from "@/lib/model";
 import { useDeployState, toggleAgent } from "@/components/agents/deploy-store";
+import { useAnnounce } from "@/components/layout/announcer";
 
 const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> = {
   Working: "good",
@@ -20,6 +21,7 @@ const statusTone: Record<WorkerStatus, "good" | "accent" | "warn" | "default"> =
 
 export function AgentsView() {
   const deployed = useDeployState();
+  const announce = useAnnounce();
 
   const states = agents.map((a) => ({ agent: a, deployed: !!deployed[a.id], state: workerState(a.id, !!deployed[a.id]) }));
   const deployedCount = states.filter((s) => s.deployed).length;
@@ -35,7 +37,7 @@ export function AgentsView() {
       <section className="reveal overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-card">
         <div className="flex flex-wrap items-center gap-2">
           <h2 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">{orchestrator.name}</h2>
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--ok-tint)] px-2 py-0.5 text-2xs font-semibold text-[#157552]">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-[var(--ok-tint)] px-2 py-0.5 text-2xs font-semibold text-[#116349]">
             <StatusDot tone="good" pulse /> Running
           </span>
           <span className="rounded-md bg-[var(--surface-3)] px-2 py-0.5 text-2xs font-semibold text-[var(--ink-soft)]">
@@ -85,7 +87,7 @@ export function AgentsView() {
               <span className="rounded-md bg-[var(--accent-tint)] px-2 py-1 text-2xs font-bold text-accent-700 ring-1 ring-inset ring-accent-200">
                 {deployedHere}/{members.length} deployed
               </span>
-              <span className="rounded-md bg-[var(--ok-tint)] px-2 py-1 text-2xs font-bold text-[#157552]">
+              <span className="rounded-md bg-[var(--ok-tint)] px-2 py-1 text-2xs font-bold text-[#116349]">
                 {workingHere} working
               </span>
             </div>
@@ -96,7 +98,10 @@ export function AgentsView() {
                   agent={agent}
                   deployed={!!deployed[agent.id]}
                   state={workerState(agent.id, !!deployed[agent.id])}
-                  onToggle={(v) => toggleAgent(agent.id, v)}
+                  onToggle={(v) => {
+                    toggleAgent(agent.id, v);
+                    announce(`${agent.name} ${v ? "deployed" : "stood down"}`);
+                  }}
                 />
               ))}
             </div>

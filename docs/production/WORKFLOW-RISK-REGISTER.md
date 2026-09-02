@@ -28,7 +28,7 @@ Anything involving customer data, money, access control, or irreversible effects
 | Workflow | Why critical | Contract ID | Contract status | Verified |
 |---|---|---|---|---|
 | Identity and sessions | The product is sold to agencies managing other businesses' data. Nothing else on this list can be secured before there is a user. Trigger: the first non-public deployment. | AUTH-001 | None | No |
-| Tenant and client isolation | One agency must never see another agency's clients, briefs, or rankings. **The design now exists** — `organization_id` on every tenant table, Supabase RLS policies, `client_id` scoping for client roles, matching storage policies — and has **never been executed or tested**. A policy nobody has run is a hypothesis that reads like a control, which is more dangerous than an obvious gap. Trigger: the first migration run against any database holding real data. | ORG-001 | None. The contract is unwritten even though the schema is written. | **No, and this is the register's most important row.** |
+| Tenant and client isolation | One agency must never see another agency's clients, briefs, or rankings. **The boundary now exists and is proven**: `organization_id` on every tenant table, 194 RLS policies, `client_id` scoping for client roles, matching storage policies — all executed against a live Postgres and cross-examined by 22 tests in a blocking CI job. What remains is that **no application code goes through it yet**. Trigger: the first query the application actually sends. | ORG-001 | None written, but its acceptance criteria are already met in `tests/integration/tenant-isolation.spec.ts`. The contract's remaining scope is wiring, not proving. | **Boundary verified. Application integration not started.** |
 | Data collection from client accounts (`/research`) | Ingests a client's GSC, GA4, GBP and CRM data under their OAuth grant. Customer data and third-party credentials. Trigger: the first real connection in `src/lib/integrations.ts`. | INTEGRATION-001 | None | No |
 | Client-facing brief and report sharing (`/strategy`, `/reports`) | A confirmed product decision (`docs/SOURCE_OF_TRUTH.md`) is read-only sharing with the end client. A share link is an access-control surface. Trigger: the first link that resolves for someone outside the agency. | FILES-001 | None | No |
 | AI Workforce execution (`/agents`) | Sends client data to third-party model providers and produces the diagnosis and strategy the agency sells. Cost, data egress, and correctness at once. Trigger: the first agent run that calls a model. | INTEGRATION-001 | None | No |
@@ -49,7 +49,7 @@ Anything involving customer data, money, access control, or irreversible effects
 | Audit → roadmap → task chain (`/growth/audits` → `/growth/roadmap` → `/growth/tasks`) | The chain from evidence to work, with the finding id kept as the relational source. It is the strongest idea in the Local Growth OS design and the one a broken migration would silently sever. | CORE-001 | None | No |
 | GBP high-risk guardrails | The UI blocks a high-risk GBP recommendation from being marked ready until a strategist acknowledges the risk, and warns against keyword-stuffed names, fake locations, fake reviews and duplicate profiles. Getting this wrong gets a client's listing suspended. | CORE-001 | None | No — the guardrail is a React state check with no server behind it |
 | Navigation integrity across 29 routes | A dead link in the shell breaks the operating loop the product is built around. | — | Covered by tests | Yes — `tests/unit/routes.spec.ts`, `tests/e2e/critical-workflows.spec.ts` |
-| Keyboard and screen reader access | Agency staff use this all day. Contrast, focus, landmarks and labels are a usability floor, not a nicety. | AUDIT-001 | Partially proven | Partly — automated checks pass except colour contrast, which is ratcheted and open in `docs/audits/accessibility-audit.md`. The human keyboard and screen reader passes are outstanding. |
+| Keyboard and screen reader access | Agency staff use this all day. Contrast, focus, landmarks and labels are a usability floor, not a nicety. | AUDIT-001 | Proven by automation; human passes outstanding | Partly — axe reports **zero** violations of every WCAG 2.0/2.1/2.2 A and AA rule across the 16 key screens at two viewports, and the suite asserts zero rather than a baseline. Focus management, the skip link, live regions and the mobile dialog are individually tested. The human keyboard and screen reader passes are still outstanding, and no automated suite substitutes for them. |
 
 ## Lower priority
 
@@ -63,7 +63,7 @@ Anything involving customer data, money, access control, or irreversible effects
 | Product tour (`src/components/layout/tour.tsx`) | Cosmetic, persisted in `localStorage`. |
 | SaaS and Enterprise dashboards | Parked by product decision, still built and linked. Decide whether to remove or keep before launch. |
 | Local Growth OS summary-only modules (`/growth/{gbp,rankings,keywords,citations,content,reviews,competitors,technical,outreach,leads,templates}`) | Read-only views over demo data. They become High the moment they read a real client's data. |
-| `/growth/login` | A role picker with published demo credentials and nothing behind it. Lower risk as a demo, but see the register note below: it is the one screen that actively misrepresents a control. |
+| `/growth/login` | A workspace selector, now labelled as one on screen, with the published demo credentials removed. It states that nothing is authenticated and points at where the real boundary lives. |
 
 ## Release rule
 
@@ -74,23 +74,21 @@ owner has explicitly accepted it in writing as a known limitation with a stated 
 public demo containing no real customer data. Every Critical row above is unverified, and
 that is acceptable *for that deployment only*. It is not acceptable for a paid beta.
 
-**One caveat on that acceptance.** `/growth/login` renders a sign-in with credentials
-printed on the page. It is honest in the README and dishonest on the screen. A public demo
-that shows a login invites the belief that access is controlled, and this register is the
-wrong place to be quiet about it: label it in the UI as a demo workspace selector, or accept
-in writing that visitors may misread it.
-
-The first commit that adds authentication, a database, or a live client-data connection
-makes its Critical row a hard blocker, and must land with:
+The first commit that adds authentication or a live client-data connection makes its
+Critical row a hard blocker, and must land with:
 
 - its contract approved before implementation,
 - the corresponding negative tests from `tests/README.md`,
 - `test:authz` restored as its own blocking CI job (see `.github/workflows/README.md`),
 - and independent verification by a session that did not write the code.
 
-**And specifically for ORG-001, now that the schema exists:** the contract's job is no
-longer to design the tenant model. It is to *run* the migrations against a real database,
-seed two organizations, and prove by test that organization A cannot reach organization B —
-by altered URL id, by altered request body, and through the `client-assets` bucket — with
-those tests blocking in CI. Until that exists, treat the tenant boundary as absent no matter
-how complete the SQL looks.
+**And specifically for ORG-001, now that the boundary is proven:** the contract's job is no
+longer to design or to prove the tenant model. Both are done — the migrations run from empty,
+two organizations are seeded, and organization A cannot reach organization B by altered id,
+by altered request body, by ownership transfer, by self-granted role, or through the
+`client-assets` bucket, with those tests blocking in CI. ORG-001's remaining scope is to
+connect the application to that boundary: a real Supabase session populating `auth.uid()`,
+queries that go through the policies rather than around them, and the `authorization` job
+kept blocking throughout. The one rule that does not change: never grant the application a
+service-role key that bypasses RLS, because that turns 194 tested policies back into
+decoration in a single line.

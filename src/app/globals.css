@@ -12,10 +12,14 @@
   --surface-2: #f7f8fa;       /* inset / striped rows */
   --surface-3: #f1f2f5;       /* hover wells */
 
-  --foreground: #14181f;      /* primary text */
-  --ink-soft: #353c47;        /* secondary text */
-  --muted: #6a7283;           /* tertiary / labels */
-  --faint: #9aa1b1;           /* disabled / placeholder */
+  /* Every text token below meets WCAG 1.4.3 AA (4.5:1) against every surface it is
+   * used on, including --surface-3 (#f1f2f5) and --border (#e6e8ee) badge fills.
+   * That ceiling is why --muted and --faint sit closer together than they used to:
+   * a light grey on a light ground cannot be both very light and readable. */
+  --foreground: #14181f;      /* primary text          21.0:1 on white */
+  --ink-soft: #353c47;        /* secondary text        11.0:1 on white */
+  --muted: #5e6677;           /* tertiary / labels      5.8:1 on white, 4.7:1 on --border */
+  --faint: #616978;           /* quietest text, placeholders  5.5:1 on white, 4.9:1 on --surface-3 */
 
   --border: #e6e8ee;          /* hairline borders */
   --border-strong: #d6d9e2;   /* emphasized borders */
@@ -29,14 +33,19 @@
   --feature-deep: #082016;
   --feature-border: #1c4d39;
 
-  /* Semantic status · used consistently for badges, dots, charts. */
-  --ok: #1f9d6b;
+  /* Semantic status · used consistently for badges, dots, charts.
+   * The -ink variants are the text-safe versions: each clears 4.5:1 on white and on its
+   * own tint. The base values stay as fills and chart series, where 1.4.3 does not apply. */
+  --ok: #137a51;
+  --ok-ink: #116349;
   --ok-tint: #e7f6ef;
-  --warn: #c4811a;
+  --warn: #a86d10;
+  --warn-ink: #8a5a0e;
   --warn-tint: #fbf2df;
-  --danger: #d4493f;
+  --danger: #b83a30;
+  --danger-ink: #9e3229;
   --danger-tint: #fbecea;
-  --info: #16b364;
+  --info: #077a41;
   --info-tint: #ecfdf3;
 
   --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04);
@@ -46,8 +55,15 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling is motion too. Everything else in this file is already gated; this
+ * was not, so an in-page jump still animated for someone who asked it not to. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
@@ -156,7 +172,8 @@ body {
     animation-delay: 0ms !important;
   }
   .skeleton::after { animation: none; }
-  html { scroll-behavior: auto; }
+  /* scroll-behavior is now opted into under no-preference above rather than overridden
+   * here, so there is one mechanism instead of two that have to agree. */
 }
 
 @layer components {

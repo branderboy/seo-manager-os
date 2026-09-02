@@ -17,8 +17,11 @@ Non negotiable:
 - Work only inside an approved delivery contract from `docs/contracts/`.
 - Respect the constraints and guardrails the contract names, and report whether the
   guardrails held.
-- Never weaken, skip, or mock away a meaningful test to get a passing run. The colour
-  contrast baseline in `tests/e2e/accessibility.spec.ts` may go down, never up.
+- Never weaken, skip, or mock away a meaningful test to get a passing run. Two in
+  particular: `tests/e2e/accessibility.spec.ts` asserts **zero** axe violations, not a
+  baseline — if it goes red, fix the contrast; and `tests/integration/tenant-isolation.spec.ts`
+  must never be made to pass by connecting as a superuser or table owner, because Postgres
+  exempts both from row level security.
 - Never claim an external service, deployment, or integration works unless it was exercised
   in the right environment. Label every artifact with the environment it came from.
 - The palette in `src/app/globals.css` and the design system in `design/` are approved

@@ -86,7 +86,7 @@ export default function CommandCenterPage() {
       {/* ── Morning Brief — the one-paragraph answer to "what do I do today?" ── */}
       <div className="rounded-xl border border-accent-200 bg-[var(--accent-tint)] p-5">
         <div className="flex items-start gap-3">
-          <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-white">
+          <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white">
             <Sparkles className="h-4 w-4" />
           </span>
           <div>
@@ -129,7 +129,7 @@ export default function CommandCenterPage() {
                     className={cn(
                       "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-sm font-bold tnum transition-colors",
                       c
-                        ? "border-accent-500 bg-accent-500 text-white"
+                        ? "border-accent-500 bg-accent-600 text-white"
                         : "border-[var(--border-strong)] bg-[var(--surface)] text-[var(--faint)]"
                     )}
                   >
@@ -184,7 +184,7 @@ export default function CommandCenterPage() {
           <ul className="flex-1 divide-y divide-[var(--border)] px-5">
             {priorityTasks.map((t) => (
               <li key={t.name} className="flex items-center gap-3 py-3">
-                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-2xs font-bold text-white ${t.priority === "high" ? "bg-rose-500" : t.priority === "medium" ? "bg-amber-500" : "bg-slate-400"}`}>
+                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-2xs font-bold text-white ${t.priority === "high" ? "bg-rose-700" : t.priority === "medium" ? "bg-amber-700" : "bg-slate-600"}`}>
                   {t.due.replace(/[: ].*/, "")}
                 </span>
                 <div className="min-w-0 flex-1">

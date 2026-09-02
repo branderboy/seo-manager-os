@@ -107,7 +107,7 @@ export function GrowthNav() {
                     active ? "bg-slate-900 text-white" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                   )}
                 >
-                  <Icon className={cn("h-3.5 w-3.5", active ? "text-emerald-400" : "text-slate-400")} />
+                  <Icon className={cn("h-3.5 w-3.5", active ? "text-emerald-400" : "text-slate-500")} />
                   {item.label}
                 </Link>
               </li>

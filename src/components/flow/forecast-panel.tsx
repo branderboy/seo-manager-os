@@ -139,7 +139,7 @@ export function ForecastPanel() {
             <h4 className="text-[13px] font-bold uppercase tracking-widest text-slate-500">
               Projection ({horizon} days)
             </h4>
-            <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${edited ? "bg-[#1DA1F2]/10 text-[#1DA1F2]" : "bg-emerald-100 text-emerald-800"}`}>
+            <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${edited ? "bg-[#0C6BA1]/10 text-[#1DA1F2]" : "bg-emerald-100 text-emerald-800"}`}>
               {edited ? "Edited" : "System prediction"}
             </span>
           </div>

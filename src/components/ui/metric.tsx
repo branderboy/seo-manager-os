@@ -15,16 +15,18 @@ const toneSurface: Record<Tone, string> = {
 const toneValue: Record<Tone, string> = {
   default: "text-[var(--foreground)]",
   accent: "text-accent-700",
-  good: "text-[#157552]",
-  warn: "text-[#9a6512]",
-  bad: "text-[#b13a31]",
+  good: "text-[var(--ok-ink)]",
+  warn: "text-[var(--warn-ink)]",
+  bad: "text-[var(--danger-ink)]",
 };
+// No opacity suffixes here. A translucent tone over a tinted fill lands wherever the
+// blend lands, which is how these fell under 4.5:1 in the first place.
 const toneLabel: Record<Tone, string> = {
   default: "text-[var(--muted)]",
-  accent: "text-accent-700/70",
-  good: "text-[#157552]/70",
-  warn: "text-[#9a6512]/75",
-  bad: "text-[#b13a31]/70",
+  accent: "text-accent-700",
+  good: "text-[var(--ok-ink)]",
+  warn: "text-[var(--warn-ink)]",
+  bad: "text-[var(--danger-ink)]",
 };
 const toneIcon: Record<Tone, string> = {
   default: "text-[var(--faint)]",

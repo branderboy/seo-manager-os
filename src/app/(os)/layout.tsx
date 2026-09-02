@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { ViewIndicator } from "@/components/layout/view-indicator";
+import { Announcer } from "@/components/layout/announcer";
 import { EngagementProvider } from "@/components/engagement/store";
 import { TaskStoreProvider } from "@/components/tasks/task-store";
 import { HandoffProvider } from "@/components/flow/handoff-store";
@@ -10,6 +11,7 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
     <EngagementProvider>
       <TaskStoreProvider>
         <HandoffProvider>
+        <Announcer>
         <div className="flex h-screen overflow-hidden bg-[var(--canvas)]">
           <a href="#main-content" className="skip-link">
             Skip to main content
@@ -34,6 +36,7 @@ export default function OsLayout({ children }: { children: React.ReactNode }) {
             </main>
           </div>
         </div>
+        </Announcer>
         </HandoffProvider>
       </TaskStoreProvider>
     </EngagementProvider>

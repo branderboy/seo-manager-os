@@ -85,7 +85,7 @@ export function AuditWorkflow({ gbpOnly = false }: { gbpOnly?: boolean }) {
                     <div className="flex flex-wrap items-center gap-2 text-xs">
                       <span className={severityClass(finding.severity)}>{finding.severity}</span>
                       <span className="rounded-full bg-slate-100 px-2 py-1 font-semibold text-slate-600">{finding.auditType}</span>
-                      <span className="text-slate-400">{campaign?.clientName}</span>
+                      <span className="text-slate-500">{campaign?.clientName}</span>
                     </div>
                     <h3 className="mt-2 text-base font-semibold text-slate-950">{finding.title}</h3>
                     <p className="mt-2 text-sm leading-6 text-slate-600">{finding.recommendation}</p>
@@ -123,4 +123,4 @@ export function AuditWorkflow({ gbpOnly = false }: { gbpOnly?: boolean }) {
 function priorityScore(finding: AuditFinding) { return (finding.impact * finding.confidence) / Math.max(1, finding.effort); }
 function severityPenalty(finding: AuditFinding) { const weight = { low: 7, medium: 14, high: 22, critical: 30 }[finding.severity]; const done = finding.status === "completed" || finding.status === "not_applicable" ? 0 : 1; return weight * done; }
 function severityClass(severity: AuditFinding["severity"]) { if (severity === "critical") return "rounded-full bg-red-100 px-2 py-1 font-semibold text-red-800"; if (severity === "high") return "rounded-full bg-amber-100 px-2 py-1 font-semibold text-amber-800"; if (severity === "medium") return "rounded-full bg-blue-50 px-2 py-1 font-semibold text-blue-700"; return "rounded-full bg-slate-100 px-2 py-1 font-semibold text-slate-600"; }
-function Score({ label, value }: { label: string; value: number }) { return <div className="rounded-lg bg-slate-50 p-2 text-center"><div className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">{label}</div><div className="mt-1 text-base font-semibold text-slate-900">{value}</div></div>; }
+function Score({ label, value }: { label: string; value: number }) { return <div className="rounded-lg bg-slate-50 p-2 text-center"><div className="text-[9px] font-semibold uppercase tracking-wide text-slate-500">{label}</div><div className="mt-1 text-base font-semibold text-slate-900">{value}</div></div>; }

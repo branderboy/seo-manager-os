@@ -213,12 +213,58 @@ function scoreFit(job, skills) {
   return { fit, matched, gaps };
 }
 
+// ── Network policy ────────────────────────────────────────────────────────────
+// Every outbound call is bounded: a request that hangs fails instead of hanging the
+// command, a transient failure is retried with backoff rather than abandoned, and pages
+// are spaced so a multi-page scan does not trip the provider's rate limit.
+const REQUEST_TIMEOUT_MS = 20_000;
+const MAX_ATTEMPTS = 3;
+const RETRY_BASE_MS = 1_000;
+const PAGE_DELAY_MS = 400;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/** Retries only what is worth retrying: timeouts, network errors, 429 and 5xx. */
+async function fetchWithRetry(url, init, label) {
+  let lastError;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(url, { ...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+
+      if (res.status === 429 || res.status >= 500) {
+        // Honour Retry-After when the provider sends one.
+        const retryAfter = Number(res.headers.get("retry-after"));
+        const wait = Number.isFinite(retryAfter) && retryAfter > 0
+          ? retryAfter * 1000
+          : RETRY_BASE_MS * 2 ** (attempt - 1);
+        lastError = new Error(`${label} responded ${res.status}`);
+        if (attempt === MAX_ATTEMPTS) break;
+        console.error(`  ! ${label} ${res.status}, retrying in ${Math.round(wait / 1000)}s (attempt ${attempt}/${MAX_ATTEMPTS})`);
+        await sleep(wait);
+        continue;
+      }
+      return res;
+    } catch (error) {
+      // AbortSignal.timeout throws TimeoutError; a dropped connection throws TypeError.
+      lastError = error;
+      if (attempt === MAX_ATTEMPTS) break;
+      const wait = RETRY_BASE_MS * 2 ** (attempt - 1);
+      const reason = error?.name === "TimeoutError" ? `timed out after ${REQUEST_TIMEOUT_MS / 1000}s` : error?.message;
+      console.error(`  ! ${label} ${reason}, retrying in ${Math.round(wait / 1000)}s (attempt ${attempt}/${MAX_ATTEMPTS})`);
+      await sleep(wait);
+    }
+  }
+  throw new Error(`${label} failed after ${MAX_ATTEMPTS} attempts: ${lastError?.message || lastError}`);
+}
+
 // ── JSearch adapter (swap here for SerpApi / Adzuna later) ────────────────────
 async function fetchJSearch({ q, location, remote, date, pages, key }) {
   const dateMap = { today: "today", "3days": "3days", week: "week", month: "month" };
   const query = location ? `${q} in ${location}` : q;
   const all = [];
   for (let page = 1; page <= pages; page++) {
+    if (page > 1) await sleep(PAGE_DELAY_MS);
+
     const url = new URL("https://jsearch.p.rapidapi.com/search");
     url.searchParams.set("query", query);
     url.searchParams.set("page", String(page));
@@ -226,13 +272,18 @@ async function fetchJSearch({ q, location, remote, date, pages, key }) {
     url.searchParams.set("date_posted", dateMap[date] || "month");
     if (remote) url.searchParams.set("remote_jobs_only", "true");
 
-    const res = await fetch(url, {
-      headers: {
-        "X-RapidAPI-Key": key,
-        "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+    const res = await fetchWithRetry(
+      url,
+      {
+        headers: {
+          "X-RapidAPI-Key": key,
+          "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
+        },
       },
-    });
-    if (res.status === 429) throw new Error("Rate limited by JSearch (429). Slow down or upgrade the plan.");
+      `JSearch page ${page}`,
+    );
+
+    if (res.status === 429) throw new Error("Rate limited by JSearch (429) after retries. Slow down or upgrade the plan.");
     if (!res.ok) throw new Error(`JSearch error ${res.status}: ${await res.text()}`);
     const json = await res.json();
     if (json.status && json.status !== "OK") {

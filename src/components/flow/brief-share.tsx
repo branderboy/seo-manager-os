@@ -17,7 +17,7 @@ export function BriefShare() {
 
   return (
     <div className="overflow-hidden rounded-2xl border-2 border-accent-300 shadow-border">
-      <div className="bg-accent-500 px-5 py-3.5 text-white">
+      <div className="bg-accent-600 px-5 py-3.5 text-white">
         <div className="flex items-center gap-2 text-sm font-semibold">
           <Users className="h-4 w-4" /> Share Project Brief
         </div>

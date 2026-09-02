@@ -41,7 +41,7 @@ export function PushToStrategy() {
                   onClick={() => toggle(c.title)}
                   className={cn(
                     "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors",
-                    on ? "border-accent-500 bg-accent-500 text-white" : "border-slate-300 hover:border-accent-400"
+                    on ? "border-accent-500 bg-accent-600 text-white" : "border-slate-300 hover:border-accent-400"
                   )}
                   aria-label={on ? "Deselect" : "Select"}
                 >
@@ -61,7 +61,7 @@ export function PushToStrategy() {
               setPushed(true);
             }}
             disabled={sel.length === 0}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-accent-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-accent-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
           >
             Push {sel.length} to Project Brief <ArrowRight className="h-4 w-4" />
           </button>

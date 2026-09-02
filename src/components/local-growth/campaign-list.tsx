@@ -19,7 +19,7 @@ export function CampaignList() {
       <div className="rounded-2xl border border-[var(--border)] bg-white shadow-[var(--shadow-card)]">
         <div className="flex flex-col gap-3 border-b border-[var(--border)] p-4 sm:flex-row sm:items-center sm:justify-between">
           <label className="relative block max-w-md flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
             <input className="h-10 w-full rounded-lg border border-[var(--border)] bg-[var(--surface-2)] pl-9 pr-3 text-sm outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100" placeholder="Search clients, markets or trades" />
           </label>
           <div className="flex flex-wrap gap-2 text-xs">

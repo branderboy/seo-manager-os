@@ -52,7 +52,7 @@ export function Sidebar() {
     <aside className="on-feature hidden w-[256px] shrink-0 flex-col bg-[#15181e] text-white lg:flex">
       <div className="flex h-screen flex-col">
         <Link href="/command" className="flex shrink-0 items-center gap-3 px-5 pb-4 pt-6">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-500 text-white shadow-[0_4px_12px_-2px_rgba(22,179,100,0.5)]">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-600 text-white shadow-[0_4px_12px_-2px_rgba(22,179,100,0.5)]">
             <Leaf className="h-5 w-5" />
           </span>
           <span className="flex flex-col text-[15px] font-bold leading-[1.15] tracking-tight">
@@ -104,7 +104,7 @@ export function Sidebar() {
                     >
                       {active && <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-r-full bg-accent-500" />}
                       <span className="min-w-0 flex-1 truncate text-sm font-medium text-white/85">{db.account}</span>
-                      <span className="rounded bg-white/10 px-1.5 py-0.5 text-2xs font-semibold text-white/60">{db.tag}</span>
+                      <span className="rounded bg-white/10 px-1.5 py-0.5 text-2xs font-semibold text-white/75">{db.tag}</span>
                     </Link>
                   </li>
                 );
@@ -114,12 +114,12 @@ export function Sidebar() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2.5 border-t border-white/10 px-4 py-3">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-500 text-2xs font-bold text-white">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-600 text-2xs font-bold text-white">
             {currentUser.initials}
           </span>
           <span className="min-w-0 flex-1 leading-tight">
             <span className="block truncate text-sm font-semibold">{currentUser.name}</span>
-            <span className="block truncate text-2xs text-white/45">SEO Manager</span>
+            <span className="block truncate text-2xs text-white/60">SEO Manager</span>
           </span>
         </div>
       </div>

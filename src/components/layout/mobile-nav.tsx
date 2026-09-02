@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -45,22 +45,80 @@ function isActive(pathname: string, href: string) {
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+
+  // A drawer that covers the page has to behave like a dialog: focus moves into it, Tab
+  // stays inside it, Escape closes it, and focus returns to the button that opened it.
+  useEffect(() => {
+    if (!open) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const trigger = triggerRef.current;
+    const focusable = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter((el) => el.offsetParent !== null);
+
+    focusable()[0]?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = focusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !panel.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      trigger?.focus();
+    };
+  }, [open]);
 
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
+        aria-expanded={open}
+        aria-haspopup="dialog"
         onClick={() => setOpen(true)}
         aria-label="Open menu"
-        className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--surface-3)] lg:hidden"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[var(--ink-soft)] hover:bg-[var(--surface-3)] lg:hidden"
       >
         <Menu className="h-5 w-5" />
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-[var(--foreground)]/30 backdrop-blur-sm" onClick={() => setOpen(false)} />
-          <nav className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto border-r border-[var(--border)] bg-[var(--surface)] shadow-pop">
+          <div
+            className="absolute inset-0 bg-[var(--foreground)]/30 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+            aria-hidden="true"
+          />
+          <nav
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Main navigation"
+            className="absolute left-0 top-0 flex h-full w-[270px] flex-col overflow-y-auto border-r border-[var(--border)] bg-[var(--surface)] shadow-pop"
+          >
             <div className="flex h-14 shrink-0 items-center justify-between border-b border-[var(--border)] px-4">
               <span className="flex items-center gap-2.5">
                 <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent-600 text-xs font-bold text-white">S</span>
@@ -107,7 +165,7 @@ function Group({ items, pathname, onNavigate }: { items: Item[]; pathname: strin
                 <span
                   className={cn(
                     "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] text-2xs font-semibold tnum",
-                    active ? "bg-accent-500 text-white" : "bg-[var(--surface-3)] text-[var(--muted)]"
+                    active ? "bg-accent-600 text-white" : "bg-[var(--surface-3)] text-[var(--muted)]"
                   )}
                 >
                   {it.step}

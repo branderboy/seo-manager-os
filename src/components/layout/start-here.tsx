@@ -23,7 +23,7 @@ export function StartHereCoach() {
       </button>
 
       <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent-500 text-white shadow-sm">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent-600 text-white shadow-sm">
           <Sparkles className="h-7 w-7" />
         </span>
         <div className="flex-1">
@@ -40,7 +40,7 @@ export function StartHereCoach() {
 
         <button
           onClick={dismiss}
-          className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-accent-500 px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-accent-600"
+          className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-accent-600 px-6 text-base font-semibold text-white shadow-sm transition-colors hover:bg-accent-600"
         >
           Begin The Walkthrough
           <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />

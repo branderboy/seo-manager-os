@@ -23,11 +23,19 @@ const config: Config = {
           300: "#6ce9a6",
           400: "#32d583",
           500: "#16b364",
-          600: "#099250",
+          // 600 and darker are the shades used for text on light surfaces, so they carry
+          // the WCAG AA floor. 600 was #099250 (3.58:1 on --surface-3) and now clears 4.5.
+          600: "#077a41",
           700: "#087443",
           800: "#095c37",
           900: "#084c2e",
         },
+        // Stock Tailwind shades used as small text on light grounds in the Local Growth OS
+        // screens. Both failed AA at their default values; darkened to the same floor.
+        // bg-emerald-600 and bg-amber-600 carry white text, which these also improve.
+        slate: { 500: "#5a6980" },
+        emerald: { 600: "#04794e" },
+        amber: { 600: "#ac5300" },
         primary: "#16b364",
         // App canvas + chrome. Sidebar is a hair off-white, surfaces are white.
         canvas: "#f7f8fa",

@@ -206,7 +206,7 @@ export default function LocalDashboard() {
             <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {ROADMAP.map((r, i) => (
                 <li key={r} className="flex items-start gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] p-3.5">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-500 text-xs font-semibold text-white">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent-600 text-xs font-semibold text-white">
                     {i + 1}
                   </span>
                   <span className="text-sm font-medium text-slate-700">{r}</span>

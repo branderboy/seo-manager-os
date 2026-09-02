@@ -5,10 +5,12 @@ import { agents, stageAgents } from "@/lib/agents";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { useDeployState, toggleAgent } from "@/components/agents/deploy-store";
+import { useAnnounce } from "@/components/layout/announcer";
 
 /** Deployable agent chips for a pipeline stage · rendered in each stage's header. */
 export function StageAgents({ stage, className }: { stage?: number; className?: string }) {
   const deployed = useDeployState();
+  const announce = useAnnounce();
   if (typeof stage !== "number") return null;
 
   const slug = STAGES.find((s) => s.n === stage)?.slug;
@@ -39,7 +41,7 @@ export function StageAgents({ stage, className }: { stage?: number; className?: 
           >
             <Icon className="h-3.5 w-3.5" />
             <span className="font-medium">{a.name}</span>
-            <Switch checked={on} onChange={(v) => toggleAgent(a.id, v)} label={`Deploy ${a.name}`} />
+            <Switch checked={on} onChange={(v) => { toggleAgent(a.id, v); announce(`${a.name} ${v ? "deployed" : "stood down"}`); }} label={`Deploy ${a.name}`} />
           </span>
         );
       })}

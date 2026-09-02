@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPersistentStore } from "@/lib/persistent-store";
 import type { Client, Scores } from "@/lib/model";
 import type { PlaybookType } from "@/lib/playbooks";
 
@@ -61,42 +62,22 @@ type Ctx = {
 
 const EngagementContext = React.createContext<Ctx | null>(null);
 
+// Merged onto the default so an engagement saved by an older build gains any new field
+// rather than rendering undefined.
+const store = createPersistentStore<Engagement>(KEY, DEFAULT_ENGAGEMENT, (raw) => ({
+  ...DEFAULT_ENGAGEMENT,
+  ...JSON.parse(raw),
+}));
+
 export function EngagementProvider({ children }: { children: React.ReactNode }) {
-  const [engagement, setEngagementState] = React.useState<Engagement>(DEFAULT_ENGAGEMENT);
+  const engagement = store.useValue();
 
-  // Load any saved engagement after mount (avoids SSR hydration mismatch).
-  React.useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(KEY);
-      if (raw) setEngagementState({ ...DEFAULT_ENGAGEMENT, ...JSON.parse(raw) });
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const setEngagement = React.useCallback((e: Engagement) => {
-    setEngagementState(e);
-    try {
-      window.localStorage.setItem(KEY, JSON.stringify(e));
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  const reset = React.useCallback(() => {
-    setEngagementState(DEFAULT_ENGAGEMENT);
-    try {
-      window.localStorage.removeItem(KEY);
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  return (
-    <EngagementContext.Provider value={{ engagement, setEngagement, reset }}>
-      {children}
-    </EngagementContext.Provider>
+  const value = React.useMemo<Ctx>(
+    () => ({ engagement, setEngagement: store.write, reset: store.clear }),
+    [engagement],
   );
+
+  return <EngagementContext.Provider value={value}>{children}</EngagementContext.Provider>;
 }
 
 export function useEngagement(): Ctx {

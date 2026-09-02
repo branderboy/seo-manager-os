@@ -16,7 +16,7 @@ accepted by the human owner as a known limitation.
 | ID | Workflow | Risk | Workflow spec | Status | Note for this repository |
 |---|---|---|---|---|---|
 | AUTH-001 | Sign up, verification, login, logout, reset, sessions | Critical | authentication.md | Draft, unfilled | First. Nothing else can be secured before there is a user. |
-| ORG-001 | Organization creation, membership, roles, tenant isolation | Critical | tenant-isolation.md | Draft, unfilled | Second, and the decision that most determines whether this app survives customers. Decide the tenant model *inside* this contract, before any backend code. |
+| ORG-001 | Organization creation, membership, roles, tenant isolation | Critical | tenant-isolation.md | Draft, unfilled — **but its acceptance criteria are already met** | The tenant model is decided, executed and tested: `tests/integration/tenant-isolation.spec.ts`, blocking in CI. This contract's remaining scope is wiring the application to the boundary, not designing or proving it. One rule must survive that work: never issue the application a service-role key. |
 | CORE-001 | The Engagement end to end — one agency's work on one client | Critical | core-workflow.md | Draft, unfilled | The workflow spec is written for this product; the contract is not. |
 | ADMIN-001 | Invite, role change, suspension, restore, removal, audit | Critical | user-roles.md | Draft, unfilled | Keep minimal. `docs/SOURCE_OF_TRUTH.md` records multi-seat roles as deliberately low priority. |
 | FILES-001 | Secure upload, storage policy, authorized download, deletion | Critical | tenant-isolation.md | Draft, unfilled | Covers two real needs here: crawl and Lighthouse uploads, and the read-only client share links. |
@@ -29,6 +29,12 @@ accepted by the human owner as a known limitation.
 **Every contract above is an unfilled starter form.** None has been drafted for this product,
 approved, implemented or verified. That is the accurate status, and
 `docs/production/WORKFLOW-RISK-REGISTER.md` records what each one blocks.
+
+ORG-001 is a special case worth reading carefully rather than skimming: the *work* its
+acceptance criteria describe has been done and is enforced in CI, while the contract itself
+has not been written. That is the right way round — evidence before paperwork beats paperwork
+before evidence — but it does mean the contract, when written, should describe what remains
+(wiring) rather than restate what is already proven.
 
 Drop FILES-001 or BILLING-001 if the product genuinely has no file handling or no payments.
 Do not drop AUTH-001, ORG-001, OBS-001, or AUDIT-001.

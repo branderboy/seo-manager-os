@@ -8,14 +8,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { integrations as seed, integrationCategories } from "@/lib/integrations";
 import type { Integration } from "@/lib/integrations";
+import { useAnnounce } from "@/components/layout/announcer";
 
 export function IntegrationsView() {
   const [items, setItems] = React.useState<Integration[]>(seed);
   const [pending, setPending] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");
+  const announce = useAnnounce();
+
+  const nameOf = (id: string) => items.find((i) => i.id === id)?.name ?? "Integration";
 
   const connect = (id: string) => {
     setPending(id);
+    announce(`Connecting ${nameOf(id)}`);
     // Simulate an OAuth / handshake round-trip so it feels real.
     setTimeout(() => {
       setItems((prev) =>
@@ -32,11 +37,14 @@ export function IntegrationsView() {
         )
       );
       setPending(null);
+      announce(`${nameOf(id)} connected`);
     }, 900);
   };
 
-  const disconnect = (id: string) =>
+  const disconnect = (id: string) => {
     setItems((prev) => prev.map((i) => (i.id === id ? { ...i, connected: false } : i)));
+    announce(`${nameOf(id)} disconnected`);
+  };
 
   const connectedCount = items.filter((i) => i.connected).length;
   const filtered = items.filter(

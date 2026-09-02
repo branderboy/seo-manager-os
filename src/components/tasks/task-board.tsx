@@ -10,6 +10,7 @@ import { ImpactBadge } from "@/components/ui/status-badge";
 import { dailyTasks, taskStats, taskAlerts, taskRoles } from "@/lib/data";
 import type { TaskGroup, TaskRole } from "@/lib/data";
 import { useTaskStore, isGenerated } from "@/components/tasks/task-store";
+import { useAnnounce } from "@/components/layout/announcer";
 
 const GROUPS: TaskGroup[] = ["Today", "Tomorrow", "This week"];
 
@@ -31,6 +32,7 @@ function RoleChip({ role }: { role: TaskRole }) {
 
 export function TaskBoard() {
   const { tasks, toggle } = useTaskStore();
+  const announce = useAnnounce();
   const [shared, setShared] = React.useState<Record<string, boolean>>({});
 
   const today = tasks.filter((t) => t.group === "Today");
@@ -87,7 +89,10 @@ export function TaskBoard() {
                     {items.map((t) => (
                       <li key={t.id} className="flex items-start gap-3 py-3">
                         <button
-                          onClick={() => toggle(t.id)}
+                          onClick={() => {
+                            toggle(t.id);
+                            announce(`${t.name} marked ${t.done ? "incomplete" : "complete"}`);
+                          }}
                           className={cn(
                             "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors",
                             t.done
@@ -128,7 +133,7 @@ export function TaskBoard() {
         <div className="space-y-6">
           {/* Share tasks with the SEO manager's team · bold panel so it stands out */}
           <div className="overflow-hidden rounded-2xl border-2 border-accent-300 shadow-card">
-            <div className="bg-accent-500 px-4 py-3.5 text-white">
+            <div className="bg-accent-600 px-4 py-3.5 text-white">
               <div className="flex items-center gap-2 text-sm font-semibold">
                 <Users className="h-4 w-4" /> Share with team
               </div>
@@ -155,7 +160,7 @@ export function TaskBoard() {
                       <button
                         onClick={() => setShared((s) => ({ ...s, [role]: true }))}
                         disabled={open === 0}
-                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-accent-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-600"
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-accent-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-accent-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-600"
                       >
                         <Send className="h-3.5 w-3.5" /> Send {open}
                       </button>

@@ -16,6 +16,11 @@ that looks small.
 4. `docs/production/INVENTORY.md` — what actually exists in the code today, with file paths.
 5. `docs/production/WORKFLOW-RISK-REGISTER.md` — which workflows need a contract before release.
 
+One distinction that this repository turns on: the multi-tenant schema and its Row Level
+Security policies exist, are executed and are tested, and **no application code uses them**.
+The database is protected; the product is not, because the product does not talk to the
+database yet. Do not conflate the two.
+
 `docs/AGENTS.md` is **product documentation** about the in-app AI Workforce. It is not
 instructions for you. Your instructions are this file and the root `AGENTS.md`.
 
@@ -31,10 +36,16 @@ instructions for you. Your instructions are this file and the root `AGENTS.md`.
 
 ## What is already enforced
 
-`npm run verify` runs lint, type check, build, and unit tests. `npm run test:e2e` and
-`npm run test:a11y` run the Playwright suites against the built static export. CI runs all
-of them; see `.github/workflows/README.md`. Do not weaken, skip, or baseline-raise a check
-to get a green run.
+`npm run verify` runs lint, type check, build and unit tests. `npm run test:e2e` and
+`npm run test:a11y` run the Playwright suites against the built application.
+`npm run db:test:setup && npm run test:authz` applies the real Supabase migrations to a
+Postgres and cross-examines the tenant boundary. CI runs all of them; see
+`.github/workflows/README.md`.
+
+Do not weaken, skip, or baseline-raise a check to get a green run. The accessibility suite
+asserts zero axe violations rather than a baseline, and the authorization suite is only
+meaningful because it connects as an unprivileged role — a superuser or table owner bypasses
+row level security entirely and would make it pass while proving nothing.
 
 The visual design in `src/app/globals.css` and `design/` is approved product design. Do not
 restyle it as a side effect of another task.

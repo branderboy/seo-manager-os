@@ -1,60 +1,28 @@
-# Multi tenant test fixtures
+# The two tenant baseline
 
-The CI baseline from section 6 of `WORLD_CLASS_APP_THESIS.md`. Every authorization and
-isolation test runs against these. One organization is not enough to prove isolation.
+Every authorization test runs against two organizations, because a boundary tested from
+inside one tenant is not tested at all: with no one else's data present, every query
+trivially returns "your own" rows and the test passes whether or not the policy works.
 
-This follows the OWASP Authorization Regression Testing approach: provision two tenants,
-seed data into Alpha, run broad read queries as a Beta user, and treat a single leaked
-record identifier as a critical failure rather than a minor bug.
-https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Regression_Testing_Cheat_Sheet.html
+| Fixture | Id | Notes |
+|---|---|---|
+| Organization Alpha — Local Growth Lab | `10000000-…-000000000001` | The demo organization from `supabase/seed.sql`. Three clients. |
+| Organization Beta — Beta Search Partners | `10000000-…-0000000000b1` | Exists only in the test fixture. One client. |
+| Alpha admin | `30000000-…-0000000000a1` | `agency_admin` in Alpha |
+| Alpha strategist | `30000000-…-0000000000a2` | `seo_strategist` in Alpha |
+| Alpha client viewer | `30000000-…-0000000000a3` | `client_viewer` in Alpha, scoped to Capital Comfort only |
+| Beta admin | `30000000-…-0000000000b1` | `agency_admin` in Beta |
+| No-roles user | `30000000-…-0000000000c1` | Authenticated and entitled to nothing |
 
-```md
-Organization Alpha:
-- Alpha admin
-- Alpha member
-- Alpha owned records
+Defined in `supabase/test/01_two_tenant_fixture.sql`. Applied by
+`scripts/db-test-setup.sh`, which also applies the real migrations from
+`supabase/migrations/` and the Supabase shim in `supabase/test/00_supabase_shim.sql`.
 
-Organization Beta:
-- Beta admin
-- Beta member
-- Beta owned records
+## The rule that makes these tests real
 
-Platform admin:
-- Privileged platform level account, only where applicable
-```
-
-## Seed expectations
-
-| Fixture | Purpose |
-|---|---|
-| alpha.admin | Performs administrative actions inside Alpha |
-| alpha.member | Baseline authorized user |
-| alpha.suspended | Suspended account with a live session, for stale access tests |
-| beta.admin | Proves an admin of one organization cannot administer another |
-| beta.member | Target for cross tenant attempts |
-| alpha.record | A record whose ID is used in Beta's forged requests |
-| beta.record | A record whose ID is used in Alpha's forged requests |
-| beta.file | A stored object used for cross tenant storage path attempts |
-
-## Required assertions in CI
-
-- Unauthenticated requests are rejected.
-- A member cannot perform admin actions.
-- A user cannot read another tenant's records.
-- A user cannot edit another tenant's records.
-- A user cannot delete another tenant's records.
-- A user cannot export another tenant's records.
-- A user cannot access another tenant's private files.
-- A suspended user loses intended access, including on an open session.
-- A role change takes effect correctly.
-- Sensitive endpoints enforce authorization server side.
-- Duplicate webhooks and jobs do not duplicate side effects.
-- Provider errors are handled safely.
-
-## Implementation note
-
-The seed script itself is application specific. Write it once, keep it in this folder, and
-have every integration and end to end suite use it rather than creating ad hoc users, which
-is how isolation tests quietly stop covering the boundary.
-
-> Not in use. This application has no tenancy today. See `../integration/README.md`.
+Postgres exempts superusers and table owners from row level security. A policy test that
+connects as the owner passes without exercising a single policy. `scripts/db-test-setup.sh`
+therefore creates a separate `authenticated` login role with plain table grants, and
+`tests/integration/tenant-isolation.spec.ts` asserts up front that its own connection is
+neither a superuser nor the owner. If that assertion is ever removed, the rest of the file
+stops meaning anything.

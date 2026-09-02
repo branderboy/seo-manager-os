@@ -78,7 +78,7 @@ export function ReportShare({
             {status === "draft" && (
               <button
                 onClick={() => setStatus("pending")}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-accent-500 px-3 py-2 text-sm font-medium text-white hover:bg-accent-600"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-accent-600 px-3 py-2 text-sm font-medium text-white hover:bg-accent-600"
               >
                 <Send className="h-4 w-4" /> Send to {manager} for approval
               </button>
@@ -133,7 +133,7 @@ function StepLabel({ n, done, locked, children }: { n: number; done?: boolean; l
       <span
         className={cn(
           "flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold",
-          done ? "bg-emerald-500 text-white" : locked ? "border border-[var(--border)] text-slate-300" : "bg-accent-500 text-white"
+          done ? "bg-emerald-500 text-white" : locked ? "border border-[var(--border)] text-slate-300" : "bg-accent-600 text-white"
         )}
       >
         {done ? <Check className="h-3.5 w-3.5" /> : n}

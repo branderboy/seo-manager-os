@@ -172,7 +172,7 @@ export function DiscoveryWizard() {
                         active ? "border-accent-300 bg-accent-50 shadow-soft" : "border-[var(--border)] bg-white hover:border-slate-300"
                       )}
                     >
-                      <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", active ? "bg-accent-500 text-white" : "bg-slate-100 text-slate-700")}>
+                      <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", active ? "bg-accent-600 text-white" : "bg-slate-100 text-slate-700")}>
                         <Icon className="h-5 w-5" />
                       </span>
                       <span className="text-sm font-medium text-slate-800">{m.label}</span>
@@ -263,7 +263,7 @@ export function DiscoveryWizard() {
                     i === step ? "bg-accent-50 font-medium text-accent-700" : "text-slate-700 hover:bg-slate-50"
                   )}
                 >
-                  <span className={cn("flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold", i < step ? "bg-emerald-500 text-white" : i === step ? "bg-accent-500 text-white" : "bg-slate-100 text-slate-700")}>
+                  <span className={cn("flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold", i < step ? "bg-emerald-500 text-white" : i === step ? "bg-accent-600 text-white" : "bg-slate-100 text-slate-700")}>
                     {i < step ? <Check className="h-3 w-3" /> : i + 1}
                   </span>
                   <span className="truncate">{s}</span>
@@ -316,7 +316,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
         active ? "border-accent-300 bg-accent-50 text-accent-700 shadow-soft" : "border-[var(--border)] bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50"
       )}
     >
-      <span className={cn("flex h-4 w-4 items-center justify-center rounded-[5px] border", active ? "border-accent-500 bg-accent-500 text-white" : "border-slate-300")}>
+      <span className={cn("flex h-4 w-4 items-center justify-center rounded-[5px] border", active ? "border-accent-500 bg-accent-600 text-white" : "border-slate-300")}>
         {active && <Check className="h-3 w-3" />}
       </span>
       {children}

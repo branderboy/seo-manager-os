@@ -64,7 +64,7 @@ export default function WorkflowPage() {
                   className={cn(
                     "z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-sm font-bold tnum shadow-card",
                     status === "done" && "bg-[var(--ok)] text-white",
-                    status === "current" && "bg-accent-500 text-white ring-4 ring-accent-100",
+                    status === "current" && "bg-accent-600 text-white ring-4 ring-accent-100",
                     status === "upcoming" && "border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--faint)]"
                   )}
                 >
@@ -182,7 +182,7 @@ export default function WorkflowPage() {
         href="/diagnosis"
         className="group flex items-center gap-3 rounded-xl border border-accent-200 bg-[var(--accent-tint)] px-4 py-3.5 transition-colors hover:border-accent-300"
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-white">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white">
           <RotateCw className="h-4 w-4" />
         </span>
         <span className="min-w-0 flex-1 text-sm text-[var(--ink-soft)]">

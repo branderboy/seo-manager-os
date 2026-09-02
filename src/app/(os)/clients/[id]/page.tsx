@@ -39,13 +39,14 @@ const NAV = [
   { id: "files", label: "Files & Notes" },
 ];
 
-export default function ClientRecordPage({ params }: { params: { id: string } }) {
-  const client = clientById(params.id);
-  const profile = clientProfiles[params.id];
+export default async function ClientRecordPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const client = clientById(id);
+  const profile = clientProfiles[id];
   if (!client || !profile) notFound();
 
-  const people = peopleForClient(params.id);
-  const records = investigationsForClient(params.id);
+  const people = peopleForClient(id);
+  const records = investigationsForClient(id);
   const risk = riskForClient(client);
 
   const scoreStats = [

@@ -10,9 +10,9 @@ const badgeVariants = cva(
       variant: {
         default: "bg-[var(--surface-3)] text-[var(--ink-soft)] ring-[var(--border)]",
         accent: "bg-[var(--accent-tint)] text-[var(--accent-ink)] ring-accent-200",
-        good: "bg-[var(--ok-tint)] text-[#157552] ring-emerald-200/70",
-        warn: "bg-[var(--warn-tint)] text-[#9a6512] ring-amber-200/70",
-        bad: "bg-[var(--danger-tint)] text-[#b13a31] ring-rose-200/70",
+        good: "bg-[var(--ok-tint)] text-[var(--ok-ink)] ring-emerald-200/70",
+        warn: "bg-[var(--warn-tint)] text-[var(--warn-ink)] ring-amber-200/70",
+        bad: "bg-[var(--danger-tint)] text-[var(--danger-ink)] ring-rose-200/70",
         outline: "bg-[var(--surface)] text-[var(--ink-soft)] ring-[var(--border-strong)]",
         solid: "bg-accent-600 text-white ring-transparent",
       },

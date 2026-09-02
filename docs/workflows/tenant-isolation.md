@@ -2,16 +2,21 @@
 
 Contract: `ORG-001`. Risk: Critical. This is the workflow that decides whether the product
 
-> **Status in this repository: this workflow does not exist yet.**
+> **Status in this repository: enforced in the database, not yet used by the application.**
 >
-> There is no tenancy. The client switcher is a view filter over mock data and has no
-> security property whatsoever, which `ARCHITECTURE_DECISIONS.md` states explicitly so a
-> future backend does not inherit it as if it were a boundary.
+> The boundary exists and is proven. `supabase/migrations/` puts `organization_id` on every
+> tenant table and enforces it with 194 Row Level Security policies, with `client_id` scoping
+> for client-facing roles and matching policies on the `client-assets` bucket. Those
+> migrations are applied to a live Postgres on every pull request and cross-examined by 22
+> tests in `tests/integration/tenant-isolation.spec.ts`, in a blocking CI job. Disabling RLS
+> on one table turns 8 of them red.
 >
-> This document is the delivery standard's starter specification, kept as the target. It is
-> not a description of the application as built. See `docs/production/INVENTORY.md` for what
-> exists, and `docs/production/WORKFLOW-RISK-REGISTER.md` for the trigger that turns this
-> into a release blocker.
+> What does **not** exist: any application code that queries that database. Every screen still
+> renders mock data, and the client switcher remains a view filter with no security property
+> — `ARCHITECTURE_DECISIONS.md` says so explicitly so nobody inherits it as a boundary.
+>
+> So read the sections below as the target for wiring, not as a description of what the
+> running product enforces. `docs/production/WORKFLOW-RISK-REGISTER.md` holds the rule.
 can be sold to more than one customer.
 
 ## The rule

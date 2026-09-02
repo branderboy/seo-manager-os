@@ -20,7 +20,7 @@ that proves the work moved something. See `PRODUCT_BRIEF.md`.
 
 ## Current shape, in one paragraph
 
-One Next.js 14 App Router codebase holding **two products**: SEO Manager OS, the original
+One Next.js 16 App Router codebase holding **two products**: SEO Manager OS, the original
 nine-stage investigation pipeline, and Local Growth OS (`/growth`), a multi-tenant local
 campaign-management and client-reporting layer. 62 prerendered routes. No server process, no
 live database, no authentication, no API route and no server action. All data is mock data
@@ -31,18 +31,20 @@ it is public. `docs/production/INVENTORY.md` is the file-by-file account.
 **The one qualification, and it matters:** `next.config.mjs` no longer forces
 `output: "export"` everywhere. `GITHUB_PAGES=true` builds the static Pages demo; every other
 build is a standard Next.js server build. And 1,359 lines of Supabase SQL — schema, RLS
-policies, storage policies and a seed — now sit in `supabase/`. The framework and the schema
-are both ready for a backend. **Neither is connected to anything**: `grep -rl supabase src`
-returns nothing, and `@supabase/supabase-js` is not a dependency.
+policies, storage policies and a seed — now sit in `supabase/`, **executed and tested on
+every pull request**. The framework is ready for a backend and the tenant boundary is
+proven. **Neither is connected to the application**: `grep -rl supabase src` returns
+nothing, and `@supabase/supabase-js` is not a dependency. Proving the boundary and using it
+are separate milestones; only the first has happened.
 
 ## Major components
 
 | Component | Choice | Why | Alternative rejected |
 |---|---|---|---|
-| Frontend | Next.js 14 App Router, React 18, TypeScript strict, Tailwind CSS, shadcn-style primitives in `src/components/ui`, Recharts, lucide-react | Server components keep the data-dense screens cheap to render, and the App Router gives the stage routes a natural shape. Tailwind plus local primitives keeps the design system in the repository rather than in a vendor's. | A component library with its own opinions (MUI, Chakra) — the design in `design/` and `src/app/globals.css` is deliberate and would have been fought at every step. |
+| Frontend | Next.js 16 App Router, React 18, TypeScript strict, Tailwind CSS, shadcn-style primitives in `src/components/ui`, Recharts, lucide-react | Server components keep the data-dense screens cheap to render, and the App Router gives the stage routes a natural shape. Tailwind plus local primitives keeps the design system in the repository rather than in a vendor's. | A component library with its own opinions (MUI, Chakra) — the design in `design/` and `src/app/globals.css` is deliberate and would have been fought at every step. |
 | Backend or API | **None in code.** `next.config.mjs` builds in server mode by default and only exports for GitHub Pages, so Server Actions and Route Handlers are now *available* — nothing uses them. | The product is at the stage of proving the operating loop reads correctly to an SEO lead. A backend built before that is a backend built for the wrong loop. Removing the global `output: "export"` constraint is the right preparation without being the commitment. | Building the API first. |
-| Database | **Supabase Postgres, decided and schemad, not connected.** ~50 tables plus RLS and storage policies in `supabase/migrations/`. `prisma/schema.prisma` is the delivery standard's starter schema, superseded and unwired. | Supabase gives Postgres, Auth, Storage and row-level policies in one place, and RLS puts the tenant boundary in the database rather than in application code — which is the right place for the control this product most depends on. | Prisma plus a hand-rolled auth layer, which would have left tenant scoping in application code. |
-| Authentication provider | **Supabase Auth, intended. Nothing implemented.** `/growth/login` is a role picker with published demo credentials and no authentication behind it. | Same reason as the database: one provider, and sessions that RLS can read. | — |
+| Database | **Supabase Postgres. Schemad, executed, tested, not yet connected.** 50 tables plus 194 RLS and storage policies in `supabase/migrations/`, applied and exercised by 22 authorization tests in CI. `prisma/schema.prisma` is the delivery standard's starter schema, superseded and unwired. | Supabase gives Postgres, Auth, Storage and row-level policies in one place, and RLS puts the tenant boundary in the database rather than in application code — which is the right place for the control this product most depends on. | Prisma plus a hand-rolled auth layer, which would have left tenant scoping in application code. |
+| Authentication provider | **Supabase Auth, intended. Nothing implemented.** `/growth/login` is a workspace selector that says on screen that it authenticates nothing. The policies already read `auth.uid()`, so AUTH-001's job is to populate that claim, not to design around it. | Same reason as the database: one provider, and sessions that RLS can read. | — |
 | File storage | **None.** The upload affordances in `src/components/investigation/evidence-panel.tsx` do not upload. | — | — |
 | Email provider | **None.** The invite form in `src/components/discovery/client-invite.tsx` sends nothing. | — | — |
 | Payment provider | **None.** Pricing and packaging are recorded as undecided in `docs/SOURCE_OF_TRUTH.md`. | — | — |
@@ -97,33 +99,49 @@ important change in it.** A tenant model has now been *designed*. It has not bee
 - **This is the right shape.** RLS in the database is exactly what the earlier version of
   this section said to reach for and named the failure mode of not having: "a shared
   database with an `organizationId` column and no row-level policy".
-- **How the current organization is resolved on the server:** it is not. There is no server
-  and no session. The design assumes Supabase Auth; nothing implements it.
-- **How every server side query is scoped to the tenant:** there are no server-side queries.
+- **Whether row level security or an equivalent policy control exists:** **yes, and it is
+  now proven.** 194 policies; RLS enabled on every one of the 50 public tables; the
+  migrations execute from empty, the seed applies, and 22 authorization tests cross-examine
+  the boundary on every pull request. Disabling RLS on a single table turns 8 of them red,
+  so the suite is not decoration.
+- **What the tests establish:** an agency member reads only their own organization, whether
+  they list rows or name a foreign id directly; a `client_viewer` reads only the one client
+  they are attached to and cannot alter internal findings; a user with no role, and a
+  request with no identity at all, read nothing; cross-tenant insert, update, ownership
+  transfer and self-granted roles are refused; and `client-assets` storage objects follow
+  the same `<organization_id>/<client_id>` scope for both read and upload.
+- **What the tests deliberately assert about themselves:** that the connection is neither a
+  superuser nor a table owner. Postgres exempts both from RLS, and a policy suite run as the
+  owner passes every assertion without evaluating a single policy. That is the most common
+  way this kind of test lies, so the suite fails rather than lies.
+- **How the current organization is resolved on the server:** it is not, yet. There is no
+  server and no session. The policies read `auth.uid()`; AUTH-001's job is to populate that
+  claim from a real Supabase session.
+- **How every server side query is scoped to the tenant:** there are no server-side queries
+  yet. When there are, they are scoped by the database refusing them, not by the query
+  remembering to filter.
 - **How tenant switching works today:** the client switcher
   (`src/components/engagement/store.tsx`) and the Local Growth OS campaign selectors change
   which mock record the UI renders. They are view filters, not security boundaries, and must
   never be mistaken for one.
 - **Which records are global versus tenant owned:** in the schema, everything under an
-  organization is tenant owned. In the running application, everything is global and public.
-- **Whether row level security or an equivalent policy control exists:** **written, never
-  executed.** No migration has been run in this repository, no seed applied, and no test
-  exercises a single policy.
+  organization is tenant owned. In the running application, everything is still mock data
+  and public.
 
-**The decision this section now records:** the tenant model is *decided in SQL and unproven
-in fact*. That is a better position than undecided and a worse one than it looks, because a
-policy nobody has run is a hypothesis that reads like a control. ORG-001 must therefore not
-be a design exercise any more — it must be the contract that **executes** these migrations,
-seeds two organizations, and proves with tests that organization A cannot read organization
-B by altered id, by altered request body, or through storage. Until those tests exist and
-run in CI, treat the tenant boundary as absent.
+**The decision this section now records:** the tenant model is decided, executed and tested.
+What remains is wiring — the application does not yet go through it. ORG-001 is therefore no
+longer a design or a proof exercise; it is the contract that connects the application to the
+boundary that already works, and it must keep the `authorization` CI job blocking while it
+does. The suite lives at `tests/integration/tenant-isolation.spec.ts`; the harness that lets
+Supabase migrations run on plain Postgres is `supabase/test/`, which is test-only and never
+applied to a real database.
 
 ## Trust boundaries
 
 | Boundary | What crosses it | Validation and authorization applied |
 |---|---|---|
 | Client to server | Nothing. There is no server, although the build no longer prevents one. | n/a |
-| Server to database | Nothing yet. When it exists, the intended boundary is Supabase RLS: the database refuses cross-tenant reads rather than trusting the query. | Policies written in `supabase/migrations/`, **never executed or tested.** |
+| Server to database | Nothing yet. When it exists, the boundary is Supabase RLS: the database refuses cross-tenant reads rather than trusting the query. | Policies in `supabase/migrations/`, executed and exercised by 22 tests in the blocking `authorization` CI job. |
 | Server to external provider | Nothing from the web app. From the CLI scanner: a search query and a RapidAPI bearer key. | Key read from a git-ignored `.env`; never bundled. |
 | Webhook provider to server | Nothing. | n/a |
 | Admin actions | None exist. | n/a |
@@ -217,8 +235,11 @@ they are recorded here rather than left implicit.
 | The delivery standard's integration, migration and authorization CI jobs are **absent**, not present and skipping | A job that cannot run is not a passing job. `.github/workflows/README.md` records what each one is waiting for. |
 | `tests/integration/tenant-isolation.spec.ts` and `tests/fixtures/seed.ts` are kept but excluded from `tsconfig.json` and every CI job | They are the standard's originals, held for the backend. They are not coverage and are labelled as such in `tests/integration/README.md`. |
 | Prettier and `format:check` are **not** adopted | Adopting a formatter mid-verification would reformat the whole codebase inside a change whose job was to prove the application works. ESLint is the enforced style gate. Adopt Prettier deliberately, in its own commit. |
-| Colour contrast is ratcheted rather than fixed | The palette in `src/app/globals.css` is approved product design. Rewriting 82 colour decisions is a design change and belongs to the owner, not to a verification pass. The baseline can go down and never up. |
-| Next.js stays on 14.2.35 | The five remaining high-severity advisories all require Next.js 16, a major upgrade. Every one concerns a server-side feature that a static export does not have. Assessed in `docs/audits/security-audit.md`; the upgrade is the owner's call. |
+| The palette was corrected rather than ratcheted | Every text colour now clears 4.5:1 against every surface it is painted on. The change is confined to token values and two Tailwind shade overrides, so the design's structure, hierarchy and hue choices are intact; what changed is how dark the quiet greys and the small accent text are. One consequence is honest to record: `--muted` and `--faint` sit closer together than they did, because a light grey on a light ground cannot be both very light and readable. |
+| White text moved off `accent-500` onto `accent-600` | White on the brand green was 2.74:1. Rather than darken the brand itself — it is the product's identity and is used for fills, rings and dots where contrast does not apply — the 25 places that paint white text on it moved one step down the scale. |
+| Next.js upgraded 14 → 16 | It cleared all five high-severity advisories: `npm audit` now reports zero. It also cost an ESLint 9 flat-config migration, the loss of `next lint`, six `react-hooks/set-state-in-effect` fixes, and an async-`params` migration in four dynamic routes that the e2e suite caught 404ing. |
+| Three `localStorage` stores moved to `useSyncExternalStore` | The read-in-an-effect-then-setState pattern costs a cascading render on every mount and never notices a write from another tab. `src/lib/persistent-store.ts` does neither, and keeps storage a best-effort mirror so the state still works when a browser refuses it. |
+| The Supabase migrations are executed in CI against plain Postgres | A policy nobody has run is a hypothesis that reads like a control. `supabase/test/00_supabase_shim.sql` recreates the small Supabase surface the migrations reference (`auth.users`, `auth.uid()`, the storage schema) so the real SQL can run without a Supabase instance. It is a test harness, never applied to a real database, and it is the difference between a designed boundary and a proven one. |
 
 ## Decision log
 
@@ -238,4 +259,6 @@ they are recorded here rather than left implicit.
 | 2026-08-30 | AI output is draft-only, must retain source data, must label assumptions, and must never fabricate credentials, service areas, pricing, reviews, rankings or results | Extends the earlier no-auto-publishing decision into a checkable rule (`src/lib/local-growth/ai-guardrails.ts`) | Product | — |
 | 2026-08-30 | Data providers sit behind a typed `Connector<T>` adapter with an explicit `mock` / `live` mode; an unavailable source is shown as unavailable rather than filled in | "Never hide an unavailable source by manufacturing data" — grounded scoring, applied to ingestion | Engineering | — |
 | 2026-09-02 | Install the delivery standard and adapt its CI to this stack | The application had no tests and no CI | Engineering | — |
-| 2026-09-02 | ORG-001 must **execute and test** the existing RLS policies, not design them | The design landed on 2026-08-30. What is missing is proof, and an unrun policy reads like a control. | Engineering | — |
+| 2026-09-02 | The RLS policies are executed and tested in CI; ORG-001's remaining job is to wire the application to them | A policy nobody has run is a hypothesis. Running them turned the tenant model from a design into a control. | Engineering | Supersedes the note that the tenant model was undecided |
+| 2026-09-02 | Upgrade to Next.js 16 and ESLint 9 rather than accept the advisories | Five high-severity advisories had no in-major fix. `npm audit` now reports zero. | Engineering | — |
+| 2026-09-02 | Correct the palette to WCAG AA instead of ratcheting the failures | 184 contrast failures were a real barrier for low-vision users on the product's daily working surface, and token values could be fixed without touching the design's structure. | Product and Engineering | Supersedes the 2026-09-02 decision to ratchet |

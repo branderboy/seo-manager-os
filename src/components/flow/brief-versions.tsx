@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { History, Plus, Check, RotateCcw, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAnnounce } from "@/components/layout/announcer";
 
 type Version = { version: string; note: string; author: string; at: string };
 
@@ -21,6 +22,7 @@ function nowLabel() {
 
 export function BriefVersions() {
   const [versions, setVersions] = useState<Version[]>(SEED);
+  const announce = useAnnounce();
   const [currentVer, setCurrentVer] = useState("v3");
   const [adding, setAdding] = useState(false);
   const [note, setNote] = useState("");
@@ -37,6 +39,7 @@ export function BriefVersions() {
     };
     setVersions((vs) => [v, ...vs]);
     setCurrentVer(v.version);
+    announce(`Saved ${v.version} of the project brief`);
     setNote("");
     setAdding(false);
   };
@@ -57,7 +60,7 @@ export function BriefVersions() {
         {!adding && (
           <button
             onClick={() => setAdding(true)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-[#1DA1F2] px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-600"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-[#0C6BA1] px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-600"
           >
             <Plus className="h-4 w-4" /> Save new version
           </button>

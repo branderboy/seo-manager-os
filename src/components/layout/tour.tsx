@@ -1,9 +1,18 @@
 "use client";
 
 import * as React from "react";
+import { createPersistentStore } from "@/lib/persistent-store";
 
 const FURTHEST_KEY = "smos.tour.furthest";
 const SEEN_KEY = "smos.tour.seen";
+
+// `seen` defaults to true so the one-time tip does not flash on the server render before
+// storage has been read. Both "1" (written by earlier builds) and "true" count as seen.
+const furthestStore = createPersistentStore<number>(FURTHEST_KEY, 1, (raw) => {
+  const value = Number(raw);
+  return Number.isFinite(value) && value >= 1 ? value : 1;
+});
+const seenStore = createPersistentStore<boolean>(SEEN_KEY, true, (raw) => raw === "1" || raw === "true");
 
 /**
  * Lightweight tour memory persisted in localStorage:
@@ -11,38 +20,17 @@ const SEEN_KEY = "smos.tour.seen";
  *  - `seen`: whether the one-time "Start here" tip has been dismissed.
  */
 export function useTour() {
-  const [furthest, setFurthest] = React.useState(1);
-  const [seen, setSeen] = React.useState(true); // assume seen until we read storage (avoids flash)
+  const furthest = furthestStore.useValue();
+  const seen = seenStore.useValue();
 
-  React.useEffect(() => {
-    try {
-      setFurthest(Number(window.localStorage.getItem(FURTHEST_KEY) || "1"));
-      setSeen(window.localStorage.getItem(SEEN_KEY) === "1");
-    } catch {
-      /* ignore */
-    }
-  }, []);
+  const visit = React.useCallback(
+    (n: number) => {
+      if (n > furthest) furthestStore.write(n);
+    },
+    [furthest],
+  );
 
-  const visit = React.useCallback((n: number) => {
-    setFurthest((prev) => {
-      const next = Math.max(prev, n);
-      try {
-        window.localStorage.setItem(FURTHEST_KEY, String(next));
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
-  }, []);
-
-  const dismiss = React.useCallback(() => {
-    setSeen(true);
-    try {
-      window.localStorage.setItem(SEEN_KEY, "1");
-    } catch {
-      /* ignore */
-    }
-  }, []);
+  const dismiss = React.useCallback(() => seenStore.write(true), []);
 
   return { furthest, seen, visit, dismiss };
 }

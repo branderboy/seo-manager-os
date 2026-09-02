@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { createPersistentStore } from "@/lib/persistent-store";
 import { diagnosis } from "@/lib/data";
 
 // What Diagnosis hands off to Strategy. Seeded with the primary + secondary cause.
@@ -14,28 +15,20 @@ type Ctx = {
 
 const C = React.createContext<Ctx | null>(null);
 
+const store = createPersistentStore<string[]>(KEY, DEFAULT, (raw) => {
+  const parsed: unknown = JSON.parse(raw);
+  return Array.isArray(parsed) ? (parsed as string[]) : DEFAULT;
+});
+
 export function HandoffProvider({ children }: { children: React.ReactNode }) {
-  const [strategyInputs, setState] = React.useState<string[]>(DEFAULT);
+  const strategyInputs = store.useValue();
 
-  React.useEffect(() => {
-    try {
-      const r = window.localStorage.getItem(KEY);
-      if (r) setState(JSON.parse(r));
-    } catch {
-      /* ignore */
-    }
-  }, []);
+  const value = React.useMemo<Ctx>(
+    () => ({ strategyInputs, setStrategyInputs: store.write }),
+    [strategyInputs],
+  );
 
-  const setStrategyInputs = React.useCallback((x: string[]) => {
-    setState(x);
-    try {
-      window.localStorage.setItem(KEY, JSON.stringify(x));
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  return <C.Provider value={{ strategyInputs, setStrategyInputs }}>{children}</C.Provider>;
+  return <C.Provider value={value}>{children}</C.Provider>;
 }
 
 export function useHandoff() {

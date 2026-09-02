@@ -10,7 +10,7 @@ export function NextStep({ from, label, cta }: { from: number; label?: string; c
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-accent-200 bg-accent-50/60 p-4 sm:px-5">
       <div className="flex items-center gap-3">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-500 text-white shadow-soft">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-600 text-white shadow-soft">
           <Icon className="h-5 w-5" />
         </span>
         <div>

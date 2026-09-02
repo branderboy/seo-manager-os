@@ -68,6 +68,19 @@ Core entities include:
 
 The schema uses Supabase RLS helpers and policies so tenant scope is enforced in Postgres, not just hidden in the UI.
 
+**These policies are executed and tested, not just written.** `scripts/db-test-setup.sh`
+applies the real migrations, the demo seed and a two-organization fixture to a live Postgres;
+`tests/integration/tenant-isolation.spec.ts` then attempts to cross the boundary 22 ways —
+by listing, by naming a foreign id directly, by insert, by update, by ownership transfer, by
+self-granted role, and through the storage bucket — and every attempt is refused. It runs as
+a blocking job on every pull request. Disabling RLS on a single table turns 8 of those tests
+red, which is how you know they test something.
+
+Two things that are *not* true, and matter: no application code queries this database yet
+(`grep -rl supabase src` returns nothing), and the tests run against plain Postgres behind a
+small compatibility shim (`supabase/test/`), so they prove the policies are correct rather
+than that Supabase's own auth and storage services behave as the policies assume.
+
 Agency roles:
 
 - `agency_admin`
@@ -118,27 +131,24 @@ The demo data intentionally includes:
 
 Revenue is left unavailable when source data does not explicitly supply it.
 
-## Demo login accounts
+## Demo workspace selector
 
-The static demo workspace selector at `/growth/login` uses these display accounts:
+`/growth/login` is a **workspace selector, not a sign-in**. It has no authentication behind
+it: choosing a role changes what the demo renders and nothing else. The screen says so, and
+the credential list that used to sit here was removed — publishing an email/password pair
+next to a real project trains the wrong habit and implied an access control that does not
+exist.
 
-```text
-agency-admin@localgrowth.demo
-lead-seo@localgrowth.demo
-strategist@localgrowth.demo
-content@localgrowth.demo
-capital-client@localgrowth.demo
-
-Demo password: LocalGrowthDemo!
-```
-
-These are **UI demo credentials**, not pre-created Supabase Auth users. The static GitHub Pages build intentionally works without external credentials. For a live deployment, create real Supabase Auth users and assign `user_roles` records.
+The multi-tenant policies in `supabase/migrations/` are the real boundary. They are written
+and **not yet wired up or tested**, so treat everything in the demo as public. For a live
+deployment, create real Supabase Auth users, assign `user_roles` records, and see ORG-001 in
+`docs/production/WORKFLOW-RISK-REGISTER.md` for what has to be proven before that ships.
 
 ## Stack
 
 Existing application:
 
-- Next.js 14 App Router + TypeScript
+- Next.js 16 App Router + TypeScript
 - Tailwind CSS + shadcn-style local UI primitives
 - Recharts
 - lucide-react
@@ -155,9 +165,9 @@ Local Growth OS foundation adds:
 
 ### Dependency note
 
-The original repository lockfile does **not** currently include `@supabase/supabase-js`, React Hook Form, Zod, or TanStack Table. This branch deliberately does not fake those dependencies or hand-edit `package-lock.json` with unverified package metadata. The new screens use the existing dependency set so the current static demo architecture remains compatible.
+The lockfile does **not** include `@supabase/supabase-js`, React Hook Form, Zod, or TanStack Table. That is deliberate: this branch does not fake dependencies or hand-edit `package-lock.json` with unverified metadata. The screens use the existing dependency set so the static demo architecture stays compatible.
 
-Adding the official Supabase client + React Hook Form + Zod + TanStack Table is the first production-wiring backlog item below. The SQL/RLS schema, UI flows, connector boundaries, types, and data contracts are already structured for that migration.
+Adding the official Supabase client + React Hook Form + Zod + TanStack Table is the first production-wiring backlog item below. The SQL/RLS schema, UI flows, connector boundaries, types, and data contracts are already structured for that migration — and since the schema and its policies are now executed and tested on every pull request (`npm run test:authz`), that wiring has a proven boundary to connect to rather than an assumed one.
 
 ## Next.js runtime behavior
 
@@ -447,7 +457,15 @@ npm run verify     # lint + typecheck + build + unit tests
 npm run test:unit  # Vitest, tests/unit
 npm run test:e2e   # Playwright critical workflows (run npm run build first)
 npm run test:a11y  # axe + keyboard checks on the key screens (build first)
+
+# Tenant isolation. Needs a Postgres; applies the real migrations and tries to cross
+# the boundary between two organizations. Blocking in CI.
+npm run db:test:setup
+npm run test:authz
 ```
+
+`npm run test:a11y` asserts **zero** axe violations of every WCAG 2.0/2.1/2.2 A and AA rule
+across the key screens at desktop and mobile widths, not a baseline.
 
 `npm run start` serves the standard Next.js build. For the GitHub Pages artifact, build with
 `GITHUB_PAGES=true` and serve `out/` with `npm run start:export -- --base-path

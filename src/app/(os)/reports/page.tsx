@@ -177,7 +177,7 @@ export default function ReportsPage() {
       {/* Close the loop — this cycle's findings feed the next ───────────────── */}
       <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-accent-200 bg-[var(--accent-tint)] p-6">
         <div className="flex items-start gap-3">
-          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-500 text-white">
+          <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white">
             <RotateCw className="h-4 w-4" />
           </span>
           <div>
